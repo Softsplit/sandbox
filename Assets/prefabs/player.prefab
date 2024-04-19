@@ -1,11 +1,152 @@
 {
   "RootObject": {
-    "__guid": "2114ff3b-893d-401d-b6d2-11bf79fc59de",
+    "__guid": "2c6d6454-6f08-4d43-858b-5eec6d4c4791",
     "Name": "player",
-    "Tags": "player",
     "Enabled": true,
     "NetworkMode": 2,
-    "Children": []
+    "Components": [
+      {
+        "__type": "Sandbox.CharacterController",
+        "__guid": "d8b59885-562d-4437-bc84-9810b05c933d",
+        "Acceleration": 10,
+        "Bounciness": 0,
+        "GroundAngle": 45,
+        "Height": 64,
+        "IgnoreLayers": "trigger",
+        "Radius": 16,
+        "StepHeight": 18
+      },
+      {
+        "__type": "PlayerController",
+        "__guid": "32d7013e-477d-42ae-b8b5-d40d6f3a6412",
+        "AnimationHelper": {
+          "_type": "component",
+          "component_id": "4c0896c8-30e3-47cc-9dc8-877365623f89",
+          "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+          "component_type": "CitizenAnimationHelper"
+        },
+        "CharacterController": {
+          "_type": "component",
+          "component_id": "d8b59885-562d-4437-bc84-9810b05c933d",
+          "go": "2c6d6454-6f08-4d43-858b-5eec6d4c4791",
+          "component_type": "CharacterController"
+        },
+        "CrouchMoveSpeed": 60,
+        "RunMoveSpeed": 200,
+        "SprintMoveSpeed": 400,
+        "WalkMoveSpeed": 100
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+        "Name": "Player Body",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "e1d83dbd-4bad-4b90-9470-bd00810348a0",
+            "BodyGroups": 341,
+            "CreateBoneObjects": false,
+            "Model": "models/citizen/citizen.vmdl",
+            "RenderType": "ShadowsOnly",
+            "Tint": "1,1,1,1"
+          },
+          {
+            "__type": "Sandbox.Citizen.CitizenAnimationHelper",
+            "__guid": "4c0896c8-30e3-47cc-9dc8-877365623f89",
+            "BodyWeight": 1,
+            "EyesWeight": 1,
+            "HeadWeight": 1,
+            "Height": 1,
+            "LookAtEnabled": false,
+            "Target": {
+              "_type": "component",
+              "component_id": "e1d83dbd-4bad-4b90-9470-bd00810348a0",
+              "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+              "component_type": "SkinnedModelRenderer"
+            }
+          },
+          {
+            "__type": "PlayerDresser",
+            "__guid": "8e70d050-aa3a-4290-8057-1d30318d2ac6",
+            "BodyRenderer": {
+              "_type": "component",
+              "component_id": "e1d83dbd-4bad-4b90-9470-bd00810348a0",
+              "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+              "component_type": "SkinnedModelRenderer"
+            }
+          },
+          {
+            "__type": "PlayerFootsteps",
+            "__guid": "87cedf79-c8a8-44f4-8dda-d84fc5b0b394",
+            "Source": {
+              "_type": "component",
+              "component_id": "e1d83dbd-4bad-4b90-9470-bd00810348a0",
+              "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+              "component_type": "SkinnedModelRenderer"
+            }
+          }
+        ]
+      },
+      {
+        "__guid": "95477550-0a10-434c-a33f-da8fea48e91b",
+        "Name": "Physics Pusher",
+        "Position": "0,0,22.68671",
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "9f2a63d9-06c4-4933-9a47-09f3dd1b90fd",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "36,36,40",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "10aa0a3b-77e3-4f4c-97e7-8ee7bc26895f",
+        "Name": "Voice",
+        "Position": "42.0599,39.05991,-23.23907",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "Sandbox.Voice",
+            "__guid": "0aa13b89-d849-4ed7-bfa7-07a5972943a1",
+            "Loopback": false,
+            "Mode": "PushToTalk",
+            "MorphScale": 2,
+            "MorphSmoothTime": 0.1,
+            "PushToTalkInput": "voice",
+            "Renderer": {
+              "_type": "component",
+              "component_id": "e1d83dbd-4bad-4b90-9470-bd00810348a0",
+              "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+              "component_type": "SkinnedModelRenderer"
+            },
+            "Volume": 1,
+            "WorldspacePlayback": true
+          }
+        ]
+      },
+      {
+        "__guid": "4400351a-2ebc-41fc-8991-14b537cec521",
+        "Name": "Player Pusher",
+        "Position": "0,0,32",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "PlayerPusher",
+            "__guid": "286980f0-4514-44f5-ab0f-23cc39b61a10",
+            "Radius": 32
+          }
+        ]
+      }
+    ]
   },
   "ShowInMenu": false,
   "MenuPath": null,

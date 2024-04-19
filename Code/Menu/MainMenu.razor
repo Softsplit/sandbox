@@ -16,21 +16,23 @@
         BindClass("ingame", () => Game.ActiveScene.Title == "ingame" /* Game.InGame */ );
         BindClass("inlobby", () => Game.ActiveScene.Title == "lobby" /* Game.Menu?.Lobby != null */ );
 
-        SetClass("hidden", Game.ActiveScene.Title == "ingame" /* Game.InGame */ );
+        if ( Game.ActiveScene.Title == "lobby" ) SetClass( "open", true);
     }
 
     protected override void OnUpdate()
     {
         if (Input.EscapePressed)
         {
-            if (Panel.Class.Contains("hidden"))
+            if ( !Panel.Class.Contains( "open" ) )
             {
-                SetClass("hidden", false);
+                SetClass("open", true);
             }
             else
             {
                 if (Game.ActiveScene.Title == "ingame")
-                   SetClass("hidden", true);
+                {
+                    SetClass("open", false);
+                }
             }
         }
     }

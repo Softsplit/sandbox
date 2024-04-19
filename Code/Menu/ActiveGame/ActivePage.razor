@@ -84,7 +84,7 @@
 
     public void ReturnToGame()
     {
-        Game.ActiveScene.GetAllComponents<MainMenu>().FirstOrDefault().Panel.SetClass("hidden", true);
+        Game.ActiveScene.GetAllComponents<MainMenu>().FirstOrDefault().Panel.SetClass("open", false);
     }
 
     public void LeaveServer()
