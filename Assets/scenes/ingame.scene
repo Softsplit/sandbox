@@ -10,8 +10,12 @@
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-          "MapName": "facepunch.construct23",
+          "MapName": "facepunch.construct",
           "UseMapFromLaunch": true
+        },
+        {
+          "__type": "MapPlayerSpawner",
+          "__guid": "0a393d42-8221-448c-bc24-3d9fc555acd6"
         }
       ],
       "Children": []
@@ -31,33 +35,6 @@
           },
           "SpawnPoints": [],
           "StartServer": true
-        }
-      ]
-    },
-    {
-      "__guid": "29fb2cc8-c179-46de-a08e-707d05c83d0b",
-      "Name": "Camera",
-      "Position": "60.05661,-648.5784,35.96446",
-      "Tags": "maincamera",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
-        {
-          "__type": "Sandbox.CameraComponent",
-          "__guid": "264e041b-62ca-43e4-aa8c-2dc5bde915b4",
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
-          "ClearFlags": "All",
-          "FieldOfView": 90,
-          "IsMainCamera": true,
-          "Orthographic": false,
-          "OrthographicHeight": 1204,
-          "Priority": 1,
-          "RenderExcludeTags": "",
-          "RenderTags": "",
-          "TargetEye": "None",
-          "Viewport": "0,0,1,1",
-          "ZFar": 10000,
-          "ZNear": 10
         }
       ]
     },
@@ -127,7 +104,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-19T22:41:59.0916812\u002B08:00",
+  "LastSaved": "2024-04-19T23:38:44.2037142\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
