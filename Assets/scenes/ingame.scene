@@ -25,6 +25,10 @@
         {
           "__type": "Sandbox.NetworkHelper",
           "__guid": "097490e4-e57b-49df-82bc-35085819ff23",
+          "PlayerPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/player.prefab"
+          },
           "SpawnPoints": [],
           "StartServer": true
         }
@@ -123,7 +127,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-19T20:28:59.5461022\u002B08:00",
+  "LastSaved": "2024-04-19T21:04:08.7983186\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
