@@ -10,10 +10,11 @@
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-          "MapName": "",
+          "MapName": "facepunch.construct23",
           "UseMapFromLaunch": true
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "bd1f6a82-367b-40c3-8957-ee49541b6d74",
@@ -122,7 +123,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-19T20:09:08.8918544\u002B08:00",
+  "LastSaved": "2024-04-19T20:28:59.5461022\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
