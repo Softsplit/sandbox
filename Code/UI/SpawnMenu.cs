@@ -43,6 +43,7 @@ public partial class SpawnMenu : Panel
 				tabs.Add.Button( "#spawnmenu.tools" ).AddClass( "active" );
 				tabs.Add.Button( "#spawnmenu.utility" );
 			}
+
 			var body = right.Add.Panel( "body" );
 			{
 				toollist = body.Add.Panel( "toollist" );
@@ -52,7 +53,6 @@ public partial class SpawnMenu : Panel
 				body.Add.Panel( "inspector" );
 			}
 		}
-
 	}
 
 	void RebuildToolList()
@@ -107,6 +107,7 @@ public partial class SpawnMenu : Panel
 		{
 			isSearching = true;
 		}
+
 		if ( isSearching && Input.Pressed( "menu" ) )
 		{
 			isSearching = false;

@@ -5,7 +5,7 @@
   "Ident": "sandbox",
   "Tags": "sandbox game dynamic spawnmenu physgun",
   "Schema": 1,
-  "Resources": "*.vmdl_c.png\nAssets/entity/*.png",
+  "Resources": "/Code/*\n/Assets/*\n/ProjectSettings/*",
   "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {
@@ -21,8 +21,8 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "StartupScene": "scenes/minimal.scene",
-    "LaunchMode": "Launcher",
-    "MapStartupScene": "scenes/minimal.scene"
+    "MapStartupScene": "scenes/ingame.scene",
+    "LaunchMode": "Normal",
+    "StartupScene": "scenes/lobby.scene"
   }
 }

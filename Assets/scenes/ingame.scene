@@ -3,22 +3,21 @@
   "GameObjects": [
     {
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
-      "Name": "Map Instance",
+      "Name": "Map Loader",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-          "MapName": "facepunch.construct23",
+          "MapName": "",
           "UseMapFromLaunch": true
         }
-      ],
-      "Children": []
+      ]
     },
     {
       "__guid": "bd1f6a82-367b-40c3-8957-ee49541b6d74",
-      "Name": "Network Helper",
+      "Name": "Network System",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
@@ -54,18 +53,48 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
-        },
+        }
+      ]
+    },
+    {
+      "__guid": "e2b3355b-18f3-4e9d-8a69-acc8dd664633",
+      "Name": "Screen",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
-          "__guid": "a965ba1c-b515-4262-bb87-18804587632d",
+          "__guid": "3b199b0b-bf17-496c-a6fc-c651f9ba72a5",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
           "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "03f39933-0b34-4a9a-9199-9276f15421f1",
+          "Name": "Main Menu",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "MainMenu",
+              "__guid": "df9f22cf-ea1f-4a93-aefb-74482744e4ff"
+            }
+          ]
         },
         {
-          "__type": "SandboxHud",
-          "__guid": "582c684f-97bf-4104-9f1c-c06faa50b693"
+          "__guid": "662476ec-5aab-49cf-9a92-8c0f1f964d4e",
+          "Name": "Sandbox Hud",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "SandboxHud",
+              "__guid": "e68d784b-7565-4644-83a9-ebfde0290fba"
+            }
+          ]
         }
       ]
     }
@@ -91,9 +120,9 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "minimal",
+  "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-18T19:31:29.747111\u002B08:00",
+  "LastSaved": "2024-04-19T20:09:08.8918544\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

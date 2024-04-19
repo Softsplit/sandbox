@@ -24,14 +24,36 @@
           "Viewport": "0,0,1,1",
           "ZFar": 10000,
           "ZNear": 10
-        },
+        }
+      ]
+    },
+    {
+      "__guid": "d99c27d9-28eb-496e-9c21-eacc94c3e9e5",
+      "Name": "Screen",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
-          "__guid": "d32a14f7-29f5-42e6-917c-b9c4813d0439",
+          "__guid": "12d637f7-2ef0-459c-a702-7efd43072d3a",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
           "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "1e453382-ffe3-45d5-8a91-8e758e11e85f",
+          "Name": "Main Menu",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "MainMenu",
+              "__guid": "ef1ca7f8-ce2d-4b38-8168-c5aec9dbdc13"
+            }
+          ]
         }
       ]
     }
@@ -57,9 +79,9 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "menu",
+  "Title": "lobby",
   "Description": "",
-  "LastSaved": "2024-04-18T19:31:40.6933308\u002B08:00",
+  "LastSaved": "2024-04-19T14:33:04.5785974\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

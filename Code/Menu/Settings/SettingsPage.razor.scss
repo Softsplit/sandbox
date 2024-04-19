@@ -1,0 +1,27 @@
+
+keybind
+{
+	background-color: #ffffff05;
+	padding: 10px;
+	font-size: 13px;
+	text-align: center;
+	width: 200px;
+	cursor: pointer;
+	color: #aaa;
+
+	&.with-highlight
+	{
+		color: #eee;
+	}
+
+	&:hover
+	{
+		background-color: #ffffff11;
+	}
+
+	&.active
+	{
+		background-color: #fff;
+		color: #aaa;
+	}
+}

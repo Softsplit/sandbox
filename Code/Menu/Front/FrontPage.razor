@@ -1,0 +1,72 @@
+@using System
+@using Sandbox
+@using Sandbox.UI
+@using Sandbox.Network
+@attribute [StyleSheet]
+
+<root style="flex-direction: column;">
+    <div class="game-title">
+        Sandbox
+    </div>
+    <div class="controls">
+        @if ( Game.ActiveScene.Title == "ingame" ) // ( Game.InGame )
+        {
+            <a class="button" href="/active">Current Game</a>
+            <a class="button" onclick=@LeaveGame>Leave Game</a>
+            <span style="height: 20px;"></span>
+        }
+        else
+        {
+            <a class="button" onclick="@CreateNewGame">Create Game</a>
+        }
+        <a class="button" onclick="@OpenServerList">Find a Game</a>
+        <a class="button" href="/settings">Settings</a>
+        <span style="height: 20px;"></span>
+        <a class="button" @onclick=@Game.Close>Quit</a>
+    </div>
+</root>
+
+@code
+{
+    void LoadSavedGame()
+    {
+        this.Navigate( "/load" );
+    }
+
+    void LeaveGame()
+    {
+        GameNetworkSystem.Disconnect();
+        Game.ActiveScene.LoadFromFile("scenes/lobby.scene");
+        Log.Info("Leaving");
+    }
+
+    void CreateNewGame()
+    {
+        /*
+        var options = new Sandbox.Modals.GameCreateModalOptions();
+        options.Cookie = $"{Game.Menu.Package.FullIdent}.serverconfig";
+
+        options.ModalTitle = "Create Game";
+        options.MapFilter = "type:map sort:trending";
+        options.Default.Map = "facepunch.construct23";
+        options.Default.GameTitle = $"{Game.Menu.Package.Title} Server";
+
+        options.OnStartGame = (setup) =>
+            {
+            Game.Menu.StartServerAsync(setup.MaxPlayers, setup.GameTitle, setup.Map);
+        };
+
+        Game.Overlay.ShowCreateGame(options);
+        */
+
+        Game.Overlay.ShowLauncher("softsplit.sandbox");
+    }
+
+    void OpenServerList()
+    {
+        var options = new Sandbox.Modals.ServerListConfig();
+        options.GamePackageFilter = "softsplit.sandbox";
+
+        Game.Overlay.ShowServerList(options);
+    }
+}
