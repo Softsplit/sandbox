@@ -1,0 +1,16 @@
+@using Sandbox
+@using Sandbox.UI
+@inherits PanelComponent
+@attribute [Library]
+
+@if ( IsProxy ) return;
+
+<root>
+    <Chat/>
+    <KillFeed/>
+    <Health/>
+    <InventoryBar/>
+    <CurrentTool/>
+    <SpawnMenu/>
+    <Crosshair/>
+</root>

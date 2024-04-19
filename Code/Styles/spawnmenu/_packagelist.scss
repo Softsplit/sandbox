@@ -1,0 +1,79 @@
+﻿
+
+.package-list
+{
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: scroll;
+}
+
+.columned .nav
+{
+    width: 200px;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.columned .contents
+{
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.columned .nav .section
+{
+    margin: 10px 0;
+    flex-direction: column;
+}
+
+.columned .nav .button
+{
+    background-color: rgba( white, 0.01 );
+    color: rgba( white, 0.9 );
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: normal;
+    cursor: pointer;
+
+    &:hover
+    {
+        background-color: $blue;
+        color: white;
+    }
+
+    &:active
+    {
+        background-color: $blue;
+        color: white;
+        transform: scale( 0.97 );
+    }
+
+    &.active
+    {
+        background-color: $blue;
+        color: white;
+    }
+}
+
+.columned .nav .button-group
+{
+    .button
+    {
+        flex-grow: 1;
+        border-radius: 0px;
+        justify-content: center;
+        margin-left: 1px;
+        font-size: 17px;
+
+        &:first-child
+        {
+            border-radius: 5px 0 0 5px;
+            margin-left: 0;
+        }
+
+        &:last-child
+        {
+            border-radius: 0 5px 5px 0;
+        }
+    }
+}

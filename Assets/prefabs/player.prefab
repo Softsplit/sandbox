@@ -1,0 +1,16 @@
+{
+  "RootObject": {
+    "__guid": "2114ff3b-893d-401d-b6d2-11bf79fc59de",
+    "Name": "player",
+    "Tags": "player",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "Children": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}

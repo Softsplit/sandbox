@@ -1,0 +1,18 @@
+@using System.Threading.Tasks;
+@using System.Collections.Generic;
+@using Sandbox;
+@using System;
+@using Sandbox.UI;
+@inherits Panel;
+
+<root>
+	<div class="icon" style="background-image: url( @Package.Thumb )" @onclick=@(() => OnIconPressed?.Invoke() )></div>
+	<div class="author">@Package.Org.Title</div>
+	<div class="title">@Package.Title</div>
+</root>
+
+@code
+{
+	public Action OnIconPressed { get; set; }
+	public Package Package { get; set; }
+}

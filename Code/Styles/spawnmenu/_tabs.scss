@@ -1,0 +1,45 @@
+﻿
+
+spawnmenu .tabs
+{
+	font-size: 16px;
+	flex-shrink: 0;
+	margin-bottom: 32px;
+	padding-left: 10px;
+
+	button
+	{
+		padding: 6px 12px;
+		font-size: 23px;
+		align-items: center;
+		font-weight: 600;
+		opacity: 0.2;
+		color: #fff;
+		cursor: pointer;
+		font-family: Poppins;
+		border-bottom: 5px solid transparent;
+		text-transform: lowercase;
+        
+		//border-radius: 5px;
+		label
+		{
+			text-shadow: 1px 1px 4px rgba( black, 0.2 );
+		}
+
+		&:hover
+		{
+			opacity: 1;
+		}
+
+		&.active
+		{
+			transform: scale( 1 );
+			opacity: 1;
+			color: #fff;
+			//	background-color: #fff;//( #3273eb, 0.2 );
+			//color: #3273eb;
+
+			border-bottom: 5px solid $blue;
+		}
+	}
+}
