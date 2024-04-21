@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 
 public partial class KillFeed : Panel
@@ -16,12 +17,12 @@ public partial class KillFeed : Panel
 		var e = Current.AddChild<KillFeedEntry>();
 
 		e.Left.Text = left;
-		// e.Left.SetClass( "me", lsteamid == (Game.LocalClient?.SteamId) );
+		e.Left.SetClass( "me", lsteamid == (Game.SteamId) );
 
 		e.Method.Text = method;
 
 		e.Right.Text = right;
-		// e.Right.SetClass( "me", rsteamid == (Game.LocalClient?.SteamId) );
+		e.Right.SetClass( "me", rsteamid == (Game.SteamId) );
 
 		return e;
 	}

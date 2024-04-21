@@ -35,7 +35,7 @@
                     Map: <!-- @Game.Server.MapIdent -->
                 </div>
                 <div>
-                    Is Listen Server: <!-- @Game.IsListenServer -->
+                    <!-- Is Listen Server: @Game.IsListenServer --> <!-- dedicated servers don't exist lmao -->
                 </div>
             </div>
             <h2>Current Players</h2>
@@ -76,7 +76,7 @@
 
     /*
     protected override void OnParametersSet()
-        {
+    {
         ShowMapOption = Game.Menu.Package.MapSelectionMode != Sandbox.DataModel.Game.MapSelect.Hidden;
         ShowMapOption = ShowMapOption && Game.Menu.Package.MapSelectionMode != Sandbox.DataModel.Game.MapSelect.Empty;
     }
@@ -106,7 +106,7 @@
         if ( !IsVisible )
             return;
 
-        if ( Game.ActiveScene.Name == "menu" ) // ( !Game.InGame )
+        if ( Game.ActiveScene.Title == "lobby" ) // ( !Game.InGame )
         {
             this.Navigate( "/" );
         }

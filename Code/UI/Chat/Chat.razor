@@ -4,8 +4,6 @@
 @using System.Collections.Generic;
 @using System.Linq;
 
-@namespace Sandbox
-
 <root>
 	<div class="canvas" @ref=Canvas />
 	<TextEntry @ref=Input onsubmit=@Submit onblur=@Close />
@@ -88,8 +86,9 @@
 	{
 		var e = Canvas.AddChild<ChatRow>();
 
-		// var player = Game.LocalPawn;
-		// if ( !player.IsValid() ) return;
+        /*
+        var player = Game.LocalPawn;
+		if ( !player.IsValid() ) return;
 
 		if ( playerId > 0 )
 			e.PlayerId = playerId;
@@ -101,9 +100,10 @@
 		e.SetClass( "info", isInfo );
 		e.BindClass( "stale", () => e.Lifetime > MessageLifetime );
 
-		// var cl = Game.Clients.FirstOrDefault( x => x.SteamId == playerId );
-		// if ( cl.IsValid() )
-		//  	e.SetClass( "friend", cl.IsFriend || Game.SteamId == playerId );
+        var cl = Game.Clients.FirstOrDefault( x => x.SteamId == playerId );
+		if ( cl != null )
+		    e.SetClass( "friend", cl.IsFriend || Game.SteamId == playerId );
+        */
 
 		Canvas.TryScrollToBottom();
 

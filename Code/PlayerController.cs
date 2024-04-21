@@ -9,7 +9,6 @@ public sealed class PlayerController : Component
 	[Property] public float WalkMoveSpeed { get; set; } = 100.0f;
 	[Property] public float RunMoveSpeed { get; set; } = 200.0f;
 	[Property] public float SprintMoveSpeed { get; set; } = 400.0f;
-
 	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
 
 	[Sync] public bool Crouching { get; set; }

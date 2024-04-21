@@ -10,7 +10,7 @@
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-          "MapName": "facepunch.construct",
+          "MapName": "softsplit.gm_bigcity",
           "UseMapFromLaunch": true
         },
         {
@@ -101,8 +101,8 @@
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
-          "ZFar": 10000,
-          "ZNear": 10
+          "ZFar": 100000,
+          "ZNear": 1
         }
       ]
     }
@@ -130,7 +130,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-19T23:41:51.7936776\u002B08:00",
+  "LastSaved": "2024-04-21T19:39:06.1255387\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

@@ -17,16 +17,14 @@ public class InventoryBar : Panel
 
 	public override void Tick()
 	{
-		/*
-		var player = Game.LocalPawn as Player;
-		if ( player == null ) return;
-		if ( player.Inventory == null ) return;
+		// var player = Game.LocalPawn as Player;
+		// if ( player == null ) return;
+		// if ( player.Inventory == null ) return;
 
 		for ( int i = 0; i < slots.Count; i++ )
 		{
-			UpdateIcon( player.Inventory.GetSlot( i ), slots[i], i );
+			// UpdateIcon( player.Inventory.GetSlot( i ), slots[i], i );
 		}
-		*/
 	}
 
 	private static void UpdateIcon( GameObject ent, InventoryIcon inventoryIcon, int i )

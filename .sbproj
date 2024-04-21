@@ -57,6 +57,7 @@
         {
           "Name": "Jump",
           "KeyboardCode": "space",
+          "GamepadCode": "None",
           "GroupName": "Movement"
         },
         {
@@ -214,6 +215,12 @@
           "KeyboardCode": "enter",
           "GamepadCode": "None",
           "GroupName": "Other"
+        },
+        {
+          "Name": "Noclip",
+          "KeyboardCode": "N",
+          "GamepadCode": "None",
+          "GroupName": "Movement"
         }
       ],
       "__guid": "e5747b22-7f31-4f90-abfe-e68afdbbd2bb"
