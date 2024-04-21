@@ -10,7 +10,9 @@ public sealed class PlayerController : Component
 	[Property] public float SprintMoveSpeed { get; set; } = 400.0f;
 	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
 
+	[Sync] public bool ThirdPersonCamera { get; set; }
 	[Sync] public bool Crouching { get; set; }
+	[Sync] public bool Noclipping { get; set; }
 	[Sync] public Angles EyeAngles { get; set; }
 	[Sync] public Vector3 WishVelocity { get; set; }
 
@@ -22,7 +24,6 @@ public sealed class PlayerController : Component
 		if ( !IsProxy )
 		{
 			MouseInput();
-			Transform.Rotation = new Angles( 0, EyeAngles.yaw, 0 );
 		}
 
 		UpdateAnimation();
@@ -33,8 +34,20 @@ public sealed class PlayerController : Component
 		if ( IsProxy )
 			return;
 
-		CrouchingInput();
-		MovementInput();
+		if ( Input.Pressed( "noclip" ) )
+		{
+			Noclipping = !Noclipping;
+		}
+
+		if ( Noclipping )
+		{
+			NoclippingInput();
+		}
+		else
+		{
+			CrouchingInput();
+			MovementInput();
+		}
 	}
 
 	private void MouseInput()
@@ -70,6 +83,42 @@ public sealed class PlayerController : Component
 		return 0.2f;
 	}
 
+	private void NoclippingInput()
+	{
+		var cc = CharacterController;
+
+		var fwd = Input.AnalogMove.x.Clamp( -1f, 1f );
+		var left = Input.AnalogMove.y.Clamp( -1f, 1f );
+		var rotation = EyeAngles.ToRotation();
+
+		var vel = (rotation.Forward * fwd) + (rotation.Left * left);
+
+		if ( Input.Down( "jump" ) )
+		{
+			vel += Vector3.Up * 1;
+		}
+
+		vel = vel.Normal * 2000;
+
+		if ( Input.Down( "run" ) )
+			vel *= 5.0f;
+
+		if ( Input.Down( "duck" ) )
+			vel *= 0.2f;
+
+		cc.Velocity += vel * Time.Delta;
+
+		if ( cc.Velocity.LengthSquared > 0.01f )
+		{
+			Transform.Position += cc.Velocity * Time.Delta;
+		}
+
+		cc.Velocity = cc.Velocity.Approach( 0, cc.Velocity.Length * Time.Delta * 5.0f );
+
+		EyeAngles = rotation;
+		WishVelocity = cc.Velocity;
+	}
+
 	private void MovementInput()
 	{
 		if ( CharacterController is null )
@@ -100,7 +149,6 @@ public sealed class PlayerController : Component
 			}
 		}
 
-
 		cc.ApplyFriction( GetFriction() );
 
 		if ( cc.IsOnGround )
@@ -112,7 +160,6 @@ public sealed class PlayerController : Component
 		{
 			cc.Velocity += halfGravity;
 			cc.Accelerate( WishVelocity );
-
 		}
 
 		//
@@ -196,8 +243,6 @@ public sealed class PlayerController : Component
 			Crouching = WishCrouch;
 			return;
 		}
-
-
 	}
 
 	private void UpdateCamera()
@@ -208,17 +253,35 @@ public sealed class PlayerController : Component
 		var targetEyeHeight = Crouching ? 28 : 64;
 		EyeHeight = EyeHeight.LerpTo( targetEyeHeight, RealTime.Delta * 10.0f );
 
-		var targetCameraPos = Transform.Position + new Vector3( 0, 0, EyeHeight );
-
-		// smooth view z, so when going up and down stairs or ducking, it's smooth af
-		if ( lastUngrounded > 0.2f )
-		{
-			targetCameraPos.z = camera.Transform.Position.z.LerpTo( targetCameraPos.z, RealTime.Delta * 25.0f );
-		}
-
-		camera.Transform.Position = targetCameraPos;
+		camera.Transform.Position = Transform.Position + new Vector3( 0, 0, EyeHeight );
 		camera.Transform.Rotation = EyeAngles;
 		camera.FieldOfView = Preferences.FieldOfView;
+
+		if ( Input.Pressed( "view" ) )
+		{
+			ThirdPersonCamera = !ThirdPersonCamera;
+		}
+
+		if ( ThirdPersonCamera )
+		{
+			Vector3 targetPos;
+			var center = Transform.Position + Vector3.Up * 64;
+
+			var pos = center;
+			var rot = camera.Transform.Rotation * Rotation.FromAxis( Vector3.Up, -16 );
+
+			Vector3 distance = 130.0f * Transform.Scale;
+			targetPos = pos + rot.Right * ((Components.GetInChildrenOrSelf<SkinnedModelRenderer>().Model.Bounds.Mins.x + 32) * Transform.Scale);
+			targetPos += rot.Forward * -distance;
+
+			var tr = Scene.Trace.Ray( pos, targetPos )
+				.WithAnyTags( "solid" )
+				.IgnoreGameObject( GameObject )
+				.Radius( 8 )
+				.Run();
+
+			camera.Transform.Position = tr.EndPosition;
+		}
 	}
 
 	protected override void OnPreRender()
@@ -235,17 +298,24 @@ public sealed class PlayerController : Component
 	{
 		if ( AnimationHelper is null ) return;
 
-		var wv = WishVelocity.Length;
+		// where should we be rotated to
+		var turnSpeed = 0.02f;
+
+		var idealRotation = Rotation.LookAt( EyeAngles.Forward.WithZ( 0 ), Vector3.Up );
+		Transform.Rotation = Rotation.Slerp( Transform.Rotation, idealRotation, WishVelocity.Length * Time.Delta * turnSpeed );
+		Transform.Rotation = Transform.Rotation.Clamp( idealRotation, 45.0f, out var shuffle ); // lock facing to within 45 degrees of look direction
 
 		AnimationHelper.WithWishVelocity( WishVelocity );
 		AnimationHelper.WithVelocity( CharacterController.Velocity );
+		AnimationHelper.WithLook( EyeAngles.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
+		AnimationHelper.AimAngle = Transform.Rotation;
+		AnimationHelper.FootShuffle = shuffle;
+		AnimationHelper.DuckLevel = MathX.Lerp( AnimationHelper.DuckLevel, Crouching ? 1 : 0, Time.Delta * 10.0f );
+		AnimationHelper.VoiceLevel = Components.GetInChildrenOrSelf<Voice>().LastPlayed < 0.5f ? Components.GetInChildrenOrSelf<Voice>().Amplitude : 0.0f;
 		AnimationHelper.IsGrounded = CharacterController.IsOnGround;
-		AnimationHelper.DuckLevel = Crouching ? 1.0f : 0.0f;
-
-		AnimationHelper.MoveStyle = wv < 160f ? CitizenAnimationHelper.MoveStyles.Walk : CitizenAnimationHelper.MoveStyles.Run;
-
-		var lookDir = EyeAngles.ToRotation().Forward * 1024;
-		AnimationHelper.WithLook( lookDir, 1, 0.5f, 0.25f );
+		AnimationHelper.IsNoclipping = Noclipping;
+		AnimationHelper.IsWeaponLowered = false;
+		AnimationHelper.MoveStyle = Input.Down( "run" ) ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 	}
 
 	private void UpdateBodyVisibility()
@@ -254,7 +324,7 @@ public sealed class PlayerController : Component
 			return;
 
 		var renderMode = ModelRenderer.ShadowRenderType.On;
-		if ( !IsProxy ) renderMode = ModelRenderer.ShadowRenderType.ShadowsOnly;
+		if ( !IsProxy && !ThirdPersonCamera ) renderMode = ModelRenderer.ShadowRenderType.ShadowsOnly;
 
 		AnimationHelper.Target.RenderType = renderMode;
 
