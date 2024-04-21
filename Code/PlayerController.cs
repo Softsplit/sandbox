@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.Citizen;
-using System.Linq;
 
 public sealed class PlayerController : Component
 {
@@ -203,7 +202,7 @@ public sealed class PlayerController : Component
 
 	private void UpdateCamera()
 	{
-		var camera = Scene.GetAllComponents<CameraComponent>().Where( x => x.IsMainCamera ).FirstOrDefault();
+		var camera = Components.GetInChildrenOrSelf<CameraComponent>();
 		if ( camera is null ) return;
 
 		var targetEyeHeight = Crouching ? 28 : 64;
