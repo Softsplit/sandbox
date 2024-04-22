@@ -315,7 +315,7 @@ public sealed class PlayerController : Component
 		AnimationHelper.IsGrounded = CharacterController.IsOnGround;
 		AnimationHelper.IsNoclipping = Noclipping;
 		AnimationHelper.IsWeaponLowered = false;
-		AnimationHelper.MoveStyle = Input.Down( "run" ) ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
+		AnimationHelper.MoveStyle = WishVelocity.Length < 160f ? CitizenAnimationHelper.MoveStyles.Walk : CitizenAnimationHelper.MoveStyles.Run;
 	}
 
 	private void UpdateBodyVisibility()

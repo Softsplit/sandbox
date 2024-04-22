@@ -79,32 +79,6 @@
           ]
         }
       ]
-    },
-    {
-      "__guid": "3888ecbd-7352-4017-a67c-36ddf1588e32",
-      "Name": "Camera",
-      "Tags": "maincamera",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
-        {
-          "__type": "Sandbox.CameraComponent",
-          "__guid": "c67cdff2-2a9d-4a31-9b97-03c7410a2e15",
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
-          "ClearFlags": "All",
-          "FieldOfView": 90,
-          "IsMainCamera": true,
-          "Orthographic": false,
-          "OrthographicHeight": 1204,
-          "Priority": 1,
-          "RenderExcludeTags": "",
-          "RenderTags": "",
-          "TargetEye": "None",
-          "Viewport": "0,0,1,1",
-          "ZFar": 100000,
-          "ZNear": 1
-        }
-      ]
     }
   ],
   "SceneProperties": {
@@ -130,7 +104,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-21T19:39:06.1255387\u002B08:00",
+  "LastSaved": "2024-04-22T23:11:25.2187703\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []
