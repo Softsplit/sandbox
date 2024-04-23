@@ -2,23 +2,16 @@
   "__guid": "9f832399-4887-46b0-8f21-2ee284f538e2",
   "GameObjects": [
     {
-      "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
-      "Name": "Map Loader",
+      "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
+      "Name": "Game Manager",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Sandbox.MapInstance",
-          "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-          "MapName": "softsplit.gm_bigcity",
-          "UseMapFromLaunch": true
-        },
-        {
-          "__type": "MapPlayerSpawner",
-          "__guid": "0a393d42-8221-448c-bc24-3d9fc555acd6"
+          "__type": "GameManager",
+          "__guid": "e044cde4-724c-4579-9cd7-7a1794a5f3ac"
         }
-      ],
-      "Children": []
+      ]
     },
     {
       "__guid": "bd1f6a82-367b-40c3-8957-ee49541b6d74",
@@ -39,46 +32,23 @@
       ]
     },
     {
-      "__guid": "e2b3355b-18f3-4e9d-8a69-acc8dd664633",
-      "Name": "Screen",
+      "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
+      "Name": "Map Loader",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "3b199b0b-bf17-496c-a6fc-c651f9ba72a5",
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 100
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "03f39933-0b34-4a9a-9199-9276f15421f1",
-          "Name": "Main Menu",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "Components": [
-            {
-              "__type": "MainMenu",
-              "__guid": "df9f22cf-ea1f-4a93-aefb-74482744e4ff"
-            }
-          ]
+          "__type": "Sandbox.MapInstance",
+          "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
+          "MapName": "softsplit.gm_bigcity",
+          "UseMapFromLaunch": true
         },
         {
-          "__guid": "662476ec-5aab-49cf-9a92-8c0f1f964d4e",
-          "Name": "Sandbox Hud",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "Components": [
-            {
-              "__type": "SandboxHud",
-              "__guid": "e68d784b-7565-4644-83a9-ebfde0290fba"
-            }
-          ]
+          "__type": "MapPlayerSpawner",
+          "__guid": "0a393d42-8221-448c-bc24-3d9fc555acd6"
         }
-      ]
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {
@@ -104,7 +74,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-22T23:11:25.2187703\u002B08:00",
+  "LastSaved": "2024-04-23T19:04:09.6445207\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

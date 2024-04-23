@@ -1,8 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using System.Linq;
-using System.Threading.Tasks;
 
 [Library]
 public partial class SpawnMenu : Panel
@@ -140,65 +138,5 @@ public partial class SpawnMenu : Panel
 	public override void OnHotloaded()
 	{
 		RebuildToolList();
-	}
-
-	[ConCmd( "spawn" )]
-	public static async Task Spawn( string modelname )
-	{
-		var owner = Game.ActiveScene.GetAllComponents<PlayerController>().FirstOrDefault().GameObject;
-
-		if ( owner == null )
-			return;
-
-		var tr = Game.ActiveScene.Trace.Ray( Game.ActiveScene.Camera.Transform.Position, Game.ActiveScene.Camera.Transform.Position + Game.ActiveScene.Camera.Transform.Rotation.Forward * 500 )
-			.UseHitboxes()
-			.IgnoreGameObject( owner )
-			.Run();
-
-		var modelRotation = Rotation.From( new Angles( 0, Game.ActiveScene.Camera.Transform.Rotation.Angles().yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
-
-		//
-		// Does this look like a package?
-		//
-		if ( modelname.Count( x => x == '.' ) == 1 && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
-		{
-			modelname = await SpawnPackageModel( modelname, tr.EndPosition, modelRotation, owner );
-			if ( modelname == null )
-				return;
-		}
-
-		var model = Model.Load( modelname );
-		if ( model == null || model.IsError )
-			return;
-
-		var ent = new GameObject();
-		ent.Transform.Position = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z;
-		ent.Transform.Rotation = modelRotation;
-		ent.Components.Create<Prop>().Model = model;
-		ent.NetworkSpawn();
-		ent.Network.DropOwnership();
-
-		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
-	}
-
-	static async Task<string> SpawnPackageModel( string packageName, Vector3 pos, Rotation rotation, GameObject source )
-	{
-		var package = await Package.Fetch( packageName, false );
-		if ( package == null || package.PackageType != Package.Type.Model || package.Revision == null )
-		{
-			// spawn error particles
-			return null;
-		}
-
-		if ( !source.IsValid ) return null; // source entity died or disconnected or something
-
-		var model = package.GetMeta( "PrimaryAsset", "models/dev/error.vmdl" );
-		var mins = package.GetMeta( "RenderMins", Vector3.Zero );
-		var maxs = package.GetMeta( "RenderMaxs", Vector3.Zero );
-
-		// downloads if not downloads, mounts if not mounted
-		await package.MountAsync();
-
-		return model;
 	}
 }

@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.Citizen;
+using System.Linq;
 
 public sealed class PlayerController : Component
 {
@@ -21,23 +22,16 @@ public sealed class PlayerController : Component
 
 	protected override void OnUpdate()
 	{
-		if ( !IsProxy )
-		{
-			MouseInput();
-		}
+		if ( !IsProxy ) MouseInput();
 
 		UpdateAnimation();
 	}
 
 	protected override void OnFixedUpdate()
 	{
-		if ( IsProxy )
-			return;
+		if ( IsProxy ) return;
 
-		if ( Input.Pressed( "noclip" ) )
-		{
-			Noclipping = !Noclipping;
-		}
+		if ( Input.Pressed( "noclip" ) ) Noclipping = !Noclipping;
 
 		if ( Noclipping )
 		{
@@ -93,25 +87,17 @@ public sealed class PlayerController : Component
 
 		var vel = (rotation.Forward * fwd) + (rotation.Left * left);
 
-		if ( Input.Down( "jump" ) )
-		{
-			vel += Vector3.Up * 1;
-		}
+		if ( Input.Down( "jump" ) ) vel += Vector3.Up * 1;
 
 		vel = vel.Normal * 2000;
 
-		if ( Input.Down( "run" ) )
-			vel *= 5.0f;
-
-		if ( Input.Down( "duck" ) )
-			vel *= 0.2f;
+		if ( Input.Down( "run" ) ) vel *= 5.0f;
+		if ( Input.Down( "duck" ) ) vel *= 0.2f;
 
 		cc.Velocity += vel * Time.Delta;
 
 		if ( cc.Velocity.LengthSquared > 0.01f )
-		{
 			Transform.Position += cc.Velocity * Time.Delta;
-		}
 
 		cc.Velocity = cc.Velocity.Approach( 0, cc.Velocity.Length * Time.Delta * 5.0f );
 
@@ -144,9 +130,7 @@ public sealed class PlayerController : Component
 			WishVelocity *= CurrentMoveSpeed;
 
 			if ( !cc.IsOnGround )
-			{
 				WishVelocity = WishVelocity.ClampLength( 50 );
-			}
 		}
 
 		cc.ApplyFriction( GetFriction() );
@@ -170,9 +154,7 @@ public sealed class PlayerController : Component
 		{
 			var travelDot = cc.Velocity.Dot( pushVelocity.Normal );
 			if ( travelDot < 0 )
-			{
 				cc.Velocity -= pushVelocity.Normal * travelDot * 0.6f;
-			}
 
 			cc.Velocity += pushVelocity * 128.0f;
 		}
@@ -180,22 +162,14 @@ public sealed class PlayerController : Component
 		cc.Move();
 
 		if ( !cc.IsOnGround )
-		{
 			cc.Velocity += halfGravity;
-		}
 		else
-		{
 			cc.Velocity = cc.Velocity.WithZ( 0 );
-		}
 
 		if ( cc.IsOnGround )
-		{
 			lastGrounded = 0;
-		}
 		else
-		{
 			lastUngrounded = 0;
-		}
 	}
 	float DuckHeight = (64 - 36);
 
@@ -247,7 +221,7 @@ public sealed class PlayerController : Component
 
 	private void UpdateCamera()
 	{
-		var camera = Components.GetInChildrenOrSelf<CameraComponent>();
+		var camera = Game.ActiveScene.GetAllComponents<CameraComponent>().Where( camera => !camera.IsProxy ).FirstOrDefault();
 		if ( camera is null ) return;
 
 		var targetEyeHeight = Crouching ? 28 : 64;
@@ -257,21 +231,17 @@ public sealed class PlayerController : Component
 		camera.Transform.Rotation = EyeAngles;
 		camera.FieldOfView = Preferences.FieldOfView;
 
-		if ( Input.Pressed( "view" ) )
-		{
-			ThirdPersonCamera = !ThirdPersonCamera;
-		}
+		if ( Input.Pressed( "view" ) ) ThirdPersonCamera = !ThirdPersonCamera;
 
 		if ( ThirdPersonCamera )
 		{
-			Vector3 targetPos;
 			var center = Transform.Position + Vector3.Up * 64;
 
 			var pos = center;
 			var rot = camera.Transform.Rotation * Rotation.FromAxis( Vector3.Up, -16 );
 
 			Vector3 distance = 130.0f * Transform.Scale;
-			targetPos = pos + rot.Right * ((Components.GetInChildrenOrSelf<SkinnedModelRenderer>().Model.Bounds.Mins.x + 32) * Transform.Scale);
+			Vector3 targetPos = pos + rot.Right * ((Components.GetInChildrenOrSelf<SkinnedModelRenderer>().Model.Bounds.Mins.x + 32) * Transform.Scale);
 			targetPos += rot.Forward * -distance;
 
 			var tr = Scene.Trace.Ray( pos, targetPos )
@@ -300,7 +270,6 @@ public sealed class PlayerController : Component
 
 		// where should we be rotated to
 		var turnSpeed = 0.02f;
-
 		var idealRotation = Rotation.LookAt( EyeAngles.Forward.WithZ( 0 ), Vector3.Up );
 		Transform.Rotation = Rotation.Slerp( Transform.Rotation, idealRotation, WishVelocity.Length * Time.Delta * turnSpeed );
 		Transform.Rotation = Transform.Rotation.Clamp( idealRotation, 45.0f, out var shuffle ); // lock facing to within 45 degrees of look direction
