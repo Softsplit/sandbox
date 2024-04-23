@@ -1,6 +1,8 @@
-# THIS IS NOT THE REPOSITORY FOR S&BOX.
-### This is the repository for the 'sandbox' game specifically.
+# Sandbox Classic
 
-If you want to file issues regarding s&box itself, please go here:
+Sandbox for the Scene System.
 
-https://github.com/sboxgame/issues/
+## Credits
+
+Based on the original Sandbox gamemode by Facepunch\
+Programming by Asphaltian
