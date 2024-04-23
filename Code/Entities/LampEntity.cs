@@ -2,7 +2,7 @@ using Sandbox;
 
 [Spawnable]
 [Library( "ent_lamp", Title = "Lamp" )]
-public partial class LampEntity : SpotLight // IUse
+public partial class LampEntity : SpotLight, IUse
 {
 	protected override void OnStart()
 	{
@@ -13,7 +13,6 @@ public partial class LampEntity : SpotLight // IUse
 		Tags.Add( "solid" );
 	}
 
-	/*
 	public bool IsUsable( GameObject user )
 	{
 		return true;
@@ -27,5 +26,4 @@ public partial class LampEntity : SpotLight // IUse
 
 		return false;
 	}
-	*/
 }

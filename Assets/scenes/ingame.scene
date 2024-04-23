@@ -49,6 +49,74 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "ec9c26f1-db6b-49ca-8630-cb29c210f26e",
+      "Name": "Camera",
+      "Tags": "maincamera",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "32422ec2-2d06-481a-82a3-51985f00f086",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 100000,
+          "ZNear": 1
+        }
+      ]
+    },
+    {
+      "__guid": "cd1ed32c-b869-43e5-8d4d-48893644cc30",
+      "Name": "Screen",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "2a193cd6-b5cb-411f-9205-611ee284962c",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "129e4489-895e-434e-8beb-2c09263265ee",
+          "Name": "Main Menu",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "MainMenu",
+              "__guid": "1a12bc07-acef-46e4-b851-d6cf44de2a4a"
+            }
+          ]
+        },
+        {
+          "__guid": "6a23d5bf-edaf-4ba3-a4fb-0bf25aa54d6f",
+          "Name": "Sandbox Hud",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "SandboxHud",
+              "__guid": "95030e3c-ad3b-4879-b0ea-48183bc6b827"
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -74,7 +142,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-23T19:04:09.6445207\u002B08:00",
+  "LastSaved": "2024-04-23T23:00:23.0218639\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

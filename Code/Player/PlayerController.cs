@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.Citizen;
-using System.Linq;
 
 public sealed class PlayerController : Component
 {
@@ -146,19 +145,6 @@ public sealed class PlayerController : Component
 			cc.Accelerate( WishVelocity );
 		}
 
-		//
-		// Don't walk through other players, let them push you out of the way
-		//
-		var pushVelocity = PlayerPusher.GetPushVector( Transform.Position + Vector3.Up * 40.0f, Scene, GameObject );
-		if ( !pushVelocity.IsNearlyZero() )
-		{
-			var travelDot = cc.Velocity.Dot( pushVelocity.Normal );
-			if ( travelDot < 0 )
-				cc.Velocity -= pushVelocity.Normal * travelDot * 0.6f;
-
-			cc.Velocity += pushVelocity * 128.0f;
-		}
-
 		cc.Move();
 
 		if ( !cc.IsOnGround )
@@ -221,7 +207,7 @@ public sealed class PlayerController : Component
 
 	private void UpdateCamera()
 	{
-		var camera = Game.ActiveScene.GetAllComponents<CameraComponent>().Where( camera => !camera.IsProxy ).FirstOrDefault();
+		var camera = Scene.Camera;
 		if ( camera is null ) return;
 
 		var targetEyeHeight = Crouching ? 28 : 64;

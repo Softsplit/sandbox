@@ -3,7 +3,7 @@ using System;
 
 [Spawnable]
 [Library( "ent_bouncyball", Title = "Bouncy Ball" )]
-public partial class BouncyBallEntity : Component, Component.ICollisionListener // IUse
+public partial class BouncyBallEntity : Component, Component.ICollisionListener, IUse
 {
 	[Property] public float MaxSpeed { get; set; } = 1000.0f;
 	[Property] public float SpeedMul { get; set; } = 1.2f;
@@ -25,7 +25,6 @@ public partial class BouncyBallEntity : Component, Component.ICollisionListener 
 		Components.Get<Rigidbody>().Velocity = direction * MathF.Min( speed * SpeedMul, MaxSpeed );
 	}
 
-	/*
 	public bool IsUsable( GameObject user )
 	{
 		return true;
@@ -42,5 +41,4 @@ public partial class BouncyBallEntity : Component, Component.ICollisionListener 
 
 		return false;
 	}
-	*/
 }
