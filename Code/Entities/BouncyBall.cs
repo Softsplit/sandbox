@@ -3,17 +3,15 @@ using System;
 
 [Spawnable]
 [Library( "ent_bouncyball", Title = "Bouncy Ball" )]
-public partial class BouncyBallEntity : Component, Component.ICollisionListener, IUse
+public partial class BouncyBallEntity : Prop, Component.ICollisionListener, IUse
 {
 	[Property] public float MaxSpeed { get; set; } = 1000.0f;
 	[Property] public float SpeedMul { get; set; } = 1.2f;
 
 	protected override void OnStart()
 	{
-		Components.Create<ModelRenderer>().Model = Model.Load( "models/ball/ball.vmdl" );
+		Model = Model.Load( "models/ball/ball.vmdl" );
 		Components.Get<ModelRenderer>().Tint = Color.Random;
-		Components.Create<ModelCollider>().Model = Model.Load( "models/ball/ball.vmdl" );
-		Components.Create<Rigidbody>();
 
 		Transform.Scale = Game.Random.Float( 0.5f, 2.0f );
 	}

@@ -12,7 +12,6 @@ public partial class DirectionalGravity : Prop
 		DeleteOthers();
 
 		Model = Model.Load( "models/arrow.vmdl" );
-
 		enabled = true;
 	}
 
@@ -29,7 +28,6 @@ public partial class DirectionalGravity : Prop
 	protected override void OnDestroy()
 	{
 		Scene.PhysicsWorld.Gravity = Vector3.Down * 800.0f;
-
 		enabled = false;
 	}
 

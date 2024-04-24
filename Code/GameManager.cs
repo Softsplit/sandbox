@@ -105,10 +105,10 @@ public sealed class GameManager : Component
 	    }
 	    */
 
+		ent.Components.Create( TypeLibrary.GetType<Component>( entName ) );
+
 		ent.Transform.Position = tr.EndPosition;
 		ent.Transform.Rotation = Rotation.From( new Angles( 0, Game.ActiveScene.Camera.Transform.Rotation.Angles().yaw, 0 ) );
-
-		ent.Components.Create( TypeLibrary.GetType<Component>( entName ) );
 
 		ent.NetworkSpawn();
 		ent.Network.DropOwnership();
