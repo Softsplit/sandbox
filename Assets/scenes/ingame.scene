@@ -45,76 +45,55 @@
         },
         {
           "__type": "MapPlayerSpawner",
-          "__guid": "0a393d42-8221-448c-bc24-3d9fc555acd6"
+          "__guid": "09d228b7-4328-463a-a7f5-3ce7ca4175cc"
         }
       ],
       "Children": []
     },
     {
-      "__guid": "ec9c26f1-db6b-49ca-8630-cb29c210f26e",
+      "__guid": "3017ab5f-93af-47ae-ab9e-775bd94b2019",
       "Name": "Camera",
-      "Tags": "maincamera",
+      "Position": "-20.34279,807.7991,55.51758",
+      "Rotation": "0.02498195,0.003467371,-0.9901899,0.1374334",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
-          "__guid": "32422ec2-2d06-481a-82a3-51985f00f086",
+          "__guid": "0e91841d-e972-4a65-be31-ac17375dd73b",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
-          "FieldOfView": 60,
+          "FieldOfView": 120,
           "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "",
+          "RenderExcludeTags": "viewmodel",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
-          "ZFar": 100000,
-          "ZNear": 1
-        }
-      ]
-    },
-    {
-      "__guid": "cd1ed32c-b869-43e5-8d4d-48893644cc30",
-      "Name": "Screen",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "Components": [
+          "ZFar": 10000,
+          "ZNear": 0.5
+        },
+        {
+          "__type": "Sandbox.Highlight",
+          "__guid": "8db77d06-dade-44c6-bfbe-30f9cf34a11e"
+        },
         {
           "__type": "Sandbox.ScreenPanel",
-          "__guid": "2a193cd6-b5cb-411f-9205-611ee284962c",
+          "__guid": "22f2ef6e-d892-4a36-9e74-a9f68d4c51c3",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
           "ZIndex": 100
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "129e4489-895e-434e-8beb-2c09263265ee",
-          "Name": "Main Menu",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "Components": [
-            {
-              "__type": "MainMenu",
-              "__guid": "1a12bc07-acef-46e4-b851-d6cf44de2a4a"
-            }
-          ]
         },
         {
-          "__guid": "6a23d5bf-edaf-4ba3-a4fb-0bf25aa54d6f",
-          "Name": "Sandbox Hud",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "Components": [
-            {
-              "__type": "SandboxHud",
-              "__guid": "95030e3c-ad3b-4879-b0ea-48183bc6b827"
-            }
-          ]
+          "__type": "MainMenu",
+          "__guid": "aebe70dd-3bf7-4819-ab4d-a2a37d5a0bf6"
+        },
+        {
+          "__type": "SandboxHud",
+          "__guid": "46a31564-9a1e-49f5-b675-43db807978da"
         }
       ]
     }
@@ -142,7 +121,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-24T19:16:01.7257364\u002B08:00",
+  "LastSaved": "2024-04-24T21:42:03.9926139\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

@@ -79,7 +79,7 @@
 
 		if ( string.IsNullOrWhiteSpace( msg ) ) return;
 
-		// Say( msg );
+		Say( msg );
 	}
 
 	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
@@ -89,6 +89,7 @@
         /*
         var player = Game.LocalPawn;
 		if ( !player.IsValid() ) return;
+        */
 
 		if ( playerId > 0 )
 			e.PlayerId = playerId;
@@ -100,6 +101,7 @@
 		e.SetClass( "info", isInfo );
 		e.BindClass( "stale", () => e.Lifetime > MessageLifetime );
 
+        /*
         var cl = Game.Clients.FirstOrDefault( x => x.SteamId == playerId );
 		if ( cl != null )
 		    e.SetClass( "friend", cl.IsFriend || Game.SteamId == playerId );

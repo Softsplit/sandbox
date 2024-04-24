@@ -4,7 +4,7 @@ using Sandbox.UI.Construct;
 
 public partial class ScoreboardEntry : Panel
 {
-	// public IClient Client;
+	public Connection Client;
 
 	public Label PlayerName;
 	public Label Kills;
@@ -30,9 +30,6 @@ public partial class ScoreboardEntry : Panel
 		if ( !IsVisible )
 			return;
 
-		// if ( !Client.IsValid() )
-		//     return;
-
 		if ( TimeSinceUpdate < 0.1f )
 			return;
 
@@ -42,21 +39,17 @@ public partial class ScoreboardEntry : Panel
 
 	public virtual void UpdateData()
 	{
-		/*
-		PlayerName.Text = Client.Name;
-		Kills.Text = Client.GetInt( "kills" ).ToString();
-		Deaths.Text = Client.GetInt( "deaths" ).ToString();
+		PlayerName.Text = Client.DisplayName;
+		SetClass( "me", Client == Connection.Local );
+		Kills.Text = Client.GetUserData( "kills" ).ToString();
+		Deaths.Text = Client.GetUserData( "deaths" ).ToString();
 		Ping.Text = Client.Ping.ToString();
-		SetClass( "me", Client == Game.LocalClient );
-		*/
 	}
 
-	/*
-	public virtual void UpdateFrom( IClient client )
+	public virtual void UpdateFrom( Connection client )
 	{
 		Client = client;
 		UpdateData();
 	}
-	*/
 }
 

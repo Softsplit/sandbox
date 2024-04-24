@@ -1,11 +1,13 @@
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 {
 	public Panel Canvas { get; protected set; }
-	// Dictionary<IClient, T> Rows = new();
+	Dictionary<Connection, T> Rows = new();
 
 	public Panel Header { get; protected set; }
 
@@ -29,14 +31,13 @@ public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 		//
 		// Clients that were added
 		//
-		/*
-		foreach ( var client in Game.Clients.Except( Rows.Keys ) )
+		foreach ( var client in Connection.All.Except( Rows.Keys ) )
 		{
 			var entry = AddClient( client );
 			Rows[client] = entry;
 		}
 
-		foreach ( var client in Rows.Keys.Except( Game.Clients ) )
+		foreach ( var client in Rows.Keys.Except( Connection.All ) )
 		{
 			if ( Rows.TryGetValue( client, out var row ) )
 			{
@@ -44,7 +45,6 @@ public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 				Rows.Remove( client );
 			}
 		}
-		*/
 	}
 
 	public virtual bool ShouldBeOpen()
@@ -61,12 +61,10 @@ public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 		Header.Add.Label( "Ping", "ping" );
 	}
 
-	/*
-	protected virtual T AddClient( IClient entry )
+	protected virtual T AddClient( Connection entry )
 	{
 		var p = Canvas.AddChild<T>();
 		p.Client = entry;
 		return p;
 	}
-	*/
 }

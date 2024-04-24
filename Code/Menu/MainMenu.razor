@@ -5,8 +5,6 @@
 @attribute [StyleSheet]
 @inherits PanelComponent
 
-@if (IsProxy) return;
-
 <root class="gamemainmenu">
     <NavigatorCanvas/>
 </root>
@@ -25,16 +23,13 @@
     {
         if (Input.EscapePressed)
         {
-            if ( !Panel.Class.Contains( "open" ) )
+            if (!Panel.Class.Contains("open"))
             {
                 SetClass("open", true);
             }
-            else
+            else if (Game.ActiveScene.Title == "ingame")
             {
-                if (Game.ActiveScene.Title == "ingame")
-                {
-                    SetClass("open", false);
-                }
+                SetClass("open", false);
             }
         }
     }
