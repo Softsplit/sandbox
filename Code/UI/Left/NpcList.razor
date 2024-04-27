@@ -1,6 +1,4 @@
 @using System.Threading.Tasks;
-@using System.Collections.Generic;
-@using Sandbox;
 @using Sandbox.UI;
 @inherits Panel;
 
@@ -34,7 +32,6 @@
 	{
 		var sort = $"sort:{SortOrder}";
 		var local = LocalOnly ? "local:true" : "";
-
 		var str = $"+game:softsplit.sandbox +runtime +npc {sort} {local} type:addon";
 
 		return str;
@@ -42,6 +39,6 @@
 
 	void SpawnPackage( Package package )
 	{
-		ConsoleSystem.Run("spawnpackage", package.FullIdent);
+		ConsoleSystem.Run( "spawnpackage", package.FullIdent );
 	}
 }

@@ -1,6 +1,3 @@
-using Sandbox;
-using System.Linq;
-
 [Spawnable]
 [Library( "directional_gravity", Title = "Directional Gravity" )]
 public partial class DirectionalGravity : Prop

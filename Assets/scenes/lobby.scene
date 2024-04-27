@@ -5,7 +5,6 @@
       "__guid": "86e22757-b5cb-4d9a-8295-cd372b7bb01f",
       "Name": "Camera",
       "Position": "126.5706,165.5491,-215.7948",
-      "Tags": "maincamera",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
@@ -35,8 +34,8 @@
           "ZIndex": 100
         },
         {
-          "__type": "MainMenu",
-          "__guid": "61554ca3-4868-4ac4-9360-ea9f9b23c0c6"
+          "__type": "MainMenuPanel",
+          "__guid": "a16aad0e-8f09-49ed-ab75-10d9abe3d525"
         }
       ]
     }
@@ -64,7 +63,7 @@
   },
   "Title": "lobby",
   "Description": "",
-  "LastSaved": "2024-04-24T20:30:14.9955356\u002B08:00",
+  "LastSaved": "2024-04-27T16:27:07.1670736\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

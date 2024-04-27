@@ -1,8 +1,5 @@
-using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using System.Collections.Generic;
-using System.Linq;
 
 public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 {

@@ -1,5 +1,3 @@
-using Sandbox;
-
 [Spawnable]
 [Library( "ent_light", Title = "Light" )]
 public partial class LightEntity : PointLight, IUse

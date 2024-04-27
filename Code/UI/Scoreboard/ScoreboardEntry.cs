@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -41,8 +40,8 @@ public partial class ScoreboardEntry : Panel
 	{
 		PlayerName.Text = Client.DisplayName;
 		SetClass( "me", Client == Connection.Local );
-		Kills.Text = Client.GetUserData( "kills" ).ToString();
-		Deaths.Text = Client.GetUserData( "deaths" ).ToString();
+		// Kills.Text = Client.GetUserData( "kills" ).ToString();
+		// Deaths.Text = Client.GetUserData( "deaths" ).ToString();
 		Ping.Text = Client.Ping.ToString();
 	}
 

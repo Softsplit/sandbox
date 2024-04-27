@@ -1,36 +1,29 @@
 @using System
-@using Sandbox
 @using Sandbox.UI
-@using System.Linq
-@attribute [StyleSheet]
-@inherits PanelComponent
+@inherits NavHostPanel
 
-<root class="gamemainmenu">
-    <NavigatorCanvas/>
+<root class="navigator-canvas" slot="navigator-canvas">
 </root>
 
-@code
+@code 
 {
-    protected override void OnStart()
+    public MainMenu()
     {
-        BindClass("ingame", () => Game.ActiveScene.Title == "ingame" /* Game.InGame */ );
-        BindClass("inlobby", () => Game.ActiveScene.Title == "lobby" /* Game.Menu?.Lobby != null */ );
+        DefaultUrl = "/";
 
-        if ( Game.ActiveScene.Title == "lobby" ) SetClass( "open", true);
+        AddDestination( "/", typeof( FrontPage ) );
+        AddDestination( "/active", typeof( ActivePage ) );
+        AddDestination( "/settings", typeof( SettingsPage ) );
+
+        if ( Game.ActiveScene.Title == "ingame" ) Navigate( "/active" );
     }
 
-    protected override void OnUpdate()
+    protected override void OnEvent( PanelEvent e )
     {
-        if (Input.EscapePressed)
+        if ( e.Name == "package.changed" ) 
         {
-            if (!Panel.Class.Contains("open"))
-            {
-                SetClass("open", true);
-            }
-            else if (Game.ActiveScene.Title == "ingame")
-            {
-                SetClass("open", false);
-            }
+            StateHasChanged();
+            return;
         }
     }
 }

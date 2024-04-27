@@ -1,6 +1,4 @@
 @using System.Threading.Tasks;
-@using System.Collections.Generic;
-@using Sandbox;
 @using System;
 @using Sandbox.UI;
 @inherits Panel;
@@ -32,9 +30,9 @@
 	public async Task UpdateItems(int offset = 0)
 	{
 		var found = await Package.FindAsync( Query );
-		if (found != null)
+		if ( found != null )
 		{
-			Packages.AddRange(found.Packages);
+			Packages.AddRange( found.Packages );
 		}
 
 		StateHasChanged();
@@ -49,8 +47,8 @@
 		if (!IsVisible)
 			return;
 
-		var hash = System.HashCode.Combine(Query);
-		if (queryHash == hash) return;
+		var hash = System.HashCode.Combine( Query );
+		if ( queryHash == hash ) return;
 		queryHash = hash;
 
 		Packages?.Clear();

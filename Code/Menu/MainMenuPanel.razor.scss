@@ -1,6 +1,7 @@
 .gamemainmenu {
+    z-index: 100;
     pointer-events: all;
-    /* background-image: url("menu/boxes.webm"); stupid shitty publishing thing */
+    background-image: url("menu/boxes.webm");
     background-color: #343948;
     background-position: center;
     background-size: cover;

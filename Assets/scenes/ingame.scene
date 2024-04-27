@@ -40,12 +40,8 @@
         {
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-          "MapName": "softsplit.gm_bigcity",
+          "MapName": "facepunch.construct23",
           "UseMapFromLaunch": true
-        },
-        {
-          "__type": "MapPlayerSpawner",
-          "__guid": "09d228b7-4328-463a-a7f5-3ce7ca4175cc"
         }
       ],
       "Children": []
@@ -53,8 +49,6 @@
     {
       "__guid": "3017ab5f-93af-47ae-ab9e-775bd94b2019",
       "Name": "Camera",
-      "Position": "-20.34279,807.7991,55.51758",
-      "Rotation": "0.02498195,0.003467371,-0.9901899,0.1374334",
       "Enabled": true,
       "NetworkMode": 2,
       "Components": [
@@ -68,16 +62,12 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "viewmodel",
+          "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
-          "ZFar": 10000,
-          "ZNear": 0.5
-        },
-        {
-          "__type": "Sandbox.Highlight",
-          "__guid": "8db77d06-dade-44c6-bfbe-30f9cf34a11e"
+          "ZFar": 100000,
+          "ZNear": 1
         },
         {
           "__type": "Sandbox.ScreenPanel",
@@ -88,12 +78,12 @@
           "ZIndex": 100
         },
         {
-          "__type": "MainMenu",
-          "__guid": "aebe70dd-3bf7-4819-ab4d-a2a37d5a0bf6"
-        },
-        {
           "__type": "SandboxHud",
           "__guid": "46a31564-9a1e-49f5-b675-43db807978da"
+        },
+        {
+          "__type": "MainMenuPanel",
+          "__guid": "ca04f901-d613-4e90-abe6-abf784a49063"
         }
       ]
     }
@@ -121,7 +111,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-24T21:42:03.9926139\u002B08:00",
+  "LastSaved": "2024-04-27T16:53:27.6190316\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

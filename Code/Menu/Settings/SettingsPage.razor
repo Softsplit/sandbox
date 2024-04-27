@@ -1,6 +1,4 @@
 @using System
-@using System.Linq
-@using Sandbox
 @using Sandbox.UI
 @using Sandbox.UI.GameMenu
 @inherits Panel
@@ -47,7 +45,7 @@
 {
     public void CancelChanges()
     {
-        foreach (var kb in Descendants.OfType<KeyBind>())
+        foreach ( var kb in Descendants.OfType<KeyBind>() )
         {
             kb.Cancel();
         }
@@ -55,17 +53,16 @@
 
     public void RestoreDefaults()
     {
-        IGameInstance.Current.SaveBinds();
+        IGameInstance.Current.ResetBinds();
     }
 
     public void SaveChanges()
     {
-        foreach (var kb in Descendants.OfType<KeyBind>())
+        foreach ( var kb in Descendants.OfType<KeyBind>() )
         {
             kb.Apply();
         }
 
         IGameInstance.Current.SaveBinds();
     }
-
 }

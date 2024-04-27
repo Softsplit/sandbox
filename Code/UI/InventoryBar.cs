@@ -1,6 +1,4 @@
-using Sandbox;
 using Sandbox.UI;
-using System.Collections.Generic;
 
 public class InventoryBar : Panel
 {

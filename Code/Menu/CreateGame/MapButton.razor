@@ -1,6 +1,5 @@
 @using System
 @using System.Threading.Tasks
-@using Sandbox
 @using Sandbox.UI
 @inherits Panel
 @attribute [StyleSheet]
@@ -36,7 +35,7 @@
 
     string FindBackgroundImage()
     {
-        if (MapPackage == null)
+        if ( MapPackage == null )
             return "";
 
         return MapPackage.Thumb;

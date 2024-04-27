@@ -1,8 +1,6 @@
-using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-[Library]
 public partial class SpawnMenu : Panel
 {
 	public static SpawnMenu Instance;

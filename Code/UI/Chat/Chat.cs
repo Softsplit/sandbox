@@ -1,5 +1,3 @@
-using Sandbox;
-
 public partial class Chat
 {
 	[Broadcast]

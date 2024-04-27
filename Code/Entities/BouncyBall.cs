@@ -1,4 +1,3 @@
-using Sandbox;
 using System;
 
 [Spawnable]
@@ -16,7 +15,7 @@ public partial class BouncyBallEntity : Prop, Component.ICollisionListener, IUse
 		Transform.Scale = Game.Random.Float( 0.5f, 2.0f );
 	}
 
-	void ICollisionListener.OnCollisionStart( Collision other )
+	public void OnCollisionStart( Collision other )
 	{
 		var speed = other.Contact.Speed.Length;
 		var direction = Vector3.Reflect( other.Contact.Speed.Normal, other.Contact.Normal.Normal ).Normal;
@@ -30,12 +29,14 @@ public partial class BouncyBallEntity : Prop, Component.ICollisionListener, IUse
 
 	public bool OnUse( GameObject user )
 	{
-		if ( user.Components.TryGet<PlayerController>( out var player ) )
+		/*
+		if ( user is Player player )
 		{
-			// player.Health += 10;
+			player.Health += 10;
 
 			Destroy();
 		}
+		*/
 
 		return false;
 	}

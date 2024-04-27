@@ -1,7 +1,5 @@
 @using System.Threading.Tasks;
 @using System;
-@using System.Collections.Generic;
-@using Sandbox;
 @using Sandbox.UI;
 
 @inherits Panel;
@@ -33,11 +31,10 @@
 
 	public string GetQueryString()
 	{
-		
 		var sort = $"sort:{SortOrder}";
-		
 		var search = !string.IsNullOrEmpty(SearchTerm) ? $"{SearchTerm}" : "";
 		var str = $"{sort} {search} type:model";
+
 		return str;
 	}
 
@@ -46,9 +43,9 @@
 		SearchTerm = SearchInput.Text.Trim();
 	}
 
-	void SpawnPackage(Package package)
+	void SpawnPackage( Package package )
 	{
-		ConsoleSystem.Run("spawn", package.FullIdent);
+		ConsoleSystem.Run( "spawn", package.FullIdent );
 	}
 
 	protected override int BuildHash()
