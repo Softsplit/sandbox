@@ -29,14 +29,12 @@ public partial class BouncyBallEntity : Prop, Component.ICollisionListener, IUse
 
 	public bool OnUse( GameObject user )
 	{
-		/*
-		if ( user is Player player )
+		if ( user.Components.TryGet<Player>( out var player ) )
 		{
 			player.Health += 10;
 
-			Destroy();
+			GameObject.Destroy();
 		}
-		*/
 
 		return false;
 	}

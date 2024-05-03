@@ -12,11 +12,9 @@ public class Health : Panel
 
 	public override void Tick()
 	{
-		/*
-		var player = Game.LocalPawn;
+		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
 		if ( player == null ) return;
 
 		Label.Text = $"{player.Health.CeilToInt()}";
-		*/
 	}
 }

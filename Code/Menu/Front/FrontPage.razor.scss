@@ -6,9 +6,10 @@
 
 	.game-title
 	{
-		font-family: Poppins;
-		font-weight: 700;
-		font-size: 70px;
+		background-image: url("menu/title.png");
+		background-size: contain;
+		background-repeat: no-repeat;
+		height: 150px;
 	}
 
 	.controls

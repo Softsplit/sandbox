@@ -20,7 +20,7 @@ public partial class LampEntity : SpotLight, IUse
 	{
 		Enabled = !Enabled;
 
-		Sound.Play( Enabled ? "flashlight-on" : "flashlight-off" );
+		Sound.Play( Enabled ? "flashlight-on" : "flashlight-off", Transform.LocalPosition );
 
 		return false;
 	}

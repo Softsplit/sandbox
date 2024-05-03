@@ -1,15 +1,16 @@
 {
-  "__guid": "9f832399-4887-46b0-8f21-2ee284f538e2",
+  "__guid": "8213d168-b50d-461b-8af8-cb6cb8d11859",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
       "Name": "Game Manager",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "GameManager",
-          "__guid": "e044cde4-724c-4579-9cd7-7a1794a5f3ac"
+          "__guid": "676c4eea-9996-4790-841b-85584bac8ee4"
         }
       ]
     },
@@ -18,6 +19,7 @@
       "Name": "Network System",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.NetworkHelper",
@@ -36,6 +38,7 @@
       "Name": "Map Loader",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
@@ -47,17 +50,19 @@
       "Children": []
     },
     {
-      "__guid": "3017ab5f-93af-47ae-ab9e-775bd94b2019",
+      "__guid": "07124f9e-e6f0-4936-88a7-7fbfe6c678fd",
       "Name": "Camera",
+      "Tags": "maincamera",
       "Enabled": true,
       "NetworkMode": 2,
+      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.CameraComponent",
-          "__guid": "0e91841d-e972-4a65-be31-ac17375dd73b",
+          "__guid": "acca97c4-1ce0-47ed-95b8-26ab7897e969",
           "BackgroundColor": "0.33333,0.46275,0.52157,1",
           "ClearFlags": "All",
-          "FieldOfView": 120,
+          "FieldOfView": 90,
           "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
@@ -68,31 +73,40 @@
           "Viewport": "0,0,1,1",
           "ZFar": 100000,
           "ZNear": 1
-        },
+        }
+      ]
+    },
+    {
+      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
+      "Name": "Screen",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
-          "__guid": "22f2ef6e-d892-4a36-9e74-a9f68d4c51c3",
+          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
           "ZIndex": 100
         },
         {
-          "__type": "SandboxHud",
-          "__guid": "46a31564-9a1e-49f5-b675-43db807978da"
+          "__type": "MainMenuPanel",
+          "__guid": "f5468662-844c-4134-acf2-ebd74c1b9216"
         },
         {
-          "__type": "MainMenuPanel",
-          "__guid": "ca04f901-d613-4e90-abe6-abf784a49063"
+          "__type": "SandboxHud",
+          "__guid": "e6aaba4f-4bc9-4996-9e64-c4be68ddf2cd"
         }
       ]
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
-    "Lerping": true,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
@@ -111,7 +125,7 @@
   },
   "Title": "ingame",
   "Description": "",
-  "LastSaved": "2024-04-27T16:53:27.6190316\u002B08:00",
+  "LastSaved": "2024-05-03T19:25:57.6147522\u002B08:00",
   "ResourceVersion": 1,
   "__version": 1,
   "__references": []

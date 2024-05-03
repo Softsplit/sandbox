@@ -18,7 +18,7 @@ public partial class DirectionalGravity : Prop
 		foreach ( var ent in Scene.GetAllComponents<DirectionalGravity>()
 			.Where( x => x.IsValid() && x != this ) )
 		{
-			ent.Destroy();
+			ent.GameObject.Destroy();
 		}
 	}
 

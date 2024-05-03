@@ -1,10 +1,10 @@
 @using Sandbox.UI
 @using Sandbox.Network
+@using Sandbox.Modals
 @attribute [StyleSheet]
 
 <root style="flex-direction: column;">
     <div class="game-title">
-        <img src="menu/title.png" alt="Sandbox"/>
     </div>
     <div class="controls">
         @if ( Game.ActiveScene.Title == "ingame" )
@@ -27,11 +27,6 @@
 
 @code
 {
-    void LoadSavedGame()
-    {
-        this.Navigate( "/load" );
-    }
-
     void LeaveGame()
     {
         Game.ActiveScene.LoadFromFile( "scenes/lobby.scene" );
@@ -44,8 +39,10 @@
 
     void OpenServerList()
     {
-        var options = new Sandbox.Modals.ServerListConfig();
-        options.GamePackageFilter = "softsplit.sandbox";
+        var options = new ServerListConfig()
+        {
+           GamePackageFilter = "softsplit.sandbox"
+        };
 
         Game.Overlay.ShowServerList( options );
     }
