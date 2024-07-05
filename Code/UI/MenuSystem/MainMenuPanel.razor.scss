@@ -13,11 +13,11 @@
     position: absolute;
     color: white;
     transition: all 0.3s ease-out;
-    transform: scaleX( 1.1 );
+    transform: scale( 1.1 );
 
     &.open {
         opacity: 1;
-        transform: scaleX( 1 );
+        transform: scale( 1 );
     }
 
     &.ingame {

@@ -3,7 +3,7 @@
 @attribute [StyleSheet]
 @inherits PanelComponent
 
-<root class="gamemainmenu">
+<root class="gamemainmenu @(isOpen ? "open" : "")">
     <MainMenu/>
 </root>
 
@@ -13,11 +13,13 @@
 
     protected override void OnStart()
     {
-        BindClass( "ingame", () => Game.ActiveScene.Title == "ingame" );
-        BindClass( "inlobby", () => Game.ActiveScene.Title == "lobby" );
+        BindClass( "ingame", () => Game.ActiveScene.Name != "ingame" );
+        BindClass( "inlobby", () => Game.ActiveScene.Name != "lobby" );
 
         if ( Game.ActiveScene.Title == "lobby" ) SetClass( "open", true );
     }
+
+    private bool isOpen = false;
 
     protected override void OnUpdate()
     {
@@ -25,14 +27,10 @@
 
         if ( Input.EscapePressed )
         {
-            if ( !Panel.Class.Contains( "open" ) )
-            {
-                SetClass( "open", true );
-            }
-            else if ( Game.ActiveScene.Title == "ingame" )
-            {
-                SetClass( "open", false );
-            }
+            Input.EscapePressed = false;
+
+            isOpen = !isOpen;
+            StateHasChanged();
         }
     }
 }

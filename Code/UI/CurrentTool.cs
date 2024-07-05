@@ -8,8 +8,8 @@ public class CurrentTool : Panel
 
 	public CurrentTool()
 	{
-		Title = Add.Label( "Tool", "title" );
-		Description = Add.Label( "This is a tool", "description" );
+		Title = Add.Label( "WORK IN PROGRESS!", "title" );
+		Description = Add.Label( "Join the Discord in the meantime: https://discord.gg/rbCJdZjewf", "description" );
 	}
 
 	/*

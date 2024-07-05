@@ -1,6 +1,7 @@
 {
   "RootObject": {
     "__guid": "16a88be5-a01a-4517-ba02-7204b0461002",
+    "Flags": 0,
     "Name": "player",
     "Enabled": true,
     "NetworkMode": 2,
@@ -50,6 +51,7 @@
     "Children": [
       {
         "__guid": "11bd099f-68d1-4ee2-ab60-552058c17f0a",
+        "Flags": 0,
         "Name": "Player Body",
         "Enabled": true,
         "NetworkMode": 2,
@@ -62,7 +64,22 @@
             "CreateBoneObjects": false,
             "Model": "models/citizen/citizen.vmdl",
             "RenderType": "ShadowsOnly",
-            "Tint": "1,1,1,1"
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          },
+          {
+            "__type": "Sandbox.ModelPhysics",
+            "__guid": "4c921b8b-91ca-4d82-9c3c-58a2eb504927",
+            "Locking": {},
+            "Model": "models/citizen/citizen.vmdl",
+            "MotionEnabled": false,
+            "Renderer": {
+              "_type": "component",
+              "component_id": "bf055905-cb67-4b2b-bfe5-d2bac04a6a31",
+              "go": "11bd099f-68d1-4ee2-ab60-552058c17f0a",
+              "component_type": "SkinnedModelRenderer"
+            },
+            "RigidbodyFlags": "DisableCollisionSounds"
           },
           {
             "__type": "Sandbox.ModelHitboxes",
@@ -93,6 +110,7 @@
       },
       {
         "__guid": "bae0e8ab-b564-4702-bb1b-6d33a615ada4",
+        "Flags": 0,
         "Name": "Voice",
         "Position": "42.0599,39.05991,-23.23907",
         "Enabled": true,
@@ -118,12 +136,13 @@
           }
         ]
       }
-    ]
+    ],
+    "__variables": []
   },
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "ResourceVersion": 1,
-  "__version": 1,
-  "__references": []
+  "__references": [],
+  "__version": 1
 }

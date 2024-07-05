@@ -5,6 +5,7 @@
   "Ident": "sandbox",
   "Tags": "sandbox game dynamic spawnmenu physgun",
   "Schema": 1,
+  "IncludeSourceFiles": false,
   "Resources": "*",
   "PackageReferences": [],
   "EditorReferences": null,
