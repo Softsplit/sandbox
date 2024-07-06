@@ -1,41 +1,25 @@
 {
-  "__guid": "7c8fc4d2-bb0b-4e80-b301-12109f5c5614",
+  "__guid": "1d8ef449-9ae1-421d-b754-49f414e52d74",
   "GameObjects": [
     {
-      "__guid": "86e22757-b5cb-4d9a-8295-cd372b7bb01f",
+      "__guid": "ff590321-7fa0-4089-8421-33cc01854ce0",
       "Flags": 0,
-      "Name": "Menu",
-      "Position": "126.5706,165.5491,-215.7948",
+      "Name": "Main Menu",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
-          "__guid": "d0a519f3-4a8e-44f2-b86c-a2e33c744eb2",
+          "__guid": "dfc70fd4-d3d6-4808-9db1-1b6457b8144b",
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
           "ZIndex": 100
         },
         {
-          "__type": "MainMenuPanel",
-          "__guid": "a16aad0e-8f09-49ed-ab75-10d9abe3d525"
-        }
-      ]
-    },
-    {
-      "__guid": "c2227f1b-6ff3-4012-a98d-508afbaa8fea",
-      "Flags": 0,
-      "Name": "Listener",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "Components": [
-        {
-          "__type": "Sandbox.AudioListener",
-          "__guid": "beb9ecec-edf2-40bc-81bd-ffebee1784be",
-          "UseCameraDirection": false
+          "__type": "Softsplit.UI.MainMenuPanel",
+          "__guid": "520f73ed-1abc-403f-bfa3-be4160caa365"
         }
       ]
     }
@@ -43,7 +27,7 @@
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
     "MaxFixedUpdates": 5,
-    "NetworkFrequency": 30,
+    "NetworkFrequency": 60,
     "NetworkInterpolation": true,
     "ThreadedAnimation": true,
     "TimeScale": 1,
@@ -61,7 +45,7 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "lobby",
+  "Title": "minimal",
   "Description": "",
   "ResourceVersion": 1,
   "__references": [],

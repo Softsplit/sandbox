@@ -3,7 +3,6 @@
   "Type": "game",
   "Org": "softsplit",
   "Ident": "sandbox",
-  "Tags": "sandbox game dynamic spawnmenu physgun",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": "*",

@@ -18,7 +18,7 @@
     {
       "__guid": "bd1f6a82-367b-40c3-8957-ee49541b6d74",
       "Flags": 0,
-      "Name": "Network System",
+      "Name": "Network Helper",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
@@ -28,7 +28,7 @@
           "__guid": "097490e4-e57b-49df-82bc-35085819ff23",
           "PlayerPrefab": {
             "_type": "gameobject",
-            "prefab": "prefabs/player.prefab"
+            "prefab": "prefabs/player/player.prefab"
           },
           "SpawnPoints": [],
           "StartServer": true
@@ -37,8 +37,8 @@
     },
     {
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
-      "Flags": 32,
-      "Name": "Map Loader",
+      "Flags": 0,
+      "Name": "Map Instance",
       "Enabled": true,
       "NetworkMode": 2,
       "NetworkInterpolation": true,
@@ -51,7 +51,8 @@
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }
-      ]
+      ],
+      "Children": []
     },
     {
       "__guid": "07124f9e-e6f0-4936-88a7-7fbfe6c678fd",
@@ -98,7 +99,8 @@
                 "t": 1,
                 "c": "1,1,1,1"
               }
-            ]
+            ],
+            "alpha": []
           },
           "BloomCurve": [
             {
@@ -145,8 +147,8 @@
           "ZIndex": 100
         },
         {
-          "__type": "MainMenuPanel",
-          "__guid": "f5468662-844c-4134-acf2-ebd74c1b9216"
+          "__type": "Softsplit.UI.PauseMenuPanel",
+          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
         },
         {
           "__type": "SandboxHud",
@@ -176,7 +178,7 @@
       "IncludedBodies": ""
     }
   },
-  "Title": "ingame",
+  "Title": "game",
   "Description": "",
   "ResourceVersion": 1,
   "__references": [],
