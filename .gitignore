@@ -19,6 +19,9 @@ code/Editor/*.sln
 code/Editor/.vs/*
 code/Editor/.vscode/*
 
+# S&box Stuff
+Libraries
+
 # Auto-generated asset related files
 *.generated.*
 *.*_c
