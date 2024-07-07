@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 
 public partial class GameManager : Component, Component.INetworkListener
@@ -72,8 +71,8 @@ public partial class GameManager : Component, Component.INetworkListener
 		*/
 	}
 
-	[ConCmd( "spawn" )]
-	public static async Task Spawn( string modelname )
+	[ConCmd( "spawn" ), Broadcast]
+	public static async void Spawn( string modelname )
 	{
 		var owner = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
 
