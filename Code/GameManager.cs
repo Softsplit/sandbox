@@ -107,13 +107,18 @@ public partial class GameManager : Component, Component.INetworkListener
 
 		var modelRotation = Rotation.From( new Angles( 0, owner.EyeRotation.Angles().yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
 
+		Model model;
+
 		if ( modelname.Contains( "." ) && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
 		{
 			Current.MountPackage( modelname );
-			// Consider a delay or check to ensure the package is mounted before proceeding
+			model = Model.Load( MountPackageAsync( modelname ).Result );
+		}
+		else
+		{
+			model = Model.Load( modelname );
 		}
 
-		var model = Model.Load( MountPackageAsync( modelname ).Result );
 		if ( model == null || model.IsError )
 			return;
 
