@@ -68,20 +68,6 @@
             "UseAnimGraph": true
           },
           {
-            "__type": "Sandbox.ModelPhysics",
-            "__guid": "4c921b8b-91ca-4d82-9c3c-58a2eb504927",
-            "Locking": {},
-            "Model": "models/citizen/citizen.vmdl",
-            "MotionEnabled": false,
-            "Renderer": {
-              "_type": "component",
-              "component_id": "bf055905-cb67-4b2b-bfe5-d2bac04a6a31",
-              "go": "11bd099f-68d1-4ee2-ab60-552058c17f0a",
-              "component_type": "SkinnedModelRenderer"
-            },
-            "RigidbodyFlags": "DisableCollisionSounds"
-          },
-          {
             "__type": "Sandbox.ModelHitboxes",
             "__guid": "fd0c6164-9d32-4e39-9861-c37d3e2edb72",
             "Renderer": {
@@ -105,6 +91,14 @@
               "go": "11bd099f-68d1-4ee2-ab60-552058c17f0a",
               "component_type": "SkinnedModelRenderer"
             }
+          },
+          {
+            "__type": "Sandbox.BoxCollider",
+            "__guid": "ad5617f7-c5ac-4a8f-951b-d6309b731299",
+            "Center": "0,0,32",
+            "IsTrigger": false,
+            "Scale": "32,32,64",
+            "Static": false
           }
         ]
       },
