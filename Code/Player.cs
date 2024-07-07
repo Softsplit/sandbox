@@ -360,10 +360,7 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 			Using = FindUsable();
 
 			if ( Using == null )
-			{
-				Sound.Play( "player_use_fail", Scene.Camera.Transform.LocalPosition );
 				return;
-			}
 		}
 
 		if ( !Input.Down( "use" ) )
