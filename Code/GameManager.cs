@@ -93,7 +93,7 @@ public partial class GameManager : Component, Component.INetworkListener
 	}
 
 	[ConCmd( "spawn" )]
-	public static void Spawn( string modelname )
+	public static async void Spawn( string modelname )
 	{
 		var owner = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
 
@@ -112,7 +112,7 @@ public partial class GameManager : Component, Component.INetworkListener
 		if ( modelname.Contains( "." ) && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
 		{
 			Current.MountPackage( modelname );
-			model = Model.Load( MountPackageAsync( modelname ).Result );
+			model = Model.Load( await MountPackageAsync( modelname ) );
 		}
 		else
 		{
