@@ -20,7 +20,7 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	/// <summary>
 	/// Player's inventory for entities that can be carried. See <see cref="BaseCarriable"/>.
 	/// </summary>
-	// public IBaseInventory Inventory { get; protected set; }
+	public Inventory Inventory { get; protected set; }
 
 	[RequireComponent] public PlayerController Controller { get; set; }
 
@@ -30,6 +30,8 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	public ClothingContainer Clothing = new();
 
 	private TimeSince timeSinceDied;
+
+	public Tool ActiveChild { get; set; }
 
 	/// <summary>
 	/// Called every tick to simulate the player. This is called on the
@@ -147,7 +149,11 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	{
 		Tags.Add( "player" );
 
+		Inventory = new( this );
+
 		Components.GetInChildren<SkinnedModelRenderer>().OnFootstepEvent += OnAnimEventFootstep;
+
+		Respawn();
 	}
 
 	/// <summary>
@@ -182,6 +188,9 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	/// </summary>
 	public void Respawn()
 	{
+		var physgun = new GameObject().Components.Create<Physgun>();
+		Inventory.Add( physgun );
+
 		Components.GetInChildren<SkinnedModelRenderer>().OnFootstepEvent += OnAnimEventFootstep;
 
 		LifeState = LifeState.Alive;
@@ -241,28 +250,30 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 		Transform.Rotation = Rotation.Slerp( Transform.Rotation, idealRotation, Controller.WishVelocity.Length * Time.Delta * turnSpeed );
 		Transform.Rotation = Transform.Rotation.Clamp( idealRotation, 45.0f, out var shuffle ); // lock facing to within 45 degrees of look direction
 
-		Components.GetInChildren<CitizenAnimationHelper>().WithWishVelocity( Controller.WishVelocity );
-		Components.GetInChildren<CitizenAnimationHelper>().WithVelocity( Controller.Velocity );
-		Components.GetInChildren<CitizenAnimationHelper>().WithLook( EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
-		Components.GetInChildren<CitizenAnimationHelper>().AimAngle = ViewAngles;
-		Components.GetInChildren<CitizenAnimationHelper>().MoveRotationSpeed = shuffle;
-		Components.GetInChildren<CitizenAnimationHelper>().DuckLevel = MathX.Lerp( Components.GetInChildren<CitizenAnimationHelper>().DuckLevel, Controller.Tags.Has( "ducked" ) ? 1 : 0, Time.Delta * 10.0f );
-		Components.GetInChildren<CitizenAnimationHelper>().IsGrounded = Controller.GroundObject != null;
-		Components.GetInChildren<CitizenAnimationHelper>().IsSitting = Controller.Tags.Has( "sitting" );
-		Components.GetInChildren<CitizenAnimationHelper>().IsNoclipping = Controller.Tags.Has( "noclip" );
-		Components.GetInChildren<CitizenAnimationHelper>().IsClimbing = Controller.Tags.Has( "climbing" );
-		Components.GetInChildren<CitizenAnimationHelper>().IsWeaponLowered = false;
-		Components.GetInChildren<CitizenAnimationHelper>().MoveStyle = Input.Down( "run" ) ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
+		var animationHelper = Components.GetInChildren<CitizenAnimationHelper>();
+		animationHelper.WithWishVelocity( Controller.WishVelocity );
+		animationHelper.WithVelocity( Controller.Velocity );
+		animationHelper.WithLook( EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
+		animationHelper.AimAngle = ViewAngles;
+		animationHelper.MoveRotationSpeed = shuffle;
+		animationHelper.DuckLevel = MathX.Lerp( animationHelper.DuckLevel, Controller.Tags.Has( "ducked" ) ? 1 : 0, Time.Delta * 10.0f );
+		animationHelper.IsGrounded = Controller.GroundObject != null;
+		animationHelper.IsSitting = Controller.Tags.Has( "sitting" );
+		animationHelper.IsNoclipping = Controller.Tags.Has( "noclip" );
+		animationHelper.IsClimbing = Controller.Tags.Has( "climbing" );
+		animationHelper.IsWeaponLowered = false;
+		animationHelper.MoveStyle = Input.Down( "run" ) ? CitizenAnimationHelper.MoveStyles.Run : CitizenAnimationHelper.MoveStyles.Walk;
 	}
 
 	void UpdateBodyVisibility()
 	{
 		var renderMode = ModelRenderer.ShadowRenderType.On;
+		var animationHelper = Components.GetInChildren<CitizenAnimationHelper>();
 		if ( !IsProxy && !ThirdPersonCamera ) renderMode = ModelRenderer.ShadowRenderType.ShadowsOnly;
 
-		Components.GetInChildren<CitizenAnimationHelper>().Target.RenderType = renderMode;
+		animationHelper.Target.RenderType = renderMode;
 
-		foreach ( var clothing in Components.GetInChildren<CitizenAnimationHelper>().Target.Components.GetAll<ModelRenderer>( FindMode.InChildren ) )
+		foreach ( var clothing in animationHelper.Target.Components.GetAll<ModelRenderer>( FindMode.InChildren ) )
 		{
 			if ( !clothing.Tags.Has( "clothing" ) )
 				continue;
