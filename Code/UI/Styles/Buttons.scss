@@ -1,0 +1,103 @@
+$button-standard-padding: 12px 24px;
+$button-small-padding: 8px 24px;
+
+.hc1 .button
+{
+    font-family: $main-font;
+    font-size: 20px;
+    color: white;
+
+    &.standard
+    {
+        padding: $button-standard-padding;
+        background-color: rgba( black, 0.35 );
+        pointer-events: all;
+        cursor: pointer;
+        text-transform: uppercase;
+        flex-shrink: 0;
+        transition: all 0.1s ease;
+        border-radius: 2px;
+        cursor: pointer;
+        backdrop-filter: $blur;
+        border: 0.8px solid rgba( black, 0.35 );
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+
+        &.smaller
+        {
+            padding: $button-small-padding;
+        }
+
+        label, i
+        {
+            text-shadow: 1px 1px 2px rgba( black, 0.5 );
+            transition: all 0.1s ease;
+        }
+
+        &:not( .disabled )
+        {
+            &:hover, &.selected
+            {
+                background-color: rgba( white, 1 );
+                sound-in: ui.button.over;
+
+                label, i
+                {
+                    color: black;
+                    text-shadow: 1px 1px 2px rgba( black, 0 );
+                }
+            }
+        }
+
+        &.warning
+        {
+            background-color: rgba( orange, 1 );
+        }
+
+        &:active
+        {
+            sound-in: ui.button.press;
+        }
+
+        &.extra-x-padding
+        {
+            padding-left: 64px;
+            padding-right: 64px;
+        }
+
+        &:not( .no-anim )
+        {
+            &:hover
+            {
+                padding: 12px 32px;
+            }
+
+            &:active
+            {
+                transform: scale(1.01);
+            }
+        }
+
+        &.disabled
+        {
+            cursor: default;
+
+            label
+            {
+                color: grey;
+            }
+        }
+
+
+        label
+        {
+            height: 24px;
+        }
+
+        i
+        {
+            height: 20px;
+        }
+    }
+}

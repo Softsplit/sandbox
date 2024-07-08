@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 
 public partial class GameManager : Component, Component.INetworkListener
@@ -72,8 +71,29 @@ public partial class GameManager : Component, Component.INetworkListener
 		*/
 	}
 
+	[Broadcast]
+	public async void MountPackage( string packageName )
+	{
+		await MountPackageAsync( packageName );
+	}
+
+	private static async Task<string> MountPackageAsync( string packageName )
+	{
+		var package = await Package.Fetch( packageName, false );
+		if ( package == null || package.PackageType != Package.Type.Model || package.Revision == null )
+		{
+			// Handle error or log
+			return null;
+		}
+
+		// Downloads if not downloaded, mounts if not mounted
+		await package.MountAsync();
+
+		return package.GetMeta( "PrimaryAsset", "" );
+	}
+
 	[ConCmd( "spawn" )]
-	public static async Task Spawn( string modelname )
+	public static async void Spawn( string modelname )
 	{
 		var owner = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
 
@@ -87,17 +107,18 @@ public partial class GameManager : Component, Component.INetworkListener
 
 		var modelRotation = Rotation.From( new Angles( 0, owner.EyeRotation.Angles().yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
 
-		//
-		// Does this look like a package?
-		//
-		if ( modelname.Count( x => x == '.' ) == 1 && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
+		Model model;
+
+		if ( modelname.Contains( "." ) && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
 		{
-			modelname = await SpawnPackageModel( modelname, owner.GameObject );
-			if ( modelname == null )
-				return;
+			Current.MountPackage( modelname );
+			model = Model.Load( await MountPackageAsync( modelname ) );
+		}
+		else
+		{
+			model = Model.Load( modelname );
 		}
 
-		var model = Model.Load( modelname );
 		if ( model == null || model.IsError )
 			return;
 
@@ -116,25 +137,6 @@ public partial class GameManager : Component, Component.INetworkListener
 		ent.Network.DropOwnership();
 
 		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
-	}
-
-	async static Task<string> SpawnPackageModel( string packageName, GameObject source )
-	{
-		var package = await Package.Fetch( packageName, false );
-		if ( package == null || package.PackageType != Package.Type.Model || package.Revision == null )
-		{
-			// spawn error particles
-			return null;
-		}
-
-		if ( !source.IsValid ) return null; // source entity died or disconnected or something
-
-		var model = package.GetMeta( "PrimaryAsset", "models/dev/error.vmdl" );
-
-		// downloads if not downloads, mounts if not mounted
-		await package.MountAsync();
-
-		return model;
 	}
 
 	[ConCmd( "spawn_entity" )]

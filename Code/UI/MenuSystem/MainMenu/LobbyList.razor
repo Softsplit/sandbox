@@ -1,0 +1,55 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@implements INavigatorPage
+@namespace Softsplit.UI
+
+<root class="hc1">
+    <Page>
+        <Header>
+            Server Browser
+        </Header>
+
+        <Body>
+            <div class="layout grow padding-insane">
+                <ServerBrowser CurrentLobby:bind=@Lobby  @ref="Browser" />
+            </div>
+        </Body>
+
+        <SubFooter>
+            <div class="button standard" onclick=@(() => Refresh())>refresh</div>
+            <div class="button standard @(Lobby.HasValue ? "" : "no-anim disabled")" onclick=@(() => Join())>Connect</div>
+        </SubFooter>
+    </Page>
+</root>
+
+@code
+{
+    public ServerBrowser Browser { get; set; }
+
+    public Lobby? Lobby { get; set; }
+
+    private void Refresh()
+    {
+        Browser.Refresh();
+    }
+
+    private void Create()
+    {
+        this.Navigate( "/new" );
+    }
+
+    private async void Join()
+    {
+        if ( !Lobby.HasValue ) return;
+
+        var lobby = Lobby.Value;
+        if ( lobby.IsFull ) return;
+
+        if ( await GameNetworkSystem.TryConnectSteamId( lobby.LobbyId ) )
+		{
+			Log.Info( "joined lobby!" );
+		}
+    }
+}

@@ -3,7 +3,6 @@
   "Type": "game",
   "Org": "softsplit",
   "Ident": "sandbox",
-  "Tags": "sandbox game dynamic spawnmenu physgun",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": "*",
@@ -22,9 +21,9 @@
     "PerMapRanking": false,
     "LeaderboardType": "None",
     "CsProjName": "",
-    "MapStartupScene": "scenes/ingame.scene",
+    "MapStartupScene": "scenes/game.scene",
     "LaunchMode": "Normal",
-    "StartupScene": "scenes/lobby.scene",
+    "StartupScene": "scenes/menu.scene",
     "ControlModes": {
       "Keyboard": true,
       "Gamepad": true

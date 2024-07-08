@@ -1,0 +1,137 @@
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@namespace Softsplit.UI
+@attribute [StyleSheet]
+
+<root>
+    <div class="list">
+        <div class="header">
+            <label class="small slight">Name</label>
+            <div class="grow" />
+            <label class="small slight">Map</label>
+            <label class="small slight">Players</label>
+        </div>
+
+        <div class="servers">
+            @if ( ShowFakeLobbies )
+            {
+                @for ( int i = 0; i < 32; i++ )
+                {
+                    @{
+                        var fakeLobby = new Lobby()
+                        {
+                            FakeId = (ulong)i
+                        };
+                    }
+                    <ServerEntry Lobby=@fakeLobby IsSelected=@( CurrentLobby?.Equals( fakeLobby ) ?? false )  OnSelected=@OnSelected />
+                }
+            }
+            else
+            {
+                @if (IsSearching)
+                {
+                    <div class="flex align-center justify-center">
+                        <label class="small slight" style="margin-top: 32px;">Looking for servers...</label>
+                    </div>
+                }
+                else if (FetchedLobbies.Count() < 1)
+                {
+                    <div class="flex align-center justify-center">
+                        <label class="small slight" style="margin-top: 32px;">No servers found...</label>
+                    </div>
+                }
+                @foreach ( var lobby in FetchedLobbies )
+                {
+                    <ServerEntry Lobby=@(new Lobby(lobby)) IsSelected=@( CurrentLobby?.Equals( new Lobby( lobby ) ) ?? false )  OnSelected=@OnSelected />
+                }
+            }
+        </div>
+    </div>
+
+
+    <div class="current">
+        <div class="header">
+            <label class="small slight">Server</label>
+        </div>
+
+        <div class="layout column padding-extra gap">
+            @if (CurrentLobby.HasValue)
+            {
+                <label class="important">
+                    @CurrentLobby?.Name
+                </label>
+
+                <div class="layout row gap-insane">
+                    <label>Capacity</label>
+                    <div class="grow" />
+
+                    <label>@(CurrentLobby?.Members) / @(CurrentLobby?.MaxMembers)</label>
+                </div>
+
+                <div class="layout row gap-insane">
+                    <label>Map</label>
+                    <div class="grow"/>
+                    <label>@(CurrentLobby?.Map)</label>
+                </div>
+            }
+        </div>
+    </div>
+</root>
+
+@code
+{
+    [ConVar( "fp_ui_show_fake_lobbies" )]
+    public static bool ShowFakeLobbies { get; set; }
+
+    public Lobby? CurrentLobby { get; set; }
+
+    private List<LobbyInformation> FetchedLobbies { get; set; } = new();
+
+    private bool IsSearching = true;
+
+    protected override void OnAfterTreeRender( bool firstTime )
+    {
+        if ( firstTime )
+        {
+            FetchLobbies();
+        }
+    }
+
+    private void OnSelected( Lobby lobby )
+    {
+        if ( CurrentLobby.Equals( lobby ) )
+        {
+            CurrentLobby = null;
+            return;
+        }
+
+        CurrentLobby = lobby;
+    }
+
+    private bool IsEditorLobby( LobbyInformation lobby )
+    {
+        if ( Game.IsEditor ) return false;
+        return lobby.IsEditorLobby();
+    }
+
+    protected async void FetchLobbies()
+    {
+        IsSearching = true;
+        FetchedLobbies = new();
+        StateHasChanged();
+
+        var lobbies = await Networking.QueryLobbies( Game.Ident );
+
+        IsSearching = false;
+        FetchedLobbies = lobbies.Where( x => !IsEditorLobby( x ) ).ToList();
+        StateHasChanged();
+    }
+
+    public void Refresh()
+    {
+        CurrentLobby = null;
+        StateHasChanged();
+        FetchLobbies();
+    }
+}

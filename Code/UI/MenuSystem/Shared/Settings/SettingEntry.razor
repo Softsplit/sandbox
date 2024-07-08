@@ -1,0 +1,85 @@
+@using Sandbox.UI
+@using Sandbox
+
+@inherits Panel
+@namespace Softsplit.UI
+
+<style>
+    .box {
+        width: 24px;
+        height: 24px;
+    }
+</style>
+
+<root class="">
+    @if ( Description is not null )
+    {
+        @if ( Description.PropertyType == typeof( float ) || Description.PropertyType == typeof( int ) )
+        {
+            <div class="with-background with-padding border-bottom">
+                <label class="name">@Description.Title</label>
+                <div class="grow" />
+                <div class="value-area">@Value</div>
+            </div>
+
+            <div class="control with-background">
+                @if ( Range is not null )
+                {
+                    <CustomSlider class="devslider" Value:bind=@Value Min=@Range.Min Max=@Range.Max Step=@Range.Step ShowTextEntry="@false" />
+                }
+                else
+                {
+                    <CustomSlider class="devslider" Value:bind=@Value />
+                }
+            </div>
+        }
+        else if ( Description.PropertyType == typeof( bool ) )
+        {
+            <div class="with-background with-padding border-bottom">
+                <label class="name">@Description.Title</label>
+                <div class="grow" />
+                <Checkbox Value:bind=@Value />
+            </div>
+        }
+        else if ( Description.PropertyType == typeof( Color ) ) 
+        {
+            <div class="with-background with-padding border-bottom">
+                <label class="name">@Description.Title</label>
+                <div class="grow" />
+                <div class="value-area">
+                    <div class="box" style="background-color: @Value; border-radius: 100px; border: 1px solid white;"/>
+                </div>
+            </div>
+
+            <div class="control with-background layout column">
+                <ColorPicker Value:bind="@Value" />
+            </div>
+        }
+    }
+    else
+    {
+        <div class="with-background with-padding border-bottom">
+            <label class="name">@Description.Title</label>
+            <div class="grow" />
+            <div class="value-area">@Value</div>
+        </div>
+
+        <label class="name">Unsupported</label>
+    }
+</root>
+
+@code
+{
+    public object Target { get; set; }
+    public object Value
+    {
+        get => Description.GetValue( Target );
+        set
+        {
+            Description.SetValue( Target, value );   
+        }
+    }
+    public PropertyDescription Description { get; set; }
+
+    public RangeAttribute Range => Description.GetCustomAttribute<RangeAttribute>();
+}

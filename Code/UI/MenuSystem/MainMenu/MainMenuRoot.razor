@@ -1,0 +1,22 @@
+@using Sandbox.Menu
+@using Sandbox.UI;
+
+@inherits Sandbox.UI.NavHostPanel
+@namespace Softsplit.UI
+
+<root>
+    <div class="background" />
+
+    <div class="navigator-canvas" slot="navigator-canvas" />
+</root>
+
+@code
+{
+	public MainMenuRoot()
+    {
+        DefaultUrl = "/";
+	    AddDestination( "/", typeof( LandingPage ) );
+	    AddDestination( "/lobbies", typeof( LobbyList ) );
+	    AddDestination( "/settings", typeof( SettingsPage ) );
+    }
+}
