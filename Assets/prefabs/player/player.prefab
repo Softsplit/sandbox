@@ -97,7 +97,16 @@
             "__guid": "ad5617f7-c5ac-4a8f-951b-d6309b731299",
             "Center": "0,0,32",
             "IsTrigger": false,
-            "Scale": "32,32,64",
+            "Scale": "30.7,32,64",
+            "Static": false
+          },
+          {
+            "__type": "Sandbox.CapsuleCollider",
+            "__guid": "a642dcd6-c170-4c32-a5f5-d7dc9930945a",
+            "End": "-0.00000007450581,0,53.5364",
+            "IsTrigger": false,
+            "Radius": 16.30001,
+            "Start": "-0.0000008493662,0,5.290382",
             "Static": false
           }
         ]
