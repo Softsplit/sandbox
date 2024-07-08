@@ -30,6 +30,8 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	public ClothingContainer Clothing = new();
 
 	private TimeSince timeSinceDied;
+	public Inventory inventory;
+	public Tool ActiveChild { get; set; }
 
 	/// <summary>
 	/// Called every tick to simulate the player. This is called on the
@@ -146,7 +148,10 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	protected override void OnStart()
 	{
 		Tags.Add( "player" );
-
+		inventory = new( this );
+		var tool = new GameObject();
+		var physgun = tool.Components.Create<Physgun>();
+		inventory.Add( physgun );
 		Components.GetInChildren<SkinnedModelRenderer>().OnFootstepEvent += OnAnimEventFootstep;
 	}
 
