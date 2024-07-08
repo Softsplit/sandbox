@@ -5,8 +5,9 @@
 	public Tool Parent { get; set; }
 	*/
 
-	// [Sync]
+	[Sync]
 	public Player Owner { get; set; }
+
 
 	protected virtual float MaxTraceDistance => 10000.0f;
 
@@ -27,15 +28,18 @@
 	{
 		// UpdatePreviews();
 	}
-
 	public virtual void CreateHitEffects( Vector3 pos )
 	{
 		// Parent?.CreateHitEffects( pos );
 	}
+	public bool IsUsing()
+	{
+		return Owner != null && Owner.ActiveChild == this;
+	}
 
 	public SceneTraceResult DoTrace()
 	{
-		return Scene.Trace.Ray( Owner.AimRay, MaxTraceDistance )
+		return Scene.Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * MaxTraceDistance )
 			//.WithAnyTags( "solid", "nocollide" )
 			.WithoutTags( "player" )
 			.IgnoreGameObject( Owner.GameObject )

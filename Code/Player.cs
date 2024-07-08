@@ -188,8 +188,8 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 	/// </summary>
 	public void Respawn()
 	{
-		var physgun = new GameObject().Components.Create<Physgun>();
-		Inventory.Add( physgun );
+		// var physgun = new GameObject().Components.Create<Physgun>();
+		// Inventory.Add( physgun );
 
 		Components.GetInChildren<SkinnedModelRenderer>().OnFootstepEvent += OnAnimEventFootstep;
 

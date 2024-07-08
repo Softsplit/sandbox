@@ -41,19 +41,26 @@
 
 		if ( IsCarryingType( entity.GetType() ) )
 			return false;
-
+		entity.Owner = player;
 		if ( tools.Count == 9 )
 		{
-			tools.Remove( tools[8] );
+			int index = GetActiveSlot();
+			if ( index >= 0 || index <= tools.Count - 1 )
+			{
+				tools[index] = entity;
+				player.ActiveChild = entity;
+				// tools.Insert( index-1, entity );
+				return true;
+			}
 		}
 
 		/*if ( makeActive )
 		{
 			player.ActiveChild = GetSlot(Count()-1);
 		}*/
-
 		entity.Owner = player;
 		tools.Add( entity );
+		player.ActiveChild = entity;
 		return true;
 	}
 

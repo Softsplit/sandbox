@@ -1,5 +1,6 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System;
 
 public partial class SpawnMenu : Panel
 {
@@ -56,31 +57,38 @@ public partial class SpawnMenu : Panel
 	void RebuildToolList()
 	{
 		toollist.DeleteChildren( true );
+		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+		if ( player == null ) return;
+		var inventory = player.Inventory;
+		if ( inventory == null ) return;
 
-		/*
-		foreach ( var entry in TypeLibrary.GetTypes<BaseTool>() )
+		foreach ( var entry in TypeLibrary.GetTypes<Tool>() )
 		{
-			if ( entry.Name == "BaseTool" )
+			if ( entry.Name == "Tool" )
 				continue;
 
 			var button = toollist.Add.Button( entry.Title );
-			button.SetClass( "active", entry.ClassName == ConsoleSystem.GetValue( "tool_current" ) );
+			if ( player.ActiveChild != null )
+			{
+				button.SetClass( "active", entry.ClassName == player.ActiveChild.GetType().Name );
+			}
 
 			button.AddEventListener( "onclick", () =>
 			{
-				SetActiveTool( entry.ClassName );
+				SetActiveTool( entry, inventory, player );
 
 				foreach ( var child in toollist.Children )
 					child.SetClass( "active", child == button );
 			} );
 		}
-		*/
 	}
 
-	void SetActiveTool( string className )
+	void SetActiveTool( TypeDescription classtype, Inventory inventory, Player player )
 	{
-		// setting a cvar
-		ConsoleSystem.Run( "tool_current", className );
+		var obj = new GameObject();
+		var tool = obj.Components.Create( classtype );
+		obj.NetworkSpawn();
+		inventory.Add( tool as Tool );
 
 		// set the active weapon to the toolgun
 		/*
