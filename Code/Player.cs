@@ -89,7 +89,7 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 			var pos = center;
 			var rot = Scene.Camera.Transform.Rotation * Rotation.FromAxis( Vector3.Up, -16 );
 
-			Vector3 distance = 130.0f * Transform.Scale * 0.6f ;
+			Vector3 distance = 130.0f * Transform.Scale * 0.6f;
 			targetPos = pos + rot.Right * ((Components.GetInChildren<SkinnedModelRenderer>().Model.Bounds.Mins.x + 32) * Transform.Scale);
 			targetPos += rot.Forward * -distance;
 
@@ -165,6 +165,7 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 
 		// Client?.AddInt( "deaths", 1 );
 	}
+
 	[ConCmd( "kill" )]
 	public static void KillSelf()
 	{
@@ -172,9 +173,9 @@ public sealed class Player : Component, Component.ICollisionListener, Component.
 
 		if ( owner == null )
 			return;
+
 		owner.OnKilled();
 	}
-	
 
 	/// <summary>
 	/// Sets LifeState to Alive, Health to Max, nulls velocity, and calls Gamemode.PlayerRespawn
