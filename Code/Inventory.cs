@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-public class Inventory
+﻿public class Inventory
 {
 	Player player;
 	List<Tool> tools;
@@ -18,10 +15,12 @@ public class Inventory
 			return null;
 		return tools[slot];
 	}
+
 	public int Count()
 	{
 		return tools.Count;
 	}
+
 	public int GetActiveSlot()
 	{
 		return tools.IndexOf( player.ActiveChild );
@@ -47,10 +46,12 @@ public class Inventory
 		{
 			tools.Remove( tools[8] );
 		}
+
 		/*if ( makeActive )
 		{
 			player.ActiveChild = GetSlot(Count()-1);
 		}*/
+
 		entity.Owner = player;
 		tools.Add( entity );
 		return true;
@@ -60,6 +61,7 @@ public class Inventory
 	{
 		return false;
 	}
+
 	public bool Drop( Tool ent ) // TODO: implement this
 	{
 		return false;

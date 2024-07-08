@@ -1,28 +1,34 @@
 ﻿public class Physgun : Tool
 {
-	GameObject movable_object;
+	GameObject moveableObject;
 	float distance;
-	public override void OnUpdate()
+
+	protected override void OnUpdate()
 	{
 		base.OnUpdate();
-		if (Input.Pressed("attack1"))
+
+		if ( Input.Pressed( "attack1" ) )
 		{
 			var trace = DoTrace();
 			if ( trace.Hit )
 			{
-				movable_object = trace.GameObject;
+				moveableObject = trace.GameObject;
 				distance = trace.Distance;
 			}
 		}
+
 		if ( Input.Released( "attack1" ) )
 		{
-			movable_object = null;
+			moveableObject = null;
 		}
-		if (movable_object != null && Input.Down("attack1") )
+
+		if ( moveableObject != null && Input.Down( "attack1" ) )
 		{
 			var startPos = Owner.EyePosition;
 			var dir = Owner.EyeRotation.Forward;
-			movable_object.Transform.LerpTo( new global::Transform( startPos + dir * distance ), 0.2f );
+
+			// This doesn't retain the object's velocity
+			moveableObject.Transform.LerpTo( new Transform( startPos + dir * distance ), 0.2f );
 		}
 	}
 }

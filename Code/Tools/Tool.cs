@@ -1,7 +1,9 @@
 ﻿public class Tool : Component
-{/*
+{
+	/*
 	[Sync]
-	public Tool Parent { get; set; }*/
+	public Tool Parent { get; set; }
+	*/
 
 	// [Sync]
 	public Player Owner { get; set; }
@@ -21,11 +23,6 @@
 		// DeletePreviews();
 	}
 
-	public virtual void OnUpdate()
-	{
-
-	}
-
 	public virtual void OnDraw()
 	{
 		// UpdatePreviews();
@@ -35,9 +32,9 @@
 	{
 		// Parent?.CreateHitEffects( pos );
 	}
+
 	public SceneTraceResult DoTrace()
 	{
-
 		return Scene.Trace.Ray( Owner.AimRay, MaxTraceDistance )
 			//.WithAnyTags( "solid", "nocollide" )
 			.WithoutTags( "player" )

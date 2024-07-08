@@ -1,5 +1,3 @@
-using Sandbox.UI;
-
 public class InventoryBar : Panel
 {
 	readonly List<InventoryIcon> slots = new();
@@ -17,31 +15,20 @@ public class InventoryBar : Panel
 	{
 		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
 		if ( player == null ) return;
-		var inventory = player.inventory;
+		var inventory = player.Inventory;
 		if ( inventory == null ) return;
 
 		for ( int i = 0; i < slots.Count; i++ )
 		{
-			if ( i > inventory.Count() - 1 )
-				break;
-			UpdateIcon( inventory.GetSlot( i ), slots[i], i, player );
+			UpdateIcon( inventory.GetSlot( i ), slots[i], i );
 		}
+
 		ProcessClientInput();
-		InvertoryUpdate();
 	}
 
-	private void InvertoryUpdate()
+	private static void UpdateIcon( Tool ent, InventoryIcon inventoryIcon, int i )
 	{
 		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
-		if ( player == null ) return;
-		var inventory = player.inventory;
-		if ( inventory == null ) return;
-		if ( player.ActiveChild == null ) return;
-		player.ActiveChild.OnUpdate();
-	}
-	private static void UpdateIcon( Tool ent, InventoryIcon inventoryIcon, int i, Player player )
-	{
-		// var player = Game.LocalPawn as Player;
 
 		if ( ent == null )
 		{
@@ -61,7 +48,7 @@ public class InventoryBar : Panel
 		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
 		if ( player == null ) return;
 
-		var inventory = player.inventory;
+		var inventory = player.Inventory;
 		if ( inventory == null )
 			return;
 		/*
