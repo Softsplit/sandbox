@@ -6,8 +6,6 @@
 	*/
 
 	public Player Owner { get; set; }
-
-
 	protected virtual float MaxTraceDistance => 10000.0f;
 
 	protected override void OnStart()

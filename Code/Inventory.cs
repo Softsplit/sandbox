@@ -52,7 +52,7 @@
 				// tools.Insert( index-1, entity );
 				return true;
 			}
-		}
+    }
 
 		/*if ( makeActive )
 		{

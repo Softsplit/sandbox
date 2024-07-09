@@ -127,6 +127,8 @@ public partial class GameManager : Component, Component.INetworkListener
 			Name = modelname.Substring( modelname.LastIndexOf( '/' ) + 1, modelname.LastIndexOf( '.' ) - modelname.LastIndexOf( '/' ) - 1 )
 		};
 
+		ent.Tags.Add( "solid" );
+
 		ent.Transform.Position = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z;
 		ent.Transform.Rotation = modelRotation;
 
@@ -165,6 +167,8 @@ public partial class GameManager : Component, Component.INetworkListener
 		{
 			Name = entName
 		};
+
+		ent.Tags.Add( "solid" );
 
 		/*
 	    if ( ent is BaseCarriable && owner.Inventory != null )
