@@ -132,9 +132,10 @@ public partial class GameManager : Component, Component.INetworkListener
 
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
-
 		ent.NetworkSpawn();
-		ent.Network.DropOwnership();
+		// TODO: make it editable for everyone
+		// ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
+		// ent.Network.DropOwnership(); 
 
 		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}

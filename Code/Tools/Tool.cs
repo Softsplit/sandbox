@@ -5,7 +5,6 @@
 	public Tool Parent { get; set; }
 	*/
 
-	[Sync]
 	public Player Owner { get; set; }
 
 

@@ -54,14 +54,25 @@ public partial class SpawnMenu : Panel
 		}
 	}
 
-	void RebuildToolList()
+	async void RebuildToolList()
 	{
 		toollist.DeleteChildren( true );
+		Log.Info( TypeLibrary.GetTypes<Tool>().Count() );
 		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+		for ( int i = 0; i < 30; i++ )
+		{
+			player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+			await Task.Delay( 100 );
+			if (player != null)
+			{
+				break;
+			}
+			Log.Info( player );
+		}
 		if ( player == null ) return;
 		var inventory = player.Inventory;
+		Log.Info( inventory );
 		if ( inventory == null ) return;
-
 		foreach ( var entry in TypeLibrary.GetTypes<Tool>() )
 		{
 			if ( entry.Name == "Tool" )
