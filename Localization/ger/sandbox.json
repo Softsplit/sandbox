@@ -1,8 +1,30 @@
 {
-    "spawnmenu.props" : "lokale Modelle",
-    "spawnmenu.entities" : "Entitäten",
+    "spawnmenu.props": "Lokale Modelle",
+    "spawnmenu.entities": "Entitäten",
     "spawnmenu.modellist": "Modelle",
     "spawnmenu.tools": "Werkzeuge",
     "spawnmenu.utility": "Hilfswerkzeuge",
-    "spawnmenu.npclist": "NPC"
+    "spawnmenu.npclist": "NPC",
+    "spawnmenu.search": "Suchen..",
+    "spawnmenu.localonly": "Nur lokal",
+
+    "hud.gamestatus.title": "IN ARBEIT!",
+    "hud.gamestatus.description": "Treten Sie dem Discord bei: https://discord.gg/aabbccdd",
+
+    "pausemenu.disconnect": "Trennen",
+
+    "menu.settings.editinputbindings": "EINGABEBINDUNGEN BEARBEITEN",
+    "menu.settings.settings": "Einstellungen",
+    "menu.settings.colorpicker.red": "Rot",
+    "menu.settings.colorpicker.green": "Grün",
+    "menu.settings.colorpicker.blue": "Blau",
+
+    "mainmenu.lobbylist.refresh": "Aktualisieren",
+    "mainmenu.landingpage.gamecreate": "Spiel erstellen",
+    "mainmenu.landingpage.serverlist": "Serverliste",
+    "mainmenu.serverbrowser.serverbrowser.name": "Name",
+    "mainmenu.serverbrowser.serverbrowser.map": "Karte",
+    "mainmenu.serverbrowser.serverbrowser.players": "Spieler",
+    "mainmenu.serverbrowser.serverbrowser.server": "Server",
+    "mainmenu.serverbrowser.serverbrowser.capacity": "Kapazität"
 }

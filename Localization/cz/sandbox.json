@@ -1,8 +1,30 @@
 {
-    "spawnmenu.props" : "Lokální modely",
-    "spawnmenu.entities" : "Entity",
+    "spawnmenu.props": "Lokální modely",
+    "spawnmenu.entities": "Entity",
     "spawnmenu.modellist": "Modely",
     "spawnmenu.tools": "Nástroje",
     "spawnmenu.utility": "Užitečnosti",
-    "spawnmenu.npclist": "NPC"
+    "spawnmenu.npclist": "NPC",
+    "spawnmenu.search": "Hledat..",
+    "spawnmenu.localonly": "Pouze lokální",
+
+    "hud.gamestatus.title": "PRÁCE PROBÍHÁ!",
+    "hud.gamestatus.description": "Připojte se k Discordu: https://discord.gg/aabbccdd",
+
+    "pausemenu.disconnect": "Odpojit",
+
+    "menu.settings.editinputbindings": "UPRAVIT VAZBY VSTUPŮ",
+    "menu.settings.settings": "Nastavení",
+    "menu.settings.colorpicker.red": "Červená",
+    "menu.settings.colorpicker.green": "Zelená",
+    "menu.settings.colorpicker.blue": "Modrá",
+
+    "mainmenu.lobbylist.refresh": "Obnovit",
+    "mainmenu.landingpage.gamecreate": "Vytvořit hru",
+    "mainmenu.landingpage.serverlist": "Seznam serverů",
+    "mainmenu.serverbrowser.serverbrowser.name": "Název",
+    "mainmenu.serverbrowser.serverbrowser.map": "Mapa",
+    "mainmenu.serverbrowser.serverbrowser.players": "Hráči",
+    "mainmenu.serverbrowser.serverbrowser.server": "Server",
+    "mainmenu.serverbrowser.serverbrowser.capacity": "Kapacita"
 }
