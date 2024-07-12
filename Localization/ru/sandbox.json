@@ -26,6 +26,7 @@
     "mainmenu.serverbrowser.serverbrowser.map": "Карта",
     "mainmenu.serverbrowser.serverbrowser.players": "Игроки",
     "mainmenu.serverbrowser.serverbrowser.server": "Сервер",
-    "mainmenu.serverbrowser.serverbrowser.capacity": "Вместимость"
-
+    "mainmenu.serverbrowser.serverbrowser.capacity": "Вместимость",
+	
+    "chat.entermessage": "Введите свое сообщение..."
 }

@@ -26,5 +26,7 @@
     "mainmenu.serverbrowser.serverbrowser.map": "Map",
     "mainmenu.serverbrowser.serverbrowser.players": "Players",
     "mainmenu.serverbrowser.serverbrowser.server": "Server",
-    "mainmenu.serverbrowser.serverbrowser.capacity": "Capacity"
+    "mainmenu.serverbrowser.serverbrowser.capacity": "Capacity",
+	
+	"chat.entermessage": "Enter your message..."
 }

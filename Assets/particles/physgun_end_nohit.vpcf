@@ -1771,7 +1771,8 @@
 			m_bGammaCorrectVertexColors = false
 			m_bSaturateColorPreAlphaBlend = false
 			m_bAdditiveAlpha = true
-			m_hTexture = resource:"materials/particles/electrical/electrical_arc_looping_c.vtex"
+			m_hTexture = resource:"materials/electrical_arc_looping.vtex"
+			m_bDisableOperator = true
 		},
 		{
 			_class = "C_OP_RenderRopes"
@@ -1961,7 +1962,7 @@
 			m_bSaturateColorPreAlphaBlend = false
 			m_bAdditiveAlpha = true
 			m_bOnlyRenderInEffectsBloomPass = true
-			m_hTexture = resource:"materials/particles/electrical/electrical_arc_looping_c.vtex"
+			m_hTexture = resource:"materials/electrical_arc_looping.vtex"
 			m_bDisableOperator = true
 		},
 		{
@@ -2059,7 +2060,7 @@
 			m_bGammaCorrectVertexColors = false
 			m_bSaturateColorPreAlphaBlend = false
 			m_bAdditiveAlpha = true
-			m_hTexture = resource:"materials/particles/electrical/electrical_arc02_unsharp.vtex"
+			m_hTexture = resource:"materials/electrical_arc02_unsharp.vtex"
 		},
 		{
 			_class = "C_OP_RenderSprites"
@@ -2157,7 +2158,7 @@
 			m_bSaturateColorPreAlphaBlend = false
 			m_bAdditiveAlpha = true
 			m_bOnlyRenderInEffectsBloomPass = true
-			m_hTexture = resource:"materials/particles/electrical/electrical_arc02_unsharp.vtex"
+			m_hTexture = resource:"materials/electrical_arc02_unsharp.vtex"
 		},
 	]
 	m_Children = 
