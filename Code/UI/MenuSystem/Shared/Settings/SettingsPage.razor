@@ -8,7 +8,7 @@
     <Page>
         <Header>
             <div class="row gap align-center layout grow">
-                <label>Settings</label>
+				<label>#menu.settings.settings</label>
             </div>
         </Header>
 
@@ -40,9 +40,7 @@
         </Body>
 
         <SubFooter>
-            <div class="button standard" onclick=@(() => Game.Overlay.ShowBinds())>
-                EDIT INPUT BINDINGS
-            </div>
+            <div class="button standard" onclick=@(() => Game.Overlay.ShowBinds())>#menu.settings.editinputbindings</div>
             <button class="button standard" onclick=@(()=>Save())>Save</button>
         </SubFooter>
     </Page>

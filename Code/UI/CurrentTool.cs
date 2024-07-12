@@ -8,8 +8,8 @@ public class CurrentTool : Panel
 
 	public CurrentTool()
 	{
-		Title = Add.Label( "WORK IN PROGRESS!", "title" );
-		Description = Add.Label( "Join the Discord in the meantime: https://discord.gg/rbCJdZjewf", "description" );
+		Title = Add.Label( "#hud.gamestatus.title", "title" );
+		Description = Add.Label( "#hud.gamestatus.description", "description" );
 	}
 
 	/*

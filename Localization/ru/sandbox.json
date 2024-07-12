@@ -1,8 +1,31 @@
 {
-    "spawnmenu.props" : "Локальные модели",
-    "spawnmenu.entities" : "Энтити",
+    "spawnmenu.props": "Локальные модели",
+    "spawnmenu.entities": "Сущности",
     "spawnmenu.modellist": "Модели",
     "spawnmenu.tools": "Инструменты",
     "spawnmenu.utility": "Утилиты",
-    "spawnmenu.npclist": "NPC"
+    "spawnmenu.npclist": "NPC",
+    "spawnmenu.search": "Поиск..",
+    "spawnmenu.localonly": "Только локальные",
+
+    "hud.gamestatus.title": "РАБОТА В ПРОЦЕССЕ!",
+    "hud.gamestatus.description": "Присоединяйтесь к нашему Discord-серверу: https://discord.gg/rbCJdZjewf",
+
+    "pausemenu.disconnect": "Отключиться",
+
+    "menu.settings.editinputbindings": "ИЗМЕНИТЬ ПРИВЯЗКИ ВВОДА",
+    "menu.settings.settings": "Настройки",
+    "menu.settings.colorpicker.red": "Красный",
+    "menu.settings.colorpicker.green": "Зелёный",
+    "menu.settings.colorpicker.blue": "Синий",
+
+    "mainmenu.lobbylist.refresh": "Обновить",
+    "mainmenu.landingpage.gamecreate": "Создать игру",
+    "mainmenu.landingpage.serverlist": "Список серверов",
+    "mainmenu.serverbrowser.serverbrowser.name": "Название",
+    "mainmenu.serverbrowser.serverbrowser.map": "Карта",
+    "mainmenu.serverbrowser.serverbrowser.players": "Игроки",
+    "mainmenu.serverbrowser.serverbrowser.server": "Сервер",
+    "mainmenu.serverbrowser.serverbrowser.capacity": "Вместимость"
+
 }

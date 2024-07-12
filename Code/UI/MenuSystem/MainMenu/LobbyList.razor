@@ -18,7 +18,7 @@
         </Body>
 
         <SubFooter>
-            <div class="button standard" onclick=@(() => Refresh())>refresh</div>
+			<div class="button standard" onclick=@(() => Refresh())>#mainmenu.lobbylist.refresh</div>
             <div class="button standard @(Lobby.HasValue ? "" : "no-anim disabled")" onclick=@(() => Join())>Connect</div>
         </SubFooter>
     </Page>

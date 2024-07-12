@@ -4,5 +4,27 @@
     "spawnmenu.modellist": "Models",
     "spawnmenu.tools": "tools",
     "spawnmenu.utility": "utility",
-    "spawnmenu.npclist": "NPC"
+    "spawnmenu.npclist": "NPC",
+    "spawnmenu.search": "Search..",
+    "spawnmenu.localonly": "Local Only",
+
+    "hud.gamestatus.title": "WORK IN PROGRESS!",
+    "hud.gamestatus.description": "Join the Discord in the meantime: https://discord.gg/rbCJdZjewf",
+
+    "pausemenu.disconnect": "Disconnect",
+
+    "menu.settings.editinputbindings": "EDIT INPUT BINDINGS",
+    "menu.settings.settings": "Settings",
+    "menu.settings.colorpicker.red": "Red",
+    "menu.settings.colorpicker.green": "Green",
+    "menu.settings.colorpicker.blue": "Blue",
+
+    "mainmenu.lobbylist.refresh": "refresh",
+    "mainmenu.landingpage.gamecreate": " Create Game",
+    "mainmenu.landingpage.serverlist": " Server List",
+    "mainmenu.serverbrowser.serverbrowser.name": "Name",
+    "mainmenu.serverbrowser.serverbrowser.map": "Map",
+    "mainmenu.serverbrowser.serverbrowser.players": "Players",
+    "mainmenu.serverbrowser.serverbrowser.server": "Server",
+    "mainmenu.serverbrowser.serverbrowser.capacity": "Capacity"
 }
