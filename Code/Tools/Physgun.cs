@@ -1,4 +1,4 @@
-public class Physgun : Tool // https://github.com/Facepunch/sbox-scenestaging/blob/main/code/ExampleComponents/PlayerController.cs
+﻿public class Physgun : Tool // https://github.com/Facepunch/sbox-scenestaging/blob/main/code/ExampleComponents/PlayerController.cs
 {
 	/// <summary>
 	/// The higher this is, the "looser" the grip is when dragging objects
@@ -108,7 +108,7 @@ public class Physgun : Tool // https://github.com/Facepunch/sbox-scenestaging/bl
 		}
 
 	}
-	private void Move( PhysicsBody body, global::Transform targetTx, float smooth)
+	private void Move( PhysicsBody body, global::Transform targetTx, float smooth )
 	{
 		body.SmoothMove( targetTx, smooth, Time.Delta );
 	}
@@ -163,6 +163,6 @@ public class Physgun : Tool // https://github.com/Facepunch/sbox-scenestaging/bl
 
 	public void Shoot()
 	{
-		
+
 	}
 }

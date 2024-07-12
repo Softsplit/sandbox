@@ -74,6 +74,20 @@ public sealed class PlayerController : Component
 
 		var pl = Components.Get<Player>();
 		pl.EyeRotation = pl.ViewAngles.ToRotation();
+		if ( Debug )
+		{
+			string info =
+			$"        Position: {Transform.Position}\n" +
+			$"        Velocity: {Velocity}\n" +
+			$"    BaseVelocity: {BaseVelocity}\n" +
+			$"    GroundObject: {GroundObject} [{GroundObject?.Components.Get<PhysicsBody>()?.Velocity}]\n" +
+			$" SurfaceFriction: {SurfaceFriction}\n" +
+			$"    WishVelocity: {WishVelocity}\n" +
+			$"    Speed: {Velocity.Length}\n";
+			// Gizmo.Draw.ScreenRect( new Rect( Screen.Width - 300, 0, 300, 100 ), Color.Gray );
+			Gizmo.Draw.Color = Color.Yellow;
+			Gizmo.Draw.ScreenText( info, new Vector2( Screen.Width - 300, 0 ) );
+		}
 	}
 
 	[Sync] public bool IsNoclipping { get; set; } = false;
@@ -209,26 +223,8 @@ public sealed class PlayerController : Component
 		if ( GroundObject != null )
 			Velocity = Velocity.WithZ( 0 );
 
-		/*
-		if ( Debug )
-		{
-			DebugOverlay.Box( Position + TraceOffset, mins, maxs, Color.Red );
-			DebugOverlay.Box( Position, mins, maxs, Color.Blue );
-
-			var lineOffset = 0;
-			if ( Game.IsServer ) lineOffset = 10;
-
-			DebugOverlay.ScreenText( $"        Position: {Position}", lineOffset + 0 );
-			DebugOverlay.ScreenText( $"        Velocity: {Velocity}", lineOffset + 1 );
-			DebugOverlay.ScreenText( $"    BaseVelocity: {BaseVelocity}", lineOffset + 2 );
-			DebugOverlay.ScreenText( $"    GroundObject: {GroundObject} [{GroundObject?.Velocity}]", lineOffset + 3 );
-			DebugOverlay.ScreenText( $" SurfaceFriction: {SurfaceFriction}", lineOffset + 4 );
-			DebugOverlay.ScreenText( $"    WishVelocity: {WishVelocity}", lineOffset + 5 );
-			DebugOverlay.ScreenText( $"    Speed: {Velocity.Length}", lineOffset + 6 );
-		}
-		*/
+		
 	}
-
 	public float GetWishSpeed()
 	{
 		var ws = Duck.GetWishSpeed();
