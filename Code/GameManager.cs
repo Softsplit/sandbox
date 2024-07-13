@@ -1,3 +1,4 @@
+using Sandbox.Services;
 using System.Threading.Tasks;
 
 public partial class GameManager : Component, Component.INetworkListener
@@ -71,8 +72,18 @@ public partial class GameManager : Component, Component.INetworkListener
 		*/
 	}
 
+	[HostSync] private NetList<string> cachedPackageList { get; set; } = new();
+
+	void INetworkListener.OnActive( Connection conn )
+	{
+		foreach ( var packageName in cachedPackageList )
+		{
+			MountPackage( packageName );
+		}
+	}
+
 	[Broadcast]
-	public async void MountPackage( string packageName )
+	public static async void MountPackage( string packageName )
 	{
 		await MountPackageAsync( packageName );
 	}
@@ -111,7 +122,11 @@ public partial class GameManager : Component, Component.INetworkListener
 
 		if ( modelname.Contains( "." ) && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
 		{
-			Current.MountPackage( modelname );
+			MountPackage( modelname );
+
+			if ( !Current.cachedPackageList.Contains( modelname ) )
+				Current.cachedPackageList.Add( modelname );
+
 			model = Model.Load( await MountPackageAsync( modelname ) );
 		}
 		else
@@ -135,10 +150,20 @@ public partial class GameManager : Component, Component.INetworkListener
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
 
+		foreach ( var shape in ent.Components.Get<Rigidbody>().PhysicsBody.Shapes )
+		{
+			if ( shape.IsMeshShape )
+			{
+				var collider = ent.Components.Create<BoxCollider>();
+				collider.Center = model.PhysicsBounds.Center;
+				collider.Scale = model.PhysicsBounds.Size;
+			}
+		}
+
 		ent.NetworkSpawn();
 		ent.Network.DropOwnership();
 
-		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
+		Stats.Increment( "spawn.model", 1, modelname );
 	}
 
 	[ConCmd( "spawn_entity" )]

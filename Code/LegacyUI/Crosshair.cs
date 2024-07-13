@@ -7,6 +7,6 @@ public partial class Crosshair : Panel
 	public Crosshair()
 	{
 		Current = this;
-		StyleSheet.Load( "/ui/Crosshair.scss" );
+		StyleSheet.Load( "/LegacyUI/Crosshair.scss" );
 	}
 }
