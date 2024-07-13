@@ -10,7 +10,7 @@ public partial class Scoreboard<T> : Panel where T : ScoreboardEntry, new()
 
 	public Scoreboard()
 	{
-		StyleSheet.Load( "/ui/scoreboard/Scoreboard.scss" );
+		StyleSheet.Load( "/LegacyUI/Scoreboard/Scoreboard.scss" );
 		AddClass( "scoreboard" );
 
 		AddHeader();

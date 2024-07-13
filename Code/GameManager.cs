@@ -135,6 +135,16 @@ public partial class GameManager : Component, Component.INetworkListener
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
 
+		foreach ( var shape in ent.Components.Get<Rigidbody>().PhysicsBody.Shapes )
+		{
+			if ( shape.IsMeshShape )
+			{
+				var collider = ent.Components.Create<BoxCollider>();
+				collider.Center = model.PhysicsBounds.Center;
+				collider.Scale = model.PhysicsBounds.Size;
+			}
+		}
+
 		ent.NetworkSpawn();
 		ent.Network.DropOwnership();
 

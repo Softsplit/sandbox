@@ -8,7 +8,7 @@ public partial class KillFeed : Panel
 	{
 		Current = this;
 
-		StyleSheet.Load( "/ui/killfeed/KillFeed.scss" );
+		StyleSheet.Load( "/LegacyUI/KillFeed/KillFeed.scss" );
 	}
 
 	public virtual Panel AddEntry( long lsteamid, string left, long rsteamid, string right, string method )
