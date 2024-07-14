@@ -1,9 +1,9 @@
-using Sandbox.UI;
 using Sandbox.UI.Construct;
+using Softsplit;
 
 public class InventoryIcon : Panel
 {
-	public GameObject TargetEnt;
+	public Equipment TargetEnt;
 	public Label Label;
 	public Label Number;
 

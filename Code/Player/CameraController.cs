@@ -122,7 +122,7 @@ public sealed class CameraController : Component
 		Boom.Transform.LocalPosition = Vector3.Zero.WithZ( eyeHeight );
 
 		TargetFieldOfView = TargetFieldOfView.LerpTo( baseFov + FieldOfViewOffset, Time.Delta * 5f );
-		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( TargetFieldOfView );
+		Camera.FieldOfView = TargetFieldOfView;
 	}
 
 	void OnModeChanged()

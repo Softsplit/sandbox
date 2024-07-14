@@ -132,21 +132,6 @@ public partial class HealthComponent : Component, IRespawnable
 		BroadcastKill( damageInfo.Damage, damageInfo.Position, damageInfo.Force,
 			damageInfo.Attacker, damageInfo.Inflictor,
 			damageInfo.Hitbox, damageInfo.Flags );
-
-		// TODO: Make this not atrociously long
-		if ( damageInfo.Attacker.Network.OwnerConnection != null )
-		{
-			KillFeed.Current?.AddEntry( (long)damageInfo.Attacker.Network.OwnerConnection.SteamId,
-				damageInfo.Attacker.Network.OwnerConnection.DisplayName,
-				(long)damageInfo.Victim.Network.OwnerConnection.SteamId,
-				damageInfo.Victim.Network.OwnerConnection.DisplayName, "killed" );
-		}
-		else
-		{
-			KillFeed.Current?.AddEntry( 0, "",
-				(long)damageInfo.Victim.Network.OwnerConnection.SteamId,
-				damageInfo.Victim.Network.OwnerConnection.DisplayName, "died" );
-		}
 	}
 
 	[Broadcast( NetPermission.HostOnly )]
@@ -174,6 +159,21 @@ public partial class HealthComponent : Component, IRespawnable
 		{
 			Victim = this
 		};
+
+		// TODO: Make this not atrociously long
+		if ( damageInfo.Attacker.Network.OwnerConnection != damageInfo.Victim.Network.OwnerConnection )
+		{
+			KillFeed.Current?.AddEntry( (long)damageInfo.Attacker.Network.OwnerConnection.SteamId,
+				damageInfo.Attacker.Network.OwnerConnection.DisplayName,
+				(long)damageInfo.Victim.Network.OwnerConnection.SteamId,
+				damageInfo.Victim.Network.OwnerConnection.DisplayName, "killed" );
+		}
+		else
+		{
+			KillFeed.Current?.AddEntry( 0, "",
+				(long)damageInfo.Victim.Network.OwnerConnection.SteamId,
+				damageInfo.Victim.Network.OwnerConnection.DisplayName, "died" );
+		}
 
 		Scene.Dispatch( new KillEvent( damageInfo ) );
 

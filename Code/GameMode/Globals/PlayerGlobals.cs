@@ -103,11 +103,11 @@ public class PlayerGlobals : GlobalComponent, IGameEventHandler<ModifyDamageGlob
 	/// <summary>
 	/// Can we control our movement in the air?
 	/// </summary>
-	[Property, Group( "Movement" )] public float AirAcceleration { get; set; } = 10f;
-	[Property, Group( "Movement" )] public float BaseAcceleration { get; set; } = 10f;
-	[Property, Group( "Movement" )] public float SlowWalkAcceleration { get; set; } = 10f;
-	[Property, Group( "Movement" )] public float CrouchingAcceleration { get; set; } = 10f;
-	[Property, Group( "Movement" )] public float SprintingAcceleration { get; set; } = 10f;
+	[Property, Group( "Movement" )] public float AirAcceleration { get; set; } = 16f;
+	[Property, Group( "Movement" )] public float BaseAcceleration { get; set; } = 9f;
+	[Property, Group( "Movement" )] public float SlowWalkAcceleration { get; set; } = 10;
+	[Property, Group( "Movement" )] public float CrouchingAcceleration { get; set; } = 10;
+	[Property, Group( "Movement" )] public float SprintingAcceleration { get; set; } = 8f;
 
 	// Acceleration
 	[Property, Group( "Movement" )] public float MaxAcceleration { get; set; } = 10f;
