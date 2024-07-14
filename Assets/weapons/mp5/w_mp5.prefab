@@ -1,0 +1,278 @@
+{
+  "RootObject": {
+    "__guid": "14e323c4-ab96-47ff-ba89-bf990d9ce0a5",
+    "Flags": 0,
+    "Name": "w_mp5",
+    "Tags": "player",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkInterpolation": true,
+    "Components": [
+      {
+        "__type": "Softsplit.Equipment",
+        "__guid": "d451cf3b-b0fb-4cdc-b1c7-29e20e592503",
+        "DeploySound": "sounds/guns/switch/weapon_switch.sound",
+        "EjectionPort": {
+          "_type": "gameobject",
+          "go": "097578f2-ecfc-4da2-9df4-fa57152dc0f7"
+        },
+        "Handedness": "Right",
+        "HoldType": "Rifle",
+        "ModelRenderer": {
+          "_type": "component",
+          "component_id": "b9d63729-1ff0-4775-80dc-880285741edd",
+          "go": "e7468f3b-e983-4db7-8322-83185a608264",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "MountedPrefab": {
+          "_type": "gameobject",
+          "prefab": "weapons/mp5/mount_mp5.prefab"
+        },
+        "Muzzle": {
+          "_type": "gameobject",
+          "go": "97aa8507-20e0-4f03-8780-cbfcbdcab947"
+        },
+        "Resource": "weapons/mp5/mp5.equip",
+        "SpeedPenalty": 30
+      },
+      {
+        "__type": "Softsplit.TagBinder",
+        "__guid": "a0e506c1-9c37-4b94-829d-c05e9dc6dcc5"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "e7468f3b-e983-4db7-8322-83185a608264",
+        "Flags": 0,
+        "Name": "Model",
+        "Position": "3.535849,0,-7.21",
+        "Scale": "1.3,1.3,1.3",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "b9d63729-1ff0-4775-80dc-880285741edd",
+            "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
+            "Model": "models/weapons/sbox_smg_mp5/w_mp5.vmdl",
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "97aa8507-20e0-4f03-8780-cbfcbdcab947",
+            "Flags": 0,
+            "Name": "Muzzle",
+            "Position": "13.29764,0,8.152003",
+            "Scale": "0.7692308,0.7692308,0.7692308",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true
+          },
+          {
+            "__guid": "097578f2-ecfc-4da2-9df4-fa57152dc0f7",
+            "Flags": 0,
+            "Name": "EjectionPort",
+            "Position": "2.157239,-0.7262903,8.819459",
+            "Scale": "1.153846,1.153846,1.153846",
+            "Tags": "particles",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkInterpolation": true
+          }
+        ]
+      },
+      {
+        "__guid": "634fbee8-5495-4fe2-bf7d-d7ab75d22c66",
+        "Flags": 0,
+        "Name": "Functions",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkInterpolation": true,
+        "Components": [
+          {
+            "__type": "Softsplit.AmmoComponent",
+            "__guid": "836dc3cc-8400-41de-850f-31e58afeb61b",
+            "Ammo": 30,
+            "HasAmmo": true,
+            "MaxAmmo": 30
+          },
+          {
+            "__type": "Softsplit.ShootWeaponComponent",
+            "__guid": "258e47a7-fbe5-418a-bd29-35a86ae5dde5",
+            "AmmoComponent": {
+              "_type": "component",
+              "component_id": "836dc3cc-8400-41de-850f-31e58afeb61b",
+              "go": "634fbee8-5495-4fe2-bf7d-d7ab75d22c66",
+              "component_type": "AmmoComponent"
+            },
+            "BaseDamage": 12,
+            "BaseDamageFalloff": [
+              {
+                "y": 1
+              },
+              {
+                "x": 0.42559522,
+                "y": 0.496058,
+                "in": 2.2198632,
+                "out": -2.2198632
+              },
+              {
+                "x": 1
+              }
+            ],
+            "BloodEjectDistance": 512,
+            "BulletCount": 1,
+            "BulletSize": 1,
+            "BulletSpread": 0,
+            "BurstAmount": 3,
+            "BurstEndDelay": 0.2,
+            "CurrentFireMode": "Automatic",
+            "DryFireSound": "sounds/guns/gun_dryfire.sound",
+            "DryShootDelay": 0.15,
+            "EjectionPrefab": {
+              "_type": "gameobject",
+              "prefab": "prefabs/weapon_effects/9mm_casing.prefab"
+            },
+            "FireModeSwitchDelay": 0.3,
+            "FireRate": 740,
+            "InAirSpreadMultiplier": 2,
+            "InputActions": [
+              "Attack1"
+            ],
+            "MaxEffectsPlayDistance": 4194304,
+            "MaxRange": 1024000,
+            "MaxRicochetAngle": 45,
+            "MuzzleFlashPrefab": {
+              "_type": "gameobject",
+              "prefab": "prefabs/weapon_effects/pistol_muzzleflash.prefab"
+            },
+            "PenetrationThickness": 32,
+            "PlayerVelocityLimit": 300,
+            "RequiresAllInputActions": false,
+            "RequiresAmmoComponent": true,
+            "RicochetMaxHits": 2,
+            "ShootSound": "sounds/guns/mp5/smg1_shoot.sound",
+            "SupportedFireModes": [
+              "Automatic",
+              "Burst",
+              "Semi"
+            ],
+            "VelocitySpreadScale": 0.25
+          },
+          {
+            "__type": "Softsplit.ReloadWeaponComponent",
+            "__guid": "912f09da-66b3-4b32-9824-cd94514f07fc",
+            "AmmoComponent": {
+              "_type": "component",
+              "component_id": "836dc3cc-8400-41de-850f-31e58afeb61b",
+              "go": "634fbee8-5495-4fe2-bf7d-d7ab75d22c66",
+              "component_type": "AmmoComponent"
+            },
+            "EmptyReloadSounds": {
+              "0": "sounds/guns/mp5/reload/mp5.move.sound",
+              "0.5": "sounds/guns/mp5/reload/mp5.mag.sound",
+              "1.2": "sounds/guns/mp5/reload/mp5.mag.load.sound",
+              "2": "sounds/guns/mp5/reload/mp5.mag.sound"
+            },
+            "EmptyReloadTime": 2,
+            "InputActions": [
+              "Reload"
+            ],
+            "ReloadTime": 1.5,
+            "RequiresAllInputActions": false,
+            "SingleReload": false,
+            "TimedReloadSounds": {
+              "0": "sounds/guns/mp5/reload/mp5.move.sound",
+              "0.5": "sounds/guns/mp5/reload/mp5.mag.sound",
+              "1.2": "sounds/guns/mp5/reload/mp5.mag.load.sound"
+            }
+          },
+          {
+            "__type": "Softsplit.RecoilWeaponComponent",
+            "__guid": "cb42a28e-d8b2-4f33-acba-2a3a4cdef920",
+            "HorizontalSpread": "2.00,-2.00,1",
+            "RecoilPattern": {
+              "Points": [
+                "-0.0251255,4.851695",
+                "-0.0251255,4.639831",
+                "-0.04187679,4.470339",
+                "-0.1758795,4.279661",
+                "-0.4103851,4.067797",
+                "-0.6783919,3.877119",
+                "-0.8626466,3.728814",
+                "-1.130653,3.601695",
+                "-1.281407,3.368644",
+                "-1.080402,3.15678",
+                "-0.4773865,2.902542",
+                "0.0251255,2.711864",
+                "0.4438858,2.542373",
+                "0.8961477,2.309322",
+                "1.147404,2.13983",
+                "1.331658,1.927966",
+                "1.231156,1.800848",
+                "0.7956457,1.567797",
+                "0.4773865,1.419492",
+                "0.1088781,1.25",
+                "-0.3098826,1.059322",
+                "-0.7118931,0.8474576",
+                "-0.9128981,0.7415254",
+                "-0.9966502,0.6567795",
+                "-0.8123951,0.5084746",
+                "-0.5276384,0.3601695",
+                "-0.226131,0.2330509",
+                "-0.0251255,0.1483051"
+              ],
+              "LoopStart": 3,
+              "LoopEnd": 27
+            },
+            "ResetTime": 0.3,
+            "Scale": "2,5",
+            "UseRecoilPattern": true,
+            "VerticalSpread": "3.50,0.00,0"
+          },
+          {
+            "__type": "Softsplit.AimWeaponComponent",
+            "__guid": "dfdced3b-f729-47a4-a151-4caf974cafc7",
+            "InputActions": [
+              "Attack2"
+            ],
+            "RequiresAllInputActions": false
+          },
+          {
+            "__type": "Softsplit.ViewPunch",
+            "__guid": "7b56d2e0-b645-4546-8417-6d4ce46e798f",
+            "AnglesOffset": "-0.5,0.1,0.5",
+            "Curve": [
+              {},
+              {
+                "x": 0.32886904,
+                "y": 1
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Lifetime": 0.15,
+            "MaxAnglesOffset": "-0.5,0.1,0.5",
+            "MaxPositionOffset": "0.5,0.2,1",
+            "PositionOffset": "0.5,0.2,1"
+          }
+        ]
+      }
+    ],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [
+    "facepunch.w_mp5"
+  ],
+  "__version": 1
+}

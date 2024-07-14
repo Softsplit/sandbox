@@ -14,12 +14,29 @@ public partial class Chat
 		*/
 	}
 
+	[ConCmd( "sandbox_say" ), Authority]
 	public static void Say( string message )
 	{
 		// todo - reject more stuff
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
-		AddChatEntry( Connection.Local.DisplayName, message, Game.SteamId );
+		Log.Info( $"{Rpc.Caller}: {message}" );
+		AddChatEntry( Rpc.Caller.DisplayName, message, (long)Rpc.Caller.SteamId );
 	}
+
+	/*
+	[ConCmd.Server( "sandbox_say" )]
+	public static void Say( string message )
+	{
+		if ( !ConsoleSystem.Caller.IsValid() ) return;
+
+		// todo - reject more stuff
+		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
+			return;
+
+		Log.Info( $"{ConsoleSystem.Caller}: {message}" );
+		AddChatEntry( To.Everyone, ConsoleSystem.Caller.Name, message, ConsoleSystem.Caller.SteamId );
+	}
+	*/
 }

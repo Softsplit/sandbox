@@ -1,6 +1,3 @@
-@using Sandbox.UI;
-@using System;
-
 <root>
 	<div class="canvas" @ref=Canvas />
 	<TextEntry @ref=Input onsubmit=@Submit onblur=@Close />
@@ -56,7 +53,6 @@
 	{
 		AddClass( "open" );
 		Input.Focus();
-		Input.Label.SetCaretPosition(0);
 		Canvas.TryScrollToBottom();
 	}
 
@@ -82,7 +78,6 @@
 
 	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
 	{
-		Log.Info($"{name}: {message}");
 		var e = Canvas.AddChild<ChatRow>();
 
 		/*

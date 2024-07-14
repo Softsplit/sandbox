@@ -4,44 +4,118 @@
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
       "Flags": 0,
-      "Name": "Game Manager",
+      "Name": "Game Mode",
       "Enabled": true,
       "NetworkMode": 1,
-      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "GameManager",
-          "__guid": "676c4eea-9996-4790-841b-85584bac8ee4"
+          "__type": "Softsplit.GameMode",
+          "__guid": "7861d64c-53db-4baa-8ba3-beb9ed25e7ff"
+        },
+        {
+          "__type": "Softsplit.BotManager",
+          "__guid": "e43f4d36-4824-4bae-a0bb-bca553326250"
+        },
+        {
+          "__type": "Softsplit.PlayerAutoRespawner",
+          "__guid": "c4cc34e6-55e9-4292-8231-04bd29591a19",
+          "RespawnDelaySeconds": 3
+        },
+        {
+          "__type": "Softsplit.PlayerRagdollBehavior",
+          "__guid": "f2c95465-831e-4d36-953d-94c516282678",
+          "DestroyTime": 3
+        },
+        {
+          "__type": "Softsplit.DefaultEquipment",
+          "__guid": "aeb88489-8fdd-487d-87a2-d2cc4f735ee5",
+          "Loadouts": [
+            {
+              "Equipment": [
+                "weapons/mp5/mp5.equip",
+                "weapons/usp/usp.equip",
+                "weapons/knife_bayonet/knife_bayonet.equip"
+              ]
+            }
+          ],
+          "LoadoutsEnabled": true,
+          "RefillAmmo": true
+        },
+        {
+          "__type": "Softsplit.EquipmentDropper",
+          "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7",
+          "Categories": [],
+          "LimitedDropOnDeath": true
         }
       ]
     },
     {
       "__guid": "bd1f6a82-367b-40c3-8957-ee49541b6d74",
       "Flags": 0,
-      "Name": "Network Helper",
+      "Name": "Networking",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
-          "__type": "Sandbox.NetworkHelper",
-          "__guid": "097490e4-e57b-49df-82bc-35085819ff23",
-          "PlayerPrefab": {
+          "__type": "Softsplit.GameNetworkManager",
+          "__guid": "ad636a35-0b59-476e-9efb-19e7a7b08e02",
+          "IsMultiplayer": true,
+          "PlayerStatePrefab": {
             "_type": "gameobject",
-            "prefab": "prefabs/player/player.prefab"
-          },
-          "SpawnPoints": [],
-          "StartServer": true
+            "prefab": "prefabs/player/playerstate.prefab"
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "9b634697-296f-4032-9476-8c99eb8d8ede",
+      "Flags": 0,
+      "Name": "HUD",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "e4dc2b25-afd0-4188-9d2a-f38595fb5890",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        },
+        {
+          "__type": "SandboxHUD",
+          "__guid": "9c32408d-e0f5-4a7d-ab93-9e11b308b4a9"
+        },
+        {
+          "__type": "Softsplit.UI.DeveloperMenu",
+          "__guid": "a3c7c4d3-352e-4c3b-bdaf-7582871af034"
+        }
+      ]
+    },
+    {
+      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
+      "Flags": 0,
+      "Name": "Pause Menu",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 999
+        },
+        {
+          "__type": "Softsplit.UI.PauseMenuPanel",
+          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
         }
       ]
     },
     {
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
-      "Name": "Map Instance",
+      "Name": "Map ",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.MapInstance",
@@ -53,108 +127,6 @@
         }
       ],
       "Children": []
-    },
-    {
-      "__guid": "07124f9e-e6f0-4936-88a7-7fbfe6c678fd",
-      "Flags": 0,
-      "Name": "Camera",
-      "Tags": "maincamera",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "Components": [
-        {
-          "__type": "Sandbox.CameraComponent",
-          "__guid": "acca97c4-1ce0-47ed-95b8-26ab7897e969",
-          "BackgroundColor": "0.33333,0.46275,0.52157,1",
-          "ClearFlags": "All",
-          "FieldOfView": 90,
-          "IsMainCamera": true,
-          "Orthographic": false,
-          "OrthographicHeight": 1204,
-          "Priority": 1,
-          "RenderExcludeTags": "",
-          "RenderTags": "",
-          "TargetEye": "None",
-          "Viewport": "0,0,1,1",
-          "ZFar": 100000,
-          "ZNear": 1
-        },
-        {
-          "__type": "Sandbox.AmbientOcclusion",
-          "__guid": "d2012858-be70-416d-abed-e538ffbd60ff",
-          "Intensity": 8,
-          "Quality": "High",
-          "Radius": 32
-        },
-        {
-          "__type": "Sandbox.Bloom",
-          "__guid": "3cb3d7d4-0305-4d60-b541-4f2462d65156",
-          "BloomColor": {
-            "color": [
-              {
-                "c": "1,1,1,1"
-              },
-              {
-                "t": 1,
-                "c": "1,1,1,1"
-              }
-            ],
-            "alpha": []
-          },
-          "BloomCurve": [
-            {
-              "y": 0.5
-            },
-            {
-              "x": 1,
-              "y": 1
-            }
-          ],
-          "Mode": "Additive",
-          "Strength": 1,
-          "Threshold": 0.5,
-          "ThresholdWidth": 0
-        },
-        {
-          "__type": "Sandbox.Tonemapping",
-          "__guid": "9503a836-2d60-4fb0-8faf-307273f127ff",
-          "__version": 1,
-          "ExposureBias": 2,
-          "ExposureCompensation": 0,
-          "ExposureMethod": "RGB",
-          "MaximumExposure": 2,
-          "MinimumExposure": 1,
-          "Mode": "ACES",
-          "Rate": 1
-        }
-      ]
-    },
-    {
-      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
-      "Flags": 0,
-      "Name": "Screen",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 100
-        },
-        {
-          "__type": "Softsplit.UI.PauseMenuPanel",
-          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
-        },
-        {
-          "__type": "SandboxHud",
-          "__guid": "e6aaba4f-4bc9-4996-9e64-c4be68ddf2cd"
-        }
-      ]
     }
   ],
   "SceneProperties": {

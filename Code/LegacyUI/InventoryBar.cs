@@ -13,22 +13,24 @@ public class InventoryBar : Panel
 
 	public override void Tick()
 	{
-		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+		base.Tick();
+
+		/*
+		var player = Game.LocalPawn as Player;
 		if ( player == null ) return;
-		var inventory = player.Inventory;
-		if ( inventory == null ) return;
+		if ( player.Inventory == null ) return;
 
 		for ( int i = 0; i < slots.Count; i++ )
 		{
-			UpdateIcon( inventory.GetSlot( i ), slots[i], i );
+			UpdateIcon( player.Inventory.GetSlot( i ), slots[i], i );
 		}
-
-		ProcessClientInput();
+		*/
 	}
 
-	private static void UpdateIcon( Tool ent, InventoryIcon inventoryIcon, int i )
+	/*
+	private static void UpdateIcon( Entity ent, InventoryIcon inventoryIcon, int i )
 	{
-		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+		var player = Game.LocalPawn as Player;
 
 		if ( ent == null )
 		{
@@ -38,24 +40,26 @@ public class InventoryBar : Panel
 
 		var di = DisplayInfo.For( ent );
 
-		inventoryIcon.TargetEnt = ent.GameObject;
+		inventoryIcon.TargetEnt = ent;
 		inventoryIcon.Label.Text = di.Name;
 		inventoryIcon.SetClass( "active", player.ActiveChild == ent );
 	}
 
+	[Event.Client.BuildInput]
 	public void ProcessClientInput()
 	{
-		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
-		if ( player == null ) return;
+		var player = Game.LocalPawn as Player;
+		if ( player == null )
+			return;
 
 		var inventory = player.Inventory;
 		if ( inventory == null )
 			return;
-		/*
+
 		if ( player.ActiveChild is PhysGun physgun && physgun.BeamActive )
 		{
 			return;
-		}*/
+		}
 
 		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( inventory, 0 );
 		if ( Input.Pressed( "slot2" ) ) SetActiveSlot( inventory, 1 );
@@ -67,14 +71,15 @@ public class InventoryBar : Panel
 		if ( Input.Pressed( "slot8" ) ) SetActiveSlot( inventory, 7 );
 		if ( Input.Pressed( "slot9" ) ) SetActiveSlot( inventory, 8 );
 
-		if ( Input.MouseWheel != 0 ) SwitchActiveSlot( inventory, (int)-Input.MouseWheel.y );
+		if ( Input.MouseWheel != 0 ) SwitchActiveSlot( inventory, -Input.MouseWheel );
 	}
 
-	private static void SetActiveSlot( Inventory inventory, int i )
+	private static void SetActiveSlot( IBaseInventory inventory, int i )
 	{
-		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+		var player = Game.LocalPawn as Player;
 
-		if ( player == null ) return;
+		if ( player == null )
+			return;
 
 		var ent = inventory.GetSlot( i );
 		if ( player.ActiveChild == ent )
@@ -83,10 +88,10 @@ public class InventoryBar : Panel
 		if ( ent == null )
 			return;
 
-		player.ActiveChild = ent;
+		player.ActiveChildInput = ent;
 	}
 
-	private static void SwitchActiveSlot( Inventory inventory, int idelta )
+	private static void SwitchActiveSlot( IBaseInventory inventory, int idelta )
 	{
 		var count = inventory.Count();
 		if ( count == 0 ) return;
@@ -99,4 +104,5 @@ public class InventoryBar : Panel
 
 		SetActiveSlot( inventory, nextSlot );
 	}
+	*/
 }

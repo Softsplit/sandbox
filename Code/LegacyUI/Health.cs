@@ -1,5 +1,5 @@
-using Sandbox.UI;
 using Sandbox.UI.Construct;
+using Softsplit;
 
 public class Health : Panel
 {
@@ -12,9 +12,8 @@ public class Health : Panel
 
 	public override void Tick()
 	{
-		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
-		if ( player == null ) return;
+		var player = PlayerState.Local;
 
-		Label.Text = $"{player.Health.CeilToInt()}";
+		Label.Text = $"{player?.PlayerPawn?.HealthComponent?.Health.CeilToInt()}";
 	}
 }

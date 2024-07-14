@@ -1,0 +1,21 @@
+{
+  "UI": false,
+  "Volume": "0.60,0.60,0",
+  "Pitch": "1.00,1.00,0",
+  "Decibels": 50,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sounds/player/foley/gear/add.walking.6.vsnd",
+    "sounds/player/foley/gear/add.walking.5.vsnd",
+    "sounds/player/foley/gear/add.walking.4.vsnd",
+    "sounds/player/foley/gear/add.walking.3.vsnd",
+    "sounds/player/foley/gear/add.walking.2.vsnd"
+  ],
+  "Occlusion": true,
+  "AirAbsorption": true,
+  "Transmission": true,
+  "OcclusionRadius": 64,
+  "DistanceAttenuation": true,
+  "__references": [],
+  "__version": 0
+}
