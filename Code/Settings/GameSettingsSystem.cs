@@ -22,6 +22,7 @@ public class GameSettings
 	[Title( "View Bob" ), Group( "Game" ), Range( 0, 100, 5f )]
 	public float ViewBob { get; set; } = 100f;
 
+	/*
 	[Title( "Show Dot" ), Group( "Crosshair" )]
 	public bool ShowCrosshairDot { get; set; } = true;
 
@@ -36,6 +37,7 @@ public class GameSettings
 
 	[Title( "Crosshair Color" ), Group( "Crosshair" )]
 	public Color CrosshairColor { get; set; } = Color.White;
+	*/
 }
 
 public partial class GameSettingsSystem

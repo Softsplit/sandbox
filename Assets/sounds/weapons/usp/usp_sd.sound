@@ -1,0 +1,17 @@
+{
+  "UI": false,
+  "Volume": "1.00,1.00,0",
+  "Pitch": "0.95,1.10,1",
+  "Decibels": 500,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sounds/weapons/usp/usp_suppressed_1.vsnd"
+  ],
+  "Occlusion": false,
+  "AirAbsorption": false,
+  "Transmission": false,
+  "OcclusionRadius": 64,
+  "DistanceAttenuation": true,
+  "__references": [],
+  "__version": 0
+}

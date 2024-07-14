@@ -1,0 +1,49 @@
+@using Sandbox;
+@using Sandbox.UI;
+
+@namespace Softsplit.UI
+@inherits PanelComponent
+
+<root>
+    <div class="options">
+        @foreach ( var grouping in TypeLibrary.GetMethodsWithAttribute<DeveloperCommandAttribute>().OrderBy( x => x.Attribute.Name ).GroupBy( x => x.Attribute.Group ) )
+        {
+            <div class="group">
+                <label class="text white">@grouping.Key</label>
+                @foreach ( var data in grouping )
+                {
+                    <div class="button" onclick=@(() => InvokeMethod( data.Method ))>@data.Attribute.Name</div>
+                }
+            </div>
+        }
+    </div>
+</root>
+
+@code
+{
+    protected bool IsActive { get; set; }
+
+    protected override void OnTreeFirstBuilt()
+    {
+        BindClass( "active", () => IsActive );
+    }
+
+    protected void InvokeMethod( MethodDescription method )
+    {
+        method?.Invoke( null );
+    }
+
+    [ConVar( "developer_mode" )]
+    public static bool IsDeveloper { get; set; } = false;
+
+    protected override void OnUpdate()
+    {
+        if ( IsDeveloper || Game.IsEditor )
+        {
+            if ( Input.Pressed( "DeveloperMenu" ) )
+            {
+                IsActive ^= true;
+            }
+        }
+    }
+}
