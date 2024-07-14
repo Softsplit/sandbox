@@ -1,4 +1,5 @@
-﻿public class ThrusterCreater : Tool
+﻿namespace Tools;
+public class ThrusterCreater : Tool
 {
 	protected override void OnUpdate()
 	{

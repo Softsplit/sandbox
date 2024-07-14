@@ -1,6 +1,6 @@
 using Sandbox.UI.Construct;
 using System;
-
+using Sandbox;
 public partial class SpawnMenu : Panel
 {
 	public static SpawnMenu Instance;
@@ -56,11 +56,11 @@ public partial class SpawnMenu : Panel
 	async void RebuildToolList()
 	{
 		toollist.DeleteChildren( true );
-		Log.Info( TypeLibrary.GetTypes<Tool>().Count() );
-		var player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+		Log.Info( TypeLibrary.GetTypes<Tools.Tool>().Count() );
+		var player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
 		for ( int i = 0; i < 30; i++ )
 		{
-			player = Game.ActiveScene.GetAllComponents<Player>().Where( player => !player.IsProxy ).FirstOrDefault();
+			player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
 			await Task.Delay( 100 );
 			if (player != null)
 			{
@@ -72,7 +72,7 @@ public partial class SpawnMenu : Panel
 		var inventory = player.Inventory;
 		Log.Info( inventory );
 		if ( inventory == null ) return;
-		foreach ( var entry in TypeLibrary.GetTypes<Tool>() )
+		foreach ( var entry in TypeLibrary.GetTypes<Tools.Tool>() )
 		{
 			if ( entry.Name == "Tool" )
 				continue;
@@ -93,12 +93,12 @@ public partial class SpawnMenu : Panel
 		}
 	}
 
-	void SetActiveTool( TypeDescription classtype, Inventory inventory, Player player )
+	void SetActiveTool( TypeDescription classtype, Softsplit.PlayerInventory inventory, Softsplit.PlayerPawn player )
 	{
-		var obj = new GameObject();
+		/*var obj = new GameObject();
 		var tool = obj.Components.Create( classtype );
-		obj.NetworkSpawn();
-		inventory.Add( tool as Tool );
+		obj.NetworkSpawn();*/
+		inventory.Add( classtype );
 
 		// set the active weapon to the toolgun
 		/*

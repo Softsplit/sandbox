@@ -9,7 +9,7 @@ public record EquipmentDestroyedEvent( Equipment Equipment ) : IGameEvent;
 /// <summary>
 /// An equipment component.
 /// </summary>
-public partial class Equipment : Component, Component.INetworkListener, IEquipment, IDescription
+public class Equipment : Component, Component.INetworkListener, IEquipment, IDescription
 {
 	/// <summary>
 	/// A reference to the equipment's <see cref="EquipmentResource"/>.

@@ -1,4 +1,5 @@
-﻿public class JointLine
+﻿namespace Tools;
+public class JointLine
 {
 	static public void Create( GameObject a, GameObject b )
 	{

@@ -1,4 +1,5 @@
-﻿public class WeldTool : Tool
+﻿namespace Tools;
+public class WeldTool : Tool
 {
 	GameObject lastObject;
 	Vector3 lastObjectOffset;

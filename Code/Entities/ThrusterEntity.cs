@@ -1,4 +1,6 @@
-﻿public sealed class ThrusterEntity : Component, IUse
+﻿using Softsplit;
+
+public sealed class ThrusterEntity : Component, Softsplit.IUse
 {
 	SceneParticles effects;
 	[Sync] bool Work { get; set; } = true;
@@ -27,7 +29,17 @@
 		effects.Delete();
 	}
 
-	public bool OnUse( GameObject user )
+	public bool IsUsable( GameObject user )
+	{
+		return true;
+	}
+
+	public bool CanUse( PlayerPawn player )
+	{
+		return true;
+	}
+
+	public void OnUse( PlayerPawn player )
 	{
 		Work = !Work;
 		if ( !Work )
@@ -38,11 +50,5 @@
 		{
 			effects = new SceneParticles( Scene.SceneWorld, "particles/physgun_end_nohit.vpcf" );
 		}
-		return false;
-	}
-
-	public bool IsUsable( GameObject user )
-	{
-		return true;
 	}
 }

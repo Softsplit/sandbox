@@ -1,0 +1,14 @@
+{
+  "Name": "My Equipment",
+  "Description": "",
+  "Slot": "Undefined",
+  "DropOnDisconnect": false,
+  "Icon": null,
+  "MainPrefab": null,
+  "ViewModelPrefab": null,
+  "WorldModel": null,
+  "DroppedSize": "8,2,8",
+  "DroppedCenter": "0,0,0",
+  "__references": [],
+  "__version": 0
+}

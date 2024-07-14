@@ -1,4 +1,5 @@
-﻿public class Scale : Tool
+﻿namespace Tools;
+public class Scale : Tool
 {
 	private float scaleFactor = 1.0f;
 	private float scaleSpeed = 0.01f;

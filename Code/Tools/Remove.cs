@@ -1,4 +1,5 @@
-﻿public class Remove : Tool
+﻿namespace Tools;
+public class Remove : Tool
 {
 	protected override void OnUpdate()
 	{

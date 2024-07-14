@@ -40,6 +40,10 @@ public partial class PlayerInventory : Component
 			wpn.Enabled = false;
 		}
 	}
+	public void Add(TypeDescription equipment)
+	{
+		Player.Components.Create( equipment );
+	}
 
 	[Authority( NetPermission.HostOnly )]
 	public void RefillAmmo()
