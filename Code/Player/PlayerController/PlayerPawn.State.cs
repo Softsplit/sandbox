@@ -14,6 +14,7 @@ public partial class PlayerPawn
 	/// The player's inventory, items, etc.
 	/// </summary>
 	[RequireComponent] public PlayerInventory Inventory { get; private set; }
+	[RequireComponent] public PlayerStats Stats { get; private set; }
 
 	/// <summary>
 	/// How long since the player last respawned?
