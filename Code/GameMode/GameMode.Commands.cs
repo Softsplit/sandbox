@@ -98,7 +98,7 @@ partial class GameMode
 		ent.NetworkSpawn();
 		ent.Network.DropOwnership();
 
-		owner.Stats.spawnedPropsList.Add( ent );
+		owner.PlayerState.spawnedPropsList.Add( ent );
 		Stats.Increment( "spawn.model", 1, modelname );
 	}
 }

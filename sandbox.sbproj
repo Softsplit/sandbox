@@ -229,7 +229,7 @@
           "GroupName": "Developer"
         },
         {
-          "Name": "prop_undo",
+          "Name": "undo",
           "KeyboardCode": "Z",
           "GamepadCode": "None",
           "GroupName": "Stats"
