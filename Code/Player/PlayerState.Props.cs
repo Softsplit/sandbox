@@ -7,11 +7,13 @@ public partial class PlayerState
 {
     [Property]
     public List<GameObject> spawnedPropsList = new List<GameObject>();
+    public float undoPropHeldTimer { get; private set; } = 0;
 
-    protected async void CheckPropUndo()
+    protected void CheckPropUndo()
     {
         if ( Input.Pressed( "undo" ) )
         {
+            undoPropHeldTimer = 0;
             if ( spawnedPropsList.Count > 0 )
             {
                 DestoryLastSpawnedProp( spawnedPropsList.Last() );
@@ -20,13 +22,14 @@ public partial class PlayerState
         }
         else if ( Input.Down( "undo" ) )
         {
-            await Task.DelaySeconds( 1 );
-            if ( !Input.Down( "undo" ) ) return;
-            if ( spawnedPropsList.Count > 0 )
-            {
-                DestoryLastSpawnedProp( spawnedPropsList.Last() );
-                spawnedPropsList.RemoveAt( spawnedPropsList.IndexOf( spawnedPropsList.Last() ) );
-            }
+            undoPropHeldTimer += 0.1f;
+            if ( undoPropHeldTimer > 1 )
+                if ( spawnedPropsList.Count > 0 )
+                {
+                    DestoryLastSpawnedProp( spawnedPropsList.Last() );
+                    spawnedPropsList.RemoveAt( spawnedPropsList.IndexOf( spawnedPropsList.Last() ) );
+                    undoPropHeldTimer = 0;
+                }
         }
     }
 
