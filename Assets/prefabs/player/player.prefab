@@ -36,6 +36,11 @@
           "prefab": "prefabs/impact_fx/impact_blood_mist.prefab"
         },
         "HeadshotSound": "sounds/player/headshot_hit.sound",
+        "HeadshotWithHelmetEffect": {
+          "_type": "gameobject",
+          "prefab": "prefabs/impact_fx/impact_sparks.prefab"
+        },
+        "HeadshotWithHelmetSound": "sounds/player/headshot_helmet_hit.sound",
         "HealthComponent": {
           "_type": "component",
           "component_id": "b0ad035b-94a2-4e02-8850-15baffda666b",
@@ -53,6 +58,7 @@
           "go": "d5948881-7e0d-4ca0-8054-85c77a3cc5af",
           "component_type": "PlayerOutfitter"
         },
+        "OutOfPlayAreaKillTime": 5,
         "PlayerBoxCollider": {
           "_type": "component",
           "component_id": "0d4973b2-fdb1-4f1d-ab98-c1c49bfd4a2b",
@@ -92,12 +98,32 @@
           "go": "91c92300-c9e5-4a0d-b4ae-d26a91936fc8",
           "component_type": "CameraComponent"
         },
+        "ChromaticAberration": {
+          "_type": "component",
+          "component_id": "a1574d00-56c9-4791-9885-9c2ce4d6d170",
+          "go": "91c92300-c9e5-4a0d-b4ae-d26a91936fc8",
+          "component_type": "ChromaticAberration"
+        },
+        "Pixelate": {
+          "_type": "component",
+          "component_id": "fea821b4-2c14-4aa3-ab38-da30ee64a3a3",
+          "go": "91c92300-c9e5-4a0d-b4ae-d26a91936fc8",
+          "component_type": "Pixelate"
+        },
         "Player": {
           "_type": "component",
           "component_id": "3370799f-99ac-4881-9678-016414bdb61f",
           "go": "a4f94dfd-8684-4032-89b1-b08190beab32",
           "component_type": "PlayerPawn"
         },
+        "RespawnProtectionSaturation": 0.25,
+        "ScreenShaker": {
+          "_type": "component",
+          "component_id": "e405a983-581c-4843-b72d-bd6afa755f8f",
+          "go": "91c92300-c9e5-4a0d-b4ae-d26a91936fc8",
+          "component_type": "ScreenShaker"
+        },
+        "ShouldViewBob": true,
         "ThirdPersonDistance": 128
       },
       {
@@ -154,6 +180,16 @@
       {
         "__type": "Softsplit.PlayerMarker",
         "__guid": "236bf370-9058-4dca-b2e6-c774d97f7674"
+      },
+      {
+        "__type": "Sandbox.HighlightOutline",
+        "__guid": "dc62f043-7be8-471e-98c1-51585a4ad901",
+        "__enabled": false,
+        "Color": "1,1,1,1",
+        "InsideColor": "0,0,0,0",
+        "InsideObscuredColor": "0,0,0,0",
+        "ObscuredColor": "0,0,0,0.4",
+        "Width": 0.25
       },
       {
         "__type": "Softsplit.Spottable",
@@ -266,23 +302,31 @@
                     "ThresholdWidth": 1.65
                   },
                   {
+                    "__type": "Sandbox.Sharpen",
+                    "__guid": "09775e98-d3bd-4fe7-b742-4888e27b545c",
+                    "Scale": 0.1
+                  },
+                  {
+                    "__type": "Sandbox.ChromaticAberration",
+                    "__guid": "a1574d00-56c9-4791-9885-9c2ce4d6d170",
+                    "Offset": "2,3,0",
+                    "Scale": 0
+                  },
+                  {
+                    "__type": "Sandbox.Pixelate",
+                    "__guid": "fea821b4-2c14-4aa3-ab38-da30ee64a3a3",
+                    "Scale": 0
+                  },
+                  {
+                    "__type": "Softsplit.ScreenShaker",
+                    "__guid": "e405a983-581c-4843-b72d-bd6afa755f8f"
+                  },
+                  {
                     "__type": "Sandbox.AmbientOcclusion",
                     "__guid": "9d21f25e-4845-4991-8273-82f901d917f4",
                     "Intensity": 8,
                     "Quality": "High",
                     "Radius": 32
-                  },
-                  {
-                    "__type": "Sandbox.Tonemapping",
-                    "__guid": "db713c7f-2f22-47a1-b7ca-8b25a4d531e4",
-                    "__version": 1,
-                    "ExposureBias": 2,
-                    "ExposureCompensation": 0,
-                    "ExposureMethod": "RGB",
-                    "MaximumExposure": 2,
-                    "MinimumExposure": 1,
-                    "Mode": "HableFilmic",
-                    "Rate": 1
                   }
                 ],
                 "Children": [
@@ -299,7 +343,7 @@
                         "__enabled": false,
                         "BackgroundColor": "1,1,1,0",
                         "ClearFlags": "Depth, Stencil",
-                        "FieldOfView": 90,
+                        "FieldOfView": 93.23,
                         "IsMainCamera": false,
                         "Orthographic": false,
                         "OrthographicHeight": 1204,
@@ -309,7 +353,7 @@
                         "TargetEye": "None",
                         "Viewport": "0,0,1,1",
                         "ZFar": 10000,
-                        "ZNear": 1
+                        "ZNear": 0.1
                       }
                     ]
                   }
@@ -403,7 +447,74 @@
           },
           {
             "__type": "Softsplit.PlayerOutfitter",
-            "__guid": "3641376f-2219-4c28-8765-9e28f5bcfafe"
+            "__guid": "3641376f-2219-4c28-8765-9e28f5bcfafe",
+            "EnableHelmetPhysics": false,
+            "FallbackTeam": "Terrorist",
+            "Outfits": [
+              {
+                "Team": "Terrorist",
+                "Outfits": [
+                  {
+                    "Items": [
+                      "models/citizen_clothes/hat/bandana_mask/bandana_mask.clothing",
+                      "models/citizen_clothes/shirt/flannel_shirt/flannel_shirt.clothing",
+                      "models/citizen_clothes/trousers/jeans/jeans_black.clothing",
+                      "models/citizen_clothes/shoes/boots/black_boots.clothing",
+                      "models/citizen_clothes/gloves/leather_gloves/leather_gloves.clothing"
+                    ],
+                    "DiscardCategories": [],
+                    "DiscardSubcategories": [
+                      "Beards",
+                      "Jackets",
+                      "Jacket",
+                      "Coats"
+                    ],
+                    "Helmet": "models/citizen_clothes/hat/skater_helmet/skater_helmet_camo.clothing"
+                  },
+                  {
+                    "Items": [
+                      "models/citizen_clothes/shirt/flannel_shirt/flannel_shirt.clothing",
+                      "models/citizen_clothes/trousers/jeans/jeans_black.clothing",
+                      "models/citizen_clothes/shoes/boots/black_boots.clothing"
+                    ],
+                    "DiscardCategories": [],
+                    "DiscardSubcategories": [
+                      "Jackets",
+                      "Jacket",
+                      "Coats"
+                    ],
+                    "Helmet": "models/citizen_clothes/hat/skater_helmet/skater_helmet_camo.clothing"
+                  }
+                ]
+              },
+              {
+                "Team": "CounterTerrorist",
+                "Outfits": [
+                  {
+                    "Items": [
+                      "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.clothing",
+                      "models/citizen_clothes/shirt/army_shirt/army_shirt.clothing",
+                      "models/citizen_clothes/trousers/cargopants/cargo_pants_army.clothing",
+                      "models/citizen_clothes/shoes/boots/army_boots.clothing",
+                      "models/citizen_clothes/gloves/tactical_gloves/army_gloves.clothing",
+                      "models/citizen_clothes/hat/balaclava/balaclava.clothing"
+                    ],
+                    "DiscardCategories": [],
+                    "DiscardSubcategories": [
+                      "Coats",
+                      "Beards"
+                    ],
+                    "Helmet": "models/citizen_clothes/hat/tactical_helmet/tactical_helmet.clothing"
+                  }
+                ]
+              }
+            ],
+            "PlayerPawn": {
+              "_type": "component",
+              "component_id": "3370799f-99ac-4881-9678-016414bdb61f",
+              "go": "a4f94dfd-8684-4032-89b1-b08190beab32",
+              "component_type": "PlayerPawn"
+            }
           },
           {
             "__type": "Softsplit.EquipmentMountPoints",
@@ -1069,7 +1180,7 @@
                                 "__type": "Sandbox.ModelRenderer",
                                 "__guid": "a8a98d3f-e919-4708-a8f5-d19e4294b7af",
                                 "BodyGroups": 18446744073709551615,
-                                "Model": "models/dev/error.vmdl",
+                                "Model": "weapons/throwable/c4_bomb/c4_bomb.vmdl",
                                 "RenderType": "On",
                                 "Tint": "1,1,1,1"
                               }

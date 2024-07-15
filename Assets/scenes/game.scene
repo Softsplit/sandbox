@@ -34,7 +34,8 @@
               "Equipment": [
                 "weapons/mp5/mp5.equip",
                 "weapons/usp/usp.equip",
-                "weapons/knife_bayonet/knife_bayonet.equip"
+                "weapons/knife/knife.equip",
+                "weapons/throwable/he_grenade/he_grenade.equip"
               ]
             }
           ],
