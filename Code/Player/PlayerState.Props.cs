@@ -21,7 +21,7 @@ public partial class PlayerState
         else if ( Input.Down( "undo" ) )
         {
             await Task.DelaySeconds( 1 );
-                if ( !Input.Down( "undo" ) ) return;
+            if ( !Input.Down( "undo" ) ) return;
             if ( spawnedPropsList.Count > 0 )
             {
                 DestoryLastSpawnedProp( spawnedPropsList.Last() );
@@ -33,6 +33,6 @@ public partial class PlayerState
     [Broadcast]
     public void DestoryLastSpawnedProp( GameObject propToDestory )
     {
-        propToDestory.Destroy();
+        propToDestory?.Destroy();
     }
 }
