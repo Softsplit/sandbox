@@ -2,31 +2,37 @@ namespace Softsplit;
 
 public partial class PlayerState
 {
-	public List<GameObject> SpawnedPropsList { get; set; } = new();
+	public List<GameObject> SpawnedPropsList { get; private set; } = new();
 
 	private float undoPropHeldTimer = 0;
+	private float undoPropRate = 1;
 
 	protected void CheckPropUndo()
 	{
 		if ( Input.Pressed( "undo" ) )
 		{
+			undoPropRate = 1;
 			undoPropHeldTimer = 0;
-			if ( SpawnedPropsList.Count > 0 )
-			{
-				DestroyLastSpawnedProp( SpawnedPropsList.Last() );
-				SpawnedPropsList.RemoveAt( SpawnedPropsList.IndexOf( SpawnedPropsList.Last() ) );
-			}
+			HandlePropDestroyInitiation();
 		}
 		else if ( Input.Down( "undo" ) )
 		{
-			undoPropHeldTimer += 0.1f;
-			if ( undoPropHeldTimer > 1 )
-				if ( SpawnedPropsList.Count > 0 )
-				{
-					DestroyLastSpawnedProp( SpawnedPropsList.Last() );
-					SpawnedPropsList.RemoveAt( SpawnedPropsList.IndexOf( SpawnedPropsList.Last() ) );
-					undoPropHeldTimer = 0;
-				}
+			undoPropRate -= Time.Delta / 5f;
+			undoPropHeldTimer += 0.04f;
+			if ( undoPropHeldTimer > undoPropRate )
+			{
+				HandlePropDestroyInitiation();
+				undoPropHeldTimer = 0;
+			}
+		}
+	}
+
+	private void HandlePropDestroyInitiation()
+	{
+		if ( SpawnedPropsList.Count > 0 )
+		{
+			DestroyLastSpawnedProp( SpawnedPropsList.Last() );
+			SpawnedPropsList.RemoveAt( SpawnedPropsList.IndexOf( SpawnedPropsList.Last() ) );
 		}
 	}
 
