@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Softsplit;
 
-partial class GameMode
+partial class GameMode : Component.INetworkListener
 {
 	// TODO: This code is hot garbage, rewrite all of this crap later
 
@@ -75,6 +75,8 @@ partial class GameMode
 		var ent = new GameObject();
 		ent.Transform.Position = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z;
 		ent.Transform.Rotation = modelRotation;
+
+		ent.Tags.Add( "solid" );
 
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;

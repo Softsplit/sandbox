@@ -30,17 +30,18 @@
           "__type": "Softsplit.DefaultEquipment",
           "__guid": "aeb88489-8fdd-487d-87a2-d2cc4f735ee5",
           "Equipment": [
+            "weapons/physgun/physgun.equip",
             "weapons/mp5/mp5.equip",
+            "weapons/spaghelli/spaghelli.equip",
             "weapons/usp/usp.equip",
-            "weapons/knife_bayonet/knife_bayonet.equip"
+            "weapons/knife_bayonet/knife_bayonet.equip",
+            "weapons/throwable/he_grenade/he_grenade.equip"
           ],
           "RefillAmmo": true
         },
         {
           "__type": "Softsplit.EquipmentDropper",
-          "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7",
-          "Categories": [],
-          "LimitedDropOnDeath": true
+          "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7"
         }
       ]
     },
@@ -116,7 +117,7 @@
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
-          "MapName": "softsplit.gm_bigcity",
+          "MapName": "facepunch.flatgrass",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }

@@ -114,7 +114,7 @@ public partial class PlayerInventory : Component
 			return;
 		}
 
-		for ( int i = 0; i < Equipment.ToList().Count; i++ )
+		for ( int i = 0; i < Equipment.Count(); i++ )
 		{
 			if ( !Input.Pressed( $"Slot{i + 1}" ) )
 				continue;
