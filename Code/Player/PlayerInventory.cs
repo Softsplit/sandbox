@@ -272,7 +272,7 @@ public partial class PlayerInventory : Component
 	}
 	public Equipment GiveTool( EquipmentResource resource, TypeDescription type, bool makeActive = true )
 	{
-		Assert.True( Networking.IsHost );
+		// Assert.True( Networking.IsHost ); idk what is doing
 		// TODO: clean this code
 
 		// If we're in charge, let's make some equipment.

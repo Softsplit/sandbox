@@ -61,7 +61,7 @@ public partial class SpawnMenu : Panel
 		toollist.DeleteChildren( true );
 		Log.Info( TypeLibrary.GetTypes<Tools.Tool>().Count() );
 		var player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
-		for ( int i = 0; i < 30; i++ )
+		for ( int i = 0; i < 5; i++ )
 		{
 			player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
 			await Task.Delay( 100 );
@@ -71,10 +71,18 @@ public partial class SpawnMenu : Panel
 			}
 			Log.Info( player );
 		}
-		if ( player == null ) return;
+		if ( player == null )
+		{
+			isToolBuilding = false; 
+			return; 
+		}
 		var inventory = player.Inventory;
 		Log.Info( inventory );
-		if ( inventory == null ) return;
+		if ( inventory == null )
+		{
+			isToolBuilding = false;
+			return;
+		}
 		foreach ( var entry in TypeLibrary.GetTypes<Tools.Tool>() )
 		{
 			if ( entry.Name == "Tool" )
@@ -123,7 +131,8 @@ public partial class SpawnMenu : Panel
 
 	public override void Tick()
 	{
-		if (toollist.ChildrenCount == 0 && !isToolBuilding)
+		// Log.Info( isToolBuilding );
+		if (Input.Pressed("menu") ||(toollist.ChildrenCount == 0 && !isToolBuilding))
 		{
 			RebuildToolList();
 		}

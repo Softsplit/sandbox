@@ -148,8 +148,7 @@ public class Physgun_Classic : Tool // https://github.com/Facepunch/sbox-scenest
 
 		if ( grabbedBody is null )
 		{
-			var tr = Scene.Trace.Ray( Scene.Camera.ScreenNormalToRay( 0.5f ), 1000.0f )
-							.Run();
+			var tr = DoTrace();
 
 			if ( tr.Hit )
 			{
