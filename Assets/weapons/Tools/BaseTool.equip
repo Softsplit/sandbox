@@ -5,11 +5,11 @@
   "Icon": null,
   "MainPrefab": {
     "_type": "gameobject",
-    "prefab": "prefabs/basetool.prefab"
+    "prefab": "weapons/tools/toolwm.prefab"
   },
   "ViewModelPrefab": {
     "_type": "gameobject",
-    "prefab": "prefabs/basetool.prefab"
+    "prefab": "weapons/tools/toolvm.prefab"
   },
   "WorldModel": "weapons/rust_pistol/rust_pistol.vmdl",
   "DroppedSize": "8,2,8",
