@@ -4,8 +4,6 @@
     "Flags": 0,
     "Name": "he_grenade",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
     "Components": [
       {
         "__type": "Softsplit.HEGrenade",
@@ -25,7 +23,7 @@
           }
         ],
         "DamageRadius": 450,
-        "Lifetime": 3,
+        "Lifetime": 1.5,
         "MaxDamage": 90,
         "PrefabOnExplode": {
           "_type": "gameobject",
@@ -64,8 +62,6 @@
         "Flags": 0,
         "Name": "Model",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.ModelRenderer",
@@ -77,7 +73,8 @@
           }
         ]
       }
-    ]
+    ],
+    "__variables": []
   },
   "ShowInMenu": false,
   "MenuPath": null,

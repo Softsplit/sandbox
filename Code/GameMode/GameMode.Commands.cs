@@ -55,7 +55,7 @@ partial class GameMode
 
 		Model model;
 
-		if ( modelname.Contains( "." ) && !modelname.EndsWith( ".vmdl", System.StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", System.StringComparison.OrdinalIgnoreCase ) )
+		if ( modelname.Contains( '.' ) && !modelname.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", StringComparison.OrdinalIgnoreCase ) )
 		{
 			MountPackage( modelname );
 
@@ -72,20 +72,14 @@ partial class GameMode
 		if ( model == null || model.IsError )
 			return;
 
-		var ent = new GameObject
-		{
-			Name = modelname.Substring( modelname.LastIndexOf( '/' ) + 1, modelname.LastIndexOf( '.' ) - modelname.LastIndexOf( '/' ) - 1 )
-		};
-
-		ent.Tags.Add( "solid" );
-
+		var ent = new GameObject();
 		ent.Transform.Position = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z;
 		ent.Transform.Rotation = modelRotation;
 
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
 
-		foreach ( var shape in ent.Components.Get<Rigidbody>().PhysicsBody.Shapes )
+		foreach ( var shape in ent.Components.Get<Rigidbody>()?.PhysicsBody.Shapes )
 		{
 			if ( shape.IsMeshShape )
 			{

@@ -98,7 +98,7 @@ public static partial class GameUtils
 			writer.WriteLine( $"    IsConnected: {player.IsConnected}" );
 			writer.WriteLine( $"    IsLocalPlayer: {player.IsLocalPlayer}" );
 			writer.WriteLine( $"    Connection: {(player.Connection is { } connection ? $"{connection.Id} ({connection.DisplayName})" : "null")}" );
-			writer.WriteLine( $"    Pawn: {player.Pawn?.ToString() ?? "null"}" );
+			writer.WriteLine( $"    PlayerPawn: {player.PlayerPawn?.ToString() ?? "null"}" );
 		}
 
 		writer.WriteLine();
