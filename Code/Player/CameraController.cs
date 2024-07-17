@@ -90,6 +90,7 @@ public sealed class CameraController : Component
 
 		Update( eyeHeight );
 	}
+
 	protected override void OnStart()
 	{
 		// Create a highlight component if it doesn't exist on the camera.
@@ -123,6 +124,11 @@ public sealed class CameraController : Component
 
 		TargetFieldOfView = TargetFieldOfView.LerpTo( baseFov + FieldOfViewOffset, Time.Delta * 5f );
 		Camera.FieldOfView = TargetFieldOfView;
+
+		if ( Input.Pressed( "View" ) )
+		{
+			Mode = Mode == CameraMode.FirstPerson ? CameraMode.ThirdPerson : CameraMode.FirstPerson;
+		}
 	}
 
 	void OnModeChanged()

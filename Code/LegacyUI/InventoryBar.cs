@@ -17,28 +17,34 @@ public class InventoryBar : Panel
 	{
 		base.Tick();
 
-		var player = PlayerState.Local;
-		if ( player == null ) return;
-		if ( player.PlayerPawn == null ) return;
+		var player = PlayerState.Viewer?.PlayerPawn;
 
-		for ( int i = 0; i < Math.Min( slots.Count, player.PlayerPawn.Inventory.Equipment.Count() ); i++ )
+		for ( int i = 0; i < slots.Count; i++ )
 		{
-			UpdateIcon( player.PlayerPawn.Inventory.Equipment.ToList()[i], slots[i], i );
+			UpdateIcon( GetSlot( player?.Inventory, i ), slots[i] );
 		}
 	}
 
-	private static void UpdateIcon( Equipment equipment, InventoryIcon inventoryIcon, int i )
+	public Equipment GetSlot( PlayerInventory inventory, int i )
 	{
-		var player = PlayerState.Local.PlayerPawn;
+		if ( inventory.Equipment.Count() <= i ) return null;
+		if ( i < 0 ) return null;
 
-		if ( equipment == null )
+		return inventory.Equipment.ToList()[i];
+	}
+
+	private static void UpdateIcon( Equipment equipment, InventoryIcon inventoryIcon )
+	{
+		var player = equipment?.Owner;
+
+		if ( !equipment.IsValid() )
 		{
 			inventoryIcon.Clear();
 			return;
 		}
 
-		inventoryIcon.TargetEnt = equipment;
+		inventoryIcon.Equipment = equipment;
 		inventoryIcon.Label.Text = equipment.Resource.Name;
-		inventoryIcon.SetClass( "active", player.CurrentEquipment == equipment );
+		inventoryIcon.SetClass( "active", player?.CurrentEquipment == equipment );
 	}
 }

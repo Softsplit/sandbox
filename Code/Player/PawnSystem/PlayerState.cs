@@ -40,11 +40,6 @@ public partial class PlayerState : Component
 	public string DisplayName => $"{name}{(!IsConnected ? " (Disconnected)" : "")}";
 
 	/// <summary>
-	/// What's our loadout?
-	/// </summary>
-	[RequireComponent] public PlayerLoadout Loadout { get; private set; }
-
-	/// <summary>
 	/// Are we in the view of this player (clientside)
 	/// </summary>
 	public bool IsViewer => Viewer == this;

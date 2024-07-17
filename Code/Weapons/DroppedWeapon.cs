@@ -34,11 +34,6 @@ public partial class DroppedEquipment : Component, IUse, Component.ICollisionLis
 
 		droppedWeapon.Rigidbody = go.Components.Create<Rigidbody>();
 
-		if ( resource.Slot == EquipmentSlot.Special )
-		{
-			// Nothing
-		}
-
 		Game.ActiveScene.Dispatch( new EquipmentDroppedEvent( droppedWeapon, heldWeapon?.Owner ) );
 
 		if ( heldWeapon is not null )
@@ -69,7 +64,13 @@ public partial class DroppedEquipment : Component, IUse, Component.ICollisionLis
 		if ( _isUsed ) return;
 		_isUsed = true;
 
+		if ( !player.IsValid() )
+			return;
+
 		var weapon = player.Inventory.Give( Resource );
+
+		if ( !weapon.IsValid() )
+			return;
 
 		foreach ( var state in weapon.Components.GetAll<IDroppedWeaponState>() )
 		{
@@ -102,7 +103,7 @@ public partial class DroppedEquipment : Component, IUse, Component.ICollisionLis
 				return;
 
 			// Don't auto-pickup if we already have a weapon in this slot.
-			if ( player.Inventory.HasInSlot( Resource.Slot ) )
+			if ( player.Inventory.Has( Resource ) )
 				return;
 
 			OnUse( player );

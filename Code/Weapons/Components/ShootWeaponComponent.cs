@@ -336,9 +336,6 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	{
 		// target?.TakeDamage( damage, tr.EndPosition, tr.Direction * tr.Distance, Weapon.PlayerPawn.HealthComponent.Id, Weapon.Id, hitbox );
 		target?.TakeDamage( new DamageInfo( Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags ) );
-
-		// TODO: Better way?
-		target?.Components.Get<IDamageable>()?.OnDamage( new Sandbox.DamageInfo( damage, Equipment.Owner.GameObject, Equipment.GameObject ) );
 	}
 
 	private float CalculateDamageFalloff( float damage, float distance )

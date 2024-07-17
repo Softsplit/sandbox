@@ -79,7 +79,7 @@ public partial class PlayerInventory : Component
 		if ( !weapon.IsValid() )
 			return;
 
-		var canDrop = GameMode.Instance.Get<EquipmentDropper>() is { } dropper && dropper.CanDrop( Player, weapon );
+		var canDrop = GameMode.Instance.Get<EquipmentDropper>() is { };
 
 		if ( canDrop )
 		{
@@ -118,15 +118,12 @@ public partial class PlayerInventory : Component
 			return;
 		}
 
-		foreach ( var slot in Enum.GetValues<EquipmentSlot>() )
+		for ( int i = 0; i < Equipment.ToList().Count; i++ )
 		{
-			if ( slot == EquipmentSlot.Undefined )
+			if ( !Input.Pressed( $"Slot{i + 1}" ) )
 				continue;
 
-			if ( !Input.Pressed( $"Slot{(int)slot}" ) )
-				continue;
-
-			SwitchToSlot( slot );
+			Switch( Equipment.ToList()[i] );
 			return;
 		}
 
@@ -138,7 +135,7 @@ public partial class PlayerInventory : Component
 
 		if ( wheel.y == 0f ) return;
 
-		var availableWeapons = Equipment.OrderBy( x => x.Resource.Slot ).ToList();
+		var availableWeapons = Equipment.ToList();
 		if ( availableWeapons.Count == 0 )
 			return;
 
@@ -173,24 +170,6 @@ public partial class PlayerInventory : Component
 		if ( !Equipment.Any() )
 			return;
 
-		if ( HasInSlot( EquipmentSlot.Primary ) )
-		{
-			SwitchToSlot( EquipmentSlot.Primary );
-			return;
-		}
-
-		if ( HasInSlot( EquipmentSlot.Secondary ) )
-		{
-			SwitchToSlot( EquipmentSlot.Secondary );
-			return;
-		}
-
-		if ( HasInSlot( EquipmentSlot.Melee ) )
-		{
-			SwitchToSlot( EquipmentSlot.Melee );
-			return;
-		}
-
 		Switch( Equipment.FirstOrDefault() );
 	}
 
@@ -198,27 +177,6 @@ public partial class PlayerInventory : Component
 	{
 		Assert.True( !IsProxy || Networking.IsHost );
 		Player.SetCurrentEquipment( null );
-	}
-
-	public void SwitchToSlot( EquipmentSlot slot )
-	{
-		Assert.True( !IsProxy || Networking.IsHost );
-
-		var equipment = Equipment
-			.Where( x => x.Resource.Slot == slot )
-			.ToArray();
-
-		if ( equipment.Length == 0 )
-			return;
-
-		if ( equipment.Length == 1 && Current == equipment[0] && CanUnequipCurrentWeapon )
-		{
-			HolsterCurrent();
-			return;
-		}
-
-		var index = Array.IndexOf( equipment, Current );
-		Switch( equipment[(index + 1) % equipment.Length] );
 	}
 
 	/// <summary>
@@ -247,7 +205,7 @@ public partial class PlayerInventory : Component
 		if ( Current == equipment )
 		{
 			var otherEquipment = Equipment.Where( x => x != equipment );
-			var orderedBySlot = otherEquipment.OrderBy( x => x.Resource.Slot );
+			var orderedBySlot = otherEquipment;
 			var targetWeapon = orderedBySlot.FirstOrDefault();
 
 			if ( targetWeapon.IsValid() )
@@ -290,7 +248,7 @@ public partial class PlayerInventory : Component
 
 		if ( pickupResult == PickupResult.Swap )
 		{
-			var slotCurrent = Equipment.FirstOrDefault( equipment => equipment.Enabled && equipment.Resource.Slot == resource.Slot );
+			var slotCurrent = Equipment.FirstOrDefault( equipment => equipment.Enabled );
 			if ( slotCurrent.IsValid() )
 				Drop( slotCurrent, true );
 		}
@@ -314,22 +272,12 @@ public partial class PlayerInventory : Component
 		if ( makeActive )
 			Player.SetCurrentEquipment( component );
 
-		if ( component.Resource.Slot == EquipmentSlot.Special )
-		{
-			// Nothing
-		}
-
 		return component;
 	}
 
 	public bool Has( EquipmentResource resource )
 	{
 		return Equipment.Any( weapon => weapon.Enabled && weapon.Resource == resource );
-	}
-
-	public bool HasInSlot( EquipmentSlot slot )
-	{
-		return Equipment.Any( weapon => weapon.Enabled && weapon.Resource.Slot == slot );
 	}
 
 	public enum PickupResult
@@ -341,14 +289,6 @@ public partial class PlayerInventory : Component
 
 	public PickupResult CanTake( EquipmentResource resource )
 	{
-		switch ( resource.Slot )
-		{
-			case EquipmentSlot.Utility:
-				var can = !Has( resource );
-				return can ? PickupResult.Pickup : PickupResult.Swap;
-
-			default:
-				return !HasInSlot( resource.Slot ) ? PickupResult.Pickup : PickupResult.Swap;
-		}
+		return !Has( resource ) ? PickupResult.Pickup : PickupResult.Swap;
 	}
 }

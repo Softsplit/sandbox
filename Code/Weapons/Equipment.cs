@@ -57,11 +57,6 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 	[Property, Group( "GameObjects" )] public GameObject EjectionPort { get; set; }
 
 	/// <summary>
-	/// What prefab should we spawn as the mounted version of this piece of equipment?
-	/// </summary>
-	[Property, Group( "Mount Points" )] public GameObject MountedPrefab { get; set; }
-
-	/// <summary>
 	/// Cached version of the owner once we fetch it.
 	/// </summary>
 	private PlayerPawn owner;
@@ -86,7 +81,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 	/// <summary>
 	/// Is this equipment currently deployed by the player?
 	/// </summary>
-	[Sync, Change( nameof( OnIsDeployedPropertyChanged ))]
+	[Sync, Change( nameof( OnIsDeployedPropertyChanged ) )]
 	public bool IsDeployed { get; private set; }
 	private bool _wasDeployed { get; set; }
 	private bool _hasStarted { get; set; }
@@ -108,8 +103,8 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 		if ( !Owner.IsValid() )
 			return;
 
-		ModelRenderer.RenderType = !Owner.IsViewer 
-			? Sandbox.ModelRenderer.ShadowRenderType.On 
+		ModelRenderer.RenderType = !Owner.IsViewer
+			? Sandbox.ModelRenderer.ShadowRenderType.On
 			: Sandbox.ModelRenderer.ShadowRenderType.ShadowsOnly;
 	}
 
@@ -140,10 +135,10 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 
 		if ( !Resource.DropOnDisconnect )
 			return;
-		
+
 		var player = GameUtils.PlayerPawns.FirstOrDefault( x => x.Network.OwnerConnection == connection );
 		if ( !player.IsValid() ) return;
-		
+
 		DroppedEquipment.Create( Resource, player.Transform.Position + Vector3.Up * 32f, Rotation.Identity, this );
 	}
 
@@ -164,7 +159,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 			foreach ( var item in equipment )
 				item.Holster();
 		}
-		
+
 		IsDeployed = true;
 	}
 
@@ -176,7 +171,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 	{
 		if ( !IsDeployed )
 			return;
-		
+
 		IsDeployed = false;
 	}
 
@@ -188,7 +183,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 	{
 		return HoldType;
 	}
-	
+
 	private void OnIsDeployedPropertyChanged( bool oldValue, bool newValue )
 	{
 		// Conna: If `OnStart` hasn't been called yet, don't do anything. It'd be nice to have a property on
@@ -220,7 +215,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 		if ( ViewModel.IsValid() )
 			ViewModel.GameObject.Destroy();
 	}
-	
+
 	/// <summary>
 	/// Creates a viewmodel for the player to use.
 	/// </summary>
@@ -228,7 +223,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 	{
 		var player = Owner;
 		if ( !player.IsValid() ) return;
-		
+
 		var resource = Resource;
 
 		ClearViewModel();
@@ -261,7 +256,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 
 		var snd = Sound.Play( DeploySound, Transform.Position );
 		if ( !snd.IsValid() ) return;
-		
+
 		snd.ListenLocal = !IsProxy;
 	}
 
@@ -274,7 +269,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 			OnDeployed();
 		else
 			OnHolstered();
-		
+
 		base.OnStart();
 	}
 
@@ -302,7 +297,7 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 
 		UpdateRenderMode();
 		ClearViewModel();
-		
+
 		GameObject.Root.Dispatch( new EquipmentHolsteredEvent( this ) );
 	}
 
