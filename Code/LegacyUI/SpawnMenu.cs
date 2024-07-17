@@ -5,9 +5,11 @@ public partial class SpawnMenu : Panel
 {
 	public static SpawnMenu Instance;
 	readonly Panel toollist;
+	public EquipmentResource BaseTool = ResourceLibrary.Get<EquipmentResource>( "weapons/tools/basetool.equip" );
 
 	private static ModelList modelList;
 	private bool isSearching;
+	private bool isToolBuilding;
 
 	public SpawnMenu()
 	{
@@ -55,6 +57,7 @@ public partial class SpawnMenu : Panel
 
 	async void RebuildToolList()
 	{
+		isToolBuilding = true;
 		toollist.DeleteChildren( true );
 		Log.Info( TypeLibrary.GetTypes<Tools.Tool>().Count() );
 		var player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
@@ -78,9 +81,9 @@ public partial class SpawnMenu : Panel
 				continue;
 
 			var button = toollist.Add.Button( entry.Title );
-			if ( player.ActiveChild != null )
+			if ( player.CurrentEquipment != null )
 			{
-				button.SetClass( "active", entry.ClassName == player.ActiveChild.GetType().Name );
+				button.SetClass( "active", entry.ClassName == player.CurrentEquipment.GetType().Name );
 			}
 
 			button.AddEventListener( "onclick", () =>
@@ -91,6 +94,7 @@ public partial class SpawnMenu : Panel
 					child.SetClass( "active", child == button );
 			} );
 		}
+		isToolBuilding = false;
 	}
 
 	void SetActiveTool( TypeDescription classtype, Softsplit.PlayerInventory inventory, Softsplit.PlayerPawn player )
@@ -98,8 +102,8 @@ public partial class SpawnMenu : Panel
 		/*var obj = new GameObject();
 		var tool = obj.Components.Create( classtype );
 		obj.NetworkSpawn();*/
-		inventory.Add( classtype );
-
+		inventory.GiveTool( BaseTool, classtype );
+		// player.Components.Create( classtype );
 		// set the active weapon to the toolgun
 		/*
 		if ( Game.LocalPawn is not Player player ) return;
@@ -119,6 +123,10 @@ public partial class SpawnMenu : Panel
 
 	public override void Tick()
 	{
+		if (toollist.ChildrenCount == 0 && !isToolBuilding)
+		{
+			RebuildToolList();
+		}
 		if ( modelList.SearchInput.HasFocus )
 		{
 			isSearching = true;

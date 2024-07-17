@@ -70,6 +70,19 @@ public sealed partial class PlayerPawn : Pawn, IDescription
 		CameraController.SetActive( IsViewer );
 	}
 
+	[ConCmd("crashbycandy")]
+	public static void superlol()
+	{
+		for (int i = 0; i < 100; i++ )
+		{
+			var go = new GameObject();
+			go.Components.Create<ModelRenderer>().Model = Model.Cube;
+			go.Components.Create<Rigidbody>();
+			go.Components.Create<BoxCollider>();
+			go.NetworkSpawn();
+		}
+	}
+
 	public SceneTraceResult CachedEyeTrace { get; private set; }
 
 	protected override void OnUpdate()
@@ -165,7 +178,6 @@ public sealed partial class PlayerPawn : Pawn, IDescription
 		{
 			return;
 		}
-
 		_previousVelocity = cc.Velocity;
 
 		UpdateUse();

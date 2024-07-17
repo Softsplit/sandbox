@@ -1,0 +1,43 @@
+{
+  "RootObject": {
+    "__guid": "7ce7a4d7-d79c-4878-b4e9-32cfc5207e9d",
+    "Flags": 0,
+    "Name": "toolwm",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Softsplit.TagBinder",
+        "__guid": "9d26b40a-eb23-4121-9095-8df773042555"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "0216e2db-5c19-45ea-9e4c-28101dba64e2",
+        "Flags": 0,
+        "Name": "Cube",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "81704f54-16e1-4dcf-bb84-a00f6f3ee6eb",
+            "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
+            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ]
+      }
+    ],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [
+    "rust.rust_pistol"
+  ],
+  "__version": 1
+}

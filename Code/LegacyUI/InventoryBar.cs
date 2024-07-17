@@ -44,7 +44,7 @@ public class InventoryBar : Panel
 		}
 
 		inventoryIcon.Equipment = equipment;
-		inventoryIcon.Label.Text = equipment.Resource.Name;
-		inventoryIcon.SetClass( "active", player?.CurrentEquipment == equipment );
+		inventoryIcon.Label.Text = (equipment is Tools.Tool) ? equipment.GetType().Name : equipment.Resource.Name;
+		inventoryIcon.SetClass( "active", player.CurrentEquipment == equipment );
 	}
 }

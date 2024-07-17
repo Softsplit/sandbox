@@ -1,14 +1,21 @@
 {
   "Name": "My Equipment",
   "Description": "",
-  "Slot": "Undefined",
   "DropOnDisconnect": false,
   "Icon": null,
-  "MainPrefab": null,
-  "ViewModelPrefab": null,
-  "WorldModel": null,
+  "MainPrefab": {
+    "_type": "gameobject",
+    "prefab": "prefabs/basetool.prefab"
+  },
+  "ViewModelPrefab": {
+    "_type": "gameobject",
+    "prefab": "prefabs/basetool.prefab"
+  },
+  "WorldModel": "weapons/rust_pistol/rust_pistol.vmdl",
   "DroppedSize": "8,2,8",
   "DroppedCenter": "0,0,0",
-  "__references": [],
+  "__references": [
+    "rust.rust_pistol"
+  ],
   "__version": 0
 }

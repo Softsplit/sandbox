@@ -1,21 +1,26 @@
-﻿namespace Tools;
-public class Tool : Softsplit.Equipment
+﻿using Softsplit;
+
+namespace Tools;
+public class Tool : Equipment, IDescription, IEquipment
 {
 	/*
 	[Sync]
 	public Tool Parent { get; set; }
 	*/
 	protected virtual float MaxTraceDistance => 10000.0f;
+	// IDescription
+	string IDescription.DisplayName => "data";
 
 	protected override void OnStart()
 	{
-		Resource = new EquipmentResource { };
+		// Resource = new EquipmentResource { };
 		if ( Connection.Local.IsHost )
 		{
 			// CreatePreviews();
 		}
+		base.OnStart();
 	}
-
+	/*
 	public virtual void Deactivate()
 	{
 		// DeletePreviews();
@@ -28,10 +33,10 @@ public class Tool : Softsplit.Equipment
 	public virtual void CreateHitEffects( Vector3 pos )
 	{
 		// Parent?.CreateHitEffects( pos );
-	}
+	}*/
 	public bool IsUsing()
 	{
-		return Owner != null && Owner.ActiveChild == this;
+		return Owner != null && Owner.CurrentEquipment == this;
 	}
 
 	public SceneTraceResult DoTrace()
