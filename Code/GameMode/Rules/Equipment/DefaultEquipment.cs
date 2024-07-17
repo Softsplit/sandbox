@@ -25,7 +25,7 @@ public sealed class DefaultEquipment : Component,
 		{
 			foreach ( var weapon in Equipment )
 			{
-				if ( !player.Inventory.HasInSlot( weapon.Slot ) )
+				if ( !player.Inventory.Has( weapon ) )
 					player.Inventory.Give( weapon, false );
 			}
 		}

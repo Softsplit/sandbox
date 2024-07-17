@@ -1,37 +1,4 @@
 /// <summary>
-/// What slot is this equipment for?
-/// </summary>
-public enum EquipmentSlot
-{
-	Undefined = 0,
-
-	/// <summary>
-	/// Non-pistol guns.
-	/// </summary>
-	Primary = 1,
-
-	/// <summary>
-	/// Pistols.
-	/// </summary>
-	Secondary = 2,
-
-	/// <summary>
-	/// Knives etc.
-	/// </summary>
-	Melee = 3,
-
-	/// <summary>
-	/// Grenades etc.
-	/// </summary>
-	Utility = 4,
-
-	/// <summary>
-	/// C4 etc.
-	/// </summary>
-	Special = 5
-}
-
-/// <summary>
 /// A resource definition for a piece of equipment. This could be a weapon, or a deployable, or a gadget, or a grenade.. Anything really.
 /// </summary>
 [GameResource( "sandbox/Equipment Item", "equip", "", IconBgColor = "#5877E0", Icon = "track_changes" )]
@@ -44,9 +11,6 @@ public partial class EquipmentResource : GameResource
 
 	[Category( "Base" )]
 	public string Description { get; set; } = "";
-
-	[Category( "Base" )]
-	public EquipmentSlot Slot { get; set; }
 
 	/// <summary>
 	/// If true, owner will drop this equipment if they disconnect.

@@ -93,12 +93,23 @@ public static partial class GameUtils
 		foreach ( var player in AllPlayers )
 		{
 			writer.WriteLine( $"  {player.GameObject.Name}:" );
-			writer.WriteLine( $"    Id: {player.GameObject.Id}" );
+			writer.WriteLine( $"    Id: {player.Id}" );
 			writer.WriteLine( $"    DisplayName: {player.DisplayName}" );
 			writer.WriteLine( $"    IsConnected: {player.IsConnected}" );
 			writer.WriteLine( $"    IsLocalPlayer: {player.IsLocalPlayer}" );
 			writer.WriteLine( $"    Connection: {(player.Connection is { } connection ? $"{connection.Id} ({connection.DisplayName})" : "null")}" );
-			writer.WriteLine( $"    PlayerPawn: {player.PlayerPawn?.ToString() ?? "null"}" );
+			writer.WriteLine( $"    PlayerPawn: {player.PlayerPawn?.Id.ToString() ?? "null"}" );
+		}
+
+		writer.WriteLine();
+		writer.WriteLine( "All pawns:" );
+
+		foreach ( var pawn in Game.ActiveScene.GetAllComponents<PlayerPawn>() )
+		{
+			writer.WriteLine( $"  {pawn.GameObject.Name}:" );
+			writer.WriteLine( $"    Id: {pawn.Id}" );
+			writer.WriteLine( $"    DisplayName: {pawn.DisplayName}" );
+			writer.WriteLine( $"    PlayerState: {pawn.PlayerState?.Id.ToString() ?? "null"}" );
 		}
 
 		writer.WriteLine();
