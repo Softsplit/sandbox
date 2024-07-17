@@ -16,7 +16,7 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 	/// <summary>
 	/// Fetches the desired model renderer that we'll focus effects on like trail effects, muzzle flashes, etc.
 	/// </summary>
-	protected SkinnedModelRenderer EffectsRenderer 
+	protected SkinnedModelRenderer EffectsRenderer
 	{
 		get
 		{
@@ -81,7 +81,7 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 	public void Swing()
 	{
 		TimeSinceSwing = 0f;
-		
+
 		foreach ( var tr in GetTrace() )
 		{
 			if ( !tr.Hit )
@@ -120,7 +120,7 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 		var start = WeaponRay.Position;
 		var end = WeaponRay.Position + WeaponRay.Forward * MaxRange;
 
-        yield return Scene.Trace.Ray( start, end )
+		yield return Scene.Trace.Ray( start, end )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.WithoutTags( "trigger", "invis", "ragdoll", "movement" )
@@ -133,11 +133,15 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 	/// </summary>
 	public bool CanSwing()
 	{
+		// Player
+		if ( Equipment.Owner.IsFrozen )
+			return false;
+
 		// Delay checks
 		return TimeSinceSwing >= FireRate;
 	}
 
-    protected override void OnInput()
+	protected override void OnInput()
 	{
 		if ( CanSwing() )
 		{

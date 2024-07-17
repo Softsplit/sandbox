@@ -3,7 +3,7 @@ using Softsplit;
 
 public class InventoryIcon : Panel
 {
-	public Equipment TargetEnt;
+	public Equipment Equipment;
 	public Label Label;
 	public Label Number;
 
