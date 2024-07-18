@@ -35,7 +35,7 @@ public sealed class ToolGunHandler : Component
 		TypeDescription comp = TypeLibrary.GetType($"{CurrentTool}Menu");
 		if(comp != null) ActiveToolMenu = Components.Create(comp,true);
 		else ActiveToolMenu = null;
-		ActiveToolMenu.Enabled = false;
+		
 
 		comp = TypeLibrary.GetType(CurrentTool);
 		ActiveTool = Components.Create(comp,true);

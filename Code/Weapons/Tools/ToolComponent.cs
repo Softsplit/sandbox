@@ -10,13 +10,12 @@ public abstract class ToolComponent : InputWeaponComponent
 	ToolGunHandler toolGunHandler;
 	protected override void OnStart()
 	{
-		toolGunHandler = Components.Get<ToolGunHandler>();
-		
 		InputActions.Add("Attack2");
 		InputActions.Add("ToolGunMenu");
 	}
 	protected override void OnFixedUpdate()
 	{
+		if(toolGunHandler == null) toolGunHandler = Components.Get<ToolGunHandler>();
 		if(Input.Pressed("Attack1"))
 			PrimaryAction();
 		if(Input.Pressed("Attack2")) 

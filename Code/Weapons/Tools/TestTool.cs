@@ -5,9 +5,10 @@ namespace Softsplit;
 public sealed class TestTool : ToolComponent
 {
     TestToolMenu values;
-	protected override void OnAwake()
+	protected override void OnStart()
 	{
 		values = Components.Get<TestToolMenu>();
+        values.Enabled = false;
 	}
 
 	protected override void PrimaryAction()
