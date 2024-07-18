@@ -9,7 +9,7 @@ public abstract class ToolComponent : InputWeaponComponent
 {
 	ToolGunHandler toolGunHandler;
 	public Ray WeaponRay => Equipment.Owner.AimRay;
-
+	public bool AlwaysEnabledMenu;
 	public LineRenderer lineRenderer;
 
 	
@@ -20,7 +20,7 @@ public abstract class ToolComponent : InputWeaponComponent
 		lineRenderer = Components.GetOrCreate<LineRenderer>();
 		lineRenderer.Color = Color.Cyan;
 		lineRenderer.Width = 0.1f;
-
+		Start();
 	}
 
 	[Sync, Property] public float RayActive {get;set;}
@@ -31,6 +31,7 @@ public abstract class ToolComponent : InputWeaponComponent
 	protected override void OnUpdate()
 	{
 
+		Update();
 		RayActive -= Time.Delta;
 
 		lineRenderer.Enabled = RayActive > 0;
@@ -48,8 +49,21 @@ public abstract class ToolComponent : InputWeaponComponent
 			PrimaryAction();
 		if(Input.Pressed("Attack2")) 
 			SecondaryAction();
-		if(Input.Pressed("ToolGunMenu")) 
+		if(AlwaysEnabledMenu)
+			toolGunHandler.ActiveToolMenu.Enabled = Equipment.IsDeployed;
+		else if(Input.Pressed("ToolGunMenu")) 
 			toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
+		
+	}
+
+	protected virtual void Start()
+	{
+
+	}
+
+	protected virtual void Update()
+	{
+
 	}
 
 	protected virtual void PrimaryAction()
