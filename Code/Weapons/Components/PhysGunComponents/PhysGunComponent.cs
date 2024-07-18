@@ -43,8 +43,8 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		if ( !HeldBody.IsValid() )
 			return;
 
-		if ( GrabbedObject.Root.Components.Get<PlayerPawn>().IsValid() )
-			return;
+		// if ( GrabbedObject.Root.Components.Get<PlayerPawn>().IsValid() )
+		//	return;
 
 		var velocity = HeldBody.Velocity;
 		Vector3.SmoothDamp( HeldBody.Position, HoldPos, ref velocity, 0.075f, Time.Delta );

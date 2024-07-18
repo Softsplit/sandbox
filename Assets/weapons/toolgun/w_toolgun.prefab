@@ -2,7 +2,7 @@
   "RootObject": {
     "__guid": "537a3752-47c2-491f-b7a8-84d06247b15b",
     "Flags": 0,
-    "Name": "w_tool_gun",
+    "Name": "w_toolgun",
     "Tags": "player",
     "Enabled": true,
     "Components": [
@@ -26,7 +26,7 @@
           "_type": "gameobject",
           "go": "93b70621-3326-4689-b0dd-82371b9b8594"
         },
-        "Resource": "weapons/tool_gun/tool_gun.equip",
+        "Resource": "weapons/toolgun/toolgun.equip",
         "SpeedPenalty": 20
       },
       {
@@ -48,7 +48,7 @@
             "__guid": "5abbb3cb-4005-418f-970c-50342f9b3759",
             "BodyGroups": 9493,
             "CreateBoneObjects": false,
-            "Model": "models/dev/error.vmdl",
+            "Model": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
             "RenderType": "On",
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
@@ -118,6 +118,8 @@
   "MenuPath": null,
   "MenuIcon": null,
   "ResourceVersion": 1,
-  "__references": [],
+  "__references": [
+    "facepunch.w_usp"
+  ],
   "__version": 1
 }
