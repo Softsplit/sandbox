@@ -15,7 +15,7 @@ public abstract class ToolComponent : InputWeaponComponent
 		InputActions.Add("Attack2");
 		InputActions.Add("ToolGunMenu");
 	}
-	protected override void OnFixedUpdate()
+	protected override void OnInputUpdate()
 	{
 		if(Input.Pressed("Attack1"))
 			PrimaryAction();
