@@ -26,8 +26,13 @@ public partial class PlayerPawn
 	[Property, Group( "Sprint" )] public float SprintMovementDampening { get; set; } = 0.35f;
 
 	/// <summary>
+	/// Noclip sprint speed
+	/// </summary>
+	[Property] public float NoclipSprintSpeed { get; set; } = 2000f;
+	/// <summary>
 	/// Noclip movement speed
 	/// </summary>
+	/// 
 	[Property] public float NoclipSpeed { get; set; } = 1000f;
 
 	public PlayerGlobals Global => GetGlobal<PlayerGlobals>();
@@ -261,7 +266,16 @@ public partial class PlayerPawn
 			if ( Input.Down( "Duck" ) ) vertical = -1f;
 
 			cc.IsOnGround = false;
-			cc.Velocity = WishMove.Normal * EyeAngles.ToRotation() * NoclipSpeed;
+
+			if ( !Input.Down( "Run" ) )
+			{
+				cc.Velocity = WishMove.Normal * EyeAngles.ToRotation() * NoclipSpeed;
+			}
+			else
+			{
+				cc.Velocity = WishMove.Normal * EyeAngles.ToRotation() * NoclipSprintSpeed;
+			}
+			
 			cc.Velocity += Vector3.Up * vertical * NoclipSpeed;
 		}
 
