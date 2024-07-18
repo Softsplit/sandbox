@@ -28,7 +28,7 @@ public sealed class ToolGunHandler : Component
 	{
 		if(ActiveTool != null)
 		{
-			ActiveTool.Destroy();
+			if(ActiveTool!=null) ActiveTool.Destroy();
 			ActiveToolMenu.Destroy();
 		}
 

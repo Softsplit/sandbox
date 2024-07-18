@@ -6,9 +6,10 @@ namespace Softsplit;
 public sealed class Weld : ToolComponent
 {
     PhysicsBody object1;
-	
+
 	protected override void PrimaryAction()
 	{
+
         var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
@@ -17,15 +18,20 @@ public sealed class Weld : ToolComponent
         if(hit.Hit)
         {
             if(hit.Body == object1 || hit.Body == null) return;
-
+            Recoil();
             if(object1 == null) object1 = hit.Body;
-            else CreateWeld(object1, hit.Body);
+            else
+            {
+                CreateWeld(object1, hit.Body);
+                object1 = null;
+            }
 
         }
 	}
 
     protected override void SecondaryAction()
 	{
+        base.SecondaryAction();
         var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
@@ -33,13 +39,17 @@ public sealed class Weld : ToolComponent
 			.Run();
         if(hit.Hit)
         {
-            WeldContext weldContext = hit.GameObject.Components.Get<WeldContext>();
-            if(weldContext!=null) RemoveWeld(weldContext);
+            IEnumerable<WeldContext> weldContext = hit.GameObject.Components.GetAll<WeldContext>();
+            foreach(WeldContext weld in weldContext)
+            {
+                Recoil();
+                RemoveWeld(weld);
+            }
         }
 	}
 
     [Broadcast]
-    public void CreateWeld(PhysicsBody object1, PhysicsBody object2)
+    public static void CreateWeld(PhysicsBody object1, PhysicsBody object2)
     {
         if ( !Networking.IsHost )
 			return;
@@ -61,7 +71,7 @@ public sealed class Weld : ToolComponent
     }
 
     [Broadcast]
-    public void RemoveWeld(WeldContext weldToRemove)
+    public static void RemoveWeld(WeldContext weldToRemove)
     {
         if(weldToRemove.MainWeld) weldToRemove.weldJoint.Remove();
         else weldToRemove.weldedObject.weldJoint.Remove();
