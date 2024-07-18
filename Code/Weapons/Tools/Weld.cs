@@ -26,7 +26,7 @@ public sealed class Weld : ToolComponent
                 CreateWeld(object1, hit.Body);
                 object1 = null;
             }
-
+            
         }
 	}
 
