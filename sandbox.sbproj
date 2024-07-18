@@ -233,6 +233,12 @@
           "KeyboardCode": "Z",
           "GamepadCode": "None",
           "GroupName": "Actions"
+        },
+        {
+          "Name": "ToolGunMenu",
+          "KeyboardCode": "M",
+          "GamepadCode": "DpadNorth",
+          "GroupName": "Other"
         }
       ],
       "__guid": "e5747b22-7f31-4f90-abfe-e68afdbbd2bb"

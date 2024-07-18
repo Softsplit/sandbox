@@ -1,0 +1,20 @@
+@inherits PanelComponent
+
+<root>
+	<div class="ToolBox">
+		<div class="ValueBox">
+			<div class="ValueName">Thing to Log</div>
+			<TextEntry Value:bind="@ThingToLog" class="Value"></TextEntry>
+		</div>
+	</div>
+</root>
+
+@code
+{
+	[Property, TextArea] public string ThingToLog { get; set; } = "Hello World!";
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( ThingToLog );
+}

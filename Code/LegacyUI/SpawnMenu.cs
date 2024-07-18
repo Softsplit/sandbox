@@ -1,4 +1,5 @@
 using Sandbox.UI.Construct;
+using Softsplit;
 
 public partial class SpawnMenu : Panel
 {
@@ -56,10 +57,10 @@ public partial class SpawnMenu : Panel
 	{
 		toollist.DeleteChildren( true );
 
-		/*
-		foreach ( var entry in TypeLibrary.GetTypes<BaseTool>() )
+		
+		foreach ( var entry in TypeLibrary.GetTypes<ToolComponent>() )
 		{
-			if ( entry.Name == "BaseTool" )
+			if ( entry.Name == "ToolComponent" )
 				continue;
 
 			var button = toollist.Add.Button( entry.Title );
@@ -73,7 +74,7 @@ public partial class SpawnMenu : Panel
 					child.SetClass( "active", child == button );
 			} );
 		}
-		*/
+		
 	}
 
 	void SetActiveTool( string className )

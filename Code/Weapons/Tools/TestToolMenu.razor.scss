@@ -1,0 +1,35 @@
+TestToolMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 20px;
+    color: #fff;
+    pointer-events: all;
+
+    .ToolBox {
+        font-size: 15px;
+        background-color: #2a2a2a;
+        width: 50%;
+        height: 50%;
+        align-items: flex-start;
+
+        .ValueBox {
+            flex-direction: row;
+            text-align: center;
+            align-items: center;
+
+            .ValueName {
+                font-weight: bold;
+                background-color: #464646;
+            }
+
+            .Value {
+            }
+        }
+    }
+}

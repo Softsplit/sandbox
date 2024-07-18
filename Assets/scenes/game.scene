@@ -1,5 +1,5 @@
 {
-  "__guid": "8213d168-b50d-461b-8af8-cb6cb8d11859",
+  "__guid": "911eeccb-ecee-4255-bb95-e49614956d02",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
@@ -30,12 +30,13 @@
           "__type": "Softsplit.DefaultEquipment",
           "__guid": "aeb88489-8fdd-487d-87a2-d2cc4f735ee5",
           "Equipment": [
-            "weapons/physgun/physgun.equip",
             "weapons/mp5/mp5.equip",
             "weapons/spaghelli/spaghelli.equip",
             "weapons/usp/usp.equip",
             "weapons/knife_bayonet/knife_bayonet.equip",
-            "weapons/throwable/he_grenade/he_grenade.equip"
+            "weapons/throwable/he_grenade/he_grenade.equip",
+            "weapons/physgun/physgun.equip",
+            "weapons/toolgun/toolgun.equip"
           ],
           "RefillAmmo": true
         },
