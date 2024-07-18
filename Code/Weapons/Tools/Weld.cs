@@ -6,8 +6,19 @@ namespace Softsplit;
 public sealed class Weld : ToolComponent
 {
     PhysicsBody object1;
+    PhysicsBody object2;
     Vector3 point1;
+    Vector3 point2;
 
+    bool advancedWeld;
+	protected override void OnFixedUpdate()
+	{
+		if(advancedWeld)
+        {
+            object2.MotionEnabled = false;
+            object2.GetGameObject().Transform.Position = object1.GetGameObject().Transform.World.PointToWorld(point1) + -(object2.GetGameObject().Transform.World.PointToWorld(point2)-object2.GetGameObject().Transform.Position);
+        }
+	}
 	protected override void PrimaryAction()
 	{
 
@@ -20,10 +31,15 @@ public sealed class Weld : ToolComponent
         {
             if(hit.Body == object1 || hit.Body == null) return;
             Recoil(hit.EndPosition);
-            if(object1 == null) object1 = hit.Body;
+            Vector3 localPoint = hit.GameObject.Transform.World.PointToLocal(hit.EndPosition);
+            if(object1 == null)
+            {
+                point1 = localPoint;
+                object1 = hit.Body;
+            }
             else
             {
-                CreateWeld(object1, hit.Body);
+                CreateWeld(object1, point1, hit.Body, localPoint);
                 object1 = null;
             }
             
@@ -45,11 +61,16 @@ public sealed class Weld : ToolComponent
                 RemoveWeld(hit.GameObject);
                 Recoil(hit.EndPosition);
             }
+            else
+            {
+                object2 = hit.Body;
+                advancedWeld = true;
+            }
         }
 	}
 
     [Broadcast]
-    public static void CreateWeld(PhysicsBody object1, PhysicsBody object2)
+    public static void CreateWeld(PhysicsBody object1, Vector3 point1Pos, PhysicsBody object2, Vector3 point2Pos)
     {
         if ( !Networking.IsHost )
 			return;
@@ -58,16 +79,14 @@ public sealed class Weld : ToolComponent
         
         weldContext1.MainWeld = true;
 
-        var point1 = new PhysicsPoint( object1, Vector3.Zero );
-		var point2 = new PhysicsPoint( object2, Vector3.Zero );
+        var point1 = new PhysicsPoint( object1, point1Pos );
+		var point2 = new PhysicsPoint( object2, point2Pos );
         
         weldContext1.weldJoint = PhysicsJoint.CreateFixed(point1,point2);
 
         WeldContext weldContext2 = object2.GetGameObject().Components.Create<WeldContext>();
         weldContext2.weldedObject = weldContext1;
         weldContext1.weldedObject = weldContext2;
-
-
     }
 
     [Broadcast]

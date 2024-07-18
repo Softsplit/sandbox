@@ -37,6 +37,7 @@ public abstract class ToolComponent : InputWeaponComponent
 	}
 	protected override void OnInputUpdate()
 	{
+		
 		if(toolGunHandler == null)
 		{
 			toolGunHandler = Components.Get<ToolGunHandler>();
