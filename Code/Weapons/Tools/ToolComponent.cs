@@ -8,12 +8,13 @@ namespace Softsplit;
 public abstract class ToolComponent : InputWeaponComponent
 {
 	ToolGunHandler toolGunHandler;
+	public Ray WeaponRay => Equipment.Owner.AimRay;
 	protected override void OnStart()
 	{
 		InputActions.Add("Attack2");
 		InputActions.Add("ToolGunMenu");
 	}
-	protected override void OnFixedUpdate()
+	protected override void OnInputUpdate()
 	{
 		if(toolGunHandler == null) toolGunHandler = Components.Get<ToolGunHandler>();
 		if(Input.Pressed("Attack1"))
