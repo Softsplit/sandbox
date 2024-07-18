@@ -11,12 +11,8 @@ public sealed class Weld : ToolComponent
 
 	protected override void Start()
 	{
-
-	}
-
-	protected override void Update()
-	{
-
+        ToolName = "Weld";
+        ToolDes = "Weld objects together. Right click to snap.";        
 	}
 	protected override void PrimaryAction()
 	{

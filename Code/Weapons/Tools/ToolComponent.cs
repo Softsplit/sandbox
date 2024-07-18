@@ -11,6 +11,8 @@ public abstract class ToolComponent : InputWeaponComponent
 	public Ray WeaponRay => Equipment.Owner.AimRay;
 	public bool AlwaysEnabledMenu;
 	public LineRenderer lineRenderer;
+	public string ToolName;
+	public string ToolDes;
 
 	
 	protected override void OnStart()
@@ -20,6 +22,8 @@ public abstract class ToolComponent : InputWeaponComponent
 		lineRenderer = Components.GetOrCreate<LineRenderer>();
 		lineRenderer.Color = Color.Cyan;
 		lineRenderer.Width = 0.1f;
+		ToolName = "";
+		ToolDes = "";
 		Start();
 	}
 
@@ -42,7 +46,16 @@ public abstract class ToolComponent : InputWeaponComponent
 		if(toolGunHandler == null)
 		{
 			toolGunHandler = Components.Get<ToolGunHandler>();
-
+			if(ToolName != "")
+			{
+				toolGunHandler.toolGun.Enabled = true;
+				toolGunHandler.toolGun.ToolName = ToolName;
+				toolGunHandler.toolGun.ToolDes = ToolDes;
+			}
+			else
+			{
+				toolGunHandler.toolGun.Enabled = false;
+			}
 		}
 
 		if(Input.Pressed("Attack1"))

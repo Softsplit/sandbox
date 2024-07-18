@@ -1,0 +1,33 @@
+ToolGunUI 
+{
+    border-right: 10px solid #3273EB;
+	justify-content: flex-end;
+	align-items: flex-end;
+    position: absolute;
+    background-color: rgba(#111, 0.5);
+    top: 100px;
+    right: 100px;
+    padding: 20px 50px;
+    flex-direction: column;
+    opacity: 1;
+	text-align: right;
+
+    .title {
+        font-size: 30px;
+        color: white;
+        font-family: Poppins;
+        font-weight: 800;
+        mix-blend-mode: lighten;
+        text-transform: uppercase;
+    }
+
+    .description {
+        font-size: 12px;
+        font-weight: normal;
+        color: white;
+        opacity: 0.5;
+        font-family: Poppins;
+        font-weight: 500;
+        mix-blend-mode: lighten;
+    }
+}
