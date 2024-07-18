@@ -1,5 +1,5 @@
 {
-  "__guid": "8213d168-b50d-461b-8af8-cb6cb8d11859",
+  "__guid": "c77807d4-396f-4c16-8784-43411c463e72",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
@@ -31,16 +31,18 @@
           "__guid": "aeb88489-8fdd-487d-87a2-d2cc4f735ee5",
           "Equipment": [
             "weapons/mp5/mp5.equip",
+            "weapons/spaghelli/spaghelli.equip",
             "weapons/usp/usp.equip",
-            "weapons/knife_bayonet/knife_bayonet.equip"
+            "weapons/knife_bayonet/knife_bayonet.equip",
+            "weapons/throwable/he_grenade/he_grenade.equip",
+            "weapons/physgun/physgun.equip",
+            "weapons/toolgun/toolgun.equip"
           ],
           "RefillAmmo": true
         },
         {
           "__type": "Softsplit.EquipmentDropper",
-          "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7",
-          "Categories": [],
-          "LimitedDropOnDeath": true
+          "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7"
         }
       ]
     },
@@ -77,7 +79,7 @@
           "ZIndex": 100
         },
         {
-          "__type": "SandboxHUD",
+          "__type": "SandboxHud",
           "__guid": "9c32408d-e0f5-4a7d-ab93-9e11b308b4a9"
         },
         {
@@ -116,7 +118,7 @@
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
-          "MapName": "softsplit.gm_bigcity",
+          "MapName": "facepunch.flatgrass",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }

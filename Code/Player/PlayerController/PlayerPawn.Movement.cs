@@ -52,6 +52,11 @@ public partial class PlayerPawn
 	/// </summary>
 	[Sync] public bool IsCrouching { get; set; }
 
+	/// <summary>
+	/// Is the movement disabled?
+	/// </summary>
+	[Sync] public bool MovementDisabled { get; set; }
+
 	public float CrouchAmount { get; set; }
 
 	/// <summary>
@@ -481,7 +486,7 @@ public partial class PlayerPawn
 
 		var wishDirection = WishMove.Normal * rot;
 		wishDirection = wishDirection.WithZ( 0 );
-		WishVelocity = wishDirection * GetWishSpeed();
+		if(!MovementDisabled) WishVelocity = wishDirection * GetWishSpeed();
 	}
 
 	/// <summary>

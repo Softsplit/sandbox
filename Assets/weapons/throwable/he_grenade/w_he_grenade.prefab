@@ -5,13 +5,12 @@
     "Name": "w_he_grenade",
     "Tags": "player",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
     "Components": [
       {
         "__type": "Softsplit.Equipment",
         "__guid": "2afccd64-3f78-49b4-b960-0e935678d255",
         "DeploySound": "sounds/guns/switch/weapon_switch.sound",
+        "Handedness": "Right",
         "HoldType": "HoldItem",
         "ModelRenderer": {
           "_type": "component",
@@ -34,8 +33,6 @@
         "Name": "Model",
         "Position": "3.535849,0,-5.571055",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
@@ -54,17 +51,14 @@
         "Flags": 0,
         "Name": "Functions",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Softsplit.ThrowWeaponComponent",
             "__guid": "be992ceb-4d4f-4493-ab68-8755e49ca266",
-            "CookTime": 0.35,
+            "CookTime": 0.25,
             "InputActions": [
               "Attack1"
             ],
-            "InputType": "Down",
             "Prefab": {
               "_type": "gameobject",
               "prefab": "weapons/throwable/he_grenade/he_grenade.prefab"
@@ -74,7 +68,8 @@
           }
         ]
       }
-    ]
+    ],
+    "__variables": []
   },
   "ShowInMenu": false,
   "MenuPath": null,

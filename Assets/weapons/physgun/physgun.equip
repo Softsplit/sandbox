@@ -1,0 +1,22 @@
+{
+  "Name": "Physgun",
+  "Description": "",
+  "Slot": "Secondary",
+  "DropOnDisconnect": false,
+  "Icon": "ui/weapons/guns/usp_01.png",
+  "MainPrefab": {
+    "_type": "gameobject",
+    "prefab": "weapons/physgun/w_physgun.prefab"
+  },
+  "ViewModelPrefab": {
+    "_type": "gameobject",
+    "prefab": "weapons/physgun/vm_physgun.prefab"
+  },
+  "WorldModel": "weapons/rust_pistol/rust_pistol.vmdl",
+  "DroppedSize": "8,2,8",
+  "DroppedCenter": "0,0,0",
+  "__references": [
+    "rust.rust_pistol"
+  ],
+  "__version": 0
+}

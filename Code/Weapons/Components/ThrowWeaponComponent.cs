@@ -6,7 +6,7 @@ namespace Softsplit;
 public partial class ThrowWeaponComponent : InputWeaponComponent,
 	IGameEventHandler<EquipmentHolsteredEvent>
 {
-	[Property, EquipmentResourceProperty] public float CookTime { get; set; } = 0.5f;
+	[Property, EquipmentResourceProperty] public float CookTime { get; set; } = 0.25f;
 	[Property, EquipmentResourceProperty] public GameObject Prefab { get; set; }
 	[Property] public float ThrowPower { get; set; } = 1200f;
 
@@ -50,23 +50,11 @@ public partial class ThrowWeaponComponent : InputWeaponComponent,
 
 	protected override void OnInputUp()
 	{
-		if ( !CanThrow() )
-		{
-			ThrowState = State.Idle;
-			TimeSinceAction = 0;
-
-			return;
-		}
-
 		if ( TimeSinceAction > CookTime && ThrowState == State.Cook )
 		{
 			ThrowState = State.Throwing;
 			TimeSinceAction = 0;
-			return;
 		}
-
-		ThrowState = State.Idle;
-		TimeSinceAction = 0;
 	}
 
 	protected override void OnUpdate()
@@ -85,6 +73,13 @@ public partial class ThrowWeaponComponent : InputWeaponComponent,
 		{
 			ThrowState = State.Idle;
 			TimeSinceAction = 0;
+		}
+
+		if ( !IsDown() && TimeSinceAction > CookTime && ThrowState == State.Cook )
+		{
+			ThrowState = State.Throwing;
+			TimeSinceAction = 0;
+			return;
 		}
 
 		if ( ThrowState == State.Throwing && TimeSinceAction > 0.25f )
@@ -122,6 +117,11 @@ public partial class ThrowWeaponComponent : InputWeaponComponent,
 
 			dropped.Network.SetOrphanedMode( NetworkOrphaned.ClearOwner );
 			dropped.NetworkSpawn();
+		}
+
+		if ( Equipment.Owner.IsValid() )
+		{
+			Equipment.Owner.BodyRenderer.Set( "b_throw_grenade", true );
 		}
 
 		if ( !Networking.IsHost )
