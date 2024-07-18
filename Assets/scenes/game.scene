@@ -1,5 +1,5 @@
 {
-  "__guid": "911eeccb-ecee-4255-bb95-e49614956d02",
+  "__guid": "c77807d4-396f-4c16-8784-43411c463e72",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
@@ -79,7 +79,7 @@
           "ZIndex": 100
         },
         {
-          "__type": "SandboxHUD",
+          "__type": "SandboxHud",
           "__guid": "9c32408d-e0f5-4a7d-ab93-9e11b308b4a9"
         },
         {

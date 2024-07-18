@@ -16,10 +16,6 @@
           "go": "99643a5a-b964-4d28-acb1-1861702ded8f",
           "component_type": "SkinnedModelRenderer"
         },
-        "EjectionPort": {
-          "_type": "gameobject",
-          "go": "38b6ec59-6293-4ece-901a-0868678dcd2c"
-        },
         "IronsightsFireScale": 0.2,
         "IsThrowable": false,
         "ModelRenderer": {
@@ -30,7 +26,7 @@
         },
         "Muzzle": {
           "_type": "gameobject",
-          "go": "5bf49181-9d9a-450e-a596-2e742a60d221"
+          "go": "23eaffa5-8325-46aa-8f40-22ed1c2dd87b"
         },
         "ThrowableType": "HEGrenade"
       },

@@ -6,6 +6,7 @@ namespace Softsplit;
 public sealed class Weld : ToolComponent
 {
     PhysicsBody object1;
+    Vector3 point1;
 
 	protected override void PrimaryAction()
 	{
@@ -18,7 +19,7 @@ public sealed class Weld : ToolComponent
         if(hit.Hit)
         {
             if(hit.Body == object1 || hit.Body == null) return;
-            Recoil();
+            Recoil(hit.EndPosition);
             if(object1 == null) object1 = hit.Body;
             else
             {
@@ -39,11 +40,10 @@ public sealed class Weld : ToolComponent
 			.Run();
         if(hit.Hit)
         {
-            IEnumerable<WeldContext> weldContext = hit.GameObject.Components.GetAll<WeldContext>();
-            foreach(WeldContext weld in weldContext)
+            if(object1 == null)
             {
-                Recoil();
-                RemoveWeld(weld);
+                RemoveWeld(hit.GameObject);
+                Recoil(hit.EndPosition);
             }
         }
 	}
@@ -71,13 +71,23 @@ public sealed class Weld : ToolComponent
     }
 
     [Broadcast]
-    public static void RemoveWeld(WeldContext weldToRemove)
+    public static void RemoveWeld(GameObject gameObject)
     {
-        if(weldToRemove.MainWeld) weldToRemove.weldJoint.Remove();
-        else weldToRemove.weldedObject.weldJoint.Remove();
+        if ( !Networking.IsHost )
+			return;
+        
+        IEnumerable<WeldContext> weldContext = gameObject.Components.GetAll<WeldContext>();
 
-        weldToRemove.weldedObject.Destroy();
-        weldToRemove.Destroy();
+        while ( weldContext.Any())
+        {
+            WeldContext weldToRemove = weldContext.ElementAt(0);
+            if(weldToRemove.MainWeld) weldToRemove.weldJoint.Remove();
+            else weldToRemove.weldedObject.weldJoint.Remove();
+
+            weldToRemove.weldedObject.Destroy();
+            weldToRemove.Destroy();
+        }
+        
     }
 
     public static Vector3 FindMidpoint(Vector3 vector1, Vector3 vector2)
