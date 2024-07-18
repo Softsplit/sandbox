@@ -1,23 +1,22 @@
-using Sandbox.Events;
-
 namespace Softsplit;
 
 public sealed class TestTool : ToolComponent
 {
-    TestToolMenu values;
+	TestToolMenu values;
+
 	protected override void OnStart()
 	{
 		values = Components.Get<TestToolMenu>();
-        values.Enabled = false;
+		values.Enabled = false;
 	}
 
 	protected override void PrimaryAction()
 	{
-        Log.Info(values.ThingToLog);
+		Log.Info( values.ThingToLog );
 	}
 
-    protected override void SecondaryAction()
+	protected override void SecondaryAction()
 	{
-        Log.Info(values.ThingToLog.ToUpper());
+		Log.Info( values.ThingToLog.ToUpper() );
 	}
 }

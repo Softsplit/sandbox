@@ -1,5 +1,3 @@
-using Sandbox.Events;
-
 namespace Softsplit;
 
 /// <summary>
@@ -8,19 +6,24 @@ namespace Softsplit;
 public abstract class ToolComponent : InputWeaponComponent
 {
 	ToolGunHandler toolGunHandler;
+
 	protected override void OnStart()
 	{
-		InputActions.Add("Attack2");
-		InputActions.Add("ToolGunMenu");
+		InputActions.Add( "Attack2" );
+		InputActions.Add( "ToolGunMenu" );
 	}
-	protected override void OnFixedUpdate()
+
+	protected override void OnInputUpdate()
 	{
-		if(toolGunHandler == null) toolGunHandler = Components.Get<ToolGunHandler>();
-		if(Input.Pressed("Attack1"))
+		toolGunHandler ??= Components.Get<ToolGunHandler>();
+
+		if ( Input.Pressed( "Attack1" ) )
 			PrimaryAction();
-		if(Input.Pressed("Attack2")) 
+
+		if ( Input.Pressed( "Attack2" ) )
 			SecondaryAction();
-		if(Input.Pressed("ToolGunMenu")) 
+
+		if ( Input.Pressed( "ToolGunMenu" ) )
 			toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
 	}
 
@@ -31,8 +34,6 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	protected virtual void SecondaryAction()
 	{
-		
+
 	}
-
-
 }

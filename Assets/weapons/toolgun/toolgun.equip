@@ -1,0 +1,21 @@
+{
+  "Name": "Toolgun",
+  "Description": "Does shit.",
+  "DropOnDisconnect": false,
+  "Icon": null,
+  "MainPrefab": {
+    "_type": "gameobject",
+    "prefab": "weapons/toolgun/w_toolgun.prefab"
+  },
+  "ViewModelPrefab": {
+    "_type": "gameobject",
+    "prefab": "weapons/toolgun/vm_toolgun.prefab"
+  },
+  "WorldModel": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
+  "DroppedSize": "8,2,8",
+  "DroppedCenter": "0,0,0",
+  "__references": [
+    "facepunch.w_usp"
+  ],
+  "__version": 0
+}
