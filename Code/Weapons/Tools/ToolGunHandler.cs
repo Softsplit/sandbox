@@ -5,15 +5,9 @@ public sealed class ToolGunHandler : Component
 	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "TestTool";
 
 	public Component ActiveToolMenu { get; set; }
-	public ToolGunUI ToolGunUI { get; set; }
-
-	protected override void OnStart()
-	{
-		ToolGunUI = Components.GetOrCreate<ToolGunUI>();
-	}
+	public Component ActiveTool { get; set; }
 
 	private string lastTool;
-	private Component activeTool;
 
 	protected override void OnFixedUpdate()
 	{
@@ -29,7 +23,7 @@ public sealed class ToolGunHandler : Component
 
 	public void UpdateTool()
 	{
-		activeTool?.Destroy();
+		ActiveTool?.Destroy();
 		ActiveToolMenu?.Destroy();
 
 		var comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
@@ -39,6 +33,6 @@ public sealed class ToolGunHandler : Component
 			ActiveToolMenu = null;
 
 		comp = TypeLibrary.GetType( CurrentTool );
-		activeTool = Components.Create( comp, true );
+		ActiveTool = Components.Create( comp, true );
 	}
 }

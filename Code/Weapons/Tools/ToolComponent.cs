@@ -41,19 +41,7 @@ public abstract class ToolComponent : InputWeaponComponent
 	protected override void OnInputUpdate()
 	{
 		if ( !toolGunHandler.IsValid() )
-		{
 			toolGunHandler = Components.Get<ToolGunHandler>();
-			if ( ToolName != "" )
-			{
-				toolGunHandler.ToolGunUI.Enabled = true;
-				toolGunHandler.ToolGunUI.ToolName = ToolName;
-				toolGunHandler.ToolGunUI.ToolDes = ToolDes;
-			}
-			else
-			{
-				toolGunHandler.ToolGunUI.Enabled = false;
-			}
-		}
 
 		if ( Input.Pressed( "Attack1" ) )
 			PrimaryAction();
@@ -61,13 +49,10 @@ public abstract class ToolComponent : InputWeaponComponent
 		if ( Input.Pressed( "Attack2" ) )
 			SecondaryAction();
 
-		if ( toolGunHandler.ActiveToolMenu != null )
-		{
-			if ( AlwaysEnabledMenu )
-				toolGunHandler.ActiveToolMenu.Enabled = Equipment.IsDeployed;
-			else if ( Input.Pressed( "ToolGunMenu" ) )
-				toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
-		}
+		if ( AlwaysEnabledMenu )
+			toolGunHandler.ActiveToolMenu.Enabled = Equipment.IsDeployed;
+		else if ( Input.Pressed( "ToolGunMenu" ) )
+			toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
 	}
 
 	protected virtual void Start()

@@ -1,5 +1,5 @@
-using Sandbox.UI;
 using Sandbox.UI.Construct;
+using Softsplit;
 
 public class CurrentTool : Panel
 {
@@ -12,7 +12,6 @@ public class CurrentTool : Panel
 		Description = Add.Label( "Join the Discord in the meantime: https://discord.gg/rbCJdZjewf", "description" );
 	}
 
-	/*
 	public override void Tick()
 	{
 		var tool = GetCurrentTool();
@@ -20,24 +19,17 @@ public class CurrentTool : Panel
 
 		if ( tool != null )
 		{
-			var display = DisplayInfo.For( tool );
-
-			Title.SetText( display.Name );
-			Description.SetText( display.Description );
+			Title.Text = tool.ToolName;
+			Description.Text = tool.ToolDes;
 		}
 	}
 
-	BaseTool GetCurrentTool()
+	ToolComponent GetCurrentTool()
 	{
-		var player = Game.LocalPawn as Player;
-		if ( player == null ) return null;
+		var player = PlayerState.Viewer?.PlayerPawn;
+		if ( player?.CurrentEquipment.Resource.Name != "Toolgun" )
+			return null;
 
-		var inventory = player.Inventory;
-		if ( inventory == null ) return null;
-
-		if ( inventory.Active is not Tool tool ) return null;
-
-		return tool?.CurrentTool;
+		return (ToolComponent)(player?.Components.Get<ToolGunHandler>( FindMode.EverythingInSelfAndDescendants )?.ActiveTool);
 	}
-	*/
 }
