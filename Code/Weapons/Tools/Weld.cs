@@ -21,7 +21,7 @@ public sealed class Weld : ToolComponent
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
 			.Run();
-        if(hit.Hit)
+        if(hit.Hit  && hit.GameObject.Name != "Map")
         {
             if(hit.Body == object1 || hit.Body == null) return;
             Recoil(hit.EndPosition);
@@ -50,7 +50,7 @@ public sealed class Weld : ToolComponent
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
 			.Run();
-        if(hit.Hit)
+        if(hit.Hit  && hit.GameObject.Name != "Map")
         {
             if(object1 == null)
             {
@@ -87,8 +87,10 @@ public sealed class Weld : ToolComponent
 
         WeldContext weldContext2 = object2.GetGameObject().Components.Create<WeldContext>();
         weldContext2.weldedObject = weldContext1;
+        weldContext2.body = object2;
 
         weldContext1.weldedObject = weldContext2;
+        weldContext1.body = object1;
     }
 
     [Broadcast]

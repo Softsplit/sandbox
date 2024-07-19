@@ -60,11 +60,11 @@ public sealed class Duplicator : ToolComponent
             }
 
             storedObject = copied.Serialize();
-            SceneUtility.MakeIdGuidsUnique(storedObject);
             
-            foreach(GameObject child in copied.Children)
+            
+            while(copied.Children.Count>0)
             {
-                child.SetParent(Scene);
+                copied.Children[0].SetParent(Scene);
             }
 
             copied.Destroy();
@@ -76,7 +76,10 @@ public sealed class Duplicator : ToolComponent
     [Broadcast]
     public static void SpawnObject(JsonObject gameObject, Vector3 position, Rotation rotation)
     {
+        if ( !Networking.IsHost )
+			return;
         GameObject newObject = new GameObject();
+        SceneUtility.MakeIdGuidsUnique(gameObject);
         newObject.Deserialize(gameObject);
         newObject.Transform.Position = position;
         newObject.Transform.Rotation = rotation;
