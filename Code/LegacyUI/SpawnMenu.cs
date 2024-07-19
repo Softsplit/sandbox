@@ -57,7 +57,6 @@ public partial class SpawnMenu : Panel
 	{
 		toollist.DeleteChildren( true );
 
-		
 		foreach ( var entry in TypeLibrary.GetTypes<ToolComponent>() )
 		{
 			if ( entry.Name == "ToolComponent" )
@@ -74,7 +73,6 @@ public partial class SpawnMenu : Panel
 					child.SetClass( "active", child == button );
 			} );
 		}
-		
 	}
 
 	void SetActiveTool( string className )
@@ -82,21 +80,14 @@ public partial class SpawnMenu : Panel
 		// setting a cvar
 		ConsoleSystem.Run( "tool_current", className );
 
-		// set the active weapon to the toolgun
-		/*
-		if ( Game.LocalPawn is not Player player ) return;
-		if ( player.Inventory is null ) return;
+		var player = PlayerState.Local?.PlayerPawn;
 
-		// why isn't inventory just an ienumurable wtf
-		for ( int i = 0; i < player.Inventory.Count(); i++ )
+		foreach ( var equipment in player?.Inventory?.Equipment )
 		{
-			var entity = player.Inventory.GetSlot( i );
-			if ( !entity.IsValid() ) continue;
-			if ( entity.ClassName != "weapon_tool" ) continue;
+			if ( equipment.Resource.Name != "Toolgun" ) continue;
 
-			player.ActiveChildInput = entity;
+			player?.Inventory?.Switch( equipment );
 		}
-		*/
 	}
 
 	public override void Tick()
@@ -122,13 +113,13 @@ public partial class SpawnMenu : Panel
 	void UpdateActiveTool()
 	{
 		var toolCurrent = ConsoleSystem.GetValue( "tool_current" );
-		// var tool = string.IsNullOrWhiteSpace( toolCurrent ) ? null : TypeLibrary.GetType<BaseTool>( toolCurrent );
+		var tool = string.IsNullOrWhiteSpace( toolCurrent ) ? null : TypeLibrary.GetType<ToolComponent>( toolCurrent );
 
 		foreach ( var child in toollist.Children )
 		{
 			if ( child is Button button )
 			{
-				// child.SetClass( "active", tool != null && button.Text == tool.Title );
+				child.SetClass( "active", tool != null && button.Text == tool.Title );
 			}
 		}
 	}

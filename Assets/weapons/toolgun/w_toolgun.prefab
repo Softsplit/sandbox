@@ -86,20 +86,8 @@
             "MaxAmmo": 13
           },
           {
-            "__type": "Sandbox.ScreenPanel",
-            "__guid": "f8c6bc84-b366-4b9d-b708-dec9a600e1d2",
-            "AutoScreenScale": true,
-            "Opacity": 1,
-            "Scale": 1,
-            "ZIndex": 100
-          },
-          {
             "__type": "Softsplit.ToolGunHandler",
             "__guid": "8f94d5ed-d7b4-41bd-b5c9-6928ffb584d1"
-          },
-          {
-            "__type": "ToolGunUI",
-            "__guid": "0b3627c8-2412-4230-ade3-55648363a147"
           }
         ]
       }
