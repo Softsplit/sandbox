@@ -23,7 +23,10 @@ public static class Explosion
 
 		foreach ( var obj in objectsInArea )
 		{
-			if ( obj.Root.Components.Get<HealthComponent>( FindMode.EnabledInSelfAndDescendants ) is not { } hc )
+			Rigidbody rb = obj.Components.Get<Rigidbody>() ?? null;
+			HealthComponent hc = obj.Root.Components.Get<HealthComponent>( FindMode.EverythingInSelfAndDescendants ) ?? null;
+
+			if ( rb == null && hc == null )
 				continue;
 
 			// If the object isn't in line of sight, fuck it off
@@ -39,7 +42,8 @@ public static class Explosion
 			var direction = (obj.Transform.Position - point).Normal;
 			var force = direction * distance * 50f;
 
-			hc.TakeDamage( new DamageInfo( attacker, damage, inflictor, point, force, Flags: DamageFlags.Explosion ) );
+			rb?.ApplyImpulseAt( obj.Transform.Position, force * damage );
+			hc?.TakeDamage( new DamageInfo( attacker, damage, inflictor, point, force, Flags: DamageFlags.Explosion ) );
 		}
 	}
 }

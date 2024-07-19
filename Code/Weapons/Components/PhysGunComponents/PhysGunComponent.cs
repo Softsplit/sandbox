@@ -97,7 +97,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 				GrabEnd();
 			}
 
-			if ( !Grabbing && Input.Pressed( "reload" ) )
+			if ( Grabbing && Input.Pressed( "reload" ) )
 			{
 				TryUnfreezeAll( eyePos, eyeRot, eyeDir );
 			}
@@ -122,14 +122,16 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		var rootEnt = tr.GameObject.Root;
 		if ( !rootEnt.IsValid() ) return;
 
-		var physicsGroup = rootEnt.Components.Get<Rigidbody>().PhysicsBody.PhysicsGroup;
-		if ( physicsGroup == null ) return;
+		var weldContexts = GetAllConnectedWelds(rootEnt.Components.Get<WeldContext>());
 
 		bool unfrozen = false;
 
-		for ( int i = 0; i < physicsGroup.BodyCount; ++i )
+		Log.Info(weldContexts.Count);
+
+		
+		for ( int i = 0; i < weldContexts.Count; i++ )
 		{
-			var body = physicsGroup.GetBody( i );
+			var body = weldContexts[i].body;
 			if ( !body.IsValid() ) continue;
 
 			if ( body.BodyType == PhysicsBodyType.Static )
@@ -138,13 +140,50 @@ public partial class PhysGunComponent : InputWeaponComponent,
 				unfrozen = true;
 			}
 		}
-
+		
 		if ( unfrozen )
 		{
 			// var freezeEffect = Particles.Create( "particles/physgun_freeze.vpcf" );
 			// freezeEffect.SetPosition( 0, tr.EndPosition );
 		}
 	}
+
+	 public static List<WeldContext> GetAllConnectedWelds(Component component)
+    {
+        var result = new List<WeldContext>();
+        var visited = new HashSet<Component>();
+
+        CollectWelds(component, result, visited);
+
+        return result;
+    }
+
+    private static void CollectWelds(Component component, List<WeldContext> result, HashSet<Component> visited)
+    {
+        // Base case: If the component has already been visited, return
+        if (visited.Contains(component))
+        {
+            return;
+        }
+
+        // Mark the component as visited
+        visited.Add(component);
+
+        // Get all WeldContext components on the current component
+        var weldContexts = component.Components.GetAll<WeldContext>();
+
+        // Add all WeldContext components to the result list
+        result.AddRange(weldContexts);
+
+        // Iterate over each WeldContext to recursively collect connected welds
+        foreach (var weldContext in weldContexts)
+        {
+            if (weldContext.weldedObject != null)
+            {
+                CollectWelds(weldContext.weldedObject, result, visited);
+            }
+        }
+    }
 
 	[Broadcast]
 	private void TryStartGrab( Vector3 eyePos, Rotation eyeRot, Vector3 eyeDir )
