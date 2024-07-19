@@ -1,5 +1,5 @@
 {
-  "__guid": "c77807d4-396f-4c16-8784-43411c463e72",
+  "__guid": "95fa32d4-dffc-482b-b28f-2c30d21772ef",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
@@ -112,6 +112,7 @@
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
       "Name": "Map ",
+      "Tags": "map",
       "Enabled": true,
       "Components": [
         {

@@ -17,7 +17,7 @@ public sealed class Remover : ToolComponent
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
 			.Run();
-        if(hit.Hit && hit.GameObject.Name != "Map")
+        if(hit.Hit && !hit.Tags.Contains("map"))
         {
             RemoveObject(hit.GameObject);
         }
