@@ -2,7 +2,7 @@ namespace Softsplit;
 
 public sealed class ToolGunHandler : Component
 {
-	[ConVar( "tool_current" )] public static string CurrentTool { get; set; }
+	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "TestTool";
 
 	public Component ActiveToolMenu { get; set; }
 	public ToolGunUI ToolGunUI { get; set; }
@@ -32,7 +32,7 @@ public sealed class ToolGunHandler : Component
 		activeTool?.Destroy();
 		ActiveToolMenu?.Destroy();
 
-		TypeDescription comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
+		var comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
 		if ( comp != null )
 			ActiveToolMenu = Components.Create( comp, true );
 		else
