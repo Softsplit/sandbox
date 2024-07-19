@@ -60,7 +60,6 @@ public sealed class Weld : ToolComponent
             else
             {
                 GameObject object1G = object1.GetGameObject();
-                GameObject object2G = hit.GameObject;
 
                 object1G.Transform.Rotation = Rotation.FromToRotation(point1Direction, -hit.Normal) * object1G.Transform.Rotation;
                 
@@ -69,6 +68,7 @@ public sealed class Weld : ToolComponent
                 object1G.Transform.Position +=  hit.EndPosition - pointWorld;
 
                 CreateWeld(object1, point1, hit.Body, hit.EndPosition);
+                object1 = null;
             }
         }
 	}
@@ -90,7 +90,9 @@ public sealed class Weld : ToolComponent
 
         WeldContext weldContext2 = object2.GetGameObject().Components.Create<WeldContext>();
         weldContext2.weldedObject = weldContext1;
+        weldContext2.body = object2;
         weldContext1.weldedObject = weldContext2;
+        weldContext1.body = object1;
     }
 
     [Broadcast]
