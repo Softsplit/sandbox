@@ -6,22 +6,16 @@ namespace Softsplit;
 public sealed class Weld : ToolComponent
 {
     PhysicsBody object1;
-    PhysicsBody object2;
+    Vector3 point1Direction;
     Vector3 point1;
-    Vector3 point2;
 
-    bool advancedWeld;
-	protected override void OnFixedUpdate()
+	protected override void Start()
 	{
-		if(advancedWeld)
-        {
-            object2.MotionEnabled = false;
-            object2.GetGameObject().Transform.Position = object1.GetGameObject().Transform.World.PointToWorld(point1) + -(object2.GetGameObject().Transform.World.PointToWorld(point2)-object2.GetGameObject().Transform.Position);
-        }
+        ToolName = "Weld";
+        ToolDes = "Weld objects together. Right click to snap.";        
 	}
 	protected override void PrimaryAction()
 	{
-
         var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
@@ -35,6 +29,7 @@ public sealed class Weld : ToolComponent
             if(object1 == null)
             {
                 point1 = localPoint;
+                point1Direction = hit.Normal;
                 object1 = hit.Body;
             }
             else
@@ -48,6 +43,7 @@ public sealed class Weld : ToolComponent
 
     protected override void SecondaryAction()
 	{
+
         base.SecondaryAction();
         var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
 			.UseHitboxes()
@@ -63,8 +59,16 @@ public sealed class Weld : ToolComponent
             }
             else
             {
-                object2 = hit.Body;
-                advancedWeld = true;
+                GameObject object1G = object1.GetGameObject();
+                GameObject object2G = hit.GameObject;
+
+                object1G.Transform.Rotation = Rotation.FromToRotation(point1Direction, -hit.Normal) * object1G.Transform.Rotation;
+                
+                Vector3 pointWorld = object1G.Transform.World.PointToWorld(point1);
+
+                object1G.Transform.Position +=  hit.EndPosition - pointWorld;
+
+                CreateWeld(object1, point1, hit.Body, hit.EndPosition);
             }
         }
 	}

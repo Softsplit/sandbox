@@ -5,10 +5,14 @@ public sealed class ToolGunHandler : Component
 	[ConVar( "tool_current" )] public static string CurrentTool { get; set; }
 
 	[Property, ReadOnly] public Component ActiveToolMenu { get; set; }
-
 	private string lastTool;
 	private Component activeTool;
+	public ToolGunUI toolGun;
 
+	protected override void OnStart()
+	{
+		toolGun = Components.GetOrCreate<ToolGunUI>();
+	}
 	protected override void OnFixedUpdate()
 	{
 		if ( !Networking.IsHost )

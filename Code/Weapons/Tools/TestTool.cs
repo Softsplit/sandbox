@@ -4,8 +4,10 @@ public sealed class TestTool : ToolComponent
 {
 	TestToolMenu values;
 
-	protected override void OnStart()
+	protected override void Start()
 	{
+		ToolName = "Test Tool";
+		ToolDes = "Logs a set value. Right click for ALL CAPS.";
 		values = Components.Get<TestToolMenu>();
 		values.Enabled = false;
 	}

@@ -44,6 +44,10 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 	{
 		//
 	}
+	protected virtual void FixedUpdate()
+	{
+
+	}
 
 	/// <summary>
 	/// When the button is up
@@ -67,6 +71,7 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 
 	protected override void OnFixedUpdate()
 	{
+		FixedUpdate();
 		if ( !Equipment.IsValid() )
 			return;
 		

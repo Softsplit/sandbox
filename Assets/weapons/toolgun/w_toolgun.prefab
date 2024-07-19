@@ -86,18 +86,6 @@
             "MaxAmmo": 13
           },
           {
-            "__type": "Softsplit.RecoilWeaponComponent",
-            "__guid": "4b68ac05-70af-4150-9d3c-2901ddc3dc55",
-            "HorizontalSpread": "1.40,-1.40,1",
-            "RecoilPattern": {
-              "Points": []
-            },
-            "ResetTime": 0.3,
-            "Scale": "2,5",
-            "UseRecoilPattern": false,
-            "VerticalSpread": "2.00,0.00,0"
-          },
-          {
             "__type": "Sandbox.ScreenPanel",
             "__guid": "f8c6bc84-b366-4b9d-b708-dec9a600e1d2",
             "AutoScreenScale": true,
@@ -108,6 +96,10 @@
           {
             "__type": "Softsplit.ToolGunHandler",
             "__guid": "8f94d5ed-d7b4-41bd-b5c9-6928ffb584d1"
+          },
+          {
+            "__type": "ToolGunUI",
+            "__guid": "0b3627c8-2412-4230-ade3-55648363a147"
           }
         ]
       }
