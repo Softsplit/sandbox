@@ -9,7 +9,7 @@ public partial class RecoilWeaponComponent : EquipmentComponent
 	[Property, ToggleGroup( "UseRecoilPattern" )] public bool UseRecoilPattern { get; set; } = false;
 	[Property, Category( "UseRecoilPattern" ), HideIf( "UseRecoilPattern", false )] public Vector2 Scale { get; set; } = new Vector2( 2f, 5f );
 	[Property, Category( "UseRecoilPattern" ), HideIf( "UseRecoilPattern", false )] public RecoilPattern RecoilPattern { get; set; } = new();
-	[Property, Group( "Standard Recoil" ), HideIf( "UseRecoilPattern", true )] public RangedFloat HorizontalSpread { get; set; } 
+	[Property, Group( "Standard Recoil" ), HideIf( "UseRecoilPattern", true )] public RangedFloat HorizontalSpread { get; set; }
 	[Property, Group( "Standard Recoil" ), HideIf( "UseRecoilPattern", true )] public RangedFloat VerticalSpread { get; set; }
 
 	internal Angles Current { get; private set; }
@@ -44,6 +44,12 @@ public partial class RecoilWeaponComponent : EquipmentComponent
 
 	protected override void OnUpdate()
 	{
+		if ( !Player.IsValid() )
+			return;
+
+		if ( !Player.IsLocallyControlled )
+			return;
+
 		Current = Current.LerpTo( Angles.Zero, Time.Delta * 10f );
 	}
 }

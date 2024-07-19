@@ -2,43 +2,37 @@ namespace Softsplit;
 
 public sealed class ToolGunHandler : Component
 {
-	[ConVar( "tool_current" )] public static string CurrentTool { get; set; }
+	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "TestTool";
 
-	[Property, ReadOnly] public Component ActiveToolMenu { get; set; }
+	public Component ActiveToolMenu { get; set; }
+	public Component ActiveTool { get; set; }
+
 	private string lastTool;
-	private Component activeTool;
-	public ToolGunUI toolGun;
 
-	protected override void OnStart()
-	{
-		toolGun = Components.GetOrCreate<ToolGunUI>();
-	}
 	protected override void OnFixedUpdate()
 	{
 		if ( !Networking.IsHost )
 			return;
 
-		if ( lastTool != CurrentTool )
+		if ( lastTool != CurrentTool && lastTool != "" )
 			UpdateTool();
 
-		lastTool = CurrentTool;
+		if ( lastTool != "" )
+			lastTool = CurrentTool;
 	}
 
 	public void UpdateTool()
 	{
-		if ( activeTool.IsValid() )
-		{
-			activeTool.Destroy();
-			ActiveToolMenu.Destroy();
-		}
+		ActiveTool?.Destroy();
+		ActiveToolMenu?.Destroy();
 
-		TypeDescription comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
+		var comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
 		if ( comp != null )
 			ActiveToolMenu = Components.Create( comp, true );
 		else
 			ActiveToolMenu = null;
 
 		comp = TypeLibrary.GetType( CurrentTool );
-		activeTool = Components.Create( comp, true );
+		ActiveTool = Components.Create( comp, true );
 	}
 }

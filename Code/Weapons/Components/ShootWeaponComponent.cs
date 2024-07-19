@@ -217,7 +217,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	}
 
 	[Broadcast]
-	private void CreateBloodEffects(Vector3 pos, Vector3 normal, Vector3 direction )
+	private void CreateBloodEffects( Vector3 pos, Vector3 normal, Vector3 direction )
 	{
 		if ( !IsNearby( pos ) )
 			return;
@@ -230,16 +230,16 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		if ( tr.Hit )
 		{
 			var material = Game.Random.FromList( GetGlobal<PlayerGlobals>().BloodDecalMaterials );
-			CreateDecal(material, tr.HitPosition - (tr.Direction * 2), tr.Normal, Game.Random.Float( 0, 360 ), Game.Random.Int( 32, 96 ), 10f, 30f );
+			CreateDecal( material, tr.HitPosition - (tr.Direction * 2), tr.Normal, Game.Random.Float( 0, 360 ), Game.Random.Int( 32, 96 ), 10f, 30f );
 		}
 	}
 
-	private DecalRenderer CreateDecal(Material material, Vector3 pos, Vector3 normal, float rotation, float size, float depth, float destroyTime = 3f, GameObject parent = null)
+	private DecalRenderer CreateDecal( Material material, Vector3 pos, Vector3 normal, float rotation, float size, float depth, float destroyTime = 3f, GameObject parent = null )
 	{
 		var gameObject = Scene.CreateObject();
 		gameObject.Transform.Position = pos;
 		gameObject.Transform.Rotation = Rotation.LookAt( -normal );
-		if(parent != null) gameObject.SetParent(parent);
+		if ( parent != null ) gameObject.SetParent( parent );
 
 		// Random rotation
 		gameObject.Transform.Rotation *= Rotation.FromAxis( Vector3.Forward, rotation );
@@ -248,8 +248,8 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		decalRenderer.Material = material;
 		decalRenderer.Size = new( size, size, depth );
 
-		
-		
+
+
 
 		// Creates a destruction component to destroy the gameobject after a while
 		gameObject.DestroyAsync( destroyTime );
@@ -257,14 +257,14 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		return decalRenderer;
 	}
 
-	private void CreateImpactEffects(Surface surface, Vector3 pos, Vector3 normal, GameObject parent)
+	private void CreateImpactEffects( Surface surface, Vector3 pos, Vector3 normal, GameObject parent )
 	{
 		var decalPath = Game.Random.FromList( surface.ImpactEffects.BulletDecal, "decals/bullethole.decal" );
 		if ( ResourceLibrary.TryGet<DecalDefinition>( decalPath, out var decalResource ) )
 		{
 			var decal = Game.Random.FromList( decalResource.Decals );
 
-			CreateDecal( decal.Material, pos, normal, decal.Rotation.GetValue(), decal.Width.GetValue() / 1.5f, decal.Depth.GetValue(), 30f, parent);
+			CreateDecal( decal.Material, pos, normal, decal.Rotation.GetValue(), decal.Width.GetValue() / 1.5f, decal.Depth.GetValue(), 30f, parent );
 		}
 
 		if ( !string.IsNullOrEmpty( surface.Sounds.Bullet ) )
@@ -306,7 +306,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 				if ( tr.Distance == 0 )
 					continue;
 
-				CreateImpactEffects( tr.Surface, tr.EndPosition, tr.Normal, tr.GameObject);
+				CreateImpactEffects( tr.Surface, tr.EndPosition, tr.Normal, tr.GameObject );
 				DoTracer( tr.StartPosition, tr.EndPosition, tr.Distance, count );
 
 				if ( tr.GameObject?.Root.Components.Get<PlayerPawn>( FindMode.EnabledInSelfAndDescendants ) is { } player )
@@ -325,6 +325,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 				using ( Rpc.FilterInclude( Connection.Host ) )
 				{
 					InflictDamage( tr.GameObject, damage, tr.EndPosition, tr.Direction, tr.GetHitboxTags(), damageFlags );
+					InflictImpulse( tr.GameObject, damage, tr.EndPosition, tr.Direction );
 				}
 
 				count++;
@@ -348,6 +349,13 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		var damageMultiplier = BaseDamageFalloff.Evaluate( distDelta );
 
 		return damage * damageMultiplier;
+	}
+
+	//snapshot net objects dont get synced  
+	[Broadcast]
+	private void InflictImpulse( GameObject target, float damage, Vector3 pos, Vector3 dir )
+	{
+		target?.Components.Get<Rigidbody>()?.ApplyImpulseAt( pos, dir * damage * 100 );
 	}
 
 	/// <summary>
