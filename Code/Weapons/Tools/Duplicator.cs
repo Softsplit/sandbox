@@ -60,6 +60,7 @@ public sealed class Duplicator : ToolComponent
             }
 
             storedObject = copied.Serialize();
+            SceneUtility.MakeIdGuidsUnique(storedObject);
             
             foreach(GameObject child in copied.Children)
             {
