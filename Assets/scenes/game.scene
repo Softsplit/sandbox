@@ -112,6 +112,7 @@
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
       "Name": "Map ",
+      "Tags": "map",
       "Enabled": true,
       "Components": [
         {
