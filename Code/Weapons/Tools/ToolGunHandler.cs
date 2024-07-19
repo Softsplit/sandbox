@@ -4,33 +4,33 @@ public sealed class ToolGunHandler : Component
 {
 	[ConVar( "tool_current" )] public static string CurrentTool { get; set; }
 
-	[Property, ReadOnly] public Component ActiveToolMenu { get; set; }
-	private string lastTool;
-	private Component activeTool;
-	public ToolGunUI toolGun;
+	public Component ActiveToolMenu { get; set; }
+	public ToolGunUI ToolGunUI { get; set; }
 
 	protected override void OnStart()
 	{
-		toolGun = Components.GetOrCreate<ToolGunUI>();
+		ToolGunUI = Components.GetOrCreate<ToolGunUI>();
 	}
+
+	private string lastTool;
+	private Component activeTool;
+
 	protected override void OnFixedUpdate()
 	{
 		if ( !Networking.IsHost )
 			return;
 
-		if ( lastTool != CurrentTool )
+		if ( lastTool != CurrentTool && lastTool != "" )
 			UpdateTool();
 
-		lastTool = CurrentTool;
+		if ( lastTool != "" )
+			lastTool = CurrentTool;
 	}
 
 	public void UpdateTool()
 	{
-		if ( activeTool.IsValid() )
-		{
-			activeTool.Destroy();
-			ActiveToolMenu.Destroy();
-		}
+		activeTool?.Destroy();
+		ActiveToolMenu?.Destroy();
 
 		TypeDescription comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
 		if ( comp != null )
