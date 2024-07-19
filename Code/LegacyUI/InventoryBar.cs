@@ -27,10 +27,10 @@ public class InventoryBar : Panel
 
 	public Equipment GetSlot( PlayerInventory inventory, int i )
 	{
-		if ( inventory.Equipment.Count() <= i ) return null;
+		if ( inventory?.Equipment.Count() <= i ) return null;
 		if ( i < 0 ) return null;
 
-		return inventory.Equipment.ToList()[i];
+		return inventory?.Equipment.ToList()[i];
 	}
 
 	private static void UpdateIcon( Equipment equipment, InventoryIcon inventoryIcon )

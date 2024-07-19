@@ -15,7 +15,7 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 	/// How long does it take to reload while empty?
 	/// </summary>
 	[Property] public float EmptyReloadTime { get; set; } = 2.0f;
-	
+
 	[Property] public bool SingleReload { get; set; } = false;
 
 	/// <summary>
@@ -41,7 +41,11 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 
 	protected override void OnUpdate()
 	{
-		if ( IsProxy ) return;
+		if ( !Player.IsValid() )
+			return;
+
+		if ( !Player.IsLocallyControlled )
+			return;
 
 		if ( SingleReload && IsReloading && Input.Pressed( "Attack1" ) )
 		{
@@ -103,7 +107,7 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 			PlayAsyncSound( kv.Key, kv.Value, () => IsReloading );
 		}
 	}
-	
+
 	[Broadcast( NetPermission.OwnerOnly )]
 	void CancelReload()
 	{
@@ -149,11 +153,11 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 	async void PlayAsyncSound( float delay, SoundEvent snd, Func<bool> playCondition = null )
 	{
 		await GameTask.DelaySeconds( delay );
-		
+
 		// Can we play this sound?
 		if ( playCondition != null && !playCondition.Invoke() )
 			return;
-		
+
 		GameObject.PlaySound( snd );
 	}
 }

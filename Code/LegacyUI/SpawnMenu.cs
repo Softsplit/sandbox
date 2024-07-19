@@ -1,6 +1,8 @@
 using Sandbox.UI.Construct;
 using System;
 using Sandbox;
+using Softsplit;
+
 public partial class SpawnMenu : Panel
 {
 	public static SpawnMenu Instance;
@@ -59,6 +61,7 @@ public partial class SpawnMenu : Panel
 	{
 		isToolBuilding = true;
 		toollist.DeleteChildren( true );
+/*
 		Log.Info( TypeLibrary.GetTypes<Tools.Tool>().Count() );
 		var player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
 		for ( int i = 0; i < 5; i++ )
@@ -85,7 +88,12 @@ public partial class SpawnMenu : Panel
 		}
 		foreach ( var entry in TypeLibrary.GetTypes<Tools.Tool>() )
 		{
-			if ( entry.Name == "Tool" )
+			if ( entry.Name == "Tool" )*/
+
+		
+		foreach ( var entry in TypeLibrary.GetTypes<ToolComponent>() )
+		{
+			if ( entry.Name == "ToolComponent" )
 				continue;
 
 			var button = toollist.Add.Button( entry.Title );
