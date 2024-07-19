@@ -80,19 +80,15 @@ public sealed class Weld : ToolComponent
 			return;
 
         WeldContext weldContext1 = object1.GetGameObject().Components.Create<WeldContext>();
-        
         weldContext1.MainWeld = true;
 
-        var point1 = new PhysicsPoint( object1, point1Pos );
-		var point2 = new PhysicsPoint( object2, point2Pos );
-        
-        weldContext1.weldJoint = PhysicsJoint.CreateFixed(point1,point2);
+        weldContext1.point1 = point1Pos;
+        weldContext1.point2 = point2Pos;
 
         WeldContext weldContext2 = object2.GetGameObject().Components.Create<WeldContext>();
         weldContext2.weldedObject = weldContext1;
-        weldContext2.body = object2;
+
         weldContext1.weldedObject = weldContext2;
-        weldContext1.body = object1;
     }
 
     [Broadcast]
