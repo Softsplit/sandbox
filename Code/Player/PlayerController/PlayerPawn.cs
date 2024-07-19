@@ -71,7 +71,7 @@ public sealed partial class PlayerPawn : Pawn, IDescription
 	}
 
 	[ConCmd("crashbycandy")]
-	public static void superlol()
+	public static void crashbycandy()
 	{
 		for (int i = 0; i < 100; i++ )
 		{

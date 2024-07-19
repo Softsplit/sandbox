@@ -100,10 +100,12 @@ public class Equipment : Component, Component.INetworkListener, IEquipment, IDes
 	/// </summary>
 	protected void UpdateRenderMode()
 	{
-		if ( !Owner.IsValid() || !ModelRenderer.IsValid )
-			return;
 		Log.Info( Owner );
 		Log.Info( ModelRenderer );
+		if ( Owner == null || ModelRenderer == null )
+			return;
+		if ( !Owner.IsValid() || !ModelRenderer.IsValid )
+			return;
 		ModelRenderer.RenderType = !Owner.IsViewer
 			? Sandbox.ModelRenderer.ShadowRenderType.On
 			: Sandbox.ModelRenderer.ShadowRenderType.ShadowsOnly;

@@ -266,7 +266,14 @@ public partial class PlayerPawn
 		}
 
 		cc.ApplyFriction( GetFriction() );
-		cc.Move();
+		if ( !IsNoclipping )
+		{
+			cc.Move();
+		}
+		else
+		{
+			Transform.Position += cc.Velocity * Time.Delta * 2f;
+		}
 	}
 
 	TimeSince TimeSinceCrouchPressed = 10f;

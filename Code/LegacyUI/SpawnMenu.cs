@@ -1,17 +1,13 @@
 using Sandbox.UI.Construct;
-using System;
-using Sandbox;
 using Softsplit;
 
 public partial class SpawnMenu : Panel
 {
 	public static SpawnMenu Instance;
 	readonly Panel toollist;
-	public EquipmentResource BaseTool = ResourceLibrary.Get<EquipmentResource>( "weapons/tools/basetool.equip" );
 
 	private static ModelList modelList;
 	private bool isSearching;
-	private bool isToolBuilding;
 
 	public SpawnMenu()
 	{
@@ -57,69 +53,35 @@ public partial class SpawnMenu : Panel
 		}
 	}
 
-	async void RebuildToolList()
+	void RebuildToolList()
 	{
-		isToolBuilding = true;
 		toollist.DeleteChildren( true );
-/*
-		Log.Info( TypeLibrary.GetTypes<Tools.Tool>().Count() );
-		var player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
-		for ( int i = 0; i < 5; i++ )
-		{
-			player = Game.ActiveScene.GetAllComponents<Softsplit.PlayerPawn>().Where( player => !player.IsProxy ).FirstOrDefault();
-			await Task.Delay( 100 );
-			if (player != null)
-			{
-				break;
-			}
-			Log.Info( player );
-		}
-		if ( player == null )
-		{
-			isToolBuilding = false; 
-			return; 
-		}
-		var inventory = player.Inventory;
-		Log.Info( inventory );
-		if ( inventory == null )
-		{
-			isToolBuilding = false;
-			return;
-		}
-		foreach ( var entry in TypeLibrary.GetTypes<Tools.Tool>() )
-		{
-			if ( entry.Name == "Tool" )*/
 
-		
+
 		foreach ( var entry in TypeLibrary.GetTypes<ToolComponent>() )
 		{
 			if ( entry.Name == "ToolComponent" )
 				continue;
 
 			var button = toollist.Add.Button( entry.Title );
-			if ( player.CurrentEquipment != null )
-			{
-				button.SetClass( "active", entry.ClassName == player.CurrentEquipment.GetType().Name );
-			}
+			button.SetClass( "active", entry.ClassName == ConsoleSystem.GetValue( "tool_current" ) );
 
 			button.AddEventListener( "onclick", () =>
 			{
-				SetActiveTool( entry, inventory, player );
+				SetActiveTool( entry.ClassName );
 
 				foreach ( var child in toollist.Children )
 					child.SetClass( "active", child == button );
 			} );
 		}
-		isToolBuilding = false;
+
 	}
 
-	void SetActiveTool( TypeDescription classtype, Softsplit.PlayerInventory inventory, Softsplit.PlayerPawn player )
+	void SetActiveTool( string className )
 	{
-		/*var obj = new GameObject();
-		var tool = obj.Components.Create( classtype );
-		obj.NetworkSpawn();*/
-		inventory.GiveTool( BaseTool, classtype );
-		// player.Components.Create( classtype );
+		// setting a cvar
+		ConsoleSystem.Run( "tool_current", className );
+
 		// set the active weapon to the toolgun
 		/*
 		if ( Game.LocalPawn is not Player player ) return;
@@ -139,11 +101,6 @@ public partial class SpawnMenu : Panel
 
 	public override void Tick()
 	{
-		// Log.Info( isToolBuilding );
-		if (Input.Pressed("menu") ||(toollist.ChildrenCount == 0 && !isToolBuilding))
-		{
-			RebuildToolList();
-		}
 		if ( modelList.SearchInput.HasFocus )
 		{
 			isSearching = true;

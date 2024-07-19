@@ -75,6 +75,15 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	}
 
+	protected SceneTraceResult DoTrace()
+	{
+		return Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position + WeaponRay.Forward * 500 )
+		.UseHitboxes()
+		.IgnoreGameObjectHierarchy( GameObject.Root )
+		.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
+		.Run();
+	}
+
 	protected IEquipment Effector
 	{
 		get

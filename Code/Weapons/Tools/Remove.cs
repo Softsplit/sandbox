@@ -1,13 +1,14 @@
-﻿namespace Tools;
-public class Remove : Tool
+﻿namespace Softsplit;
+public class Remove : ToolComponent
 {
-	protected override void OnUpdate()
+
+	protected override void Start()
 	{
-		base.OnUpdate();
-		if ( !IsUsing() )
-		{
-			return;
-		}
+		ToolName = "Remove";
+		ToolDes = "Delete Objects";
+	}
+	protected override void PrimaryAction()
+	{
 		if ( Input.Pressed( "attack1" ) )
 		{
 			var trace = DoTrace();

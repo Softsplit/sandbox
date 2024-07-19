@@ -270,60 +270,6 @@ public partial class PlayerInventory : Component
 
 		return component;
 	}
-	public Equipment GiveTool( EquipmentResource resource, TypeDescription type, bool makeActive = true )
-	{
-		// Assert.True( Networking.IsHost ); idk what is doing
-		// TODO: clean this code
-
-		// If we're in charge, let's make some equipment.
-		if ( type == null )
-		{
-			Log.Warning( "A player loadout without a equipment? Nonsense." );
-			return null;
-		}
-
-		// Don't let us have the exact same equipment
-
-		var pickupResult = CanTake( resource );
-
-		if ( pickupResult == PickupResult.None )
-			return null;
-
-		if ( pickupResult == PickupResult.Swap )
-		{
-			var slotCurrent = Equipment.FirstOrDefault( equipment => equipment.Enabled );
-			if ( slotCurrent.IsValid() )
-				Drop( slotCurrent, true );
-		}
-		if ( !resource.MainPrefab.IsValid() )
-		{
-			Log.Error( $"equipment doesn't have a prefab? {resource}, {resource.MainPrefab}, {resource.ViewModelPrefab}" );
-			return null;
-		}
-		// Create the equipment prefab and put it on the GameObject.
-		var gameObject = resource.MainPrefab.Clone( new CloneConfig()
-		{
-			Transform = new(),
-			Parent = WeaponGameObject
-		} );
-		var component = gameObject.Components.Create( type, false ) as Tools.Tool;
-		gameObject.NetworkSpawn( Player.Network.OwnerConnection );
-		gameObject.Parent = WeaponGameObject;
-		component.OwnerId = Player.Id;
-		component.Resource = resource;
-		component.ModelRenderer = gameObject.Components.Get<SkinnedModelRenderer>( FindMode.EnabledInSelfAndChildren );
-		component.Enabled = true;
-
-		if ( makeActive )
-			Player.SetCurrentEquipment( component );
-
-		/*if ( component.Resource.Slot == EquipmentSlot.Special )
-		{
-			// Nothing
-		}*/
-
-		return component;
-	}
 
 	public bool Has( EquipmentResource resource )
 	{

@@ -1,12 +1,16 @@
-﻿namespace Tools;
-public class ThrusterCreater : Tool
+﻿using Sandbox.Physics;
+
+namespace Softsplit;
+public class Thruster : ToolComponent
 {
-	protected override void OnUpdate()
+	protected override void Start()
 	{
-		if (!IsUsing()) 
-			return;
-		if ( !Input.Pressed( "attack1" ) )
-			return;
+		ToolName = "Thruster";
+		ToolDes = "Create Thrusters";
+	}
+
+	protected override void PrimaryAction()
+	{
 		var aim = DoTrace();
 		if ( aim.GameObject == null )
 			return;
@@ -28,11 +32,9 @@ public class ThrusterCreater : Tool
 
 		thruster.Components.Create<Rigidbody>();
 
-		FixedJoint fixedJoint1 = thruster.Components.Create<FixedJoint>();
-		fixedJoint1.Body = aim.Body.GetGameObject();
+		// Is dosnt work, idk how fix
+		PhysicsBody body = Scene.Trace.Ray( modelRenderer.Bounds.Center, modelRenderer.Bounds.Center ).Run().Body;
 
-		FixedJoint fixedJoint2 = aim.Body.GetGameObject().Components.Create<FixedJoint>();
-		fixedJoint2.Body = thruster;
-
+		Weld.CreateWeld( body, body.Transform.PointToLocal(aim.HitPosition), aim.Body, body.Transform.PointToLocal( aim.HitPosition ) );
 	}
 }

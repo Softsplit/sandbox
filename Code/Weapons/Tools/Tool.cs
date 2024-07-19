@@ -38,11 +38,15 @@ public class Tool : Equipment, IDescription, IEquipment
 	{
 		return Owner != null && Owner.CurrentEquipment == this;
 	}
-
+	/*
+	System.NullReferenceException: Object reference not set to an instance of an object.
+	at Tools.Tool.DoTrace() in C:\Users\sony\Documents\s&box projects\sbox-classic\sbox-classic\Code\Tools\Tool.cs:line 45
+	at Physgun_Classic.OnPreRender() in C:\Users\sony\Documents\s&box projects\sbox-classic\sbox-classic\Code\Tools\Physgun_Classic.cs:line 151
+	at Sandbox.Component.ExceptionWrap(String name, Action a)
+	*/
 	public SceneTraceResult DoTrace()
 	{
 		return Scene.Trace.Ray( Owner.AimRay, MaxTraceDistance )
-			//.WithAnyTags( "solid", "nocollide" )
 			.WithoutTags( "player" )
 			.IgnoreGameObject( Owner.GameObject )
 			.Run();

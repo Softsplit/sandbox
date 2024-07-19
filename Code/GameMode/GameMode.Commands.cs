@@ -39,12 +39,16 @@ partial class GameMode : Component.INetworkListener
 	}
 
 	[ConCmd( "spawn" )]
-	public static async void Spawn( string modelname )
+	private static async void SpawnCmd( string modelname )
+	{
+		_ = Spawn( modelname );
+	}
+	public static async Task<GameObject?> Spawn( string modelname )
 	{
 		var owner = PlayerState.Local.PlayerPawn;
 
 		if ( owner == null )
-			return;
+			return null;
 
 		var tr = Game.ActiveScene.Trace.Ray( owner.AimRay, 500f )
 			.UseHitboxes()
@@ -70,7 +74,7 @@ partial class GameMode : Component.INetworkListener
 		}
 
 		if ( model == null || model.IsError )
-			return;
+			return null;
 
 		var ent = new GameObject();
 		ent.Transform.Position = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z;
@@ -96,5 +100,6 @@ partial class GameMode : Component.INetworkListener
 
 		owner.PlayerState.SpawnedPropsList.Add( ent );
 		Stats.Increment( "spawn.model", 1, modelname );
+		return ent;
 	}
 }
