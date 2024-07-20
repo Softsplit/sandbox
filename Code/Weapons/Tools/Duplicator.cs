@@ -20,7 +20,7 @@ public sealed class Duplicator : ToolComponent
         {
             Recoil(hit.EndPosition);
 
-            SpawnObject(storedObject,hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
+            SpawnObject(storedObject.ToJsonString(),hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
         }
     }
 	protected override void SecondaryAction()
@@ -66,8 +66,9 @@ public sealed class Duplicator : ToolComponent
 	}
 
     [Broadcast]
-    public static void SpawnObject(JsonObject gameObject, Vector3 position, Rotation rotation)
+    public static void SpawnObject(string gameObjectText, Vector3 position, Rotation rotation)
     {
+        JsonObject gameObject = Json.Deserialize<JsonObject>(gameObjectText);
         if ( !Networking.IsHost )
 			return;
         GameObject newObject = new GameObject();
