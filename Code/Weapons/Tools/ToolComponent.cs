@@ -5,7 +5,7 @@ namespace Softsplit;
 /// </summary>
 public abstract class ToolComponent : InputWeaponComponent
 {
-	public LineRenderer LineRenderer { get; set; }
+	public VectorLineRenderer LineRenderer { get; set; }
 	public bool AlwaysEnabledMenu { get; set; }
 	public string ToolName { get; set; } = "";
 	public string ToolDes { get; set; } = "";
@@ -19,7 +19,7 @@ public abstract class ToolComponent : InputWeaponComponent
 		InputActions.Add( "Attack2" );
 		InputActions.Add( "ToolGunMenu" );
 
-		LineRenderer = Components.GetOrCreate<LineRenderer>();
+		LineRenderer = Components.GetOrCreate<VectorLineRenderer>();
 		LineRenderer.Color = Color.Cyan;
 		LineRenderer.Width = 0.1f;
 
@@ -110,13 +110,7 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		RayActive = RayTime;
 
-		p1 = new GameObject();
-		p1.Transform.Position = Effector.Muzzle.Transform.Position;
-
-		p2 = new GameObject();
-		p2.Transform.Position = effectPoint;
-
-		LineRenderer.Points = new List<GameObject> { p1, p2 };
+		LineRenderer.Points = new List<Vector3> { Effector.Muzzle.Transform.Position, effectPoint };
 
 		Sound.Play( "sounds/guns/gun_dryfire.sound", Transform.Position );
 
