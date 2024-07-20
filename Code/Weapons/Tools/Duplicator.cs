@@ -20,7 +20,7 @@ public sealed class Duplicator : ToolComponent
         {
             Recoil(hit.EndPosition);
 
-            SpawnObject(PlayerState.Local.PlayerPawn, storedObject,hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
+            SpawnObject(storedObject,hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
         }
     }
 	protected override void SecondaryAction()
@@ -66,7 +66,7 @@ public sealed class Duplicator : ToolComponent
 	}
 
     [Broadcast]
-    public static void SpawnObject(PlayerPawn owner, JsonObject gameObject, Vector3 position, Rotation rotation)
+    public static void SpawnObject(JsonObject gameObject, Vector3 position, Rotation rotation)
     {
         if ( !Networking.IsHost )
 			return;
@@ -90,10 +90,6 @@ public sealed class Duplicator : ToolComponent
             thing.gameObjects.Add(go);
         }
         Log.Info(thing.gameObjects.Count);
-        if(owner == PlayerState.Local.PlayerPawn)
-        {
-            owner.PlayerState.SpawnedThings.Add(thing);
-        }
         newObject.Destroy();
     }
 }

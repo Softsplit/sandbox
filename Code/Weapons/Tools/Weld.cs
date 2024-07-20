@@ -60,7 +60,7 @@ public sealed class Weld : ToolComponent
 
                 object1G.Transform.Position +=  hit.EndPosition - pointWorld;
 
-                CreateWeld(PlayerState.Local.PlayerPawn, object1, point1, hit.GameObject, hit.EndPosition);
+                CreateWeld( object1, point1, hit.GameObject, hit.EndPosition);
                 object1 = null;
             }
         }
