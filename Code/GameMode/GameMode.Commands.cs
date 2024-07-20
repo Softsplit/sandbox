@@ -94,8 +94,11 @@ partial class GameMode : Component.INetworkListener
 		ent.Tags.Add("propcollide");
 		ent.NetworkSpawn(null);
 		ent.Network.DropOwnership();
-
-		owner.PlayerState.SpawnedPropsList.Add( ent );
+		PlayerState.Thing thing = new PlayerState.Thing
+		{
+			gameObject = ent
+		}; 
+		owner.PlayerState.SpawnedThings.Add( thing );
 		Stats.Increment( "spawn.model", 1, modelname );
 	}
 }

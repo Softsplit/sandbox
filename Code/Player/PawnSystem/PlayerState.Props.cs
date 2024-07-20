@@ -2,7 +2,7 @@ namespace Softsplit;
 
 public partial class PlayerState
 {
-	public List<GameObject> SpawnedPropsList { get; private set; } = new();
+	public List<Thing> SpawnedThings { get; private set; } = new();
 
 	private float undoPropHeldTimer = 0;
 	private float undoPropRate = 1;
@@ -29,16 +29,23 @@ public partial class PlayerState
 
 	private void HandlePropDestroyInitiation()
 	{
-		if ( SpawnedPropsList.Count > 0 )
+		if ( SpawnedThings.Count > 0 )
 		{
-			DestroyLastSpawnedProp( SpawnedPropsList.Last() );
-			SpawnedPropsList.RemoveAt( SpawnedPropsList.IndexOf( SpawnedPropsList.Last() ) );
+			DestroyLastSpawnedProp( SpawnedThings.Last() );
+			SpawnedThings.RemoveAt( SpawnedThings.IndexOf( SpawnedThings.Last() ) );
 		}
 	}
 
 	[Broadcast]
-	public void DestroyLastSpawnedProp( GameObject propToDestroy )
+	public void DestroyLastSpawnedProp( Thing propToDestroy )
 	{
-		propToDestroy?.Destroy();
+		if(propToDestroy.gameObject != null) propToDestroy?.gameObject.Destroy();
+		if(propToDestroy.component != null) propToDestroy?.component.Destroy();
+	}
+
+	public class Thing
+	{
+		public GameObject gameObject {get;set;}
+		public Component component {get;set;}
 	}
 }

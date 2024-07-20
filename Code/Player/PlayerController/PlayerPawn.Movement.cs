@@ -280,6 +280,13 @@ public partial class PlayerPawn
 		TimeSinceSprintChanged = 0;
 	}
 
+	[Broadcast]
+	public void UpdateNoclip(bool IsNoclipping)
+	{
+		if(IsNoclipping) CharacterController.IgnoreLayers.Add("solid");
+		else CharacterController.IgnoreLayers.Remove("solid");
+	}
+
 	private void BuildInput()
 	{
 		IsSlowWalking = Input.Down( "Walk" );
@@ -307,6 +314,7 @@ public partial class PlayerPawn
 		if ( Input.Pressed( "Noclip" ) )
 		{
 			IsNoclipping = !IsNoclipping;
+			UpdateNoclip(IsNoclipping);
 		}
 
 		if ( WishMove.LengthSquared > 0.01f || Input.Down( "Attack1" ) )

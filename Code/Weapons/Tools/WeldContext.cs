@@ -25,4 +25,8 @@ public sealed class WeldContext : Component
             weldJoint = PhysicsJoint.CreateFixed(p1,p2);
         }
 	}
+    protected override void OnDestroy()
+	{
+		if(MainWeld) weldJoint.Remove();
+	}
 }

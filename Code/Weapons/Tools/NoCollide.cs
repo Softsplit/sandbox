@@ -16,12 +16,7 @@ public sealed class NoCollide : ToolComponent
         }
         if(hit.Hit)
         {
-            if(hit.GameObject.Tags.Contains("propcollide"))
-            {
-                hit.GameObject.Tags.Remove("propcollide");
-                hit.GameObject.Tags.Add("nopropcollide");
-                Recoil(hit.EndPosition);
-            }
+           NoPropCollideTags(hit.GameObject,hit.EndPosition);
         }
     }
 	protected override void SecondaryAction()
@@ -29,14 +24,31 @@ public sealed class NoCollide : ToolComponent
         var hit = Trace();
         if(hit.Hit)
         {
-            if(!hit.GameObject.Tags.Contains("nocollide"))
-            {
-                hit.GameObject.Tags.Remove("propcollide");
-                hit.GameObject.Tags.Remove("nopropcollide");
-                hit.GameObject.Tags.Remove("solid");
-                hit.GameObject.Tags.Add("nocollide");
-                Recoil(hit.EndPosition);
-            }
+            NoCollideTags(hit.GameObject,hit.EndPosition);
         }
 	}
+
+    [Broadcast]
+    public void NoPropCollideTags(GameObject gameObject, Vector3 endPos)
+    {
+        if(gameObject.Tags.Contains("propcollide"))
+        {
+            gameObject.Tags.Remove("propcollide");
+            gameObject.Tags.Add("nopropcollide");
+            Recoil(endPos);
+        }
+    }
+
+    [Broadcast]
+    public void NoCollideTags(GameObject gameObject, Vector3 endPos)
+    {
+        if(gameObject.Tags.Contains("nocollide"))
+        {
+            gameObject.Tags.Remove("propcollide");
+            gameObject.Tags.Remove("nopropcollide");
+            gameObject.Tags.Remove("solid");
+            gameObject.Tags.Add("nocollide");
+            Recoil(endPos);
+        }
+    }
 }
