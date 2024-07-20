@@ -293,7 +293,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		HeldBody.Sleeping = false;
 		HeldBody.AutoSleep = false;
 	}
-	private void GrabEnd()
+	private async void GrabEnd()
 	{
 		if(GrabbedObject == null) return;
 		if ( HeldBody.IsValid() )
@@ -307,11 +307,14 @@ public partial class PhysGunComponent : InputWeaponComponent,
 			GrabbedObject.Tags.Remove( $"{GrabbedTag}{Equipment.Owner.SteamId}" );
 		}
 
-		GrabbedObject.Network.DropOwnership();
+
+		GameObject gameObject = GrabbedObject;
 		GrabbedObject = null;
 
 		HeldBody = null;
 		Grabbing = false;
+
+		await Task.DelaySeconds(5);
 	}
 
 	private void GrabMove( Vector3 startPos, Vector3 dir, Rotation rot, bool snapAngles )
