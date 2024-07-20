@@ -90,14 +90,10 @@ partial class GameMode : Component.INetworkListener
 				collider.Scale = model.PhysicsBounds.Size;
 			}
 		}
-<<<<<<< Updated upstream
-
-		ent.NetworkSpawn( null );
-=======
+		
 		ent.Tags.Add("propcollide");
-		ent.NetworkSpawn();
+		ent.NetworkSpawn(null);
 		ent.Network.DropOwnership();
->>>>>>> Stashed changes
 
 		owner.PlayerState.SpawnedPropsList.Add( ent );
 		Stats.Increment( "spawn.model", 1, modelname );

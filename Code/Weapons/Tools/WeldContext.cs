@@ -13,6 +13,7 @@ public sealed class WeldContext : Component
 
 	protected override void OnStart()
 	{
+        if(weldedObject == null) Destroy();
 		if(MainWeld)
         {
             if(body == null) body = Components.Get<Rigidbody>().PhysicsBody;
