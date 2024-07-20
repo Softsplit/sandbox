@@ -75,6 +75,7 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	}
 
+
 	protected IEquipment Effector
 	{
 		get
@@ -88,6 +89,15 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	private GameObject p1;
 	private GameObject p2;
+
+	protected SceneTraceResult Trace()
+	{
+		return Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position + WeaponRay.Forward * 500 )
+		.UseHitboxes()
+		.IgnoreGameObjectHierarchy( GameObject.Root )
+		.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip", "player" )
+		.Run();
+	}
 
 	[Broadcast]
 	public void Recoil( Vector3 effectPoint )

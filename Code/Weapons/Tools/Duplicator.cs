@@ -15,11 +15,7 @@ public sealed class Duplicator : ToolComponent
 	}
     protected override void PrimaryAction()
     {
-        var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
-			.UseHitboxes()
-			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
-			.Run();
+        var hit = Trace();
         if(hit.Hit)
         {
             Recoil(hit.EndPosition);
@@ -29,11 +25,7 @@ public sealed class Duplicator : ToolComponent
     }
 	protected override void SecondaryAction()
 	{
-        var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
-			.UseHitboxes()
-			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
-			.Run();
+        var hit = Trace();
         if(hit.Hit && hit.GameObject.Name != "Map")
         {
             Recoil(hit.EndPosition);

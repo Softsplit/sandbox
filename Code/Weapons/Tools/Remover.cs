@@ -12,11 +12,7 @@ public sealed class Remover : ToolComponent
 	}
 	protected override void PrimaryAction()
 	{
-        var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
-			.UseHitboxes()
-			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
-			.Run();
+        var hit = Trace();
         if(hit.Hit && !hit.Tags.Contains("map"))
         {
             Recoil(hit.EndPosition);

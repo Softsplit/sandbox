@@ -16,11 +16,7 @@ public sealed class Weld : ToolComponent
 	}
 	protected override void PrimaryAction()
 	{
-        var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
-			.UseHitboxes()
-			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
-			.Run();
+        var hit = Trace();
         if(hit.Hit  && hit.GameObject.Name != "Map")
         {
             if(hit.Body == object1 || hit.Body == null) return;
@@ -45,11 +41,7 @@ public sealed class Weld : ToolComponent
 	{
 
         base.SecondaryAction();
-        var hit = Scene.Trace.Ray( WeaponRay.Position, WeaponRay.Position+WeaponRay.Forward*500 )
-			.UseHitboxes()
-			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
-			.Run();
+        var hit = Trace();
         if(hit.Hit  && hit.GameObject.Name != "Map")
         {
             if(object1 == null)
