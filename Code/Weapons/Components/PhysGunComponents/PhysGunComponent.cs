@@ -26,17 +26,32 @@ public partial class PhysGunComponent : InputWeaponComponent,
 	public bool Grabbing { get; private set; }
 
 	[Sync] public bool BeamActive { get; set; }
-	public GameObject GrabbedObject { get; set; }
+	[Sync] public GameObject GrabbedObject { get; set; }
+	public HighlightOutline GrabbedObjectHighlight { get; set; }
 	[Sync] public int GrabbedBone { get; set; }
 	[Sync] public Vector3 GrabbedPos { get; set; }
 
 	/// <summary>
 	/// Accessor for the aim ray.
 	/// </summary>
+
 	protected Ray WeaponRay => Equipment.Owner.AimRay;
+	Beam beam;
+	protected override void OnStart()
+	{
+		beam = Components.Get<Beam>();
+	}
 
 	protected override void OnUpdate()
 	{
+		
+		beam.enabled = Grabbing && GrabbedObject!=null;
+		if(GrabbedObjectHighlight != null) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject!=null;
+		if(Grabbing && GrabbedObject!=null)
+		{
+			beam.CreateEffect(Effector.Muzzle.Transform.Position,GrabbedObject.Transform.Local.PointToWorld(GrabbedPos));
+			if(GrabbedObjectHighlight == null) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>();
+		}	
 		if ( IsProxy ) return;
 
 		if ( !HeldBody.IsValid() )
@@ -52,6 +67,17 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		var angularVelocity = HeldBody.AngularVelocity;
 		Rotation.SmoothDamp( HeldBody.Rotation, HoldRot, ref angularVelocity, 0.075f, Time.Delta );
 		HeldBody.AngularVelocity = angularVelocity;
+	}
+
+	protected IEquipment Effector
+	{
+		get
+		{
+			if ( IsProxy || !Equipment.ViewModel.IsValid() )
+				return Equipment;
+
+			return Equipment.ViewModel;
+		}
 	}
 
 	protected override void OnInputUpdate()
@@ -79,30 +105,32 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		BeamActive = grabEnabled;
 
 		if ( grabEnabled )
+		{
+			if ( HeldBody.IsValid() )
 			{
-				if ( HeldBody.IsValid() )
-				{
-					UpdateGrab( eyePos, eyeRot, eyeDir, wantsToFreeze );
-				}
-				else
-				{
-					TryStartGrab( eyePos, eyeRot, eyeDir );
-				}
+				UpdateGrab( eyePos, eyeRot, eyeDir, wantsToFreeze );
 			}
-			else if ( Grabbing )
+			else
 			{
-				GrabEnd();
+				TryStartGrab( eyePos, eyeRot, eyeDir );
 			}
+		}
+		else if ( Grabbing )
+		{
+			GrabEnd();
+		}
 
-			if ( Grabbing && Input.Pressed( "reload" ) )
-			{
-				TryUnfreezeAll( eyePos, eyeRot, eyeDir );
-			}
+		if ( Grabbing && Input.Pressed( "reload" ) )
+		{
+			TryUnfreezeAll( eyePos, eyeRot, eyeDir );
+		}
 
 		if ( BeamActive )
 		{
 			Input.MouseWheel = 0;
 		}
+
+		Equipment.Owner.Inventory.cantScroll = Grabbing;
 	}
 
 	[Broadcast]
@@ -192,8 +220,8 @@ public partial class PhysGunComponent : InputWeaponComponent,
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid ) return;
-
+		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains("map") ) return;
+		Log.Info("fu");
 		var rootEnt = tr.GameObject.Root;
 		var body = tr.Body;
 
@@ -230,6 +258,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		GrabInit( body, eyePos, tr.EndPosition, eyeRot );
 
 		GrabbedObject = rootEnt;
+		GrabbedPos = tr.GameObject.Transform.World.PointToLocal(tr.EndPosition);
 		GrabbedObject.Network.TakeOwnership();
 		GrabbedObject.Tags.Add( GrabbedTag );
 		GrabbedObject.Tags.Add( $"{GrabbedTag}{Equipment.Owner.SteamId}" );
@@ -293,7 +322,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		HeldBody.Sleeping = false;
 		HeldBody.AutoSleep = false;
 	}
-	private async void GrabEnd()
+	private void GrabEnd()
 	{
 		if(GrabbedObject == null) return;
 		if ( HeldBody.IsValid() )
@@ -309,12 +338,12 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 
 		GameObject gameObject = GrabbedObject;
+		if(GrabbedObjectHighlight == null) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>();
+		GrabbedObjectHighlight.Enabled = false;
 		GrabbedObject = null;
 
 		HeldBody = null;
 		Grabbing = false;
-
-		await Task.DelaySeconds(5);
 	}
 
 	private void GrabMove( Vector3 startPos, Vector3 dir, Rotation rot, bool snapAngles )

@@ -9,6 +9,8 @@ public partial class PlayerInventory : Component
 {
 	[RequireComponent] PlayerPawn Player { get; set; }
 
+	public bool cantScroll;
+
 	/// <summary>
 	/// What equipment do we have right now?
 	/// </summary>
@@ -126,10 +128,10 @@ public partial class PlayerInventory : Component
 		var wheel = Input.MouseWheel;
 
 		// gamepad input
-		if ( Input.Pressed( "SlotNext" ) ) wheel.y = -1;
-		if ( Input.Pressed( "SlotPrev" ) ) wheel.y = 1;
+		if ( Input.Pressed( "SlotNext" )) wheel.y = -1;
+		if ( Input.Pressed( "SlotPrev" )) wheel.y = 1;
 
-		if ( wheel.y == 0f ) return;
+		if ( wheel.y == 0f || cantScroll) return;
 
 		var availableWeapons = Equipment.ToList();
 		if ( availableWeapons.Count == 0 )

@@ -6,6 +6,7 @@ namespace Softsplit;
 public sealed class Weld : ToolComponent
 {
     GameObject object1;
+    HighlightOutline object1Outline;
     Vector3 point1Direction;
     Vector3 point1;
 
@@ -13,6 +14,15 @@ public sealed class Weld : ToolComponent
 	{
         ToolName = "Weld";
         ToolDes = "Weld objects together. Right click to snap.";        
+	}
+	protected override void Update()
+	{
+        if(object1Outline != null)
+        {
+            object1Outline.Enabled = object1 != null;
+            if(object1 == null) object1Outline = null;
+        } 
+		else if (object1 != null) object1Outline = object1.Components.Get<HighlightOutline>(true);
 	}
 	protected override void PrimaryAction()
 	{

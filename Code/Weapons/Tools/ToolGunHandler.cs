@@ -6,10 +6,6 @@ public sealed class ToolGunHandler : Component
 
 	public Component ActiveToolMenu { get; set; }
 	public ToolComponent ActiveTool { get; set; }
-
-
-	[Property] public Curve EffectCurve { get; set; } =10.1f;
-
 	private string lastTool;
 
 	protected override void OnFixedUpdate()
@@ -40,7 +36,6 @@ public sealed class ToolGunHandler : Component
 		comp = TypeLibrary.GetType( CurrentTool );
 		Components.Create( comp, true );
 		ActiveTool = Components.Get<ToolComponent>();
-		ActiveTool.EffectCurve = EffectCurve;
 		
 	}
 }

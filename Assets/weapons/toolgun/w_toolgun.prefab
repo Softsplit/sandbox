@@ -95,7 +95,12 @@
           },
           {
             "__type": "Softsplit.ToolGunHandler",
-            "__guid": "8f94d5ed-d7b4-41bd-b5c9-6928ffb584d1",
+            "__guid": "8f94d5ed-d7b4-41bd-b5c9-6928ffb584d1"
+          },
+          {
+            "__type": "Beam",
+            "__guid": "b7e74c01-ed90-4535-b92f-3d343a80b445",
+            "Base": "0,0,0",
             "EffectCurve": {
               "rangey": "0,0.1",
               "frames": [
@@ -120,7 +125,8 @@
                   "x": 1
                 }
               ]
-            }
+            },
+            "enabled": false
           }
         ]
       }

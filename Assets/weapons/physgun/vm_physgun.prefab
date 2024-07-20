@@ -10,10 +10,6 @@
       {
         "__type": "Softsplit.ViewModel",
         "__guid": "4a31b873-dc13-4a96-845e-37f70669bc0e",
-        "EjectionPort": {
-          "_type": "gameobject",
-          "go": "38b6ec59-6293-4ece-901a-0868678dcd2c"
-        },
         "IronsightsFireScale": 0.2,
         "IsThrowable": false,
         "ModelRenderer": {
@@ -24,7 +20,7 @@
         },
         "Muzzle": {
           "_type": "gameobject",
-          "go": "5bf49181-9d9a-450e-a596-2e742a60d221"
+          "go": "0308fa6f-cba8-4d27-a925-c0e3d71e3f95"
         },
         "ThrowableType": "HEGrenade"
       },
