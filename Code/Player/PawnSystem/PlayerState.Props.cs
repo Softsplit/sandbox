@@ -17,7 +17,7 @@ public partial class PlayerState
 		}
 		else if ( Input.Down( "undo" ) )
 		{
-			undoPropRate -= 0.0045f;
+			undoPropRate -= 0.0045f * Time.Delta;
 			undoPropHeldTimer += 0.04f;
 			if ( undoPropHeldTimer > undoPropRate )
 			{
