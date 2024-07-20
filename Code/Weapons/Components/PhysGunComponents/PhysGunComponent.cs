@@ -341,6 +341,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		if(GrabbedObjectHighlight == null) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>();
 		GrabbedObjectHighlight.Enabled = false;
 		GrabbedObject = null;
+		GrabbedObjectHighlight = null;
 
 		HeldBody = null;
 		Grabbing = false;
