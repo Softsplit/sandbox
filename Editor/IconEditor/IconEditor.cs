@@ -14,6 +14,7 @@ public class IconEditor : GraphicsView
 	private ColorProperty _color;
 	private AnglesProperty _angles;
 	private Vector3Property _position;
+	private FloatProperty _fov;
 	private SceneCamera _camera;
 	private SceneLight _light;
 
@@ -46,6 +47,7 @@ public class IconEditor : GraphicsView
 				Colour = icon.Colour,
 				Rotation = global::Rotation.Identity,
 				Position = Vector3.Zero,
+				Fov = 40f,
 				Guid = Guid.NewGuid()
 			} );
 		}
@@ -65,6 +67,11 @@ public class IconEditor : GraphicsView
 			_position = Layout.Add( new Vector3Property( this )
 			{
 				Value = icon.Position
+			}, 0 );
+
+			_fov = Layout.Add( new FloatProperty( this )
+			{
+				Value = icon.Fov
 			}, 0 );
 
 			Layout.AddSpacingCell( 4 );
@@ -128,6 +135,7 @@ public class IconEditor : GraphicsView
 						Colour = _color.Value,
 						Position = _position.Value,
 						Rotation = _angles.Value,
+						Fov = _fov.Value,
 						Guid = icon.Guid,
 					} );
 
@@ -159,6 +167,7 @@ public class IconEditor : GraphicsView
 			return;
 
 		_camera.FitModel( _obj );
+		_camera.FieldOfView = _fov.Value;
 		_light.Position = _camera.Position + _camera.Rotation.Backward * 20f;
 		_obj.Position = _position.Value;
 		_obj.Rotation = _angles.Value;

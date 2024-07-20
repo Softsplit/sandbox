@@ -21,13 +21,13 @@ public abstract class ToolComponent : InputWeaponComponent
 		InputActions.Add( "ToolGunMenu" );
 
 		LineRenderer2 = Components.Create<VectorLineRenderer>();
-		LineRenderer2.Points = new List<Vector3>{Vector3.Zero};
+		LineRenderer2.Points = new List<Vector3>{Vector3.Zero,Vector3.Zero};
 		LineRenderer2.Color = new Color(0f, 0.5f, 1f);
 		LineRenderer2.Width = 0.1f;
 		LineRenderer2.Noise = 1f;
 
 		LineRenderer1 = Components.Create<VectorLineRenderer>();
-		LineRenderer1.Points = new List<Vector3>{Vector3.Zero};
+		LineRenderer1.Points = new List<Vector3>{Vector3.Zero,Vector3.Zero};
 		LineRenderer1.Color = Color.Cyan;
 		LineRenderer1.Width = 0.1f;
 		LineRenderer1.Noise = 0.2f;
@@ -48,8 +48,11 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		LineRenderer1.Enabled = RayActive > 0;
 		LineRenderer2.Enabled = RayActive > 0;
-		
-		
+		if(Equipment.Owner.CharacterController.Velocity.Length < 1)
+		{
+			LineRenderer1.Points[0] = Effector.Muzzle.Transform.Position;
+			LineRenderer2.Points[0] = Effector.Muzzle.Transform.Position;
+		}
 	}
 
 	protected override void OnInputUpdate()
