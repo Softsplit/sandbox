@@ -36,7 +36,7 @@ public class Scale : ToolComponent
 
 	private void ScaleObject( float scaleFactor )
 	{
-		var trace = DoTrace();
+		var trace = Trace();
 		if ( trace.Hit )
 		{
 			var prop = trace.GameObject.Components.Get<Prop>();
