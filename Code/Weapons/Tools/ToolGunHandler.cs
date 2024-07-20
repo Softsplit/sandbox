@@ -11,8 +11,10 @@ public sealed class ToolGunHandler : Component
 
 	protected override void OnFixedUpdate()
 	{
-		if ( !Networking.IsHost )
-			return;
+		if ( IsProxy ) return;
+
+		/*if ( !Networking.IsHost )
+			return;*/
 
 		if ( lastTool != CurrentTool && lastTool != "" )
 			UpdateTool();

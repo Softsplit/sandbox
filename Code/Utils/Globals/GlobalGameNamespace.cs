@@ -1,5 +1,5 @@
 namespace Softsplit;
-
+using Sandbox.Internal;
 /// <summary>
 /// It's nice to be able to access a global anywhere.
 /// </summary>
