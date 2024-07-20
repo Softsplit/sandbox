@@ -11,9 +11,13 @@ public abstract class ToolComponent : InputWeaponComponent
 	public string ToolName { get; set; } = "";
 	public string ToolDes { get; set; } = "";
 
+	public Curve EffectCurve;
+
 	public Ray WeaponRay => Equipment.Owner.AimRay;
 
 	private ToolGunHandler toolGunHandler;
+
+
 
 	protected override void OnStart()
 	{
@@ -23,13 +27,15 @@ public abstract class ToolComponent : InputWeaponComponent
 		LineRenderer2 = Components.Create<VectorLineRenderer>();
 		LineRenderer2.Points = new List<Vector3>{Vector3.Zero,Vector3.Zero};
 		LineRenderer2.Color = new Color(0f, 0.5f, 1f);
-		LineRenderer2.Width = 0.1f;
+		LineRenderer2.Width = EffectCurve;
+		LineRenderer2.RunBySelf = false;
 		LineRenderer2.Noise = 1f;
 
 		LineRenderer1 = Components.Create<VectorLineRenderer>();
 		LineRenderer1.Points = new List<Vector3>{Vector3.Zero,Vector3.Zero};
 		LineRenderer1.Color = Color.Cyan;
-		LineRenderer1.Width = 0.1f;
+		LineRenderer1.Width = EffectCurve;
+		LineRenderer1.RunBySelf = false;
 		LineRenderer1.Noise = 0.2f;
 
 		
@@ -53,6 +59,13 @@ public abstract class ToolComponent : InputWeaponComponent
 			LineRenderer1.Points[0] = Effector.Muzzle.Transform.Position;
 			LineRenderer2.Points[0] = Effector.Muzzle.Transform.Position;
 		}
+	}
+
+	protected override void FixedUpdate()
+	{
+		if(!LineRenderer1.Enabled) return;
+		LineRenderer1.Run();
+		LineRenderer2.Run();
 	}
 
 	protected override void OnInputUpdate()

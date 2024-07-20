@@ -5,7 +5,10 @@ public sealed class ToolGunHandler : Component
 	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "TestTool";
 
 	public Component ActiveToolMenu { get; set; }
-	public Component ActiveTool { get; set; }
+	public ToolComponent ActiveTool { get; set; }
+
+
+	[Property] public Curve EffectCurve { get; set; } =10.1f;
 
 	private string lastTool;
 
@@ -35,6 +38,9 @@ public sealed class ToolGunHandler : Component
 			ActiveToolMenu = null;
 
 		comp = TypeLibrary.GetType( CurrentTool );
-		ActiveTool = Components.Create( comp, true );
+		Components.Create( comp, true );
+		ActiveTool = Components.Get<ToolComponent>();
+		ActiveTool.EffectCurve = EffectCurve;
+		
 	}
 }

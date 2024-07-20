@@ -18,12 +18,14 @@ public sealed class VectorLineRenderer : Component, Component.ExecuteInEditor
 {
 
     private SceneLineObject _so;
+    [Property]
+    public bool RunBySelf {get;set;} = true;
 
     [Group("Points")]
     [Property]
     public List<Vector3> Points { get; set; }
 
-    [Group("Points")]
+    [Group("Appearance")]
     [Property]
     public float Noise { get; set; } = 1f;
 
@@ -91,7 +93,12 @@ public sealed class VectorLineRenderer : Component, Component.ExecuteInEditor
         _so = null;
     }
 
-    protected override void OnPreRender()
+	protected override void OnPreRender()
+	{
+		if(RunBySelf) Run();
+	}
+
+	public void Run()
     {
         if (_so == null)
         {
