@@ -4,7 +4,7 @@ public partial class PlayerState
 {
 	public List<Thing> SpawnedThings { get; private set; } = new();
 
-	private float undoPropHeldTimer = 0;
+	private float undoPropHeldTimer = -2;
 	private float undoPropRate = 1;
 
 	protected void CheckPropUndo()
@@ -12,7 +12,7 @@ public partial class PlayerState
 		if ( Input.Pressed( "undo" ) )
 		{
 			undoPropRate = 1;
-			undoPropHeldTimer = 0;
+			undoPropHeldTimer = -2;
 			HandlePropDestroyInitiation();
 		}
 		else if ( Input.Down( "undo" ) )
