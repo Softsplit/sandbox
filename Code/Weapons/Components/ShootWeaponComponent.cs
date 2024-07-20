@@ -325,8 +325,9 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 				using ( Rpc.FilterInclude( Connection.Host ) )
 				{
 					InflictDamage( tr.GameObject, damage, tr.EndPosition, tr.Direction, tr.GetHitboxTags(), damageFlags );
-					InflictImpulse( tr.GameObject, damage, tr.EndPosition, tr.Direction );
 				}
+				using ( Rpc.FilterInclude( tr.GameObject.NetworkMode == NetworkMode.Object ? Connection.Host : Connection.Local ) )
+					InflictImpulse( tr.GameObject, damage, tr.EndPosition, tr.Direction );
 
 				count++;
 			}
