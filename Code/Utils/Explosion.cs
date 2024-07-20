@@ -1,3 +1,5 @@
+using static Sandbox.Component;
+
 namespace Softsplit;
 
 public static class Explosion
@@ -24,6 +26,7 @@ public static class Explosion
 		foreach ( var obj in objectsInArea )
 		{
 			Rigidbody rb = obj.Components.Get<Rigidbody>() ?? null;
+			IDamageable pr = obj.Components.Get<IDamageable>() ?? null;
 			HealthComponent hc = obj.Root.Components.Get<HealthComponent>( FindMode.EverythingInSelfAndDescendants ) ?? null;
 
 			if ( rb == null && hc == null )
@@ -44,6 +47,7 @@ public static class Explosion
 
 			rb?.ApplyImpulseAt( obj.Transform.Position, force * damage );
 			hc?.TakeDamage( new DamageInfo( attacker, damage, inflictor, point, force, Flags: DamageFlags.Explosion ) );
+			pr?.OnDamage( new Sandbox.DamageInfo( damage, attacker.GameObject, inflictor.GameObject ) );
 		}
 	}
 }

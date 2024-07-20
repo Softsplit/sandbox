@@ -248,9 +248,6 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		decalRenderer.Material = material;
 		decalRenderer.Size = new( size, size, depth );
 
-
-
-
 		// Creates a destruction component to destroy the gameobject after a while
 		gameObject.DestroyAsync( destroyTime );
 
@@ -323,9 +320,8 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 				if ( !Player.IsGrounded ) damageFlags |= DamageFlags.AirShot;
 
 				using ( Rpc.FilterInclude( Connection.Host ) )
-				{
 					InflictDamage( tr.GameObject, damage, tr.EndPosition, tr.Direction, tr.GetHitboxTags(), damageFlags );
-				}
+
 				using ( Rpc.FilterInclude( tr.GameObject.NetworkMode == NetworkMode.Object ? Connection.Host : Connection.Local ) )
 					InflictImpulse( tr.GameObject, damage, tr.EndPosition, tr.Direction );
 
@@ -340,8 +336,12 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	[Broadcast]
 	private void InflictDamage( GameObject target, float damage, Vector3 pos, Vector3 dir, HitboxTags hitbox, DamageFlags flags )
 	{
-		// target?.TakeDamage( damage, tr.EndPosition, tr.Direction * tr.Distance, Weapon.PlayerPawn.HealthComponent.Id, Weapon.Id, hitbox );
-		target?.TakeDamage( new DamageInfo( Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags ) );
+		var dmgInfo = new DamageInfo( Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags );
+
+		target?.TakeDamage( dmgInfo );
+
+		// TODO: Better way?
+		target?.Components.Get<IDamageable>()?.OnDamage( new Sandbox.DamageInfo( damage, dmgInfo.Attacker.GameObject, dmgInfo.Inflictor.GameObject ) );
 	}
 
 	private float CalculateDamageFalloff( float damage, float distance )

@@ -96,10 +96,18 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 			// Inflict damage on whatever we find.
 
 			using ( Rpc.FilterInclude( Connection.Host ) )
-			{
 				InflictKnifeDamage( tr.GameObject, tr.EndPosition, tr.Direction );
-			}
+
+			using ( Rpc.FilterInclude( tr.GameObject.NetworkMode == NetworkMode.Object ? Connection.Host : Connection.Local ) )
+				InflictImpulse( tr.GameObject, BaseDamage, tr.EndPosition, tr.Direction );
 		}
+	}
+
+	//snapshot net objects dont get synced  
+	[Broadcast]
+	private void InflictImpulse( GameObject target, float damage, Vector3 pos, Vector3 dir )
+	{
+		target?.Components.Get<Rigidbody>()?.ApplyImpulseAt( pos, dir * damage * 100 );
 	}
 
 	[Broadcast]
@@ -107,6 +115,9 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 	{
 		// TODO: backstab detection
 		target?.TakeDamage( new DamageInfo( Equipment.Owner, BaseDamage, Equipment, pos, dir * 64f, HitboxTags.UpperBody, DamageFlags.Melee ) );
+
+		// TODO: Better way?
+		target?.Components.Get<IDamageable>()?.OnDamage( new Sandbox.DamageInfo( BaseDamage, Equipment.Owner.GameObject, Equipment.GameObject ) );
 	}
 
 	protected virtual Ray WeaponRay => Equipment.Owner.AimRay;
