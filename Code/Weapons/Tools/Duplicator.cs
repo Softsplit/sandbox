@@ -19,7 +19,7 @@ public sealed class Duplicator : ToolComponent
         if(hit.Hit)
         {
             Recoil(hit.EndPosition);
-            Log.Info(storedObject.ToJsonString());
+
             SpawnObject(PlayerState.Local.PlayerPawn, storedObject,hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
         }
     }
@@ -71,23 +71,28 @@ public sealed class Duplicator : ToolComponent
         if ( !Networking.IsHost )
 			return;
         GameObject newObject = new GameObject();
-        if(owner == PlayerState.Local.PlayerPawn)
-        {
-            PlayerState.Thing thing = new PlayerState.Thing
-            {
-                gameObjects = newObject.Children.ToList()
-            };
-            owner.PlayerState.SpawnedThings.Add(thing);
-        }
         SceneUtility.MakeIdGuidsUnique(gameObject);
         newObject.Deserialize(gameObject);
         newObject.Transform.Position = position;
         newObject.Transform.Rotation = rotation;
+        PlayerState.Thing thing = new PlayerState.Thing
+        {
+            gameObjects = new List<GameObject>()
+        };
+
         while (newObject.Children.Count > 0)
         {
             GameObject go = newObject.Children[0];
+            
             go.SetParent(Game.ActiveScene);
             go.NetworkSpawn();
+
+            thing.gameObjects.Add(go);
+        }
+        Log.Info(thing.gameObjects.Count);
+        if(owner == PlayerState.Local.PlayerPawn)
+        {
+            owner.PlayerState.SpawnedThings.Add(thing);
         }
         newObject.Destroy();
     }

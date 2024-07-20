@@ -41,11 +41,17 @@ public partial class PlayerState
 	{
 		if(propToDestroy.gameObjects != null)
 		{
-			while (propToDestroy.gameObjects.Count > 0) propToDestroy?.gameObjects[0].Destroy();
+			foreach (GameObject g in propToDestroy.gameObjects)
+			{
+				g?.Destroy();
+			}
 		}
 		if(propToDestroy.components != null)
 		{
-			while (propToDestroy.components.Count > 0) propToDestroy?.components[0].Destroy();
+			foreach (Component c in propToDestroy.components)
+			{
+				c?.Destroy();
+			} 
 		}
 	}
 
