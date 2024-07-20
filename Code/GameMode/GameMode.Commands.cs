@@ -96,7 +96,7 @@ partial class GameMode : Component.INetworkListener
 		ent.Network.DropOwnership();
 		PlayerState.Thing thing = new PlayerState.Thing
 		{
-			gameObject = ent
+			gameObjects = new List<GameObject>{ ent }
 		}; 
 		owner.PlayerState.SpawnedThings.Add( thing );
 		Stats.Increment( "spawn.model", 1, modelname );

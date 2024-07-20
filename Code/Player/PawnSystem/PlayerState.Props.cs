@@ -39,13 +39,19 @@ public partial class PlayerState
 	[Broadcast]
 	public void DestroyLastSpawnedProp( Thing propToDestroy )
 	{
-		if(propToDestroy.gameObject != null) propToDestroy?.gameObject.Destroy();
-		if(propToDestroy.component != null) propToDestroy?.component.Destroy();
+		if(propToDestroy.gameObjects != null)
+		{
+			while (propToDestroy.gameObjects.Count > 0) propToDestroy?.gameObjects[0].Destroy();
+		}
+		if(propToDestroy.components != null)
+		{
+			while (propToDestroy.components.Count > 0) propToDestroy?.components[0].Destroy();
+		}
 	}
 
 	public class Thing
 	{
-		public GameObject gameObject {get;set;}
-		public Component component {get;set;}
+		public List<GameObject> gameObjects {get;set;}
+		public List<Component> components {get;set;}
 	}
 }

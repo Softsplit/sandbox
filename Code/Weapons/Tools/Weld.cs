@@ -65,8 +65,8 @@ public sealed class Weld : ToolComponent
             }
         }
 	}
-
-    [Broadcast]
+	
+	[Broadcast]
     public static void CreateWeld(PlayerPawn owner, PhysicsBody object1, Vector3 point1Pos, PhysicsBody object2, Vector3 point2Pos)
     {
         if ( !Networking.IsHost )
@@ -88,12 +88,11 @@ public sealed class Weld : ToolComponent
         if(owner == PlayerState.Local.PlayerPawn)
         {
             PlayerState.Thing thing = new PlayerState.Thing{
-                component = weldContext1
-            };
-            owner.PlayerState.SpawnedThings.Add(thing);
-
-            thing = new PlayerState.Thing{
-                component = weldContext2
+                components = new List<Component>
+                {
+                    weldContext1,
+                    weldContext2
+                }
             };
             owner.PlayerState.SpawnedThings.Add(thing);
         }

@@ -20,7 +20,7 @@ public sealed class Duplicator : ToolComponent
         {
             Recoil(hit.EndPosition);
             Log.Info(storedObject.ToJsonString());
-            SpawnObject(storedObject,hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
+            SpawnObject(PlayerState.Local.PlayerPawn, storedObject,hit.EndPosition + Vector3.Up*50,Rotation.LookAt(Equipment.Owner.Transform.World.Forward));
         }
     }
 	protected override void SecondaryAction()
@@ -66,11 +66,19 @@ public sealed class Duplicator : ToolComponent
 	}
 
     [Broadcast]
-    public static void SpawnObject(JsonObject gameObject, Vector3 position, Rotation rotation)
+    public static void SpawnObject(PlayerPawn owner, JsonObject gameObject, Vector3 position, Rotation rotation)
     {
         if ( !Networking.IsHost )
 			return;
         GameObject newObject = new GameObject();
+        if(owner == PlayerState.Local.PlayerPawn)
+        {
+            PlayerState.Thing thing = new PlayerState.Thing
+            {
+                gameObjects = newObject.Children.ToList()
+            };
+            owner.PlayerState.SpawnedThings.Add(thing);
+        }
         SceneUtility.MakeIdGuidsUnique(gameObject);
         newObject.Deserialize(gameObject);
         newObject.Transform.Position = position;
