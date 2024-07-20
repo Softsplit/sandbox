@@ -5,7 +5,7 @@ namespace Softsplit;
 
 public sealed class Weld : ToolComponent
 {
-    PhysicsBody object1;
+    GameObject object1;
     Vector3 point1Direction;
     Vector3 point1;
 
@@ -19,18 +19,18 @@ public sealed class Weld : ToolComponent
         var hit = Trace();
         if(hit.Hit  && hit.GameObject.Name != "Map")
         {
-            if(hit.Body == object1 || hit.Body == null) return;
+            if(hit.GameObject == object1 || hit.Body == null) return;
             Recoil(hit.EndPosition);
             Vector3 localPoint = hit.GameObject.Transform.World.PointToLocal(hit.EndPosition);
             if(object1 == null)
             {
                 point1 = localPoint;
                 point1Direction = hit.Normal;
-                object1 = hit.Body;
+                object1 = hit.GameObject;
             }
             else
             {
-                CreateWeld(PlayerState.Local.PlayerPawn, object1, point1, hit.Body, localPoint);
+                CreateWeld(PlayerState.Local.PlayerPawn, object1, point1, hit.GameObject, localPoint);
                 object1 = null;
             }
             
@@ -52,7 +52,7 @@ public sealed class Weld : ToolComponent
             }
             else
             {
-                GameObject object1G = object1.GetGameObject();
+                GameObject object1G = object1;
 
                 object1G.Transform.Rotation = Rotation.FromToRotation(point1Direction, -hit.Normal) * object1G.Transform.Rotation;
                 
@@ -60,30 +60,31 @@ public sealed class Weld : ToolComponent
 
                 object1G.Transform.Position +=  hit.EndPosition - pointWorld;
 
-                CreateWeld(PlayerState.Local.PlayerPawn, object1, point1, hit.Body, hit.EndPosition);
+                CreateWeld(PlayerState.Local.PlayerPawn, object1, point1, hit.GameObject, hit.EndPosition);
                 object1 = null;
             }
         }
 	}
 	
 	[Broadcast]
-    public static void CreateWeld(PlayerPawn owner, PhysicsBody object1, Vector3 point1Pos, PhysicsBody object2, Vector3 point2Pos)
+    public static void CreateWeld(PlayerPawn owner, GameObject object1, Vector3 point1Pos, GameObject object2, Vector3 point2Pos)
     {
+
         if ( !Networking.IsHost )
 			return;
-
-        WeldContext weldContext1 = object1.GetGameObject().Components.Create<WeldContext>();
+        
+        WeldContext weldContext1 = object1.Components.Create<WeldContext>();
         weldContext1.MainWeld = true;
 
         weldContext1.point1 = point1Pos;
         weldContext1.point2 = point2Pos;
 
-        WeldContext weldContext2 = object2.GetGameObject().Components.Create<WeldContext>();
+        WeldContext weldContext2 = object2.Components.Create<WeldContext>();
         weldContext2.weldedObject = weldContext1;
-        weldContext2.body = object2;
+        weldContext2.body = object2.Components.Get<Rigidbody>().PhysicsBody;
 
         weldContext1.weldedObject = weldContext2;
-        weldContext1.body = object1;
+        weldContext1.body = object1.Components.Get<Rigidbody>().PhysicsBody;
 
         if(owner == PlayerState.Local.PlayerPawn)
         {
