@@ -35,27 +35,29 @@ public partial class PlayerState
 			SpawnedThings.RemoveAt( SpawnedThings.IndexOf( SpawnedThings.Last() ) );
 		}
 	}
-
-	[Broadcast]
 	public void DestroyLastSpawnedProp( Thing propToDestroy )
 	{
+
 		if(propToDestroy.gameObjects != null)
 		{
 			foreach (GameObject g in propToDestroy.gameObjects)
 			{
-				g?.Destroy();
+				g.Destroy();
 			}
 		}
 		if(propToDestroy.components != null)
 		{
 			foreach (Component c in propToDestroy.components)
 			{
-				c?.Destroy();
+				GameObject gameObject = c.GameObject;
+				gameObject.Network.TakeOwnership();
+				c.Destroy();
+				gameObject.Network.DropOwnership();
 			} 
 		}
 	}
 
-	public class Thing
+	public struct Thing
 	{
 		public List<GameObject> gameObjects {get;set;}
 		public List<Component> components {get;set;}

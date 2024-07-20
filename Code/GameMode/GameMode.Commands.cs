@@ -92,8 +92,10 @@ partial class GameMode : Component.INetworkListener
 		}
 		
 		ent.Tags.Add("propcollide");
+		ent.Network.SetOwnerTransfer(OwnerTransfer.Takeover);
 		ent.NetworkSpawn(null);
 		ent.Network.DropOwnership();
+		
 		PlayerState.Thing thing = new PlayerState.Thing
 		{
 			gameObjects = new List<GameObject>{ ent }
