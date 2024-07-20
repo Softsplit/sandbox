@@ -20,10 +20,13 @@ public partial class PlayerState : Component.INetworkListener
 		}
 	}
 
-	protected override void OnUpdate()
+	protected override void OnFixedUpdate()
 	{
 		CheckPropUndo();
-		
+	}
+
+	protected override void OnUpdate()
+	{
 		if ( IsConnected ) return;
 		if ( IsProxy ) return;
 
