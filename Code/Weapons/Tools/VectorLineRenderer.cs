@@ -23,6 +23,10 @@ public sealed class VectorLineRenderer : Component, Component.ExecuteInEditor
     [Property]
     public List<Vector3> Points { get; set; }
 
+    [Group("Points")]
+    [Property]
+    public float Noise { get; set; } = 1f;
+
     [Group("Appearance")]
     [Property]
     public Gradient Color { get; set; } = global::Color.Cyan;
@@ -101,8 +105,17 @@ public sealed class VectorLineRenderer : Component, Component.ExecuteInEditor
             return;
         }
 
-        IEnumerable<Vector3> enumerable = from x in Points
-                                          select x;
+        IEnumerable<Vector3> enumerable = Points.Select((x, index) =>
+        {
+            if (index == 0 || index == Points.Count() - 1)
+            {
+                return x;
+            }
+            else
+            {
+                return x + (Vector3.Random * Noise);
+            }
+        });
         int num = enumerable.Count();
         if (num <= 1)
         {

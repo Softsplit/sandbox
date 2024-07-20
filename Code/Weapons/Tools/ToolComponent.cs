@@ -20,14 +20,15 @@ public abstract class ToolComponent : InputWeaponComponent
 		InputActions.Add( "ToolGunMenu" );
 
 		LineRenderer = Components.GetOrCreate<VectorLineRenderer>();
+		LineRenderer.Points = new List<Vector3>{Vector3.Zero};
 		LineRenderer.Color = Color.Cyan;
 		LineRenderer.Width = 0.1f;
-
+		LineRenderer.Noise = 0.2f;
 		Start();
 	}
 
 	[Sync, Property] public float RayActive { get; set; }
-	[Property] public float RayTime { get; set; } = 0.1f;
+	[Property] public float RayTime { get; set; } = 0.5f;
 
 	protected override void OnUpdate()
 	{
@@ -36,6 +37,8 @@ public abstract class ToolComponent : InputWeaponComponent
 		RayActive -= Time.Delta;
 
 		LineRenderer.Enabled = RayActive > 0;
+
+		LineRenderer.Points[0] = Effector.Muzzle.Transform.Position;
 	}
 
 	protected override void OnInputUpdate()
@@ -62,7 +65,7 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	protected virtual void Update()
 	{
-
+		
 	}
 
 	protected virtual void PrimaryAction()
@@ -108,9 +111,10 @@ public abstract class ToolComponent : InputWeaponComponent
 			p2.Destroy();
 		}
 
-		RayActive = RayTime;
+		RayActive = 0.2f;
 
-		LineRenderer.Points = new List<Vector3> { Effector.Muzzle.Transform.Position, effectPoint };
+		LineRenderer.Points = GetSpacedPoints( Effector.Muzzle.Transform.Position, effectPoint, 10);
+		Log.Info(LineRenderer.Points.Count);
 
 		Sound.Play( "sounds/guns/gun_dryfire.sound", Transform.Position );
 
@@ -120,4 +124,19 @@ public abstract class ToolComponent : InputWeaponComponent
 		if ( Equipment.ViewModel.IsValid() )
 			Equipment.ViewModel.ModelRenderer.Set( "b_attack", true );
 	}
+	public static List<Vector3> GetSpacedPoints(Vector3 start, Vector3 end, int numberOfPoints)
+    {
+        List<Vector3> points = new List<Vector3>();
+
+        float step = 1.0f / (numberOfPoints - 1);
+
+        for (int i = 0; i < numberOfPoints; i++)
+        {
+            float t = i * step;
+            Vector3 point = Vector3.Lerp(start, end, t);
+            points.Add(point);
+        }
+
+        return points;
+    }
 }
