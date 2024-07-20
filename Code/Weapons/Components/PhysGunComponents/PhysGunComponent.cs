@@ -37,8 +37,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 	protected override void OnUpdate()
 	{
-		if ( !Networking.IsHost )
-			return;
+		if ( IsProxy ) return;
 
 		if ( !HeldBody.IsValid() )
 			return;

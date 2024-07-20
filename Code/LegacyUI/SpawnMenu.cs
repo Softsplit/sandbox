@@ -23,8 +23,8 @@ public partial class SpawnMenu : Panel
 				modelList = body.AddChild<ModelList>();
 				tabs.SelectedButton = tabs.AddButtonActive( "#spawnmenu.modellist", ( b ) => modelList.SetClass( "active", b ) );
 
-				// var ents = body.AddChild<EntityList>();
-				// tabs.AddButtonActive( "#spawnmenu.entities", ( b ) => ents.SetClass( "active", b ) );
+				var ents = body.AddChild<EntityList>();
+				tabs.AddButtonActive( "#spawnmenu.entities", ( b ) => ents.SetClass( "active", b ) );
 
 				// var npclist = body.AddChild<NpcList>();
 				// tabs.AddButtonActive( "#spawnmenu.npclist", ( b ) => npclist.SetClass( "active", b ) );

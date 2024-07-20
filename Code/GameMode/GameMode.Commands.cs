@@ -101,4 +101,42 @@ partial class GameMode : Component.INetworkListener
 		owner.PlayerState.SpawnedThings.Add( thing );
 		Stats.Increment( "spawn.model", 1, modelname );
 	}
+
+
+	[ConCmd( "spawnent" )]
+	public static async void SpawnEnt( string path )
+	{
+		var owner = PlayerState.Local.PlayerPawn;
+
+		if ( owner == null )
+			return;
+
+		if ( PrefabLibrary.TryGetByPath( path, out var prefabFile ) )
+		{
+			var obj = SceneUtility.GetPrefabScene( prefabFile.Prefab ).Clone();
+
+			var tr = Game.ActiveScene.Trace.Ray( owner.AimRay, 500f )
+				.UseHitboxes()
+				.IgnoreGameObjectHierarchy( owner.GameObject )
+				.Run();
+
+			var modelRotation = Rotation.From( new Angles( 0, owner.EyeAngles.yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
+
+
+			obj.Transform.Position = tr.EndPosition + Vector3.Down * -5;//obj.Mins.z
+			obj.Transform.Rotation = modelRotation;
+
+			obj.NetworkMode = NetworkMode.Object;
+			obj.NetworkSpawn();
+
+			PlayerState.Thing thing = new PlayerState.Thing
+			{
+				gameObjects = new List<GameObject> { obj }
+			};
+			owner.PlayerState.SpawnedThings.Add( thing );
+			Stats.Increment( "spawn.model", 1, path );
+			
+		}
+	}
+
 }

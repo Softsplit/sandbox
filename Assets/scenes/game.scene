@@ -60,6 +60,10 @@
             "_type": "gameobject",
             "prefab": "prefabs/player/playerstate.prefab"
           }
+        },
+        {
+          "__type": "Softsplit.PrefabInitializer",
+          "__guid": "751235fb-bc40-4025-a3be-637b8052d0b9"
         }
       ]
     },
