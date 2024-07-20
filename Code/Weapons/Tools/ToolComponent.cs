@@ -5,7 +5,8 @@ namespace Softsplit;
 /// </summary>
 public abstract class ToolComponent : InputWeaponComponent
 {
-	public VectorLineRenderer LineRenderer { get; set; }
+	public VectorLineRenderer LineRenderer1 { get; set; }
+	public VectorLineRenderer LineRenderer2 { get; set; }
 	public bool AlwaysEnabledMenu { get; set; }
 	public string ToolName { get; set; } = "";
 	public string ToolDes { get; set; } = "";
@@ -19,16 +20,25 @@ public abstract class ToolComponent : InputWeaponComponent
 		InputActions.Add( "Attack2" );
 		InputActions.Add( "ToolGunMenu" );
 
-		LineRenderer = Components.GetOrCreate<VectorLineRenderer>();
-		LineRenderer.Points = new List<Vector3>{Vector3.Zero};
-		LineRenderer.Color = Color.Cyan;
-		LineRenderer.Width = 0.1f;
-		LineRenderer.Noise = 0.2f;
+		LineRenderer2 = Components.Create<VectorLineRenderer>();
+		LineRenderer2.Points = new List<Vector3>{Vector3.Zero};
+		LineRenderer2.Color = new Color(0f, 0.5f, 1f);
+		LineRenderer2.Width = 0.1f;
+		LineRenderer2.Noise = 1f;
+
+		LineRenderer1 = Components.Create<VectorLineRenderer>();
+		LineRenderer1.Points = new List<Vector3>{Vector3.Zero};
+		LineRenderer1.Color = Color.Cyan;
+		LineRenderer1.Width = 0.1f;
+		LineRenderer1.Noise = 0.2f;
+
+		
+
 		Start();
 	}
 
 	[Sync, Property] public float RayActive { get; set; }
-	[Property] public float RayTime { get; set; } = 0.5f;
+	[Property] public float RayTime { get; set; } = 0.2f;
 
 	protected override void OnUpdate()
 	{
@@ -36,9 +46,10 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		RayActive -= Time.Delta;
 
-		LineRenderer.Enabled = RayActive > 0;
-
-		LineRenderer.Points[0] = Effector.Muzzle.Transform.Position;
+		LineRenderer1.Enabled = RayActive > 0;
+		LineRenderer2.Enabled = RayActive > 0;
+		
+		
 	}
 
 	protected override void OnInputUpdate()
@@ -111,10 +122,10 @@ public abstract class ToolComponent : InputWeaponComponent
 			p2.Destroy();
 		}
 
-		RayActive = 0.2f;
+		RayActive = RayTime;
 
-		LineRenderer.Points = GetSpacedPoints( Effector.Muzzle.Transform.Position, effectPoint, 10);
-		Log.Info(LineRenderer.Points.Count);
+		LineRenderer1.Points = GetSpacedPoints( Effector.Muzzle.Transform.Position, effectPoint, 10);
+		LineRenderer2.Points = GetSpacedPoints( Effector.Muzzle.Transform.Position, effectPoint, 20);
 
 		Sound.Play( "sounds/guns/gun_dryfire.sound", Transform.Position );
 
