@@ -91,8 +91,7 @@ partial class GameMode : Component.INetworkListener
 			}
 		}
 
-		ent.NetworkSpawn();
-		ent.Network.DropOwnership();
+		ent.NetworkSpawn( null );
 
 		owner.PlayerState.SpawnedPropsList.Add( ent );
 		Stats.Increment( "spawn.model", 1, modelname );
