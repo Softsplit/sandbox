@@ -60,6 +60,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 			beam.Base = Effector.Muzzle.Transform.Position;
 			if ( GrabbedObjectHighlight == null ) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>( true );
 		}
+
 		if ( IsProxy ) return;
 
 		if ( !HeldBody.IsValid() )
@@ -352,7 +353,10 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		}
 
 		GrabbedObjectHighlight ??= GrabbedObject.Components.Get<HighlightOutline>();
-		GrabbedObjectHighlight.Enabled = false;
+
+		if ( GrabbedObjectHighlight.IsValid() )
+			GrabbedObjectHighlight.Enabled = false;
+
 		GrabbedObject = null;
 		GrabbedObjectHighlight = null;
 
