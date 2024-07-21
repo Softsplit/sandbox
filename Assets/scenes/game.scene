@@ -84,7 +84,7 @@
           "ZIndex": 100
         },
         {
-          "__type": "SandboxHud",
+          "__type": "SandboxHUD",
           "__guid": "9c32408d-e0f5-4a7d-ab93-9e11b308b4a9"
         },
         {
@@ -124,7 +124,7 @@
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
-          "MapName": "facepunch.construct23",
+          "MapName": "facepunch.square",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }
