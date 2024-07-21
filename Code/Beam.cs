@@ -34,7 +34,7 @@ public sealed class Beam : Component
 	{
 		if(RunBySelf)
 		{
-			CreateEffect(ObjectStart.Transform.Position,ObjectEnd.Transform.Position);
+			CreateEffect(ObjectStart.Transform.Position,ObjectEnd.Transform.Position,ObjectStart.Transform.World.Forward);
 			LineRenderer1.Run();
 			LineRenderer2.Run();
 		}
@@ -48,25 +48,40 @@ public sealed class Beam : Component
 		LineRenderer2.Run();
 	}
 
-	public void CreateEffect(Vector3 Start, Vector3 End)
+	public void CreateEffect(Vector3 Start, Vector3 End, Vector3 dir)
 	{
-		LineRenderer1.Points = GetSpacedPoints( Start, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance);
-		LineRenderer2.Points = GetSpacedPoints( Start, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance*2);
+		LineRenderer1.Points = GetCurvedPoints( Start, dir, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance);
+		LineRenderer2.Points = GetCurvedPoints( Start, dir, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance*2);
 	}
 
-	public static List<Vector3> GetSpacedPoints(Vector3 start, Vector3 end, int numberOfPoints)
+	public static List<Vector3> GetCurvedPoints(Vector3 start, Vector3 direction, Vector3 end, int numberOfPoints)
     {
         List<Vector3> points = new List<Vector3>();
+
+        Vector3 control = start + direction*10;
 
         float step = 1.0f / (numberOfPoints - 1);
 
         for (int i = 0; i < numberOfPoints; i++)
         {
             float t = i * step;
-            Vector3 point = Vector3.Lerp(start, end, t);
+            Vector3 point = CalculateBezierPoint(t, start, control, end);
             points.Add(point);
         }
 
         return points;
+    }
+
+    private static Vector3 CalculateBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        Vector3 p = uu * p0; // (1-t)^2 * p0
+        p += 2 * u * t * p1; // 2 * (1-t) * t * p1
+        p += tt * p2;        // t^2 * p2
+
+        return p;
     }
 }

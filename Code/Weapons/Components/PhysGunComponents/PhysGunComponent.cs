@@ -49,7 +49,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		if(GrabbedObjectHighlight != null) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject!=null;
 		if(Grabbing && GrabbedObject!=null)
 		{
-			beam.CreateEffect(Effector.Muzzle.Transform.Position,GrabbedObject.Transform.Local.PointToWorld(GrabbedPos));
+			beam.CreateEffect(Effector.Muzzle.Transform.Position,GrabbedObject.Transform.Local.PointToWorld(GrabbedPos), Effector.Muzzle.Transform.World.Forward);
 			if(GrabbedObjectHighlight == null) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>(true);
 		}	
 		if ( IsProxy ) return;
