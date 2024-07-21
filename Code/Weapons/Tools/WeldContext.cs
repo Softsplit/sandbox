@@ -13,7 +13,9 @@ public sealed class WeldContext : Component
 
 	protected override void OnStart()
 	{
-		if ( weldedObject == null ) Destroy();
+		if ( weldedObject == null )
+			Destroy();
+
 		if ( MainWeld )
 		{
 			if ( !body.IsValid() || !weldedObject.body.IsValid() ) return;
@@ -21,7 +23,10 @@ public sealed class WeldContext : Component
 			body = Components.Get<Rigidbody>()?.PhysicsBody;
 			var p1 = new PhysicsPoint( body, point1 );
 
-			weldedObject.body = weldedObject.Components.Get<Rigidbody>()?.PhysicsBody;
+			weldedObject.body = weldedObject?.Components.Get<Rigidbody>()?.PhysicsBody;
+
+			if ( weldedObject.body == null ) return;
+
 			var p2 = new PhysicsPoint( weldedObject.body, point2 );
 
 			weldJoint = PhysicsJoint.CreateFixed( p1, p2 );
