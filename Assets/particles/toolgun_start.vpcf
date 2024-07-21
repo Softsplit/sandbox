@@ -1425,7 +1425,7 @@
 				}
 			}
 			m_bAdditive = true
-			m_hTexture = resource:"particles/electrical_arc02.vtex"
+			m_hTexture = resource:"materials/particles/electrical/electrical_arc02.vtex"
 			m_flOverbrightFactor = 
 			{
 				m_nType = "PF_TYPE_LITERAL"

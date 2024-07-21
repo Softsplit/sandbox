@@ -5,7 +5,7 @@ namespace Softsplit;
 /// </summary>
 public abstract class ToolComponent : InputWeaponComponent
 {
-	public Beam beam {get;set;}
+	public Beam beam { get; set; }
 	public bool AlwaysEnabledMenu { get; set; }
 	public string ToolName { get; set; } = "";
 	public string ToolDes { get; set; } = "";
@@ -23,14 +23,14 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		beam = Components.Get<Beam>();
 		beam.StartParticle = "toolgun_start.vpcf";
-		
-		if(Equipment.ViewModel != null)
+
+		if ( Equipment.ViewModel != null )
 		{
 			Equipment.ViewModel.ModelRenderer.Enabled = false;
 			Equipment.ViewModel.ModelRenderer.Enabled = true;
 		}
 
-		
+
 
 		Start();
 	}
@@ -63,7 +63,7 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		if ( AlwaysEnabledMenu )
 			toolGunHandler.ActiveToolMenu.Enabled = Equipment.IsDeployed;
-		else if ( Input.Pressed( "ToolGunMenu" ) )
+		else if ( Input.Pressed( "ToolGunMenu" ) && toolGunHandler.ActiveToolMenu.IsValid() )
 			toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
 	}
 
@@ -74,7 +74,7 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	protected virtual void Update()
 	{
-		
+
 	}
 
 	protected virtual void PrimaryAction()
@@ -121,7 +121,7 @@ public abstract class ToolComponent : InputWeaponComponent
 		}
 
 		RayActive = RayTime;
-		beam.CreateEffect(Effector.Muzzle.Transform.Position, effectPoint, Effector.Muzzle.Transform.World.Forward);
+		beam.CreateEffect( Effector.Muzzle.Transform.Position, effectPoint, Effector.Muzzle.Transform.World.Forward );
 
 		Sound.Play( "sounds/guns/gun_dryfire.sound", Transform.Position );
 
@@ -131,5 +131,5 @@ public abstract class ToolComponent : InputWeaponComponent
 		if ( Equipment.ViewModel.IsValid() )
 			Equipment.ViewModel.ModelRenderer.Set( "b_attack", true );
 	}
-	
+
 }

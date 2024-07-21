@@ -29,37 +29,39 @@ public partial class PlayerState
 
 	private void HandlePropDestroyInitiation()
 	{
-		if ( SpawnedThings.Count > 0 )
+		if ( SpawnedThings?.Count > 0 )
 		{
 			DestroyLastSpawnedProp( SpawnedThings.Last() );
-			SpawnedThings.RemoveAt( SpawnedThings.IndexOf( SpawnedThings.Last() ) );
+			SpawnedThings?.RemoveAt( SpawnedThings.IndexOf( SpawnedThings.Last() ) );
 		}
 	}
+
 	public void DestroyLastSpawnedProp( Thing propToDestroy )
 	{
-
-		if(propToDestroy.gameObjects != null)
+		if ( propToDestroy.gameObjects != null )
 		{
-			foreach (GameObject g in propToDestroy.gameObjects)
+			foreach ( GameObject g in propToDestroy.gameObjects )
 			{
-				g.Destroy();
+				g?.Destroy();
 			}
 		}
-		if(propToDestroy.components != null)
+		if ( propToDestroy.components != null )
 		{
-			foreach (Component c in propToDestroy.components)
+			foreach ( Component c in propToDestroy.components )
 			{
+				if ( !c.IsValid() ) continue;
+
 				GameObject gameObject = c.GameObject;
 				gameObject.Network.TakeOwnership();
 				c.Destroy();
-				gameObject.Network.DropOwnership();
-			} 
+				gameObject?.Network.DropOwnership();
+			}
 		}
 	}
 
 	public struct Thing
 	{
-		public List<GameObject> gameObjects {get;set;}
-		public List<Component> components {get;set;}
+		public List<GameObject> gameObjects { get; set; }
+		public List<Component> components { get; set; }
 	}
 }

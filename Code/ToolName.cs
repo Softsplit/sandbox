@@ -1,4 +1,3 @@
-using Sandbox.UI.Construct;
 using Softsplit;
 
 public sealed class ToolName : Component
@@ -9,17 +8,18 @@ public sealed class ToolName : Component
 	{
 		textRenderer = Components.Get<TextRenderer>();
 	}
+
 	protected override void OnUpdate()
 	{
-		textRenderer.Text = GetCurrentTool().ToolName.Substring(0,4).ToUpper();
+		textRenderer.Text = GetCurrentTool()?.ToolName[..4]?.ToUpper();
 	}
 
 	ToolComponent GetCurrentTool()
 	{
 		var player = PlayerState.Viewer?.PlayerPawn;
-		if ( player?.CurrentEquipment.Resource.Name != "Toolgun" )
+		if ( player?.CurrentEquipment?.Resource.Name != "Toolgun" )
 			return null;
 
-		return (ToolComponent)(player?.Components.Get<ToolGunHandler>( FindMode.EverythingInSelfAndDescendants )?.ActiveTool);
+		return player?.Components.Get<ToolGunHandler>( FindMode.EverythingInSelfAndDescendants )?.ActiveTool;
 	}
 }
