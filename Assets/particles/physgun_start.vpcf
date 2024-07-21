@@ -2,6 +2,8 @@
 {
 	_class = "CParticleSystemDefinition"
 	m_nBehaviorVersion = 10
+	m_nMaxParticles = 10000
+	m_flStartFadeDistance = 20000.0
 	m_controlPointConfigurations = 
 	[
 		{
@@ -1423,7 +1425,7 @@
 				}
 			}
 			m_bAdditive = true
-			m_hTexture = resource:"materials/particles/electrical/electrical_arc02.vtex"
+			m_hTexture = resource:"particles/electrical_arc02.vtex"
 			m_flOverbrightFactor = 
 			{
 				m_nType = "PF_TYPE_LITERAL"
@@ -1475,6 +1477,7 @@
 	[
 		{
 			m_ChildRef = resource:"particles/physgun_light.vpcf"
+			m_bEndCap = true
 		},
 	]
 }

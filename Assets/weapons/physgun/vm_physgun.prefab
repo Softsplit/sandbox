@@ -20,7 +20,7 @@
         },
         "Muzzle": {
           "_type": "gameobject",
-          "go": "0308fa6f-cba8-4d27-a925-c0e3d71e3f95"
+          "go": "d44003e8-f7e2-47e7-b668-2c9be2402b9d"
         },
         "ThrowableType": "HEGrenade"
       },
@@ -122,6 +122,13 @@
                     "Name": "joint6_end",
                     "Position": "9.21216,19.11905,-4.381702",
                     "Rotation": "-0.0002335902,0.0004170689,-0.01363169,0.999907",
+                    "Enabled": true
+                  },
+                  {
+                    "__guid": "d44003e8-f7e2-47e7-b668-2c9be2402b9d",
+                    "Flags": 0,
+                    "Name": "Object",
+                    "Position": "-0.00002968674,0.00004589507,1.991341",
                     "Enabled": true
                   }
                 ]

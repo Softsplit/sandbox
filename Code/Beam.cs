@@ -1,15 +1,20 @@
 using Sandbox;
 
+namespace Softsplit;
+
 public sealed class Beam : Component
 {
 	VectorLineRenderer LineRenderer1;
 	VectorLineRenderer LineRenderer2;
+
+	LegacyParticleSystem particleSystem;
+	
 	[Property] public bool RunBySelf {get;set;}
 	[Property] public float Noise {get;set;} = 1f;
 	[Property] public Curve EffectCurve1{get;set;}
 	[Property] public Curve EffectCurve2{get;set;}
 	[Property] public bool enabled{get;set;}
-	[Property] public Vector3 Base{get;set;}
+	[Property] public Vector3 Base {get;set;}
 	[Property] public int pointDistance {get;set;}= 10;
 	[Property] public GameObject ObjectStart {get;set;} 
 	[Property] public GameObject ObjectEnd {get;set;} 
@@ -21,6 +26,7 @@ public sealed class Beam : Component
 		LineRenderer2.Width = EffectCurve1;
 		LineRenderer2.RunBySelf = false;
 		LineRenderer2.Noise = Noise;
+		LineRenderer2.Opaque = false;
 
 		LineRenderer1 = Components.Create<VectorLineRenderer>();
 		LineRenderer1.Points = new List<Vector3>{Vector3.Zero,Vector3.Zero};
@@ -28,6 +34,9 @@ public sealed class Beam : Component
 		LineRenderer1.Width = EffectCurve2;
 		LineRenderer1.RunBySelf = false;
 		LineRenderer1.Noise = Noise*0.2f;
+		LineRenderer1.Opaque = false;
+
+		particleSystem = CreateParticleSystem("particles/physgun_start.vpcf");
 
 	}
 	protected override void OnPreRender()
@@ -40,6 +49,8 @@ public sealed class Beam : Component
 		}
 		LineRenderer1.Enabled = enabled;
 		LineRenderer2.Enabled = enabled;
+		particleSystem.Enabled = enabled;
+		particleSystem.Transform.Position = Base;
 		if(!enabled && !RunBySelf) return;
 		LineRenderer1.Run();
 		LineRenderer2.Run();
@@ -53,6 +64,24 @@ public sealed class Beam : Component
 	{
 		LineRenderer1.Points = GetCurvedPoints( Start, dir, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance);
 		LineRenderer2.Points = GetCurvedPoints( Start, dir, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance*2);
+
+		
+	}
+
+	private LegacyParticleSystem CreateParticleSystem( string particle)
+	{
+		var gameObject = Scene.CreateObject();
+		gameObject.SetParent(GameObject);
+		gameObject.Transform.LocalPosition = Vector3.Zero;
+		gameObject.Transform.LocalRotation = Angles.Zero;
+		
+
+		var p = gameObject.Components.Create<LegacyParticleSystem>();
+		p.Particles = ParticleSystem.Load( particle );
+		gameObject.Transform.ClearInterpolation();
+
+
+		return p;
 	}
 
 

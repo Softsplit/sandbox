@@ -11,7 +11,7 @@ using Sandbox.Internal;
 namespace Sandbox;
 
 
-[Title("Line Renderer")]
+[Title("Vector Line Renderer")]
 [Category("Rendering")]
 [Icon("show_chart")]
 public sealed class VectorLineRenderer : Component, Component.ExecuteInEditor
