@@ -130,7 +130,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 			Input.MouseWheel = 0;
 		}
 
-		Equipment.Owner.Inventory.cantScroll = Grabbing;
+		Equipment.Owner.Inventory.cantSwitch = Grabbing;
 	}
 
 	[Broadcast]

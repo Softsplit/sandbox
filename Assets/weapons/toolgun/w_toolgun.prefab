@@ -101,7 +101,7 @@
             "__type": "Beam",
             "__guid": "b7e74c01-ed90-4535-b92f-3d343a80b445",
             "Base": "0,0,0",
-            "EffectCurve": {
+            "EffectCurve1": {
               "rangey": "0,0.1",
               "frames": [
                 {},
@@ -126,7 +126,33 @@
                 }
               ]
             },
-            "enabled": false
+            "EffectCurve2": {
+              "rangey": "0,0.1",
+              "frames": [
+                {},
+                {
+                  "x": 0.10000001,
+                  "y": 0.8867022,
+                  "in": -0.78399986,
+                  "out": 0.78399986
+                },
+                {
+                  "x": 0.5,
+                  "y": 1
+                },
+                {
+                  "x": 0.9,
+                  "y": 0.90000004,
+                  "in": 0.7591835,
+                  "out": -0.7591835
+                },
+                {
+                  "x": 1
+                }
+              ]
+            },
+            "enabled": false,
+            "pointDistance": 4
           }
         ]
       }

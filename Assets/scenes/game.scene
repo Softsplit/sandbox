@@ -5,6 +5,7 @@
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
       "Flags": 0,
       "Name": "Game Mode",
+      "Tags": "light_point,light",
       "Enabled": true,
       "NetworkMode": 1,
       "Components": [

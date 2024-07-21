@@ -8,6 +8,7 @@ public sealed class Beam : Component
 	[Property] public Curve EffectCurve2;
 	[Property] public bool enabled;
 	[Property] public Vector3 Base;
+	[Property] public int pointDistance = 10;
 	protected override void OnStart()
 	{
 		LineRenderer2 = Components.Create<VectorLineRenderer>();
@@ -23,6 +24,7 @@ public sealed class Beam : Component
 		LineRenderer1.Width = EffectCurve2;
 		LineRenderer1.RunBySelf = false;
 		LineRenderer1.Noise = 0.2f;
+
 	}
 
 	protected override void OnFixedUpdate()
@@ -36,8 +38,8 @@ public sealed class Beam : Component
 
 	public void CreateEffect(Vector3 Start, Vector3 End)
 	{
-		LineRenderer1.Points = GetSpacedPoints( Start, End, 10);
-		LineRenderer2.Points = GetSpacedPoints( Start, End, 20);
+		LineRenderer1.Points = GetSpacedPoints( Start, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance);
+		LineRenderer2.Points = GetSpacedPoints( Start, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance*2);
 	}
 
 	public static List<Vector3> GetSpacedPoints(Vector3 start, Vector3 end, int numberOfPoints)

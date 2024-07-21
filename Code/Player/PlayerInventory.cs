@@ -9,7 +9,7 @@ public partial class PlayerInventory : Component
 {
 	[RequireComponent] PlayerPawn Player { get; set; }
 
-	public bool cantScroll;
+	public bool cantSwitch;
 
 	/// <summary>
 	/// What equipment do we have right now?
@@ -110,6 +110,7 @@ public partial class PlayerInventory : Component
 		if ( !Player.IsLocallyControlled )
 			return;
 
+		if(cantSwitch) return;
 		if ( Input.Pressed( "Drop" ) && Current.IsValid() )
 		{
 			Drop( Current );
@@ -131,7 +132,7 @@ public partial class PlayerInventory : Component
 		if ( Input.Pressed( "SlotNext" )) wheel.y = -1;
 		if ( Input.Pressed( "SlotPrev" )) wheel.y = 1;
 
-		if ( wheel.y == 0f || cantScroll) return;
+		if ( wheel.y == 0f) return;
 
 		var availableWeapons = Equipment.ToList();
 		if ( availableWeapons.Count == 0 )
