@@ -94,7 +94,6 @@ partial class GameMode : Component.INetworkListener
 		ent.Tags.Add("propcollide");
 		ent.Network.SetOwnerTransfer(OwnerTransfer.Takeover);
 		HighlightOutline highlightOutline = ent.Components.Create<HighlightOutline>(false);
-		highlightOutline.Color = Color.Cyan;
 		ent.NetworkSpawn(null);
 		ent.Network.DropOwnership();
 		

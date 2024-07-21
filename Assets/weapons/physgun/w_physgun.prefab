@@ -53,7 +53,7 @@
             "__guid": "93b70621-3326-4689-b0dd-82371b9b8594",
             "Flags": 0,
             "Name": "Muzzle",
-            "Position": "12,0,4",
+            "Position": "11.38782,-0.00000003648898,4.571617",
             "Enabled": true
           }
         ]
@@ -134,7 +134,9 @@
               ]
             },
             "enabled": false,
-            "pointDistance": 10
+            "Noise": 1,
+            "pointDistance": 10,
+            "RunBySelf": false
           }
         ]
       }
