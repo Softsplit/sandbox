@@ -46,11 +46,15 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 	protected override void OnUpdate()
 	{
-		Equipment.Owner.lockCamera = rotating && GrabbedObject != null;
-		beam.enabled = Grabbing && GrabbedObject != null;
+		if(rotating)
+		{
+			rotating = GrabbedObject != null;
+		}
+		Equipment.Owner.lockCamera = rotating;
+		beam.enabled = Grabbing && GrabbedObject!=null;
+		if(GrabbedObjectHighlight != null) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject!=null;
+		if(Grabbing && GrabbedObject!=null)
 
-		if ( GrabbedObjectHighlight != null ) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject != null;
-		if ( Grabbing && GrabbedObject != null )
 		{
 			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos ), Effector.Muzzle.Transform.World.Forward );
 			beam.Base = Effector.Muzzle.Transform.Position;

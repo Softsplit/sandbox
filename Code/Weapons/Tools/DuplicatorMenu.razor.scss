@@ -1,0 +1,55 @@
+DuplicatorMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #fff;
+    pointer-events: all;
+
+    .ToolBox {
+        font-size: 15px;
+        background-color: rgba(#111, 0.5);
+        //border: 10px solid #3273EB;
+        border-radius: 10px;
+        width: 50%;
+        height: 50%;
+        align-items: flex-start;
+        flex-direction: column;
+        .Title
+        {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            font-size: 30px;
+            background-color: #3273EB;
+        }
+        .ValueBox {
+            width: 100%;
+            padding: 0;
+            flex-direction: row;
+            text-align: center;
+            align-items: center;
+            border: 2px solid #464646ab;
+
+            .ValueName {
+                font-weight: bold;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+                background-color: #464646ab;
+                height: 100%;
+            }
+
+            .Value {
+                
+            }
+        }
+    }
+}

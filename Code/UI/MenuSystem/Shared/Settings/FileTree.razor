@@ -1,0 +1,42 @@
+@namespace Softsplit.UI
+
+<div style="flex-direction: column;">
+    @if (DirectoryItems != null)
+    {
+        @foreach (var item in DirectoryItems)
+        {
+            <FileTreeItem ItemName="@item" ParentPath="@Directory" OnItemSelected:@bind="OnItemSelected"></FileTreeItem>
+        }
+    }
+</div>
+
+@code {
+
+    public string Directory { get; set; }
+    public List<string> DirectoryItems { get; set; }
+
+    public static List<string> DirectoryItemsFunc(string directory)
+    {
+        if (!FileSystem.Data.DirectoryExists(directory))
+        {
+            FileSystem.Data.CreateDirectory(directory);
+        }
+
+        List<string> returned = FileSystem.Data.FindDirectory(directory).ToList();
+        returned.AddRange(FileSystem.Data.FindFile(directory));
+        return returned;
+    }
+
+    string _onItemSelected;
+    public string OnItemSelected
+    {
+        get => _onItemSelected;
+        set
+        {
+            if (_onItemSelected == value)
+                return;
+
+            _onItemSelected = value;
+        }
+    }
+}

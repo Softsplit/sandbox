@@ -11,7 +11,7 @@ public sealed class ToolName : Component
 
 	protected override void OnUpdate()
 	{
-		textRenderer.Text = GetCurrentTool()?.ToolName[..4]?.ToUpper();
+		textRenderer.Text = GetCurrentTool()?.ToolName.Substring(0,4).ToUpper();
 	}
 
 	ToolComponent GetCurrentTool()

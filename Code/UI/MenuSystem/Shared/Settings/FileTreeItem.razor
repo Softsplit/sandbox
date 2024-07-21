@@ -1,0 +1,73 @@
+@namespace Softsplit.UI
+
+<div>
+    <div @onclick="Toggle">
+        @if (IsDirectory)
+        {
+            <span onclick=@Toggle>@(IsExpanded ? "[-]" : "[+]") @ItemName</span>
+        }
+        else
+        {
+            <span>@ItemName</span>
+        }
+    </div>
+    @if (IsExpanded && IsDirectory)
+    {
+        <div style="padding-left: 20px;">
+            @foreach (var subItem in SubItems)
+            {
+                <FileTreeItem ItemName="@subItem" ParentPath="@CurrentPath" OnItemSelected:@bind="OnItemSelected"/>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    public string ItemName { get; set; }
+
+    public string ParentPath { get; set; }
+    string _onItemSelected;
+    public string OnItemSelected
+    {
+        get => _onItemSelected;
+        set
+        {
+            if (_onItemSelected == value)
+                return;
+
+            _onItemSelected = value;
+        }
+    }
+
+    private List<string> SubItems { get; set; }
+
+    private bool IsExpanded { get; set; }
+
+    private bool IsDirectory => FileSystem.Data.DirectoryExists(CurrentPath);
+
+    private string CurrentPath => System.IO.Path.Combine(ParentPath, ItemName);
+
+    private void Toggle()
+    {
+        if (IsDirectory)
+        {
+            IsExpanded = !IsExpanded;
+
+            if (IsExpanded && SubItems == null)
+            {
+                LoadSubItems();
+            }
+        }
+        else
+        {
+            OnItemSelected = CurrentPath;
+        }
+    }
+
+    private void LoadSubItems()
+    {
+        SubItems = new List<string>();
+        SubItems.AddRange(FileSystem.Data.FindDirectory(CurrentPath));
+        SubItems.AddRange(FileSystem.Data.FindFile(CurrentPath));
+    }
+}
