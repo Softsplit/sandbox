@@ -33,6 +33,7 @@
       {
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "29fa1c9f-4f24-4026-995d-3085b7034937",
+        "AnimationGraph": "models/weapons/sbox_pistol_usp/v_usp.vanmgrph",
         "BodyGroups": 17685,
         "CreateBoneObjects": true,
         "Model": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
@@ -855,7 +856,8 @@
                     },
                     "pointDistance": 0.4,
                     "RunBySelf": true,
-                    "Scale": 1
+                    "Scale": 1,
+                    "StartParticle": "particles/physgun_start.vpcf"
                   },
                   {
                     "__type": "Softsplit.Beam",
@@ -892,7 +894,8 @@
                     },
                     "pointDistance": 0.4,
                     "RunBySelf": true,
-                    "Scale": 1
+                    "Scale": 1,
+                    "StartParticle": "particles/physgun_start.vpcf"
                   }
                 ],
                 "Children": [
@@ -900,7 +903,7 @@
                     "__guid": "374b7a9b-65c9-4fe7-a8f3-39d7a9713935",
                     "Flags": 0,
                     "Name": "Muzzle",
-                    "Position": "4.320035,0,4.755252",
+                    "Position": "4.653414,0.00000001987092,4.959185",
                     "Enabled": true,
                     "Children": [
                       {

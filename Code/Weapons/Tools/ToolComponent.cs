@@ -22,9 +22,14 @@ public abstract class ToolComponent : InputWeaponComponent
 		InputActions.Add( "ToolGunMenu" );
 
 		beam = Components.Get<Beam>();
+		beam.StartParticle = "toolgun_start.vpcf";
 		
-		Equipment.ViewModel.ModelRenderer.Enabled = false;
-		Equipment.ViewModel.ModelRenderer.Enabled = true;
+		if(Equipment.ViewModel != null)
+		{
+			Equipment.ViewModel.ModelRenderer.Enabled = false;
+			Equipment.ViewModel.ModelRenderer.Enabled = true;
+		}
+
 		
 
 		Start();

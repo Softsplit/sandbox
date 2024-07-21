@@ -178,7 +178,7 @@ public partial class PlayerPawn
 		// Eye input
 		if ( IsPossessed && cc.IsValid() )
 		{
-			if ( IsLocallyControlled && HealthComponent.State == LifeState.Alive )
+			if ( IsLocallyControlled && HealthComponent.State == LifeState.Alive && !lockCamera)
 			{
 				EyeAngles += Input.AnalogLook * AimDampening;
 				EyeAngles = EyeAngles.WithPitch( EyeAngles.pitch.Clamp( -90, 90 ) );

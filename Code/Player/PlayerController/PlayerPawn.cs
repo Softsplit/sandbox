@@ -5,6 +5,7 @@ public sealed partial class PlayerPawn : Pawn, IDescription
 	/// <summary>
 	/// The player's body
 	/// </summary>
+	[Property] public bool lockCamera { get; set; }
 	[Property] public PlayerBody Body { get; set; }
 
 	/// <summary>

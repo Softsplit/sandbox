@@ -59,7 +59,7 @@
             "__guid": "93b70621-3326-4689-b0dd-82371b9b8594",
             "Flags": 0,
             "Name": "Muzzle",
-            "Position": "4.320035,0,4.755252",
+            "Position": "4.689797,-0.000000001512876,4.925364",
             "Enabled": true
           },
           {
@@ -156,7 +156,8 @@
             "Noise": 1,
             "pointDistance": 4,
             "RunBySelf": false,
-            "Scale": 0.5
+            "Scale": 0.5,
+            "StartParticle": "particles/toolgun_start.vpcf"
           }
         ]
       }

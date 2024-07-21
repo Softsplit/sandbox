@@ -9,6 +9,7 @@ public sealed class Beam : Component
 
 	LegacyParticleSystem particleSystem;
 	
+	[Property] public string StartParticle {get;set;} = "particles/physgun_start.vpcf";
 	[Property] public bool EffectStart {get;set;} = true;
 	[Property] public bool RunBySelf {get;set;}
 	[Property] public float Scale {get;set;} = 1f;
@@ -38,7 +39,8 @@ public sealed class Beam : Component
 		LineRenderer1.Noise = Noise*0.2f;
 		LineRenderer1.Opaque = false;
 
-		if(EffectStart)particleSystem = CreateParticleSystem("particles/physgun_start.vpcf");
+		if(EffectStart)particleSystem = CreateParticleSystem(StartParticle);
+
 
 	}
 	protected override void OnPreRender()
