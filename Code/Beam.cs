@@ -9,13 +9,14 @@ public sealed class Beam : Component
 
 	LegacyParticleSystem particleSystem;
 	
+	[Property] public bool EffectStart {get;set;} = true;
 	[Property] public bool RunBySelf {get;set;}
 	[Property] public float Noise {get;set;} = 1f;
 	[Property] public Curve EffectCurve1{get;set;}
 	[Property] public Curve EffectCurve2{get;set;}
 	[Property] public bool enabled{get;set;}
 	[Property] public Vector3 Base {get;set;}
-	[Property] public int pointDistance {get;set;}= 10;
+	[Property] public float pointDistance {get;set;}= 10;
 	[Property] public GameObject ObjectStart {get;set;} 
 	[Property] public GameObject ObjectEnd {get;set;} 
 	protected override void OnStart()
@@ -36,7 +37,7 @@ public sealed class Beam : Component
 		LineRenderer1.Noise = Noise*0.2f;
 		LineRenderer1.Opaque = false;
 
-		particleSystem = CreateParticleSystem("particles/physgun_start.vpcf");
+		if(EffectStart)particleSystem = CreateParticleSystem("particles/physgun_start.vpcf");
 
 	}
 	protected override void OnPreRender()
@@ -49,8 +50,8 @@ public sealed class Beam : Component
 		}
 		LineRenderer1.Enabled = enabled;
 		LineRenderer2.Enabled = enabled;
-		particleSystem.Enabled = enabled;
-		particleSystem.Transform.Position = Base;
+		if (EffectStart) particleSystem.Enabled = enabled;
+		if (EffectStart) particleSystem.Transform.Position = Base;
 		if(!enabled && !RunBySelf) return;
 		LineRenderer1.Run();
 		LineRenderer2.Run();
@@ -62,8 +63,8 @@ public sealed class Beam : Component
 
 	public void CreateEffect(Vector3 Start, Vector3 End, Vector3 dir)
 	{
-		LineRenderer1.Points = GetCurvedPoints( Start, dir, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance);
-		LineRenderer2.Points = GetCurvedPoints( Start, dir, End, (int)MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance*2);
+		LineRenderer1.Points = GetCurvedPoints( Start, dir, End, (int)(MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance));
+		LineRenderer2.Points = GetCurvedPoints( Start, dir, End, (int)(MathF.Round(Vector3.DistanceBetween(Start,End))/pointDistance*2));
 
 		
 	}
@@ -74,6 +75,7 @@ public sealed class Beam : Component
 		gameObject.SetParent(GameObject);
 		gameObject.Transform.LocalPosition = Vector3.Zero;
 		gameObject.Transform.LocalRotation = Angles.Zero;
+		gameObject.Transform.Scale = Vector3.One;
 		
 
 		var p = gameObject.Components.Create<LegacyParticleSystem>();

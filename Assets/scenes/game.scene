@@ -117,6 +117,7 @@
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
       "Name": "Map ",
+      "Position": "0,0,7.968071",
       "Tags": "map",
       "Enabled": true,
       "Components": [
@@ -127,6 +128,39 @@
           "MapName": "facepunch.construct23",
           "NoOrigin": true,
           "UseMapFromLaunch": true
+        },
+        {
+          "__type": "Sandbox.VectorLineRenderer",
+          "__guid": "0646b028-8e4b-4a7f-865b-4bfac2b1cde8",
+          "Color": {
+            "color": [
+              {
+                "t": 0.5,
+                "c": "0,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "EndCap": "None",
+          "Noise": 1,
+          "Opaque": false,
+          "Points": [
+            "0,0,56.6",
+            "0,114.9,5.600001"
+          ],
+          "RunBySelf": true,
+          "SplineBias": 0,
+          "SplineContinuity": 0,
+          "SplineInterpolation": 0,
+          "SplineTension": 0,
+          "StartCap": "None",
+          "Width": [
+            {
+              "x": 0.5,
+              "y": 5
+            }
+          ],
+          "Wireframe": false
         }
       ],
       "Children": []

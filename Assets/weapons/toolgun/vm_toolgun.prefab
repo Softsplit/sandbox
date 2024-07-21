@@ -821,7 +821,7 @@
                     "UseAnimGraph": true
                   },
                   {
-                    "__type": "Beam",
+                    "__type": "Softsplit.Beam",
                     "__guid": "823eed61-4d8e-4537-9a35-0b957139362c",
                     "Base": "0,0,0",
                     "EffectCurve1": {
@@ -842,21 +842,22 @@
                         }
                       ]
                     },
+                    "EffectStart": false,
                     "enabled": true,
                     "Noise": 0.5,
                     "ObjectEnd": {
                       "_type": "gameobject",
-                      "go": "a84c576d-da0a-4922-a375-f7d23904fd97"
+                      "go": "c035218f-e85d-4368-8f10-bb194228f827"
                     },
                     "ObjectStart": {
                       "_type": "gameobject",
                       "go": "f7c1f9c7-9744-4435-bfcc-8e333b6fbcbf"
                     },
-                    "pointDistance": 1,
+                    "pointDistance": 0.4,
                     "RunBySelf": true
                   },
                   {
-                    "__type": "Beam",
+                    "__type": "Softsplit.Beam",
                     "__guid": "9ec7569d-ff94-4feb-89b3-fbd81fa0d24f",
                     "Base": "0,0,0",
                     "EffectCurve1": {
@@ -877,17 +878,18 @@
                         }
                       ]
                     },
+                    "EffectStart": false,
                     "enabled": true,
                     "Noise": 0.5,
                     "ObjectEnd": {
                       "_type": "gameobject",
-                      "go": "603cde02-22ac-4072-9abc-1bfda2f566d7"
+                      "go": "0eb13ede-36d8-4298-9e7b-0122a89bd073"
                     },
                     "ObjectStart": {
                       "_type": "gameobject",
-                      "go": "756b29c2-798c-4c38-8031-852adcedd422"
+                      "go": "a84c576d-da0a-4922-a375-f7d23904fd97"
                     },
-                    "pointDistance": 1,
+                    "pointDistance": 0.4,
                     "RunBySelf": true
                   }
                 ],
@@ -897,7 +899,37 @@
                     "Flags": 0,
                     "Name": "Muzzle",
                     "Position": "4.320035,0,4.755252",
-                    "Enabled": true
+                    "Enabled": true,
+                    "Children": [
+                      {
+                        "__guid": "f7c1f9c7-9744-4435-bfcc-8e333b6fbcbf",
+                        "Flags": 0,
+                        "Name": "Object",
+                        "Position": "-3.700072,0.3399048,-0.3267083",
+                        "Enabled": true
+                      },
+                      {
+                        "__guid": "c035218f-e85d-4368-8f10-bb194228f827",
+                        "Flags": 0,
+                        "Name": "Object (3)",
+                        "Position": "-0.6286721,0.1672212,0.1898618",
+                        "Enabled": true
+                      },
+                      {
+                        "__guid": "a84c576d-da0a-4922-a375-f7d23904fd97",
+                        "Flags": 0,
+                        "Name": "Object (1)",
+                        "Position": "-3.285493,0.02194914,-0.223752",
+                        "Enabled": true
+                      },
+                      {
+                        "__guid": "0eb13ede-36d8-4298-9e7b-0122a89bd073",
+                        "Flags": 0,
+                        "Name": "Object (2)",
+                        "Position": "-0.6811073,0.02194914,-0.005041599",
+                        "Enabled": true
+                      }
+                    ]
                   },
                   {
                     "__guid": "54c325a9-cf54-43b8-a814-fde4a7a4a7f5",
@@ -908,32 +940,30 @@
                     "Enabled": true
                   },
                   {
-                    "__guid": "a84c576d-da0a-4922-a375-f7d23904fd97",
+                    "__guid": "cbf39578-ef2e-43ea-a14f-8f7b35c63cd4",
                     "Flags": 0,
-                    "Name": "Object (1)",
-                    "Position": "3.772325,0.1941598,4.668786",
-                    "Enabled": true
-                  },
-                  {
-                    "__guid": "f7c1f9c7-9744-4435-bfcc-8e333b6fbcbf",
-                    "Flags": 0,
-                    "Name": "Object",
-                    "Position": "0.797731,0.466,4.416076",
-                    "Enabled": true
-                  },
-                  {
-                    "__guid": "603cde02-22ac-4072-9abc-1bfda2f566d7",
-                    "Flags": 0,
-                    "Name": "Object (3)",
-                    "Position": "3.772324,-0.162705,4.652295",
-                    "Enabled": true
-                  },
-                  {
-                    "__guid": "756b29c2-798c-4c38-8031-852adcedd422",
-                    "Flags": 0,
-                    "Name": "Object (2)",
-                    "Position": "0.797731,-0.466,4.416075",
-                    "Enabled": true
+                    "Name": "Selected tool",
+                    "Position": "-1.907478,1.534655,3.957044",
+                    "Rotation": "0.03315517,0,0,0.9994502",
+                    "Scale": "0.0018,0.0018,0.0018",
+                    "Enabled": true,
+                    "Components": [
+                      {
+                        "__type": "Sandbox.TextRenderer",
+                        "__guid": "65144a0e-a50a-4ecb-a0f6-5da1be9c1f1a",
+                        "Color": "0,0,0,1",
+                        "FontFamily": "Rudiment",
+                        "FontSize": 128,
+                        "FontWeight": 800,
+                        "Scale": 2,
+                        "Text": "WELD",
+                        "TextAlignment": "Left"
+                      },
+                      {
+                        "__type": "ToolName",
+                        "__guid": "5ef1101e-7e30-4fc1-a695-1a776eb14c87"
+                      }
+                    ]
                   }
                 ]
               }
