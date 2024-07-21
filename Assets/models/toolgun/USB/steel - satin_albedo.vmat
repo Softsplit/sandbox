@@ -1,0 +1,14 @@
+
+Layer0
+{
+	shader "shaders/complex.shader_c"
+
+	TextureColor "models/toolgun/usb/steel - satin_albedo.jpg"
+	TextureAmbientOcclusion "models/toolgun/usb/steel - satin_ao.jpg"
+	TextureNormal "models/toolgun/usb/steel - satin_normal.png"
+	TextureRoughness "models/toolgun/usb/steel - satin_roughness.jpg"
+	F_METALNESS_TEXTURE 1
+	F_SPECULAR 1
+	TextureMetalness "models/toolgun/usb/steel - satin_metallic.jpg"
+
+}

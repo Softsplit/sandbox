@@ -46,9 +46,9 @@
           {
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "5abbb3cb-4005-418f-970c-50342f9b3759",
-            "BodyGroups": 9493,
+            "BodyGroups": 18446744073709551615,
             "CreateBoneObjects": false,
-            "Model": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
+            "Model": "models/toolgun/toolguntemp.vmdl",
             "RenderType": "On",
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
@@ -163,8 +163,6 @@
   "MenuPath": null,
   "MenuIcon": null,
   "ResourceVersion": 1,
-  "__references": [
-    "facepunch.w_usp"
-  ],
+  "__references": [],
   "__version": 1
 }

@@ -36,7 +36,7 @@
         "BodyGroups": 17685,
         "CreateBoneObjects": true,
         "Model": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
-        "RenderType": "Off",
+        "RenderType": "ShadowsOnly",
         "Tint": "1,1,1,1",
         "UseAnimGraph": true
       }
@@ -799,6 +799,140 @@
                     "Name": "hand_R_to_weapon_ikrule",
                     "Position": "3.45975,-20.3589,-24.07692",
                     "Rotation": "0.3519611,0.1924756,-0.5431404,0.7376145",
+                    "Enabled": true
+                  }
+                ]
+              },
+              {
+                "__guid": "7ce386d9-448c-443b-bff0-40051ed5c473",
+                "Flags": 0,
+                "Name": "Model",
+                "Position": "2.169387,0.0000001293055,-3.15716",
+                "Enabled": true,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "cab7ea82-3f01-4f56-9ba8-07b0801835f5",
+                    "BodyGroups": 18446744073709551615,
+                    "CreateBoneObjects": false,
+                    "Model": "models/toolgun/toolguntemp.vmdl",
+                    "RenderType": "On",
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Beam",
+                    "__guid": "823eed61-4d8e-4537-9a35-0b957139362c",
+                    "Base": "0,0,0",
+                    "EffectCurve1": {
+                      "rangey": "0,0.005",
+                      "frames": [
+                        {
+                          "x": 0.5,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    "EffectCurve2": {
+                      "rangey": "0,0.005",
+                      "frames": [
+                        {
+                          "x": 0.5,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    "enabled": true,
+                    "Noise": 0.5,
+                    "ObjectEnd": {
+                      "_type": "gameobject",
+                      "go": "a84c576d-da0a-4922-a375-f7d23904fd97"
+                    },
+                    "ObjectStart": {
+                      "_type": "gameobject",
+                      "go": "f7c1f9c7-9744-4435-bfcc-8e333b6fbcbf"
+                    },
+                    "pointDistance": 1,
+                    "RunBySelf": true
+                  },
+                  {
+                    "__type": "Beam",
+                    "__guid": "9ec7569d-ff94-4feb-89b3-fbd81fa0d24f",
+                    "Base": "0,0,0",
+                    "EffectCurve1": {
+                      "rangey": "0,0.005",
+                      "frames": [
+                        {
+                          "x": 0.5,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    "EffectCurve2": {
+                      "rangey": "0,0.005",
+                      "frames": [
+                        {
+                          "x": 0.5,
+                          "y": 1
+                        }
+                      ]
+                    },
+                    "enabled": true,
+                    "Noise": 0.5,
+                    "ObjectEnd": {
+                      "_type": "gameobject",
+                      "go": "603cde02-22ac-4072-9abc-1bfda2f566d7"
+                    },
+                    "ObjectStart": {
+                      "_type": "gameobject",
+                      "go": "756b29c2-798c-4c38-8031-852adcedd422"
+                    },
+                    "pointDistance": 1,
+                    "RunBySelf": true
+                  }
+                ],
+                "Children": [
+                  {
+                    "__guid": "374b7a9b-65c9-4fe7-a8f3-39d7a9713935",
+                    "Flags": 0,
+                    "Name": "Muzzle",
+                    "Position": "4.320035,0,4.755252",
+                    "Enabled": true
+                  },
+                  {
+                    "__guid": "54c325a9-cf54-43b8-a814-fde4a7a4a7f5",
+                    "Flags": 0,
+                    "Name": "EjectionPort",
+                    "Position": "0.2360865,0,4.951741",
+                    "Tags": "particles",
+                    "Enabled": true
+                  },
+                  {
+                    "__guid": "a84c576d-da0a-4922-a375-f7d23904fd97",
+                    "Flags": 0,
+                    "Name": "Object (1)",
+                    "Position": "3.772325,0.1941598,4.668786",
+                    "Enabled": true
+                  },
+                  {
+                    "__guid": "f7c1f9c7-9744-4435-bfcc-8e333b6fbcbf",
+                    "Flags": 0,
+                    "Name": "Object",
+                    "Position": "0.797731,0.466,4.416076",
+                    "Enabled": true
+                  },
+                  {
+                    "__guid": "603cde02-22ac-4072-9abc-1bfda2f566d7",
+                    "Flags": 0,
+                    "Name": "Object (3)",
+                    "Position": "3.772324,-0.162705,4.652295",
+                    "Enabled": true
+                  },
+                  {
+                    "__guid": "756b29c2-798c-4c38-8031-852adcedd422",
+                    "Flags": 0,
+                    "Name": "Object (2)",
+                    "Position": "0.797731,-0.466,4.416075",
                     "Enabled": true
                   }
                 ]

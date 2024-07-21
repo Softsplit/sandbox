@@ -4,11 +4,15 @@ public sealed class Beam : Component
 {
 	VectorLineRenderer LineRenderer1;
 	VectorLineRenderer LineRenderer2;
-	[Property] public Curve EffectCurve1;
-	[Property] public Curve EffectCurve2;
-	[Property] public bool enabled;
-	[Property] public Vector3 Base;
-	[Property] public int pointDistance = 10;
+	[Property] public bool RunBySelf {get;set;}
+	[Property] public float Noise {get;set;} = 1f;
+	[Property] public Curve EffectCurve1{get;set;}
+	[Property] public Curve EffectCurve2{get;set;}
+	[Property] public bool enabled{get;set;}
+	[Property] public Vector3 Base{get;set;}
+	[Property] public int pointDistance {get;set;}= 10;
+	[Property] public GameObject ObjectStart {get;set;} 
+	[Property] public GameObject ObjectEnd {get;set;} 
 	protected override void OnStart()
 	{
 		LineRenderer2 = Components.Create<VectorLineRenderer>();
@@ -16,22 +20,30 @@ public sealed class Beam : Component
 		LineRenderer2.Color = new Color(0f, 0.5f, 1f);
 		LineRenderer2.Width = EffectCurve1;
 		LineRenderer2.RunBySelf = false;
-		LineRenderer2.Noise = 1f;
+		LineRenderer2.Noise = Noise;
 
 		LineRenderer1 = Components.Create<VectorLineRenderer>();
 		LineRenderer1.Points = new List<Vector3>{Vector3.Zero,Vector3.Zero};
 		LineRenderer1.Color = Color.Cyan;
 		LineRenderer1.Width = EffectCurve2;
 		LineRenderer1.RunBySelf = false;
-		LineRenderer1.Noise = 0.2f;
+		LineRenderer1.Noise = Noise*0.2f;
 
 	}
-
+	protected override void OnPreRender()
+	{
+		if(RunBySelf)
+		{
+			CreateEffect(ObjectStart.Transform.Position,ObjectEnd.Transform.Position);
+			LineRenderer1.Run();
+			LineRenderer2.Run();
+		}
+	}
 	protected override void OnFixedUpdate()
 	{
 		LineRenderer1.Enabled = enabled;
 		LineRenderer2.Enabled = enabled;
-		if(!enabled) return;
+		if(!enabled && !RunBySelf) return;
 		LineRenderer1.Run();
 		LineRenderer2.Run();
 	}

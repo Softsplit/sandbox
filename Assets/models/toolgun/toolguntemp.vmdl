@@ -1,0 +1,97 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "jorping jingus.vmat"
+								to = "models/weapons/sbox_pistol_usp/w_usp.vmat"
+							},
+							{
+								from = "models/weapons/sbox_pistol_usp/w_usp.vmat.001.vmat"
+								to = "models/weapons/sbox_pistol_usp/w_usp.vmat"
+							},
+							{
+								from = "material.003.vmat"
+								to = "models/toolgun/brown tape/others_0012_color_1k.vmat"
+							},
+							{
+								from = "material.004.vmat"
+								to = "models/toolgun/brown tape/others_0012_color_1k.vmat"
+							},
+							{
+								from = "material.001.vmat"
+								to = "models/toolgun/copper/oxidized-copper-albedo.vmat"
+							},
+							{
+								from = "steel - satin.vmat"
+								to = "models/toolgun/usb/steel - satin_albedo.vmat"
+							},
+							{
+								from = "mat0.vmat"
+								to = "materials/dev/dev_metal_rough100.vmat"
+							},
+							{
+								from = "material.002.vmat"
+								to = "models/toolgun/battery/image_0_2.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = "materials/default.vmat"
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						filename = "models/toolgun/toolguntemp.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"renderMeshShape6_001",
+								"renderMeshShape3_001",
+								"Circle_003",
+								"_Body2_001_Default_00",
+								"Circle_004",
+								"imagetostl_mesh0",
+								"meshId0_name",
+								"renderMeshShape9_001",
+								"Circle",
+								"renderMeshShape0_001",
+								"renderMeshShape12_001",
+								"collection",
+								"renderMeshShape15_001",
+							]
+						}
+					},
+				]
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

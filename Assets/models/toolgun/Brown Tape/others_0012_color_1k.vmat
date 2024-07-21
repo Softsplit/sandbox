@@ -1,0 +1,11 @@
+
+Layer0
+{
+	shader "shaders/complex.shader_c"
+
+	TextureColor "models/toolgun/brown tape/others_0012_color_1k.jpg"
+	TextureAmbientOcclusion "models/toolgun/brown tape/others_0012_ao_1k.jpg"
+	TextureNormal "models/toolgun/brown tape/others_0012_normal_directx_1k.png"
+	TextureRoughness "models/toolgun/brown tape/others_0012_roughness_1k.jpg"
+
+}
