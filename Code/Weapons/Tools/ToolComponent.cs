@@ -118,7 +118,7 @@ public abstract class ToolComponent : InputWeaponComponent
 		}
 
 		RayActive = RayTime;
-		beam.CreateEffect(Effector.Muzzle.Transform.Position, effectPoint, Effector.Muzzle.Transform.Position);
+		beam.CreateEffect(Effector.Muzzle.Transform.Position, effectPoint, Effector.Muzzle.Transform.World.Forward);
 
 		Sound.Play( "sounds/guns/gun_dryfire.sound", Transform.Position );
 
