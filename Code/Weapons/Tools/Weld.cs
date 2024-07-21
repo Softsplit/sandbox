@@ -83,24 +83,25 @@ public sealed class Weld : ToolComponent
 	[Broadcast]
 	public static void CreateWeld( GameObject player, GameObject object1, Vector3 point1Pos, GameObject object2, Vector3 point2Pos )
 	{
-		WeldContext weldContext1 = object1.Components.Create<WeldContext>();
+		WeldContext weldContext1 = object1?.Components.Create<WeldContext>();
 		weldContext1.MainWeld = true;
 
 		weldContext1.point1 = point1Pos;
 		weldContext1.point2 = point2Pos;
 
-		WeldContext weldContext2 = object2.Components.Create<WeldContext>();
+		WeldContext weldContext2 = object2?.Components.Create<WeldContext>();
 		weldContext2.weldedObject = weldContext1;
-		weldContext2.body = object2.Components.Get<Rigidbody>()?.PhysicsBody;
+		weldContext2.body = object2?.Components.Get<Rigidbody>()?.PhysicsBody;
 
 		weldContext1.weldedObject = weldContext2;
-		weldContext1.body = object1.Components.Get<Rigidbody>()?.PhysicsBody;
+		weldContext1.body = object1?.Components.Get<Rigidbody>()?.PhysicsBody;
 
-		PlayerPawn owner = player.Components.Get<PlayerPawn>();
-		if ( owner == PlayerState.Local.PlayerPawn )
+		PlayerPawn owner = player?.Components.Get<PlayerPawn>();
+		if ( owner == PlayerState.Local?.PlayerPawn )
 		{
 			Log.Info( "crap" );
-			PlayerState.Thing thing = new PlayerState.Thing
+
+			PlayerState.Thing thing = new()
 			{
 				components = new List<Component>
 				{
@@ -108,7 +109,8 @@ public sealed class Weld : ToolComponent
 					weldContext2
 				}
 			};
-			owner.PlayerState.SpawnedThings.Add( thing );
+
+			owner.PlayerState?.SpawnedThings?.Add( thing );
 		}
 	}
 
