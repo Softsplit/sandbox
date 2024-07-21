@@ -24,6 +24,7 @@ public sealed class ToolGunHandler : Component
 
 	public void UpdateTool()
 	{
+		
 		ActiveTool?.Destroy();
 		ActiveToolMenu?.Destroy();
 

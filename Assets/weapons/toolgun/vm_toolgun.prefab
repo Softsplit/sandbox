@@ -854,7 +854,8 @@
                       "go": "f7c1f9c7-9744-4435-bfcc-8e333b6fbcbf"
                     },
                     "pointDistance": 0.4,
-                    "RunBySelf": true
+                    "RunBySelf": true,
+                    "Scale": 1
                   },
                   {
                     "__type": "Softsplit.Beam",
@@ -890,7 +891,8 @@
                       "go": "a84c576d-da0a-4922-a375-f7d23904fd97"
                     },
                     "pointDistance": 0.4,
-                    "RunBySelf": true
+                    "RunBySelf": true,
+                    "Scale": 1
                   }
                 ],
                 "Children": [

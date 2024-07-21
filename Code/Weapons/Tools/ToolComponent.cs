@@ -23,7 +23,8 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		beam = Components.Get<Beam>();
 		
-
+		Equipment.ViewModel.ModelRenderer.Enabled = false;
+		Equipment.ViewModel.ModelRenderer.Enabled = true;
 		
 
 		Start();
@@ -40,10 +41,7 @@ public abstract class ToolComponent : InputWeaponComponent
 
 		beam.enabled = RayActive > 0;
 
-		if(Equipment.Owner.CharacterController.Velocity.Length < 1)
-		{
-			beam.Base = Effector.Muzzle.Transform.Position;
-		}
+		beam.Base = Effector.Muzzle.Transform.Position;
 	}
 
 

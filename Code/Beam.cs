@@ -11,6 +11,7 @@ public sealed class Beam : Component
 	
 	[Property] public bool EffectStart {get;set;} = true;
 	[Property] public bool RunBySelf {get;set;}
+	[Property] public float Scale {get;set;} = 1f;
 	[Property] public float Noise {get;set;} = 1f;
 	[Property] public Curve EffectCurve1{get;set;}
 	[Property] public Curve EffectCurve2{get;set;}
@@ -75,7 +76,7 @@ public sealed class Beam : Component
 		gameObject.SetParent(GameObject);
 		gameObject.Transform.LocalPosition = Vector3.Zero;
 		gameObject.Transform.LocalRotation = Angles.Zero;
-		gameObject.Transform.Scale = Vector3.One;
+		gameObject.Transform.LocalScale = Vector3.One * 0.1f;
 		
 
 		var p = gameObject.Components.Create<LegacyParticleSystem>();
