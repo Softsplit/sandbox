@@ -3,6 +3,7 @@
     "__guid": "82bb2c6e-f94a-4f0e-a889-794fa75c70e7",
     "Flags": 0,
     "Name": "he_grenade",
+    "Tags": "grenade",
     "Enabled": true,
     "Components": [
       {

@@ -58,7 +58,7 @@ public partial class PlayerBody : Component
 
 		foreach ( var model in skinnedModels )
 		{
-			model.RenderType = firstPerson ? ModelRenderer.ShadowRenderType.ShadowsOnly : ModelRenderer.ShadowRenderType.On;
+			model.Enabled = !firstPerson;
 		}
 	}
 }

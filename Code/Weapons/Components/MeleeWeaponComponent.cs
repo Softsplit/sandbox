@@ -134,7 +134,7 @@ public partial class MeleeWeaponComponent : InputWeaponComponent
 		yield return Scene.Trace.Ray( start, end )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement" )
+			.WithoutTags( "trigger", "ragdoll", "movement" )
 			.Size( Size )
 			.Run();
 	}
