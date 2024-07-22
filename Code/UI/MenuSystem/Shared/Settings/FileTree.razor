@@ -3,28 +3,42 @@
 <root style=@($"flex-direction: column; font-size: {FontSize}px; width: 100%; height: 100%")>
     @if(DirectoryAdd != "")
     {
-        <div style="flex-direction: row;" onclick=@(() => DirectoryAdd = GetPreviousDirectory(DirectoryAdd))>
+        <div style="flex-direction: row; padding: auto;" onclick=@(() => DirectoryAdd = GetPreviousDirectory(DirectoryAdd))>
             <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/back.svg" />
             <div>@GetDirectoryName(DirectoryAdd)</div>
         </div>
     }
     @foreach (string s in DirectoryFolders(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
-        <div style="flex-direction: row;" onrightclick=@(() => OpenDeleteMenu(false, s)) onclick=@(() => SelectDirectory(s))>
+        <div style="flex-direction: row; padding: auto;" onrightclick=@(() => OpenDeleteMenu(false, s)) onclick=@(() => SelectDirectory(s))>
             <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
             <div>@s</div>
+        </div>
+    }
+    @if (CreatingFolder)
+    {
+        <div style=@($"flex-direction: row; padding: auto; height: {FontSize}px")>
+            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
+            <TextEntry Value:bind="@FolderName" onsubmit="@CreateFolder" style="justify-content: flex-start;"/>
         </div>
     }
 	@foreach (string s in DirectoryItems(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
         <div onrightclick=@(() => OpenDeleteMenu(true, s)) onclick=@(() => SelectFile(s))>@s</div>
     }
-    <div style="height: 100%;" onclick=@(() => DeletePopup = false)></div>
+    <div style="height: 100%;" onrightclick="@OpenCreateFolderMenu" onclick="@ClosePopups"></div>
     @if(DeletePopup)
     {
         <div onclick="@Delete" style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: row;">
             <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/delete.svg">
             <div>Delete</div>
+        </div>
+    }
+    @if(CreateFolderPopup)
+    {
+        <div onclick=@StartCreateFolder style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: row;">
+            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
+            <div>Create Folder</div>
         </div>
     }
     
@@ -33,11 +47,16 @@
 @code
 {
 	public string Directory { get; set; }
-	public float FontSize { get; set; } = 25f;
+	public float FontSize { get; set; } = 15f;
 	public string DirectoryAdd = "";
 
-    public bool DeleteFile;
+   
     public bool DeletePopup;
+    public bool CreateFolderPopup;
+    public bool CreatingFolder;
+    public string FolderName;
+
+     public bool DeleteFile;
     public string ThingToDelete;
 
     public Vector2 cursorPos;
@@ -68,25 +87,57 @@
             FileSystem.Data.DeleteDirectory($"{Directory}{DirectoryAdd}/{ThingToDelete}", true);
         }
     }
+    public void StartCreateFolder()
+    {
+        ClosePopups();
+        CreatingFolder = true;
+    }
+    public void CreateFolder()
+    {
+        CreatingFolder = false;
+        string newFolderName = FolderName;
+        int counter = 1;
+        
+        while (FileSystem.Data.DirectoryExists($"{Directory}{DirectoryAdd}/{newFolderName}"))
+        {
+            newFolderName = $"{FolderName}({counter})";
+            counter++;
+        }
+        
+        FileSystem.Data.CreateDirectory($"{Directory}{DirectoryAdd}/{newFolderName}");
+    }
+    public void ClosePopups()
+    {
+        CreateFolderPopup = false;
+        DeletePopup = false;
+    }
 
     public void SelectDirectory(string directory)
     {
         DirectoryAdd = $"{DirectoryAdd}/{directory}";
-        DeletePopup = false;
+        ClosePopups();
     }
 
     public void SelectFile(string file)
     {
         Value = (DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{file}" : $"{Directory}{DirectoryAdd}/{file}");
-        DeletePopup = false;
+        ClosePopups();
     }
 
     public void OpenDeleteMenu(bool file, string thingToDelete)
     {
         cursorPos = (Mouse.Position / Screen.Size) * 100.0f;
         DeletePopup = true;
+        CreateFolderPopup = false;
         ThingToDelete = thingToDelete;
         DeleteFile = file;
+    }
+
+    public void OpenCreateFolderMenu()
+    {
+        cursorPos = (Mouse.Position / Screen.Size) * 100.0f;
+        CreateFolderPopup = true;
+        DeletePopup =false;
     }
 
     public static string GetPreviousDirectory(string directory)
@@ -127,7 +178,7 @@
         return returned;
     }
 
-	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, DeletePopup );
+	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, DeletePopup, CreateFolderPopup, CreatingFolder );
 
 
 }

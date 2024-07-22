@@ -51,10 +51,36 @@
             .Value {
                 
             }
-            .Button {
-                background-color: white;
-                color: #464646ab;
-            }
+        }
+        .Button {
+            background-color: #ffffff;
+            border: 1px solid transparent;
+            border-radius: 3px;
+            color: #000000;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 400;
+            margin: 0;
+            //outline: none;
+            padding: 4px;
+            position: relative;
+            text-align: center;
+            align-items: baseline;
+            white-space: nowrap;
+        }
+
+        .Button:hover,
+        .Button:focus {
+            background-color: rgb(202, 202, 202);
+        }
+
+        .Button:focus {
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.15);
+        }
+
+        .Button:active {
+            background-color: #bbbbbb;
+            box-shadow: none;
         }
 
         
