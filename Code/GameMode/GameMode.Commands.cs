@@ -38,10 +38,25 @@ partial class GameMode : Component.INetworkListener
 		return package.GetMeta( "PrimaryAsset", "" );
 	}
 
+	private static EquipmentResource HandleViewModelPackage( string packageName, PlayerPawn owner )
+	{
+		string fileformat = packageName.Substring( packageName.IndexOf( '.' ) );
+		if ( !fileformat.StartsWith( ".v_" ) ) return null;
+		string resourceFileName = fileformat.Substring( fileformat.IndexOf( '_' ) + 1 );
+
+		List<string> resourceNames = EquipmentResource.All.Select( item => item.ResourceName ).ToList();
+		EquipmentResource vm_weapon = EquipmentResource.All
+		.First( x => x.ResourceName == GameUtils.getClosestString( resourceNames, resourceFileName ) );
+		owner.Inventory.Drop( null, vm_weapon );
+
+		return vm_weapon ?? null;
+	}
+
 	[ConCmd( "spawn" )]
 	public static async void Spawn( string modelname )
 	{
 		var owner = PlayerState.Local.PlayerPawn;
+
 
 		if ( owner == null )
 			return;
@@ -53,21 +68,21 @@ partial class GameMode : Component.INetworkListener
 
 		var modelRotation = Rotation.From( new Angles( 0, owner.EyeAngles.yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
 
+		if ( HandleViewModelPackage( modelname, owner ) != null )
+			return;
+
 		Model model;
 
-		if ( modelname.Contains( '.' ) && !modelname.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", StringComparison.OrdinalIgnoreCase ) )
+		var needsMounting = modelname.Contains( '.' )
+		&& !modelname.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase )
+		&& !modelname.EndsWith( ".vmdl_c", StringComparison.OrdinalIgnoreCase );
+
+		if ( needsMounting && !Instance.cachedPackageList.Contains( modelname ) )
 		{
 			MountPackage( modelname );
-
-			if ( !Instance.cachedPackageList.Contains( modelname ) )
-				Instance.cachedPackageList.Add( modelname );
-
-			model = Model.Load( await MountPackageAsync( modelname ) );
+			Instance.cachedPackageList.Add( modelname );
 		}
-		else
-		{
-			model = Model.Load( modelname );
-		}
+		model = Model.Load( needsMounting ? await MountPackageAsync( modelname ) : modelname );
 
 		if ( model == null || model.IsError )
 			return;
@@ -81,7 +96,7 @@ partial class GameMode : Component.INetworkListener
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
 
-		foreach ( var shape in ent.Components.Get<Rigidbody>()?.PhysicsBody.Shapes )
+		foreach ( var shape in ent.Components.GetOrCreate<Rigidbody>()?.PhysicsBody.Shapes )
 		{
 			if ( shape.IsMeshShape )
 			{
@@ -90,18 +105,14 @@ partial class GameMode : Component.INetworkListener
 				collider.Scale = model.PhysicsBounds.Size;
 			}
 		}
-		
-		ent.Tags.Add("propcollide");
-		ent.Network.SetOwnerTransfer(OwnerTransfer.Takeover);
-		HighlightOutline highlightOutline = ent.Components.Create<HighlightOutline>(false);
-		ent.NetworkSpawn(null);
+
+		ent.Tags.Add( "propcollide" );
+		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
+		HighlightOutline highlightOutline = ent.Components.Create<HighlightOutline>( false );
+		ent.NetworkSpawn( null );
 		ent.Network.DropOwnership();
-		
-		PlayerState.Thing thing = new PlayerState.Thing
-		{
-			gameObjects = new List<GameObject>{ ent }
-		}; 
-		owner.PlayerState.SpawnedThings.Add( thing );
+
+		owner.PlayerState.AddPropToList( ent );
 		Stats.Increment( "spawn.model", 1, modelname );
 	}
 
@@ -132,13 +143,9 @@ partial class GameMode : Component.INetworkListener
 			obj.NetworkMode = NetworkMode.Object;
 			obj.NetworkSpawn();
 
-			PlayerState.Thing thing = new PlayerState.Thing
-			{
-				gameObjects = new List<GameObject> { obj }
-			};
-			owner.PlayerState.SpawnedThings.Add( thing );
+			owner.PlayerState.AddPropToList( obj );
 			Stats.Increment( "spawn.model", 1, path );
-			
+
 		}
 	}
 
