@@ -14,6 +14,7 @@
     .ToolBox {
         font-size: 15px;
         background-color: rgba(#111, 0.5);
+        backdrop-filter: blur(10px);
         //border: 10px solid #3273EB;
         border-radius: 10px;
         width: 50%;
@@ -51,6 +52,15 @@
             .Value {
                 
             }
+        }
+        .ButtonBox {
+            width: 100%;
+            padding: 0;
+            flex-direction: row;
+            text-align: center;
+            align-items: center;
+            background-color: #464646ab;
+            padding: 2px;
         }
         .Button {
             background-color: #ffffff;
