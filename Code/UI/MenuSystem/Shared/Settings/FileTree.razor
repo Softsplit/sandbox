@@ -8,6 +8,7 @@
             <div>@GetDirectoryName(DirectoryAdd)</div>
         </div>
     }
+    
     @foreach (string s in DirectoryFolders(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
         <div style="flex-direction: row; padding: auto;" onrightclick=@(() => OpenDeleteMenu(false, s)) onclick=@(() => SelectDirectory(s))>
@@ -22,10 +23,24 @@
             <TextEntry Value:bind="@FolderName" onsubmit="@CreateFolder" style="justify-content: flex-start;"/>
         </div>
     }
+
 	@foreach (string s in DirectoryItems(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
-        <div onrightclick=@(() => OpenDeleteMenu(true, s)) onclick=@(() => SelectFile(s))>@s</div>
+        <div style=@($"flex-direction: row; padding: auto; height: {FontSize}px")>
+            @if(Value == (DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{s}" : $"{Directory}{DirectoryAdd}/{s}"))
+            {
+                <div>‎ • ‎ </div>
+            }
+            <div onrightclick=@(() => OpenDeleteMenu(true, s)) onclick=@(() => SelectFile(s))>@s</div>
+        </div>
     }
+    @if (CreatingFile)
+    {
+        <div style=@($"flex-direction: row; padding: auto; height: {FontSize+5}px; background-color: #464646ab;")>
+            <TextEntry Value:bind="@FileName" onsubmit="@CreateFile" style="justify-content: flex-start;"/>
+        </div>
+    }
+    
     <div style="height: 100%;" onrightclick="@OpenCreateFolderMenu" onclick="@ClosePopups"></div>
     @if(DeletePopup)
     {
@@ -36,9 +51,15 @@
     }
     @if(CreateFolderPopup)
     {
-        <div onclick=@StartCreateFolder style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: row;">
-            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
-            <div>Create Folder</div>
+        <div style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: column;">
+            <div onclick=@StartCreateFolder style="flex-direction: row;">
+                <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
+                <div>Create Folder</div>
+            </div>
+            <div onclick=@StartCreateFile style="flex-direction: row;">
+                <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/save.svg">
+                <div>@CreateFilePrompt</div>
+            </div>
         </div>
     }
     
@@ -47,6 +68,9 @@
 @code
 {
 	public string Directory { get; set; }
+	public string FileContents { get; set; }
+	public string CreateFilePrompt { get; set; } = "Save Dupe";
+	public string FileExtension { get; set; } = "json";
 	public float FontSize { get; set; } = 15f;
 	public string DirectoryAdd = "";
 
@@ -54,9 +78,11 @@
     public bool DeletePopup;
     public bool CreateFolderPopup;
     public bool CreatingFolder;
+    public bool CreatingFile;
     public string FolderName;
+    public string FileName;
 
-     public bool DeleteFile;
+    public bool DeleteFile;
     public string ThingToDelete;
 
     public Vector2 cursorPos;
@@ -87,10 +113,16 @@
             FileSystem.Data.DeleteDirectory($"{Directory}{DirectoryAdd}/{ThingToDelete}", true);
         }
     }
+
     public void StartCreateFolder()
     {
         ClosePopups();
         CreatingFolder = true;
+    }
+    public void StartCreateFile()
+    {
+        ClosePopups();
+        CreatingFile = true;
     }
     public void CreateFolder()
     {
@@ -106,6 +138,24 @@
         
         FileSystem.Data.CreateDirectory($"{Directory}{DirectoryAdd}/{newFolderName}");
     }
+
+    public void CreateFile()
+    {
+        CreatingFile = false;
+        string newFileName = FileName;
+        int counter = 1;
+        
+        while (FileSystem.Data.FileExists($"{Directory}{DirectoryAdd}/{newFileName}.{FileExtension}"))
+        {
+            newFileName = $"{FileName}({counter})";
+            counter++;
+        }
+        
+        FileSystem.Data.WriteAllText($"{Directory}{DirectoryAdd}/{newFileName}.{FileExtension}", FileContents);
+
+        Value = $"{Directory}{DirectoryAdd}/{newFileName}.{FileExtension}";
+    }
+
     public void ClosePopups()
     {
         CreateFolderPopup = false;
@@ -178,7 +228,7 @@
         return returned;
     }
 
-	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, DeletePopup, CreateFolderPopup, CreatingFolder );
+	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, DeletePopup, CreateFolderPopup, CreatingFolder, FileContents );
 
 
 }

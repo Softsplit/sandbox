@@ -5,11 +5,7 @@
 	<div class="ToolBox">
 		<div class="Title">Duplicator Menu</div>
 		<div class="ValueBox" style="height: 300px;">
-            <FileTree Directory="Dupes" Value:bind="@CurrentFile" />
-        </div>
-        <div class="ButtonBox">
-            <div class="Button">Sponge</div>
-            <div class="Button">Sponge</div>
+            <FileTree FileContents="@FileContents" Directory="Dupes" Value:bind="@CurrentFile" />
         </div>
 	</div>
 </root>
@@ -19,6 +15,7 @@
 @code
 {
 	[Property] public string CurrentFile { get; set; }
+	[Property] public string FileContents { get; set; }
 
 	protected override int BuildHash() => System.HashCode.Combine( CurrentFile );
 }

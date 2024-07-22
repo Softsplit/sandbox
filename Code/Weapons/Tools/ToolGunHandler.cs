@@ -26,14 +26,16 @@ public sealed class ToolGunHandler : Component
 		ActiveTool?.Destroy();
 		ActiveToolMenu?.Destroy();
 
-		var comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
+		var comp = TypeLibrary.GetType( CurrentTool );
+		Components.Create( comp, true );
+
+		comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
 		if ( comp != null )
 			ActiveToolMenu = Components.Create( comp, false );
 		else
 			ActiveToolMenu = null;
 
-		comp = TypeLibrary.GetType( CurrentTool );
-		Components.Create( comp, true );
+		
 		ActiveTool = Components.Get<ToolComponent>();
 	}
 }

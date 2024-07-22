@@ -1,13 +1,35 @@
+using Softsplit.UI;
+
 namespace Softsplit;
 
 public sealed class Duplicator : ToolComponent
 {
-	JsonObject storedObject;
+	[Property] public DuplicatorMenu duplicatorMenu {get;set;}
 
 	protected override void Start()
 	{
 		ToolName = "Duplicator";
 		ToolDes = "Duplicate Creations.";
+		duplicatorMenu = Components.Get<DuplicatorMenu>();
+	}
+	string lastFile;
+	protected override void FixedUpdate()
+	{
+		if(duplicatorMenu == null)
+		{
+			duplicatorMenu = Components.Get<DuplicatorMenu>();
+			return;
+		}
+		if(lastFile != duplicatorMenu.CurrentFile)
+		{
+			LoadFile();
+		}
+		lastFile = duplicatorMenu.CurrentFile;
+	}
+
+	public void LoadFile()
+	{
+		duplicatorMenu.FileContents = FileSystem.Data.ReadAllText(duplicatorMenu.CurrentFile);
 	}
 
 	protected override void PrimaryAction()
@@ -16,7 +38,7 @@ public sealed class Duplicator : ToolComponent
 		if ( hit.Hit )
 		{
 			Recoil( hit.EndPosition );
-			SpawnObject( storedObject?.ToJsonString(), hit.EndPosition + Vector3.Up * 50, Rotation.LookAt( Equipment.Owner.Transform.World.Forward ) );
+			SpawnObject( duplicatorMenu.FileContents, hit.EndPosition + Vector3.Up * 50, Rotation.LookAt( Equipment.Owner.Transform.World.Forward ) );
 		}
 	}
 
@@ -46,7 +68,7 @@ public sealed class Duplicator : ToolComponent
 				hit.GameObject.SetParent( copied );
 			}
 
-			storedObject = copied.Serialize();
+			duplicatorMenu.FileContents = copied.Serialize().ToJsonString();
 
 			while ( copied.Children.Count > 0 )
 			{
