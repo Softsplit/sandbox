@@ -6,14 +6,13 @@ public sealed class ToolGunHandler : Component
 
 	public Component ActiveToolMenu { get; set; }
 	public ToolComponent ActiveTool { get; set; }
+
 	private string lastTool;
 
 	protected override void OnFixedUpdate()
 	{
-		if ( IsProxy ) return;
-
-		/*if ( !Networking.IsHost )
-			return;*/
+		if ( IsProxy )
+			return;
 
 		if ( lastTool != CurrentTool && lastTool != "" )
 			UpdateTool();
@@ -24,19 +23,17 @@ public sealed class ToolGunHandler : Component
 
 	public void UpdateTool()
 	{
-		
 		ActiveTool?.Destroy();
 		ActiveToolMenu?.Destroy();
 
 		var comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
 		if ( comp != null )
-			ActiveToolMenu = Components.Create( comp, false );
+			ActiveToolMenu = Components.Create( comp, true );
 		else
 			ActiveToolMenu = null;
 
 		comp = TypeLibrary.GetType( CurrentTool );
 		Components.Create( comp, true );
 		ActiveTool = Components.Get<ToolComponent>();
-		
 	}
 }
