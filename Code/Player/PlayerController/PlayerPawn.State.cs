@@ -143,7 +143,5 @@ public partial class PlayerPawn
 		}
 
 		PlayerBoxCollider.Enabled = true;
-
-		GameObject.Tags.Set( "invis", false );
 	}
 }

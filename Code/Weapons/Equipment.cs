@@ -98,12 +98,15 @@ public partial class Equipment : Component, Component.INetworkListener, IEquipme
 	/// <summary>
 	/// Updates the render mode, if we're locally controlling a player, we want to hide the world model.
 	/// </summary>
-	protected void UpdateRenderMode()
+	public void UpdateRenderMode( bool force = false )
 	{
-		if ( !Owner.IsValid() )
-			return;
+		var on = force || (Owner.IsValid() && !Owner.IsViewer && IsDeployed);
 
-		ModelRenderer.RenderType = !Owner.IsViewer
+		if ( !Owner.IsValid() && !force )
+			on = false;
+
+		ModelRenderer.Enabled = on;
+		ModelRenderer.RenderType = on
 			? Sandbox.ModelRenderer.ShadowRenderType.On
 			: Sandbox.ModelRenderer.ShadowRenderType.ShadowsOnly;
 	}
@@ -269,8 +272,6 @@ public partial class Equipment : Component, Component.INetworkListener, IEquipme
 			OnDeployed();
 		else
 			OnHolstered();
-
-		base.OnStart();
 	}
 
 	bool HasCreatedViewModel { get; set; } = false;
@@ -282,9 +283,6 @@ public partial class Equipment : Component, Component.INetworkListener, IEquipme
 
 		HasCreatedViewModel = true;
 
-		if ( ModelRenderer.IsValid() )
-			ModelRenderer.Enabled = true;
-
 		UpdateRenderMode();
 
 		GameObject.Root.Dispatch( new EquipmentDeployedEvent( this ) );
@@ -292,9 +290,6 @@ public partial class Equipment : Component, Component.INetworkListener, IEquipme
 
 	protected virtual void OnHolstered()
 	{
-		if ( ModelRenderer.IsValid() )
-			ModelRenderer.Enabled = false;
-
 		UpdateRenderMode();
 		ClearViewModel();
 

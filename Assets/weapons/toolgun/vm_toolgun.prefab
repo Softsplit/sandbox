@@ -3,7 +3,7 @@
     "__guid": "a1738cd9-71d8-4459-9255-aa68ff8e2b7a",
     "Flags": 0,
     "Name": "vm_toolgun",
-    "Tags": "viewmodel,player",
+    "Tags": "player,viewmodel",
     "Enabled": true,
     "NetworkMode": 0,
     "Components": [
@@ -34,10 +34,10 @@
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "29fa1c9f-4f24-4026-995d-3085b7034937",
         "AnimationGraph": "models/weapons/sbox_pistol_usp/v_usp.vanmgrph",
-        "BodyGroups": 17685,
+        "BodyGroups": 0,
         "CreateBoneObjects": true,
         "Model": "models/weapons/sbox_pistol_usp/v_usp.vmdl",
-        "RenderType": "ShadowsOnly",
+        "RenderType": "Off",
         "Tint": "1,1,1,1",
         "UseAnimGraph": true
       }
@@ -817,7 +817,7 @@
                     "BodyGroups": 18446744073709551615,
                     "CreateBoneObjects": false,
                     "Model": "models/toolgun/toolguntemp.vmdl",
-                    "RenderType": "On",
+                    "RenderType": "Off",
                     "Tint": "1,1,1,1",
                     "UseAnimGraph": true
                   },

@@ -2,7 +2,7 @@ namespace Softsplit;
 
 public sealed class ToolGunHandler : Component
 {
-	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "TestTool";
+	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "Scale";
 
 	public Component ActiveToolMenu { get; set; }
 	public ToolComponent ActiveTool { get; set; }

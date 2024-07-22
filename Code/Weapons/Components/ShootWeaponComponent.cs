@@ -413,7 +413,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		return Scene.Trace.Ray( start, end )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
+			.WithoutTags( "trigger", "movement", "player_clip" )
 			.Size( radius )
 			.RunAll();
 	}
@@ -424,7 +424,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		return Scene.Trace.Ray( start, end )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.WithoutTags( "trigger", "invis", "ragdoll", "movement", "player_clip" )
+			.WithoutTags( "trigger", "movement", "player_clip" )
 			.Size( radius )
 			.Run();
 	}
