@@ -1,11 +1,14 @@
 @inherits PanelComponent
 @namespace Softsplit.UI
 
-<root>
+<root class="ToolGunMenu">
 	<div class="ToolBox">
 		<div class="Title">Duplicator Menu</div>
-		<div>
-            <FileTree Directory="Dupes" DirectoryItems=@(FileTree.DirectoryItemsFunc("Dupes")) OnItemSelected:@bind="CurrentFile" />
+		<div class="ValueBox" style="height: 300px;">
+            <FileTree Directory="Dupes" Value:bind="@CurrentFile" />
+        </div>
+        <div class="ValueBox">
+            <div class="Button">
         </div>
 	</div>
 </root>
@@ -15,16 +18,6 @@
 @code
 {
 	[Property] public string CurrentFile { get; set; }
-
-
-
-    //DirectoryItems = DirectoryItemsFunc(Directory);
-    /*
-    <div class="ValueBox">
-        <div class="ValueName">Thing to Log</div>
-        <TextEntry Value:bind="@ThingToLog" class="Value"></TextEntry>
-    </div>
-    */
 
 	protected override int BuildHash() => System.HashCode.Combine( CurrentFile );
 }

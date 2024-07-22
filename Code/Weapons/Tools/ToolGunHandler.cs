@@ -30,7 +30,7 @@ public sealed class ToolGunHandler : Component
 
 		var comp = TypeLibrary.GetType( $"{CurrentTool}Menu" );
 		if ( comp != null )
-			ActiveToolMenu = Components.Create( comp, true );
+			ActiveToolMenu = Components.Create( comp, false );
 		else
 			ActiveToolMenu = null;
 

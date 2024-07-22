@@ -1,42 +1,133 @@
 @namespace Softsplit.UI
 
-<div style="flex-direction: column;">
-    @if (DirectoryItems != null)
+<root style=@($"flex-direction: column; font-size: {FontSize}px; width: 100%; height: 100%")>
+    @if(DirectoryAdd != "")
     {
-        @foreach (var item in DirectoryItems)
+        <div style="flex-direction: row;" onclick=@(() => DirectoryAdd = GetPreviousDirectory(DirectoryAdd))>
+            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/back.svg" />
+            <div>@GetDirectoryName(DirectoryAdd)</div>
+        </div>
+    }
+    @foreach (string s in DirectoryFolders(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
+    {
+        <div style="flex-direction: row;" onrightclick=@(() => OpenDeleteMenu(false, s)) onclick=@(() => SelectDirectory(s))>
+            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
+            <div>@s</div>
+        </div>
+    }
+	@foreach (string s in DirectoryItems(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
+    {
+        <div onrightclick=@(() => OpenDeleteMenu(true, s)) onclick=@(() => SelectFile(s))>@s</div>
+    }
+    <div style="height: 100%;" onclick=@(() => DeletePopup = false)></div>
+    @if(DeletePopup)
+    {
+        <div onclick="@Delete" style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: row;">
+            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/delete.svg">
+            <div>Delete</div>
+        </div>
+    }
+    
+</root>
+
+@code
+{
+	public string Directory { get; set; }
+	public float FontSize { get; set; } = 25f;
+	public string DirectoryAdd = "";
+
+    public bool DeleteFile;
+    public bool DeletePopup;
+    public string ThingToDelete;
+
+    public Vector2 cursorPos;
+
+    string _value;
+
+	public string Value
+    {
+        get => _value;
+        set
         {
-            <FileTreeItem ItemName="@item" ParentPath="@Directory" OnItemSelected:@bind="OnItemSelected"></FileTreeItem>
+            if (_value == value)
+                return;
+
+            _value = value;
         }
     }
-</div>
 
-@code {
-
-    public string Directory { get; set; }
-    public List<string> DirectoryItems { get; set; }
-
-    public static List<string> DirectoryItemsFunc(string directory)
+    public void Delete()
     {
-        if (!FileSystem.Data.DirectoryExists(directory))
+        DeletePopup = false;
+        if(DeleteFile)
+        {
+            FileSystem.Data.DeleteFile(DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{ThingToDelete}" : $"{Directory}{DirectoryAdd}/{ThingToDelete}");
+        }
+        else
+        {
+            FileSystem.Data.DeleteDirectory($"{Directory}{DirectoryAdd}/{ThingToDelete}", true);
+        }
+    }
+
+    public void SelectDirectory(string directory)
+    {
+        DirectoryAdd = $"{DirectoryAdd}/{directory}";
+        DeletePopup = false;
+    }
+
+    public void SelectFile(string file)
+    {
+        Value = (DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{file}" : $"{Directory}{DirectoryAdd}/{file}");
+        DeletePopup = false;
+    }
+
+    public void OpenDeleteMenu(bool file, string thingToDelete)
+    {
+        cursorPos = (Mouse.Position / Screen.Size) * 100.0f;
+        DeletePopup = true;
+        ThingToDelete = thingToDelete;
+        DeleteFile = file;
+    }
+
+    public static string GetPreviousDirectory(string directory)
+    {
+        if(directory.Count(f => f == '/') < 2) return "";
+        int lastIndex = directory.LastIndexOf('/');
+
+        return directory.Substring(0, lastIndex);
+    }
+
+    public static string GetDirectoryName(string directory)
+    {
+        int lastIndex = directory.LastIndexOf('/');
+        return directory.Substring(lastIndex+1, directory.Count()-1);
+    }
+
+    public List<string> DirectoryItems(string directory)
+    {
+        if(!FileSystem.Data.DirectoryExists(directory))
         {
             FileSystem.Data.CreateDirectory(directory);
         }
 
-        List<string> returned = FileSystem.Data.FindDirectory(directory).ToList();
-        returned.AddRange(FileSystem.Data.FindFile(directory));
+        List<string> returned = FileSystem.Data.FindFile(directory).ToList();
+
         return returned;
     }
 
-    string _onItemSelected;
-    public string OnItemSelected
+    public List<string> DirectoryFolders(string directory)
     {
-        get => _onItemSelected;
-        set
+        if(!FileSystem.Data.DirectoryExists(directory))
         {
-            if (_onItemSelected == value)
-                return;
-
-            _onItemSelected = value;
+            FileSystem.Data.CreateDirectory(directory);
         }
+        
+        List<string> returned = FileSystem.Data.FindDirectory(directory).ToList();
+
+        return returned;
     }
+
+	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, DeletePopup );
+
+
 }
