@@ -13,6 +13,7 @@ public sealed class Duplicator : ToolComponent
 		duplicatorMenu = Components.Get<DuplicatorMenu>();
 	}
 	string lastFile;
+	ScreenPanel panel;
 	protected override void FixedUpdate()
 	{
 		if(duplicatorMenu == null)
