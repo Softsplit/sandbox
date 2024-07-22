@@ -1,6 +1,6 @@
 @namespace Softsplit.UI
 
-<root style=@($"flex-direction: column; font-size: {FontSize}px; width: 100%; height: 100%")>
+<root style=@($"flex-direction: column; font-size: {FontSize}px; width: 100%; height: 100%; overflow-y: scroll;")>
     @if(DirectoryAdd != "")
     {
         <div style="flex-direction: row; padding: auto;" onclick=@(() => DirectoryAdd = GetPreviousDirectory(DirectoryAdd))>
@@ -11,14 +11,14 @@
     
     @foreach (string s in DirectoryFolders(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
-        <div style="flex-direction: row; padding: auto;" onrightclick=@(() => OpenDeleteMenu(false, s)) onclick=@(() => SelectDirectory(s))>
+        <div style=@($"background-color: #0008; flex-direction: row; padding: {FontSize/3}px;") onrightclick=@(() => OpenPopup(true, false, s)) onclick=@(() => SelectDirectory(s))>
             <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
             <div>@s</div>
         </div>
     }
     @if (CreatingFolder)
     {
-        <div style=@($"flex-direction: row; padding: auto; height: {FontSize}px")>
+        <div style=@($"background-color: #464646ab; flex-direction: row; padding: {FontSize/3}px;")>
             <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
             <TextEntry Value:bind="@FolderName" onsubmit="@CreateFolder" style="justify-content: flex-start;"/>
         </div>
@@ -26,32 +26,32 @@
 
 	@foreach (string s in DirectoryItems(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
-        <div style=@($"flex-direction: row; padding: auto; height: {FontSize}px")>
+        <div style=@($"background-color: #0008; flex-direction: row; padding: {FontSize/3} px;")>
             @if(Value == (DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{s}" : $"{Directory}{DirectoryAdd}/{s}"))
             {
                 <div>‎ • ‎ </div>
             }
-            <div onrightclick=@(() => OpenDeleteMenu(true, s)) onclick=@(() => SelectFile(s))>@s</div>
+            <div onrightclick=@(() => OpenPopup(true, true, s)) onclick=@(() => SelectFile(s))>@s</div>
         </div>
     }
     @if (CreatingFile)
     {
-        <div style=@($"flex-direction: row; padding: auto; height: {FontSize+5}px; background-color: #464646ab;")>
+        <div style=@($"flex-direction: row; padding: {FontSize/2}px; background-color: #464646ab;")>
             <TextEntry Value:bind="@FileName" onsubmit="@CreateFile" style="justify-content: flex-start;"/>
         </div>
     }
     
-    <div style="height: 100%;" onrightclick="@OpenCreateFolderMenu" onclick="@ClosePopups"></div>
-    @if(DeletePopup)
-    {
-        <div onclick="@Delete" style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: row;">
-            <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/delete.svg">
-            <div>Delete</div>
-        </div>
-    }
-    @if(CreateFolderPopup)
+    <div style="height: 100%;" onrightclick=@(() => OpenPopup()) onclick="@ClosePopups"></div>
+    @if(Popup)
     {
         <div style="top: @(cursorPos.y)%; left: @(cursorPos.x)%; background-color: rgba( #222 ); position: absolute; flex-direction: column;">
+            @if(FileSelected)
+            {
+                <div onclick=@Delete style="flex-direction: row;">
+                    <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/delete.svg">
+                    <div>@($"Delete {(FileSelected ? "File" : "Folder")}")</div>
+                </div>
+            }
             <div onclick=@StartCreateFolder style="flex-direction: row;">
                 <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
                 <div>Create Folder</div>
@@ -75,13 +75,13 @@
 	public string DirectoryAdd = "";
 
    
-    public bool DeletePopup;
-    public bool CreateFolderPopup;
+    public bool Popup;
     public bool CreatingFolder;
     public bool CreatingFile;
     public string FolderName;
     public string FileName;
 
+    public bool FileSelected;
     public bool DeleteFile;
     public string ThingToDelete;
 
@@ -103,7 +103,6 @@
 
     public void Delete()
     {
-        DeletePopup = false;
         if(DeleteFile)
         {
             FileSystem.Data.DeleteFile(DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{ThingToDelete}" : $"{Directory}{DirectoryAdd}/{ThingToDelete}");
@@ -112,6 +111,7 @@
         {
             FileSystem.Data.DeleteDirectory($"{Directory}{DirectoryAdd}/{ThingToDelete}", true);
         }
+        ClosePopups();
     }
 
     public void StartCreateFolder()
@@ -158,8 +158,7 @@
 
     public void ClosePopups()
     {
-        CreateFolderPopup = false;
-        DeletePopup = false;
+        Popup = false;
     }
 
     public void SelectDirectory(string directory)
@@ -173,21 +172,14 @@
         Value = (DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{file}" : $"{Directory}{DirectoryAdd}/{file}");
         ClosePopups();
     }
-
-    public void OpenDeleteMenu(bool file, string thingToDelete)
+    public void OpenPopup(bool fileSelected = false, bool isFile = false, string thingToDelete = "")
     {
+        Log.Info("sex");
         cursorPos = (Mouse.Position / Screen.Size) * 100.0f;
-        DeletePopup = true;
-        CreateFolderPopup = false;
         ThingToDelete = thingToDelete;
-        DeleteFile = file;
-    }
-
-    public void OpenCreateFolderMenu()
-    {
-        cursorPos = (Mouse.Position / Screen.Size) * 100.0f;
-        CreateFolderPopup = true;
-        DeletePopup =false;
+        DeleteFile = isFile;
+        FileSelected = fileSelected;
+        Popup = true;
     }
 
     public static string GetPreviousDirectory(string directory)
@@ -213,6 +205,8 @@
 
         List<string> returned = FileSystem.Data.FindFile(directory).ToList();
 
+        returned.Sort();
+
         return returned;
     }
 
@@ -225,10 +219,12 @@
         
         List<string> returned = FileSystem.Data.FindDirectory(directory).ToList();
 
+        returned.Sort();
+
         return returned;
     }
 
-	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, DeletePopup, CreateFolderPopup, CreatingFolder, FileContents );
+	protected override int BuildHash() => System.HashCode.Combine( Directory, Value, Popup, CreatingFolder, FileContents );
 
 
 }
