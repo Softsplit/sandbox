@@ -12,6 +12,6 @@ Based on the original Sandbox by Facepunch
 * ducc
 ### Localization
 * DiskGG - 🇨🇿
-* Web_Artur - 🇷🇺
+* boxden - 🇷🇺
 * ibrs_4ever - 🇨🇳
 * ML5700 - 🇩🇪
