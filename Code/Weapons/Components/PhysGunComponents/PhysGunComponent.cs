@@ -23,7 +23,7 @@ public partial class PhysGunComponent : InputWeaponComponent,
 	public Vector3 HoldPos { get; private set; }
 	public Rotation HoldRot { get; private set; }
 	public float HoldDistance { get; private set; }
-	public bool Grabbing { get; private set; }
+	[Sync] public bool Grabbing { get; private set; }
 
 	[Sync] public bool BeamActive { get; set; }
 	[Sync] public GameObject GrabbedObject { get; set; }
@@ -54,9 +54,8 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		beam.enabled = Grabbing && GrabbedObject!=null;
 		if(GrabbedObjectHighlight != null) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject!=null;
 		if(Grabbing && GrabbedObject!=null)
-
 		{
-			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos ), Effector.Muzzle.Transform.World.Forward );
+			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos / GrabbedObject.Transform.Scale), Effector.Muzzle.Transform.World.Forward );
 			beam.Base = Effector.Muzzle.Transform.Position;
 			if ( GrabbedObjectHighlight == null ) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>( true );
 		}
@@ -273,8 +272,11 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		GrabInit( body, eyePos, tr.EndPosition, eyeRot );
 
 		GrabbedObject = rootEnt;
-		GrabbedPos = tr.GameObject.Transform.World.PointToLocal( tr.EndPosition );
 		GrabbedObject.Network.TakeOwnership();
+
+		GrabbedPos = tr.GameObject.Transform.World.PointToLocal( tr.EndPosition );
+
+		
 		GrabbedObject.Tags.Add( GrabbedTag );
 		GrabbedObject.Tags.Add( $"{GrabbedTag}{Equipment.Owner.SteamId}" );
 
