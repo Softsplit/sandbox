@@ -7,6 +7,15 @@ public partial class PlayerState
 	private float undoPropHeldTimer = -2;
 	private float undoPropRate = 1;
 
+	public void AddPropToList( GameObject gameObject )
+	{
+		PlayerState.Thing thing = new PlayerState.Thing
+		{
+			gameObjects = new List<GameObject> { gameObject }
+		};
+		SpawnedThings.Add( thing );
+	}
+
 	protected void CheckPropUndo()
 	{
 		if ( Input.Pressed( "undo" ) )

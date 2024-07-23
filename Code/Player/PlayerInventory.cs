@@ -59,22 +59,23 @@ public partial class PlayerInventory : Component
 	/// Try to drop the given held equipment item.
 	/// </summary>
 	/// <param name="weapon">Item to drop.</param>
+	/// <param name="resource">Resource itself to drop directly.</param>
 	/// <param name="forceRemove">If we can't drop, remove it from the inventory anyway.</param>
-	public void Drop( Equipment weapon, bool forceRemove = false )
+	public void Drop( Equipment weapon = null, EquipmentResource resource = null, bool forceRemove = false )
 	{
 		using ( Rpc.FilterInclude( Connection.Host ) )
 		{
-			DropHost( weapon, forceRemove );
+			DropHost( weapon, resource, forceRemove );
 		}
 	}
 
 	[Broadcast]
-	private void DropHost( Equipment weapon, bool forceRemove )
+	private void DropHost( Equipment weapon, EquipmentResource resource, bool forceRemove )
 	{
 		if ( !Networking.IsHost )
 			return;
 
-		if ( !weapon.IsValid() )
+		if ( !weapon.IsValid() && resource == null)
 			return;
 
 		var canDrop = GameMode.Instance.Get<EquipmentDropper>() is { };
@@ -86,11 +87,13 @@ public partial class PlayerInventory : Component
 				.WithoutTags( "trigger" )
 				.Run();
 
-			var position = tr.Hit ? tr.HitPosition + tr.Normal * weapon.Resource.WorldModel.Bounds.Size.Length : Player.AimRay.Position + Player.AimRay.Forward * 32f;
+			var position = tr.Hit ? tr.HitPosition + tr.Normal
+			* (resource != null ? resource.WorldModel.Bounds.Size.Length
+			: weapon.Resource.WorldModel.Bounds.Size.Length) : Player.AimRay.Position + Player.AimRay.Forward * 32f;
 			var rotation = Rotation.From( 0, Player.EyeAngles.yaw + 90, 90 );
 
 			var baseVelocity = Player.CharacterController.Velocity;
-			var droppedWeapon = DroppedEquipment.Create( weapon.Resource, position, rotation, weapon );
+			var droppedWeapon = DroppedEquipment.Create( resource ?? weapon.Resource, position, rotation, weapon );
 
 			if ( !tr.Hit )
 			{
@@ -110,7 +113,7 @@ public partial class PlayerInventory : Component
 		if ( !Player.IsLocallyControlled )
 			return;
 
-		if(cantSwitch) return;
+		if ( cantSwitch ) return;
 		if ( Input.Pressed( "Drop" ) && Current.IsValid() )
 		{
 			Drop( Current );
@@ -129,10 +132,10 @@ public partial class PlayerInventory : Component
 		var wheel = Input.MouseWheel;
 
 		// gamepad input
-		if ( Input.Pressed( "SlotNext" )) wheel.y = -1;
-		if ( Input.Pressed( "SlotPrev" )) wheel.y = 1;
+		if ( Input.Pressed( "SlotNext" ) ) wheel.y = -1;
+		if ( Input.Pressed( "SlotPrev" ) ) wheel.y = 1;
 
-		if ( wheel.y == 0f) return;
+		if ( wheel.y == 0f ) return;
 
 		var availableWeapons = Equipment.ToList();
 		if ( availableWeapons.Count == 0 )
@@ -249,7 +252,7 @@ public partial class PlayerInventory : Component
 		{
 			var slotCurrent = Equipment.FirstOrDefault( equipment => equipment.Enabled );
 			if ( slotCurrent.IsValid() )
-				Drop( slotCurrent, true );
+				Drop( slotCurrent, null, true );
 		}
 
 		if ( !resource.MainPrefab.IsValid() )
