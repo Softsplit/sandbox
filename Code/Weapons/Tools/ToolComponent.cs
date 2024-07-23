@@ -40,18 +40,18 @@ public abstract class ToolComponent : InputWeaponComponent
 	{
 		if ( !Equipment.IsValid() )
 			return;
-		
+
 		// Don't execute weapon components on weapons that aren't deployed.
 		if ( !Equipment.IsDeployed )
 			return;
-		
+
 		if ( !Equipment.Owner.IsValid() )
 			return;
 
 		// We only care about input actions coming from the owning object.
 		if ( !Equipment.Owner.IsLocallyControlled )
 			return;
-		
+
 		Update();
 
 		RayActive -= Time.Delta;
@@ -59,8 +59,6 @@ public abstract class ToolComponent : InputWeaponComponent
 		beam.enabled = RayActive > 0;
 
 		beam.Base = Effector.Muzzle.Transform.Position;
-
-		Equipment.Owner.Inventory.cantSwitch = toolGunHandler.ActiveToolMenu.Enabled;
 	}
 
 
@@ -78,7 +76,10 @@ public abstract class ToolComponent : InputWeaponComponent
 		if ( AlwaysEnabledMenu )
 			toolGunHandler.ActiveToolMenu.Enabled = Equipment.IsDeployed;
 		else if ( Input.Pressed( "ToolGunMenu" ) && toolGunHandler.ActiveToolMenu.IsValid() )
+		{
 			toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
+			Equipment.Owner.Inventory.cantSwitch = toolGunHandler.ActiveToolMenu.Enabled;
+		}
 	}
 
 	protected virtual void Start()
