@@ -15,7 +15,9 @@ public enum FireMode
 [Title( "Bullet" ), Group( "Weapon Components" )]
 public partial class ShootWeaponComponent : InputWeaponComponent,
 	IGameEventHandler<EquipmentHolsteredEvent>
-{
+{	
+	public bool PlayerControlled = true;
+	public bool ForceShoot;
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float BaseDamage { get; set; } = 25.0f;
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float FireRate { get; set; } = 0.2f;
 	[Property, Group( "Bullet" )] public float DryShootDelay { get; set; } = 0.15f;
@@ -587,7 +589,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 
 	protected override void OnInputUpdate()
 	{
-		if ( Input.Pressed( "FireMode" ) )
+		if ( Input.Pressed( "FireMode" ) && PlayerControlled)
 		{
 			CycleFireMode();
 			return;
@@ -604,12 +606,12 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 			Shoot();
 		}
 
-		bool wantsToShoot = IsDown();
+		bool wantsToShoot = IsDown() || ForceShoot;
 
 		// HACK
 		if ( CurrentFireMode == FireMode.Semi )
 		{
-			wantsToShoot = Input.Pressed( "attack1" );
+			if(PlayerControlled) wantsToShoot = Input.Pressed( "attack1" );
 		}
 
 		if ( wantsToShoot )

@@ -37,6 +37,16 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 
 	protected bool IsDown() => isDown;
 
+	public void ForceInput()
+	{
+		OnInput();
+	}
+
+	public void ForceInputDown()
+	{
+		OnInputDown();
+	}
+
 	/// <summary>
 	/// Called when the input method succeeds.
 	/// </summary>

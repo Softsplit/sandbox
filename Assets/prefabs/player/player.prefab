@@ -44,6 +44,7 @@
         },
         "Height": 64,
         "LandSound": "sounds/footsteps/footstep-concrete-land.sound",
+        "lockCamera": false,
         "MinimumFallSoundVelocity": 250,
         "MinimumFallVelocity": 500,
         "NoclipSpeed": 1000,
@@ -189,6 +190,13 @@
       {
         "__type": "Softsplit.PlayerPingReceiver",
         "__guid": "c275220f-c13c-4473-b037-3a3414ed151b"
+      },
+      {
+        "__type": "AgroRelations",
+        "__guid": "1bd88760-19bb-45d3-94aa-10fef2b70ad5",
+        "attackPoint": "0,0,45",
+        "Enemies": [],
+        "Faction": "Player"
       }
     ],
     "Children": [
@@ -292,6 +300,7 @@
                   {
                     "__type": "Sandbox.AmbientOcclusion",
                     "__guid": "9d21f25e-4845-4991-8273-82f901d917f4",
+                    "FalloffDistance": 1,
                     "Intensity": 8,
                     "Quality": "High",
                     "Radius": 32

@@ -2,9 +2,9 @@ using Sandbox;
 
 public abstract class AIAgent : Component
 {
-    [Property] public AIStateMachine stateMachine { get; set; }
-    [Property] public string initialState { get; set; }
-    [Property] public NavMeshCharacter Controller { get; set; }
+    public AIStateMachine stateMachine { get; set; }
+    public string initialState { get; set; }
+    public NavMeshCharacter Controller { get; set; }
 
     protected override void OnStart()
     {
@@ -17,7 +17,7 @@ public abstract class AIAgent : Component
 
     protected virtual void SetStates()
     {
-        // Implement state registration here
+        
     }
 
     async void InitializeState()
@@ -28,13 +28,14 @@ public abstract class AIAgent : Component
 
     protected override void OnUpdate()
     {
+		if(!Networking.IsHost) return;
         stateMachine.Update();
         Update();
     }
 
     protected virtual void Update()
     {
-        // Custom update logic here
+        
     }
 
     public void FaceThing(GameObject thing)

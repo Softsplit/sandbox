@@ -3,6 +3,7 @@
     "__guid": "77954e86-76f5-49f3-8d26-ec31ce87adbb",
     "Flags": 0,
     "Name": "test",
+    "Tags": "relations",
     "Enabled": true,
     "Components": [
       {
@@ -32,6 +33,42 @@
           "Guid": "1ce2ffcc-71c9-457a-9d82-6e523d5845f3"
         },
         "Name": "test"
+      },
+      {
+        "__type": "GruntAI",
+        "__guid": "7e90c2af-4cb1-4b62-aca1-2eb655467b5f"
+      },
+      {
+        "__type": "NavMeshCharacter",
+        "__guid": "e841aec9-0cff-4880-bc63-1217a7f466de",
+        "Acceleration": 60,
+        "Bounciness": 0.3,
+        "CurrentPath": [],
+        "currentTarget": "0,0,0",
+        "Gizmos": false,
+        "GroundAngle": 45,
+        "Height": 64,
+        "lastTarget": "0,0,0",
+        "PositionAccuracy": 5,
+        "Radius": 16,
+        "Speed": 120,
+        "SpeedSmoothing": 20,
+        "StepHeight": 18,
+        "UpdateRotation": true,
+        "UseProjetcCollisionRules": false
+      },
+      {
+        "__type": "FindChooseEnemy",
+        "__guid": "e0cbf745-94d4-4582-9430-3856ae4c9af5",
+        "DetectRange": 700,
+        "ForceTargetRange": 300
+      },
+      {
+        "__type": "AgroRelations",
+        "__guid": "63f84b7b-27d5-43dc-b5b9-dc459dfbf15d",
+        "attackPoint": "0,0,45",
+        "Enemies": [],
+        "Faction": "Enemy"
       }
     ],
     "Children": [],

@@ -6,6 +6,9 @@ namespace Softsplit;
 public partial class ReloadWeaponComponent : InputWeaponComponent,
 	IGameEventHandler<EquipmentHolsteredEvent>
 {
+
+	public bool PlayerControlled = true;
+	public bool ForceReload;
 	/// <summary>
 	/// How long does it take to reload?
 	/// </summary>
@@ -47,7 +50,7 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 		if ( !Player.IsLocallyControlled )
 			return;
 
-		if ( SingleReload && IsReloading && Input.Pressed( "Attack1" ) )
+		if ( SingleReload && IsReloading && PlayerControlled && Input.Pressed( "Attack1" ) )
 		{
 			_queueCancel = true;
 		}

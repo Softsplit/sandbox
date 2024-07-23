@@ -44,6 +44,13 @@
         {
           "__type": "Softsplit.EquipmentDropper",
           "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7"
+        },
+        {
+          "__type": "CoverFinder",
+          "__guid": "6c1c276e-74cc-43c2-84b8-53472308e872",
+          "coverCheckDistance": 10000,
+          "coverHeight": 60,
+          "numberOfRandomPoints": 1000
         }
       ]
     },
