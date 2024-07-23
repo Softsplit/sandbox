@@ -10,17 +10,12 @@ public sealed class Duplicator : ToolComponent
 	{
 		ToolName = "Duplicator";
 		ToolDes = "Duplicate Creations.";
-		duplicatorMenu = Components.Get<DuplicatorMenu>();
+		duplicatorMenu = Components.Get<DuplicatorMenu>(true);
 	}
 	string lastFile;
 	ScreenPanel panel;
 	protected override void FixedUpdate()
 	{
-		if(duplicatorMenu == null)
-		{
-			duplicatorMenu = Components.Get<DuplicatorMenu>();
-			return;
-		}
 		if(lastFile != duplicatorMenu.CurrentFile)
 		{
 			LoadFile();

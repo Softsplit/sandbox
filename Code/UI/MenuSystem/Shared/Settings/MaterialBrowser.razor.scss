@@ -1,0 +1,33 @@
+MaterialBrowser {
+    background-color: black;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    pointer-events: all;
+
+    > div {
+        background-color: white;
+        margin: 5px;
+        border-radius: 20px;
+        flex-direction: column;
+
+        .title {
+            font-family: Poppins;
+            color: black;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        width: 350px;
+        height: 350px;
+        flex-shrink: 0;
+    }
+
+    MaterialScenePanel {
+        width: 100%;
+        height: 100%;
+    }
+}
