@@ -23,7 +23,7 @@
       {
         "__type": "Softsplit.SpawnableEntity",
         "__guid": "607befdb-f954-4ff5-8c4c-6a67bd303a41",
-        "Description": "sefefsf",
+        "Description": "test",
         "Icon": {
           "Model": "models/citizen/citizen.vmdl",
           "MaterialGroup": "",
