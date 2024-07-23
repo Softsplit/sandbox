@@ -175,14 +175,8 @@
           "GroupName": "Inventory"
         },
         {
-          "Name": "View",
-          "KeyboardCode": "C",
-          "GamepadCode": "RightJoystickButton",
-          "GroupName": "Other"
-        },
-        {
           "Name": "Voice",
-          "KeyboardCode": "v",
+          "KeyboardCode": "X",
           "GamepadCode": "None",
           "GroupName": "Other"
         },
@@ -212,13 +206,13 @@
         },
         {
           "Name": "Chat",
-          "KeyboardCode": "enter",
+          "KeyboardCode": "Y",
           "GamepadCode": "None",
           "GroupName": "Other"
         },
         {
           "Name": "Noclip",
-          "KeyboardCode": "N",
+          "KeyboardCode": "V",
           "GamepadCode": "None",
           "GroupName": "Movement"
         },
@@ -236,8 +230,8 @@
         },
         {
           "Name": "ToolGunMenu",
-          "KeyboardCode": "M",
-          "GamepadCode": "DpadNorth",
+          "KeyboardCode": "C",
+          "GamepadCode": "None",
           "GroupName": "Other"
         }
       ],
