@@ -18,6 +18,7 @@ public sealed class SetMaterial : ToolComponent
         {
             if(hit.GameObject!=null)
             {
+                Recoil(hit.EndPosition);
                 SetModelMaterial(hit.GameObject,setMaterialMenu.material);
             }
         }
@@ -31,6 +32,7 @@ public sealed class SetMaterial : ToolComponent
             ModelRenderer modelRenderer = hit.GameObject.Components.Get<ModelRenderer>();
             if(modelRenderer != null && setMaterialMenu.material != null)
             {
+                Recoil(hit.EndPosition);
                 setMaterialMenu.material = modelRenderer.GetMaterial();
             }
         }

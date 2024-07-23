@@ -14,8 +14,6 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	private ToolGunHandler toolGunHandler;
 
-
-
 	protected override void OnStart()
 	{
 		InputActions.Add( "Attack2" );
@@ -40,6 +38,20 @@ public abstract class ToolComponent : InputWeaponComponent
 
 	protected override void OnUpdate()
 	{
+		if ( !Equipment.IsValid() )
+			return;
+		
+		// Don't execute weapon components on weapons that aren't deployed.
+		if ( !Equipment.IsDeployed )
+			return;
+		
+		if ( !Equipment.Owner.IsValid() )
+			return;
+
+		// We only care about input actions coming from the owning object.
+		if ( !Equipment.Owner.IsLocallyControlled )
+			return;
+		
 		Update();
 
 		RayActive -= Time.Delta;
@@ -47,6 +59,8 @@ public abstract class ToolComponent : InputWeaponComponent
 		beam.enabled = RayActive > 0;
 
 		beam.Base = Effector.Muzzle.Transform.Position;
+
+		Equipment.Owner.Inventory.cantSwitch = toolGunHandler.ActiveToolMenu.Enabled;
 	}
 
 

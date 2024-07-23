@@ -1,6 +1,6 @@
 @namespace Softsplit.UI
 
-<root style=@($"flex-direction: column; font-size: {FontSize}px; width: 100%; height: 100%; overflow-y: scroll;")>
+<root style=@($"flex-direction: column; font-size: {FontSize}px; width: 100%; height: 100%; overflow-y: scroll; background-color: #0008;")>
     @if(DirectoryAdd != "")
     {
         <div style="flex-direction: row; padding: auto;" onclick=@(() => DirectoryAdd = GetPreviousDirectory(DirectoryAdd))>
@@ -11,7 +11,7 @@
     
     @foreach (string s in DirectoryFolders(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
-        <div style=@($"background-color: #0008; flex-direction: row; padding: {FontSize/3}px;") onrightclick=@(() => OpenPopup(true, false, s)) onclick=@(() => SelectDirectory(s))>
+        <div style=@($" flex-direction: row; padding: {FontSize/3}px;") onrightclick=@(() => OpenPopup(true, false, s)) onclick=@(() => SelectDirectory(s))>
             <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/folder.svg">
             <div>@s</div>
         </div>
@@ -26,7 +26,7 @@
 
 	@foreach (string s in DirectoryItems(DirectoryAdd!=""? $"{Directory}{DirectoryAdd}" : $"{Directory}"))
     {
-        <div style=@($"background-color: #0008; flex-direction: row; padding: {FontSize/3} px;")>
+        <div style=@($" flex-direction: row; padding: {FontSize/3} px;")>
             @if(Value == (DirectoryAdd!="" ? $"{Directory}{DirectoryAdd}/{s}" : $"{Directory}{DirectoryAdd}/{s}"))
             {
                 <div>‎ • ‎ </div>
@@ -49,7 +49,7 @@
             {
                 <div onclick=@Delete style="flex-direction: row;">
                     <img style=@($"height:{FontSize}px; aspect-ratio: 1; ") src="ui/delete.svg">
-                    <div>@($"Delete {(FileSelected ? "File" : "Folder")}")</div>
+                    <div>@($"Delete {(DeleteFile ? "File" : "Folder")}")</div>
                 </div>
             }
             <div onclick=@StartCreateFolder style="flex-direction: row;">
