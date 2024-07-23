@@ -9,6 +9,7 @@ Based on the original Sandbox by Facepunch
 * Fasught
 * Kolya142
 * somethink000
+* ducc
 ### Localization
 * DiskGG - 🇨🇿
 * Web_Artur - 🇷🇺
