@@ -8,6 +8,8 @@ public sealed class CoverFinder : Component
 
     protected override void OnStart()
     {
+        Scene.NavMesh.IsEnabled = true;
+        Scene.NavMesh.Generate(Scene.PhysicsWorld);
         GenerateCoverPoints();
     }
 
@@ -17,7 +19,9 @@ public sealed class CoverFinder : Component
         {
             Vector3 randomPoint = Scene.NavMesh.GetRandomPoint(Vector3.Zero,coverCheckDistance) ?? Vector3.Zero;
             
-            Vector3 closestEdge = Scene.NavMesh.GetClosestEdge(randomPoint).Value;
+            Vector3 closestEdge = Scene.NavMesh.GetClosestEdge(randomPoint) ?? Vector3.Zero;
+
+            Log.Info(randomPoint);
 
             if(!closestEdge.IsNearlyZero()) CheckEdgeForCover(randomPoint, closestEdge);
         }
