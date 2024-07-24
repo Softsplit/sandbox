@@ -25,6 +25,9 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 
 	bool RunningWhileDeployed { get; set; }
 
+	[Property] public bool ForceShoot {get;set;}
+	[Property] public bool NotPlayerControlled {get;set;}
+
 	void IGameEventHandler<EquipmentDeployedEvent>.OnGameEvent( EquipmentDeployedEvent eventArgs )
 	{
 		if ( Equipment?.Owner?.IsLocallyControlled ?? false )
@@ -82,19 +85,22 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 	protected override void OnFixedUpdate()
 	{
 		FixedUpdate();
-		if ( !Equipment.IsValid() )
+		if(!NotPlayerControlled)
+		{
+			if ( !Equipment.IsValid())
 			return;
 		
-		// Don't execute weapon components on weapons that aren't deployed.
-		if ( !Equipment.IsDeployed )
-			return;
-		
-		if ( !Equipment.Owner.IsValid() )
-			return;
+			// Don't execute weapon components on weapons that aren't deployed.
+			if ( !Equipment.IsDeployed)
+				return;
+			
+			if ( !Equipment.Owner.IsValid())
+				return;
 
-		// We only care about input actions coming from the owning object.
-		if ( !Equipment.Owner.IsLocallyControlled )
-			return;
+			// We only care about input actions coming from the owning object.
+			if ( !Equipment.Owner.IsLocallyControlled)
+				return;
+		}
 
 		if ( InputActions.All( x => !Input.Down( x ) ) )
 		{
@@ -103,14 +109,14 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 
 		if ( RunningWhileDeployed )
 			return;
-
+		
 		OnInputUpdate();
-
+		
 		bool matched = false;
 
 		foreach ( var action in InputActions )
 		{
-			var down = Input.Down( action );
+			var down = Input.Down( action ) || ForceShoot;
 
 			if ( RequiresAllInputActions && !down )
 			{
@@ -122,7 +128,7 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 				matched = true;
 			}
 		}
-
+		
 		if ( matched )
 		{
 			OnInput();
@@ -142,5 +148,6 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 				isDown = false;
 			}
 		}
+		
 	}
 }

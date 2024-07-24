@@ -15,8 +15,10 @@ public sealed class CoverFinder : Component
     {
         for (int i = 0; i < numberOfRandomPoints; i++)
         {
-            Vector3 randomPoint = (Vector3)Game.ActiveScene.NavMesh.GetRandomPoint(BBox.FromPositionAndSize(Vector3.Zero,coverCheckDistance));
-            Vector3 closestEdge = (Vector3)Game.ActiveScene.NavMesh.GetClosestEdge(randomPoint);
+            Vector3 randomPoint = Scene.NavMesh.GetRandomPoint(Vector3.Zero,coverCheckDistance) ?? Vector3.Zero;
+            
+            Vector3 closestEdge = Scene.NavMesh.GetClosestEdge(randomPoint).Value;
+
             if(!closestEdge.IsNearlyZero()) CheckEdgeForCover(randomPoint, closestEdge);
         }
     }

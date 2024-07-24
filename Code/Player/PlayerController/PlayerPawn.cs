@@ -108,7 +108,6 @@ public sealed partial class PlayerPawn : Pawn, IDescription
 		{
 			EyeAngles = Rotation.LookAt( killerPlayer.Transform.Position - Transform.Position, Vector3.Up );
 		}
-
 		if ( ((Input.Pressed( "attack1" ) || Input.Pressed( "attack2" )) && !PlayerState.IsRespawning) || PlayerState.IsBot || PlayerState.LastDamageInfo.TimeSinceEvent > DeathcamSkipTime )
 		{
 			// Don't let players immediately switch

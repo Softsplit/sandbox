@@ -48,6 +48,7 @@ public sealed class NavMeshCharacter : Component
 		CurrentPath = new List<Vector3>(){Transform.Position};
 	}
 	bool AtTarget;
+	public Vector3 velocity;
 	protected override void OnUpdate()
 	{
 		MoveTo();
@@ -55,15 +56,17 @@ public sealed class NavMeshCharacter : Component
 		if(!AtTarget)
 		{
 			Move();	
+			velocity = characterController.Velocity;
 		}
 		else
 		{
 			if(CurrentPath.Count > 1) CurrentPath.RemoveAt(0);
+			velocity = Vector3.Zero;
 		}
 	}
 	void Move()
 	{
-		var gravity = Scene.PhysicsWorld.Gravity;
+		var gravity = Game.ActiveScene.PhysicsWorld.Gravity;
 		var direction = (CurrentPath[0]-Transform.Position).Normal;
 		characterController.Velocity.WithZ(0);
 		characterController.Velocity = Vector3.Lerp(characterController.Velocity, direction*Speed, SpeedSmoothing*Time.Delta);

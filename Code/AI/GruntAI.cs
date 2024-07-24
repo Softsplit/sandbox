@@ -6,16 +6,18 @@ public sealed class GruntAI : AIAgent
 {
     public EnemyWeaponDealer EnemyWeaponDealer;
     public FindChooseEnemy FindChooseEnemy;
+    [Property] public AnimationHelper AnimationHelper {get;set;}
     AgroRelations agroRelations;
     HealthComponent healthComponent;
     float lastHealth;
     //public int Grenades {get;set;} = 3;
     //public float GrenadeTime {get;set;} = 30f;
     //public float GrenadeRange {get;set;} = 250f;
-    public float Patience {get;set;} = 30f;
-    public float AttackDistance {get;set;} = 450f;
-    public float MajorDamageAmount {get;set;} = 20f;
-    public float HealthMemory {get;set;} = 0.5f;
+    [Property] public Vector3 EyePos {get;set;}
+    [Property] public float Patience {get;set;} = 30f;
+    [Property] public float AttackDistance {get;set;} = 450f;
+    [Property] public float MajorDamageAmount {get;set;} = 20f;
+    [Property] public float HealthMemory {get;set;} = 0.5f;
     public bool IsCrouching;
     //float currentGrenadeTime;
 
@@ -25,13 +27,46 @@ public sealed class GruntAI : AIAgent
         FindChooseEnemy = Components.GetOrCreate<FindChooseEnemy>();
         agroRelations = Components.Get<AgroRelations>();
         EnemyWeaponDealer = Components.Get<EnemyWeaponDealer>();
-        initialState = "Idle";
+        initialState = "SUPPRESS";
+        stateMachine.RegisterState(new SUPPRESS());
     }
 
     protected override void Update()
     {
         //currentGrenadeTime+=Time.Delta;
-        lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
+        //lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
+
+        if(FindChooseEnemy.Enemy!=null)
+        {
+            FaceThing(FindChooseEnemy.Enemy);
+        }
+        if ( AnimationHelper.IsValid() )
+		{
+			AnimationHelper.WithVelocity( Controller.velocity.IsNearlyZero() ? Vector3.Zero : Controller.velocity );
+			//AnimationHelper.WithWishVelocity( Controller.characterController.Velocity );
+			AnimationHelper.IsGrounded = Controller.characterController.IsOnGround;
+			AnimationHelper.WithLook( 
+                FindChooseEnemy.Enemy != null ? 
+
+                    (FindChooseEnemy.Enemy.Transform.World.PointToWorld(FindChooseEnemy.EnemyRelations.attackPoint) - Transform.World.PointToWorld(EyePos))
+
+                    : 
+                    
+                    Transform.World.Forward, 
+
+
+                1, 1, 1.0f );
+			AnimationHelper.MoveStyle = AnimationHelper.MoveStyles.Run;
+			//AnimationHelper.DuckLevel = (MathF.Abs( _smoothEyeHeight ) / 32.0f);
+			AnimationHelper.HoldType = EnemyWeaponDealer.Weapon.GetHoldType();
+			AnimationHelper.Handedness = EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both;
+			AnimationHelper.AimBodyWeight = 0.1f;
+		}
+    }
+
+    public void CanSeeEnemy()
+    {
+
     }
     public float EnemyDistance;
     string FindCondition()
@@ -135,6 +170,7 @@ public class SUPPRESS : AIState
         agent.Controller.currentTarget = agent.Transform.Position;
 		if(gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy))
         {
+
             timeSinceLastCanShoot = 0;
             gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = true;
         }

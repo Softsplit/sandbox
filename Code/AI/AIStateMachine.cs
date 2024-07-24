@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class AIStateMachine
 {
-    public Dictionary<string, AIState> states;
+    [Property] public Dictionary<string, AIState> states;
     public AIAgent agent;
     [Property] public string currentState { get; set; }
 
@@ -15,7 +15,7 @@ public class AIStateMachine
     public void RegisterState(AIState state)
     {
         string stateID = state.GetID();
-        states[stateID] = state;
+        states.Add(stateID, state);
     }
 
     public AIState GetState(string stateID)
@@ -26,13 +26,14 @@ public class AIStateMachine
 
     public void Update()
     {
-        GetState(currentState)?.Update(agent);
+        if(currentState!=null) GetState(currentState)?.Update(agent);
+        
     }
 
     public void ChangeState(string newState, bool overrideState = false)
     {
         if (newState == currentState && !overrideState) return;
-        GetState(currentState)?.Exit(agent);
+        if(currentState!=null) GetState(currentState).Exit(agent);
         currentState = newState;
         GetState(currentState)?.Enter(agent);
     }

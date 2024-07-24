@@ -59,6 +59,7 @@ public partial class HealthComponent : Component, IRespawnable
 
 	public void TakeDamage( DamageInfo damageInfo )
 	{
+		Log.Info("sex");
 		Assert.True( Networking.IsHost );
 
 		damageInfo = WithThisAsVictim( damageInfo );

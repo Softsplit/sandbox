@@ -16,8 +16,6 @@ public enum FireMode
 public partial class ShootWeaponComponent : InputWeaponComponent,
 	IGameEventHandler<EquipmentHolsteredEvent>
 {	
-	public bool PlayerControlled = true;
-	public bool ForceShoot;
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float BaseDamage { get; set; } = 25.0f;
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float FireRate { get; set; } = 0.2f;
 	[Property, Group( "Bullet" )] public float DryShootDelay { get; set; } = 0.15f;
@@ -114,7 +112,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	/// <summary>
 	/// Accessor for the aim ray.
 	/// </summary>
-	protected Ray WeaponRay => Equipment.Owner.AimRay;
+	protected Ray WeaponRay => NotPlayerControlled ? new Ray(Equipment.Muzzle.Transform.Position,Equipment.Muzzle.Transform.Position+Equipment.Muzzle.Transform.World.Forward*100000) : Equipment.Owner.AimRay;
 
 	/// <summary>
 	/// How long since we shot?
@@ -319,7 +317,8 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 				// Inflict damage on whatever we find.
 
 				var damageFlags = DamageFlags.None;
-				if ( !Player.IsGrounded ) damageFlags |= DamageFlags.AirShot;
+				if(!NotPlayerControlled)
+					if ( !Player.IsGrounded ) damageFlags |= DamageFlags.AirShot;
 
 				using ( Rpc.FilterInclude( Connection.Host ) )
 					InflictDamage( tr.GameObject, damage, tr.EndPosition, tr.Direction, tr.GetHitboxTags(), damageFlags );
@@ -338,7 +337,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	[Broadcast]
 	private void InflictDamage( GameObject target, float damage, Vector3 pos, Vector3 dir, HitboxTags hitbox, DamageFlags flags )
 	{
-		var dmgInfo = new DamageInfo( Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags );
+		var dmgInfo = new DamageInfo( NotPlayerControlled ? this : Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags );
 
 		target?.TakeDamage( dmgInfo );
 
@@ -410,7 +409,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		Equipment.ViewModel?.ModelRenderer.Set( "b_attack_dry", true );
 	}
 
-	protected IEnumerable<SceneTraceResult> DoTraceBullet( Vector3 start, Vector3 end, float radius )
+	public IEnumerable<SceneTraceResult> DoTraceBullet( Vector3 start, Vector3 end, float radius )
 	{
 		return Scene.Trace.Ray( start, end )
 			.UseHitboxes()
@@ -421,7 +420,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	}
 
 
-	protected SceneTraceResult DoTraceBulletOne( Vector3 start, Vector3 end, float radius )
+	public SceneTraceResult DoTraceBulletOne( Vector3 start, Vector3 end, float radius )
 	{
 		return Scene.Trace.Ray( start, end )
 			.UseHitboxes()
@@ -455,7 +454,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		var rot = Rotation.LookAt( WeaponRay.Forward );
 
 		var forward = rot.Forward;
-		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * (BulletSpread + Equipment.Owner.Spread) * 0.25f;
+		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * (BulletSpread + (NotPlayerControlled ? 0.1f : Equipment.Owner.Spread)) * 0.25f;
 		forward = forward.Normal;
 
 		var original = DoTraceBullet( start, WeaponRay.Position + forward * MaxRange, BulletSize );
@@ -556,19 +555,29 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	public bool CanShoot()
 	{
 		// Do we still have a weapon?
-		if ( !Equipment.IsValid() ) return false;
-		if ( !Equipment.Owner.IsValid() ) return false;
+		if(!NotPlayerControlled)
+		{
+			if ( !Equipment.IsValid() ) return false;
+			if ( !Equipment.Owner.IsValid() ) return false;
 
-		// Player
-		if ( Equipment.Owner.IsFrozen )
-			return false;
+			// Player
+			if ( Equipment.Owner.IsFrozen )
+				return false;
 
-		// Weapon
-		if ( Equipment.Tags.Has( "reloading" ) || Equipment.Tags.Has( "no_shooting" ) )
-			return false;
+			// Weapon
+			if ( Equipment.Tags.Has( "reloading" ) || Equipment.Tags.Has( "no_shooting" ) )
+				return false;
+		}
+		
 
 		// Delay checks
-		if ( TimeSinceShoot < RPMToSeconds() )
+
+		float fireRate = RPMToSeconds();
+		if(CurrentFireMode == FireMode.Semi && NotPlayerControlled)
+		{
+			fireRate*=2;
+		}
+		if ( TimeSinceShoot < fireRate )
 			return false;
 
 		// Ammo checks
@@ -586,10 +595,9 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		IsBurstFiring = false;
 		BurstCount = 0;
 	}
-
 	protected override void OnInputUpdate()
 	{
-		if ( Input.Pressed( "FireMode" ) && PlayerControlled)
+		if (Input.Pressed( "FireMode" ) && !NotPlayerControlled)
 		{
 			CycleFireMode();
 			return;
@@ -606,18 +614,19 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 			Shoot();
 		}
 
-		bool wantsToShoot = IsDown() || ForceShoot;
+		bool wantsToShoot = IsDown();
 
 		// HACK
-		if ( CurrentFireMode == FireMode.Semi )
+		if ( CurrentFireMode == FireMode.Semi && !NotPlayerControlled)
 		{
-			if(PlayerControlled) wantsToShoot = Input.Pressed( "attack1" );
+			wantsToShoot = Input.Pressed( "attack1" );
 		}
 
 		if ( wantsToShoot )
 		{
 			if ( !CanShoot() )
 			{
+				
 				// Dry fire
 				if ( !AmmoComponent.HasAmmo )
 				{

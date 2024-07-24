@@ -8,6 +8,8 @@ public abstract class AIAgent : Component
 
     protected override void OnStart()
     {
+        if(!Networking.IsHost) Enabled = false;
+        
         Controller = Components.GetOrCreate<NavMeshCharacter>();
         Controller.currentTarget = Transform.Position;
         stateMachine = new AIStateMachine(this);
@@ -28,7 +30,8 @@ public abstract class AIAgent : Component
 
     protected override void OnUpdate()
     {
-		if(!Networking.IsHost) return;
+		
+        
         stateMachine.Update();
         Update();
     }

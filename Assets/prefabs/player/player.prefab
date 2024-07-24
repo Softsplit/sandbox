@@ -3,7 +3,7 @@
     "__guid": "a4f94dfd-8684-4032-89b1-b08190beab32",
     "Flags": 0,
     "Name": "player",
-    "Tags": "player,noblockaudio",
+    "Tags": "player,noblockaudio,relations",
     "Enabled": true,
     "Components": [
       {
@@ -194,9 +194,17 @@
       {
         "__type": "AgroRelations",
         "__guid": "1bd88760-19bb-45d3-94aa-10fef2b70ad5",
-        "attackPoint": "0,0,45",
+        "attackPoint": "0,0,0",
         "Enemies": [],
         "Faction": "Player"
+      },
+      {
+        "__type": "Sandbox.SphereCollider",
+        "__guid": "137e7c95-cbc5-44d3-b39d-3baff3a2ed3b",
+        "Center": "0,0,0",
+        "IsTrigger": false,
+        "Radius": 1,
+        "Static": false
       }
     ],
     "Children": [
