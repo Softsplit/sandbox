@@ -51,22 +51,23 @@
       "__guid": "d21bea93-01e3-46c8-b614-4f976b9d5113",
       "Flags": 0,
       "Name": "Covers",
-      "Position": "677.5741,-585.2869,0.0003420925",
+      "Position": "0,0,0.0003420925",
       "Enabled": true,
       "NetworkMode": 1,
       "Components": [
         {
           "__type": "CoverFinder",
           "__guid": "6c1c276e-74cc-43c2-84b8-53472308e872",
+          "trackedGenPos": "10000,10000,10000",
           "coverCheckDistance": 50,
           "coverHeight": 38,
           "CoverRadius": 20,
           "coverSpacing": 75,
           "flatFaceAngleCheck": 45,
           "flatSpacing": 150,
-          "pointCloudBox": "3000,3000,1",
+          "pointGrid": "1000,1000",
           "wallHeight": 60,
-          "zSpacing": 300000
+          "zSpacing": 300
         }
       ]
     },

@@ -10,68 +10,62 @@ public sealed class CoverFinder : Component
     [Property] public float flatFaceAngleCheck { get; set; } = 45f;
     [Property] public float flatSpacing { get; set; } = 100f;
     [Property] public float zSpacing { get; set; } = 10f;
-    [Property] public MapInstance mapInstance {get;set;}
-    [Property] Vector3 pointCloudBox {get;set;}
+    [Property] Vector2 pointGrid {get;set;}
+    [Property] GameObject trackedObject {get;set;}
     protected override async void OnStart()
     {
         await Task.Frame();
-        GenerateCoverPoints();
-        
+        GenerateCoverPoints(Transform.Position);
+
     }
-
-	public void GenerateCover()
+    [Property] Vector3 trackedGenPos = Vector3.One*10000f;
+    List<Vector3> generatedPoints = new List<Vector3>();
+	protected override void OnFixedUpdate()
 	{
-        GenerateCoverPoints();
-	}
+		if(trackedObject==null) return;
 
-	protected override void DrawGizmos()
-	{
-        
-		Gizmo.Draw.LineBBox(BBox.FromPositionAndSize(Vector3.Zero,pointCloudBox));
-
-        List<Vector3> rayPoints = GenerateSquarePoints(Vector3.Zero+Vector3.Up,flatSpacing,coverSpacing);
-
-        for(int i = 0; i < rayPoints.Count; i++)
+        if(MathF.Abs(trackedObject.Transform.Position.x - trackedGenPos.x) > pointGrid.x || MathF.Abs(trackedObject.Transform.Position.y - trackedGenPos.y) > pointGrid.y || MathF.Abs(trackedObject.Transform.Position.z - trackedGenPos.z) > zSpacing)
         {
-            Gizmo.Draw.Line(Vector3.Zero,rayPoints[i]);
+            trackedGenPos = new Vector3
+            (
+                MathF.Round(trackedObject.Transform.Position.x*trackedGenPos.x)/trackedGenPos.x,
+                MathF.Round(trackedObject.Transform.Position.y*trackedGenPos.y)/trackedGenPos.y,
+                MathF.Round(trackedObject.Transform.Position.z*zSpacing)/zSpacing
+            );
+
+            if(generatedPoints.Contains(trackedGenPos)) return;
+            
+            generatedPoints.Add(trackedGenPos);
+
+            GenerateCoverPoints(trackedGenPos);
         }
 	}
 
 
-	void GenerateCoverPoints()
+	void GenerateCoverPoints(Vector3 position)
 	{
-		for ( float x = -pointCloudBox.x / 2; x <= pointCloudBox.x / 2; x += flatSpacing )
+        Log.Info("Generating Cover Points!");
+		for ( float x = -pointGrid.x / 2; x <= pointGrid.x / 2; x += flatSpacing )
 		{
-			for ( float y = -pointCloudBox.y / 2; y <= pointCloudBox.y / 2; y += flatSpacing )
+			for ( float y = -pointGrid.y / 2; y <= pointGrid.y / 2; y += flatSpacing )
 			{
-				for ( float z = -pointCloudBox.z / 2; z <= pointCloudBox.z / 2; z += zSpacing )
+				Vector3 point = Scene.NavMesh.GetClosestPoint( new Vector3( position.x + x, position.y + y, Transform.Position.z ) ) ?? Vector3.Zero;
+				if ( point == Vector3.Zero ) continue;
+
+				List<Vector3> rayPoints = GenerateSquarePoints( point + Vector3.Up, flatSpacing * 2, coverSpacing );
+
+				for ( int i = 0; i < rayPoints.Count; i++ )
 				{
-
-					Vector3 point = Scene.NavMesh.GetClosestPoint( new Vector3( Transform.Position.x + x, Transform.Position.y + y, Transform.Position.z + z ) ) ?? Vector3.Zero;
-					//CreateCoverPoint(point,Vector3.Forward);
-					if ( point == Vector3.Zero ) continue;
-
-					List<Vector3> rayPoints = GenerateSquarePoints( point + Vector3.Up, flatSpacing * 2, coverSpacing );
-
-					for ( int i = 0; i < rayPoints.Count; i++ )
+					var Trace = Scene.Trace.Ray( point, rayPoints[i] ).WithTag( "map" ).Run();
+					if ( Trace.Hit )
 					{
-						var Trace = Scene.Trace.Ray( point, rayPoints[i] ).WithTag( "map" ).Run();
-						if ( Trace.Hit )
+						var HeightCheck = Scene.Trace.Ray( point, Trace.EndPosition + ((Vector3.Up * coverHeight) - Vector3.Up) + (Trace.EndPosition - point).Normal ).WithTag( "map" ).Run();
+						if ( HeightCheck.Hit )
 						{
-							var HeightCheck = Scene.Trace.Ray( point, Trace.EndPosition + ((Vector3.Up * coverHeight) - Vector3.Up) + (Trace.EndPosition - point).Normal ).WithTag( "map" ).Run();
-							if ( HeightCheck.Hit )
-							{
-                                var WallCheck = Scene.Trace.Ray( point, Trace.EndPosition + ((Vector3.Up * wallHeight) - Vector3.Up) + (Trace.EndPosition - point).Normal ).WithTag( "map" ).Run();
-								CreateCoverPoint( Trace.EndPosition-Trace.Direction*CoverRadius, -Trace.Normal, WallCheck.Hit);
-							}
+                            var WallCheck = Scene.Trace.Ray( point, Trace.EndPosition + ((Vector3.Up * wallHeight) - Vector3.Up) + (Trace.EndPosition - point).Normal ).WithTag( "map" ).Run();
+							CreateCoverPoint( Trace.EndPosition-Trace.Direction*CoverRadius, -Trace.Normal, WallCheck.Hit);
 						}
 					}
-
-					//Vector3 closestEdge = Scene.NavMesh.GetClosestEdge(point, zSpacing) ?? Vector3.Zero;
-
-					//if (closestEdge == Vector3.Zero) continue;
-
-					//CheckEdgeForCover(point, closestEdge);
 				}
 			}
 		}
@@ -123,7 +117,7 @@ public sealed class CoverFinder : Component
 		GameObject point = new GameObject();
 		point.Tags.Add("cover");
 		point.Components.Create<SphereCollider>();
-        //point.Components.Create<ModelRenderer>();
+        point.Components.Create<ModelRenderer>();
 		point.Transform.Position = location;
 		point.Transform.Rotation = Rotation.LookAt(centerDirection);
         point.Tags.Add(angle.ToString());   
