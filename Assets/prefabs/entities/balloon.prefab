@@ -1,0 +1,63 @@
+{
+  "RootObject": {
+    "__guid": "2c9bf033-d4cf-446d-a28f-f3af5a21fd66",
+    "Flags": 0,
+    "Name": "balloon",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "8650fc8e-ad71-48e9-b294-0e6ef90956ca",
+        "BodyGroups": 18446744073709551615,
+        "Model": "models/citizen_props/balloonears01.vmdl",
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Softsplit.SpawnableEntity",
+        "__guid": "7161d4fe-43d4-4e60-b56a-6ce1ab246fcb",
+        "Description": "Balloon",
+        "Icon": {
+          "Model": "",
+          "MaterialGroup": "",
+          "Colour": "0.98193,0,0,1",
+          "Rotation": "0,0,0,1",
+          "Fov": 40,
+          "Guid": "b1f96634-bbf0-4282-a084-023100d09a8b"
+        },
+        "Name": "Balloon"
+      },
+      {
+        "__type": "Sandbox.ModelCollider",
+        "__guid": "37531208-83dc-4530-ae65-7ce2cf29b8f9",
+        "IsTrigger": false,
+        "Model": "models/citizen_props/balloonears01.vmdl",
+        "Static": false
+      },
+      {
+        "__type": "Sandbox.Rigidbody",
+        "__guid": "fa2a2cab-abb1-4a25-864f-a72fce190269",
+        "AngularDamping": 0,
+        "Gravity": true,
+        "LinearDamping": 0,
+        "Locking": {},
+        "MassOverride": 0,
+        "MotionEnabled": true,
+        "RigidbodyFlags": 0,
+        "StartAsleep": false
+      },
+      {
+        "__type": "Softsplit.Ents.Balloon",
+        "__guid": "0bae3337-2975-4085-bcf2-0c69117c19bd"
+      }
+    ],
+    "Children": [],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
