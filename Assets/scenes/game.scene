@@ -51,7 +51,7 @@
       "__guid": "d21bea93-01e3-46c8-b614-4f976b9d5113",
       "Flags": 0,
       "Name": "Covers",
-      "Position": "1492.506,0,0.0003848073",
+      "Position": "677.5741,-585.2869,0.0003420925",
       "Enabled": true,
       "NetworkMode": 1,
       "Components": [
@@ -60,15 +60,12 @@
           "__guid": "6c1c276e-74cc-43c2-84b8-53472308e872",
           "coverCheckDistance": 50,
           "coverHeight": 38,
+          "CoverRadius": 20,
           "coverSpacing": 75,
+          "flatFaceAngleCheck": 45,
           "flatSpacing": 150,
-          "mapInstance": {
-            "_type": "component",
-            "component_id": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
-            "go": "eb0da788-a279-46db-9596-e4b9f5533691",
-            "component_type": "MapInstance"
-          },
-          "pointCloudBox": "1000,2000,1",
+          "pointCloudBox": "3000,3000,1",
+          "wallHeight": 60,
           "zSpacing": 300000
         }
       ]
