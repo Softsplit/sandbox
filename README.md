@@ -1,17 +1,18 @@
 # Sandbox Classic
-Sandbox for the Scene System.
+Sandbox for the scene system.
 
 ## Credits
 Based on the original Sandbox by Facepunch
 ### Programming
-* Asphaltian
-* TROLLFACEINREALLIFE
-* Fasught
-* Kolya142
-* somethink000
-* ducc
+* Asphaltian - General, UI
+* TROLLFACEINREALLIFE - Entities, NPCs, Tools, UI
+* Fasught - General
+* Kolya142 - Tools
+* somethink000 - Entities, UI
+* ducc - Advice
+* badandbest - Sprays
 ### Localization
 * DiskGG - 🇨🇿
-* Web_Artur - 🇷🇺
+* boxden - 🇷🇺
 * ibrs_4ever - 🇨🇳
 * ML5700 - 🇩🇪
