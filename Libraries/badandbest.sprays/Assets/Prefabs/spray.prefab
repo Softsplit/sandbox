@@ -1,0 +1,82 @@
+{
+  "RootObject": {
+    "__guid": "cb3a44bf-a7bf-4b12-b3d2-5fd0849ceff6",
+    "Flags": 0,
+    "Name": "spray",
+    "Enabled": true,
+    "NetworkMode": 1,
+    "NetworkInterpolation": false,
+    "Components": [
+      {
+        "__type": "badandbest.Sprays.SprayRenderer",
+        "__guid": "5588cc15-d87c-4400-925c-f2dc5d60c42b"
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "1e0dcc8d-0faa-4e2c-9677-9759a0ac38eb",
+        "Flags": 0,
+        "Name": "offset",
+        "Position": "1,0,0",
+        "Rotation": "-0.00000004371139,1,-0.00000004371139,0.000000000000001910685",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.DecalRenderer",
+            "__guid": "1a7f4ae9-72cd-47fa-8bec-bcf94b065925",
+            "CutoffAngle": 60,
+            "CutoffAngleSoftness": 5,
+            "Material": "materials/spray.vmat",
+            "Mod2XBlending": false,
+            "Size": "64,64,32",
+            "TintColor": "1,1,1,1",
+            "TriPlanar": false
+          },
+          {
+            "__type": "Sandbox.SoundPointComponent",
+            "__guid": "b00a9bdb-3ad3-4e57-bb59-2ba3394eeb3c",
+            "DistanceAttenuation": false,
+            "DistanceAttenuationOverride": false,
+            "Force2d": false,
+            "MaxRepeatTime": 1,
+            "MinRepeatTime": 1,
+            "Occlusion": false,
+            "OcclusionOverride": false,
+            "OcclusionRadius": 32,
+            "Pitch": 1,
+            "PlayOnStart": true,
+            "ReflectionOverride": false,
+            "Reflections": false,
+            "Repeat": false,
+            "SoundEvent": "sounds/spraycan.paint.sound",
+            "SoundOverride": false,
+            "StopOnNew": false,
+            "TargetMixer": {
+              "Name": "game",
+              "Id": "5a600970-8479-43d1-b997-e08e5e7b5b65"
+            },
+            "Volume": 1
+          }
+        ]
+      }
+    ],
+    "__variables": [
+      {
+        "Id": "Image",
+        "Title": "Image",
+        "Targets": [
+          {
+            "Id": "5588cc15-d87c-4400-925c-f2dc5d60c42b",
+            "Property": "Image"
+          }
+        ]
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}

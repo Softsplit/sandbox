@@ -1,3 +1,5 @@
+using badandbest.Sprays;
+
 namespace Softsplit;
 
 public partial class PlayerPawn
@@ -142,6 +144,11 @@ public partial class PlayerPawn
 			}
 
 			_eyeHeightOffset = eyeHeightOffset;
+
+			if ( Input.Pressed( "spray" ) )
+			{
+				Spray.Place();
+			}
 		}
 
 		if ( PlayerBoxCollider.IsValid() )
@@ -178,7 +185,7 @@ public partial class PlayerPawn
 		// Eye input
 		if ( IsPossessed && cc.IsValid() )
 		{
-			if ( IsLocallyControlled && HealthComponent.State == LifeState.Alive && !lockCamera)
+			if ( IsLocallyControlled && HealthComponent.State == LifeState.Alive && !lockCamera )
 			{
 				EyeAngles += Input.AnalogLook * AimDampening;
 				EyeAngles = EyeAngles.WithPitch( EyeAngles.pitch.Clamp( -90, 90 ) );
@@ -281,10 +288,10 @@ public partial class PlayerPawn
 	}
 
 	[Broadcast]
-	public void UpdateNoclip(bool IsNoclipping)
+	public void UpdateNoclip( bool IsNoclipping )
 	{
-		if(IsNoclipping) CharacterController.IgnoreLayers.Add("solid");
-		else CharacterController.IgnoreLayers.Remove("solid");
+		if ( IsNoclipping ) CharacterController.IgnoreLayers.Add( "solid" );
+		else CharacterController.IgnoreLayers.Remove( "solid" );
 	}
 
 	private void BuildInput()
@@ -314,7 +321,7 @@ public partial class PlayerPawn
 		if ( Input.Pressed( "Noclip" ) )
 		{
 			IsNoclipping = !IsNoclipping;
-			UpdateNoclip(IsNoclipping);
+			UpdateNoclip( IsNoclipping );
 		}
 
 		if ( WishMove.LengthSquared > 0.01f || Input.Down( "Attack1" ) )
@@ -494,7 +501,7 @@ public partial class PlayerPawn
 
 		var wishDirection = WishMove.Normal * rot;
 		wishDirection = wishDirection.WithZ( 0 );
-		if(!MovementDisabled) WishVelocity = wishDirection * GetWishSpeed();
+		if ( !MovementDisabled ) WishVelocity = wishDirection * GetWishSpeed();
 	}
 
 	/// <summary>
