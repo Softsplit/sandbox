@@ -1,0 +1,71 @@
+{
+  "RootObject": {
+    "__guid": "0aeb592f-d920-492c-b5d6-0cb013c008fa",
+    "Flags": 0,
+    "Name": "flyer",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "88cc844e-0b43-43bf-9429-ff5fdbc6ab68",
+        "BodyGroups": 18446744073709551615,
+        "CreateBoneObjects": false,
+        "Model": "models/citizen_props/coin01.vmdl",
+        "RenderType": "On",
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      },
+      {
+        "__type": "Softsplit.SpawnableEntity",
+        "__guid": "20892932-5654-4aca-b287-5f605e2a3379",
+        "Description": "Flyer",
+        "Icon": {
+          "Model": "",
+          "MaterialGroup": "",
+          "Colour": "0,0,1,1",
+          "Rotation": "0,0,0,1",
+          "Fov": 40,
+          "Guid": "558a5c92-d06c-4c5a-adf9-7bb67e281f8a"
+        },
+        "Name": "Flyer"
+      },
+      {
+        "__type": "Sandbox.ModelCollider",
+        "__guid": "15728c2c-2a74-4ad4-b824-4eb68ca465a5",
+        "IsTrigger": false,
+        "Model": "models/citizen_props/coin01.vmdl",
+        "Static": false
+      },
+      {
+        "__type": "Sandbox.Rigidbody",
+        "__guid": "8c7f38bd-973f-4f41-b932-c5fa1ca1a847",
+        "AngularDamping": 0,
+        "Gravity": true,
+        "LinearDamping": 0,
+        "Locking": {},
+        "MassOverride": 0,
+        "MotionEnabled": true,
+        "RigidbodyFlags": 0,
+        "StartAsleep": false
+      },
+      {
+        "__type": "Softsplit.Ents.Flyer",
+        "__guid": "b9efebf9-056f-4e32-a589-e459226bf950",
+        "rb": {
+          "_type": "component",
+          "component_id": "8c7f38bd-973f-4f41-b932-c5fa1ca1a847",
+          "go": "0aeb592f-d920-492c-b5d6-0cb013c008fa",
+          "component_type": "Rigidbody"
+        }
+      }
+    ],
+    "Children": [],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
