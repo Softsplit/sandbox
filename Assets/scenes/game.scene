@@ -1,5 +1,5 @@
 {
-  "__guid": "95fa32d4-dffc-482b-b28f-2c30d21772ef",
+  "__guid": "5e7e3c9b-1da6-43f2-8d0b-cf9a2ec6d17b",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
@@ -117,7 +117,6 @@
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
       "Name": "Map ",
-      "Position": "0,0,7.968071",
       "Tags": "map",
       "Enabled": true,
       "Components": [
@@ -125,7 +124,7 @@
           "__type": "Sandbox.MapInstance",
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
-          "MapName": "maps/dev/preview_flat.vmap",
+          "MapName": "facepunch.construct23",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }

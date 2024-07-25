@@ -100,6 +100,11 @@ public partial class PlayerPawn
 	public bool IsGrounded { get; set; }
 
 	/// <summary>
+	/// Are we Slow fall
+	/// </summary>
+	public bool IsSlowFall { get; set; }
+
+	/// <summary>
 	/// How quick do we wish to go (normalized)
 	/// </summary>
 	public Vector3 WishMove { get; private set; }
@@ -264,7 +269,24 @@ public partial class PlayerPawn
 			cc.Velocity = WishMove.Normal * EyeAngles.ToRotation() * NoclipSpeed;
 			cc.Velocity += Vector3.Up * vertical * NoclipSpeed;
 		}
-
+		else
+		{
+			if (!IsSlowFall )
+			{
+				if ( !IsGrounded && Input.Pressed( "Jump" ) && cc.Velocity.z > 50 )
+				{
+					IsSlowFall = true;
+				}
+			}
+			else
+			{
+				cc.Velocity *= 0.95f;
+				if (IsGrounded)
+				{
+					IsSlowFall = false;
+				}
+			}
+		}
 		cc.ApplyFriction( GetFriction() );
 		cc.Move();
 	}
