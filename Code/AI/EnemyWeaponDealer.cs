@@ -27,7 +27,7 @@ public sealed class EnemyWeaponDealer : Component
 		var TargetNoZ = target.Transform.Position;
 		TargetNoZ.z = 0;
 
-		var trace = Bullet.DoTraceBulletOne(Weapon.Muzzle.Transform.Position,Weapon.Muzzle.Transform.Position+(TargetNoZ-MuzzleNoZ)*1024f, 1);
+		var trace = Bullet.DoTraceBulletOne(Weapon.Muzzle.Transform.Position,Weapon.Muzzle.Transform.Position+(target.Transform.Position-Weapon.Muzzle.Transform.Position)*1024f, 1);
 		
 		Gizmo.Draw.Line(Weapon.Muzzle.Transform.Position,Weapon.Muzzle.Transform.Position+Weapon.Muzzle.Transform.World.Forward*1024f);
 

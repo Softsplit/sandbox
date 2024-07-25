@@ -44,13 +44,32 @@
         {
           "__type": "Softsplit.EquipmentDropper",
           "__guid": "b43a4ea0-b1a2-46a1-a3a3-b25a9efafaa7"
-        },
+        }
+      ]
+    },
+    {
+      "__guid": "d21bea93-01e3-46c8-b614-4f976b9d5113",
+      "Flags": 0,
+      "Name": "Covers",
+      "Position": "1492.506,0,0.0003848073",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
         {
           "__type": "CoverFinder",
           "__guid": "6c1c276e-74cc-43c2-84b8-53472308e872",
-          "coverCheckDistance": 10000,
-          "coverHeight": 60,
-          "numberOfRandomPoints": 1000
+          "coverCheckDistance": 50,
+          "coverHeight": 38,
+          "coverSpacing": 75,
+          "flatSpacing": 150,
+          "mapInstance": {
+            "_type": "component",
+            "component_id": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
+            "go": "eb0da788-a279-46db-9596-e4b9f5533691",
+            "component_type": "MapInstance"
+          },
+          "pointCloudBox": "1000,2000,1",
+          "zSpacing": 300000
         }
       ]
     },
@@ -72,6 +91,26 @@
         {
           "__type": "Softsplit.PrefabInitializer",
           "__guid": "751235fb-bc40-4025-a3be-637b8052d0b9"
+        }
+      ]
+    },
+    {
+      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
+      "Flags": 0,
+      "Name": "Pause Menu",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 999
+        },
+        {
+          "__type": "Softsplit.UI.PauseMenuPanel",
+          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
         }
       ]
     },
@@ -101,26 +140,6 @@
       ]
     },
     {
-      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
-      "Flags": 0,
-      "Name": "Pause Menu",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 999
-        },
-        {
-          "__type": "Softsplit.UI.PauseMenuPanel",
-          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
-        }
-      ]
-    },
-    {
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
       "Name": "Map ",
@@ -133,12 +152,19 @@
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
           "EnableCollision": true,
-          "MapName": "maps/dev/preview_flat.vmap",
+          "MapName": "facepunch.construct23",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "2e6221b7-c99a-4284-bcc1-b88c60b8955b",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "1013.908,-335.0464,39.03973",
+      "Enabled": true
     }
   ],
   "SceneProperties": {

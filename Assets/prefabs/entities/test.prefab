@@ -74,7 +74,7 @@
           "_type": "gameobject",
           "go": "e972c363-201b-492e-8648-b36b26a741b7"
         },
-        "WeaponResource": "weapons/mp5/mp5.equip"
+        "WeaponResource": "weapons/spaghelli/spaghelli.equip"
       },
       {
         "__type": "FindChooseEnemy",
@@ -437,7 +437,7 @@
                                     "__guid": "2a6d18cc-0082-45b3-88be-6211a5bbb049",
                                     "Flags": 4,
                                     "Name": "arm_elbow_helper_L",
-                                    "Position": "-0.000004768372,0.000002861023,-0.00006103516",
+                                    "Position": "0,0,0",
                                     "Rotation": "0.0000003075731,0.000000002854507,-0.7577645,0.6525282",
                                     "Enabled": true
                                   }
@@ -663,7 +663,7 @@
                                         "__guid": "b7c0b0b9-1746-4f3a-9220-6e566b9cc1c7",
                                         "Flags": 4,
                                         "Name": "arm_elbow_helper_R",
-                                        "Position": "-0.00000667572,0.00003147125,-0.00005340576",
+                                        "Position": "0,0,0",
                                         "Rotation": "0.0000007692941,-0.0000002412072,-0.7577677,0.6525243",
                                         "Enabled": true
                                       }
@@ -755,7 +755,7 @@
                     "__guid": "3deea1b5-6d8d-4bc4-adf3-208144dc9864",
                     "Flags": 4,
                     "Name": "leg_knee_helper_R",
-                    "Position": "0.000001907349,0.000004768372,-0.000009536743",
+                    "Position": "0,0,0",
                     "Rotation": "0.000000905889,-0.000001318489,0.7135269,0.7006279",
                     "Enabled": true
                   }
@@ -772,7 +772,7 @@
                 "__guid": "1afe65b1-ccde-430b-bf05-ace221322280",
                 "Flags": 4,
                 "Name": "leg_upper_R_twist0",
-                "Position": "0.000007629395,0.000005960464,-0.00001716614",
+                "Position": "0,0,0",
                 "Rotation": "-0.00000008940732,-0.000000029802,0.000003069638,1",
                 "Enabled": true
               },
@@ -780,7 +780,7 @@
                 "__guid": "d13a77f3-26e1-4332-8838-f9c258efcf05",
                 "Flags": 4,
                 "Name": "leg_glute_helper_R",
-                "Position": "0.00002098083,0.000005543232,-0.00001764297",
+                "Position": "0,0,0",
                 "Rotation": "-0.000001053308,-0.0000006515999,-0.7071051,0.7071084",
                 "Enabled": true
               }
@@ -838,7 +838,7 @@
                     "__guid": "458aaedf-14bf-4945-bf7c-bbab4034787a",
                     "Flags": 4,
                     "Name": "leg_knee_helper_L",
-                    "Position": "-0.00001525879,0.000001847744,-0.000009536743",
+                    "Position": "0,0,0",
                     "Rotation": "-0.000002973302,-0.000001705918,0.7135277,0.7006271",
                     "Enabled": true
                   }
@@ -862,7 +862,7 @@
                 "__guid": "bc7c5ad8-cf45-403f-8a25-e2ee0ea662c0",
                 "Flags": 4,
                 "Name": "leg_glute_helper_L",
-                "Position": "0.00001907349,0.000009596348,-0.000009536743",
+                "Position": "0,0,0",
                 "Rotation": "-0.0000009340982,-0.0000007682515,-0.7071055,0.707108",
                 "Enabled": true
               }
