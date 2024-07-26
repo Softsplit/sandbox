@@ -4,6 +4,7 @@ using Softsplit;
 
 public sealed class GruntAI : AIAgent
 {
+    public CoverFinder CoverFinder;
     public EnemyWeaponDealer EnemyWeaponDealer;
     public FindChooseEnemy FindChooseEnemy;
     [Property] public AnimationHelper AnimationHelper {get;set;}
@@ -18,33 +19,42 @@ public sealed class GruntAI : AIAgent
     [Property] public float AttackDistance {get;set;} = 450f;
     [Property] public float MajorDamageAmount {get;set;} = 20f;
     [Property] public float HealthMemory {get;set;} = 0.5f;
-    public bool IsCrouching;
+    [Property] public bool IsCrouching { get; set; }
+    [Property] public float SmoothCrouchSpeed { get; set; } = 5.0f;
+
+    CoverContext currentCover;
+
+    private float smoothCrouch;
     //float currentGrenadeTime;
 
     protected override void SetStates()
     {
         //currentGrenadeTime = GrenadeTime;
+        CoverFinder = Scene.Components.GetInChildren<CoverFinder>();
         FindChooseEnemy = Components.GetOrCreate<FindChooseEnemy>();
         agroRelations = Components.Get<AgroRelations>();
         EnemyWeaponDealer = Components.Get<EnemyWeaponDealer>();
-        initialState = "SUPPRESS";
+        initialState = "COVER";
         stateMachine.RegisterState(new SUPPRESS());
+        stateMachine.RegisterState(new COVER());
     }
+
+    public PlayerGlobals Global => GetGlobal<PlayerGlobals>();
 
     protected override void Update()
     {
         //currentGrenadeTime+=Time.Delta;
         //lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
+        float targetCrouch = IsCrouching ? 1.5f : 0.0f;
+        smoothCrouch = MathX.Lerp(smoothCrouch, targetCrouch, Time.Delta * SmoothCrouchSpeed);
 
-        if(FindChooseEnemy.Enemy!=null)
-        {
-            FaceThing(FindChooseEnemy.Enemy);
-        }
+        Controller.Speed = FindChooseEnemy.Enemy.IsValid() ? Global.SprintingSpeed*0.75f : Global.WalkSpeed*0.75f;
+
         if ( AnimationHelper.IsValid() )
 		{
 			AnimationHelper.WithVelocity( Controller.velocity.IsNearlyZero() ? Vector3.Zero : Controller.velocity );
 			//AnimationHelper.WithWishVelocity( Controller.characterController.Velocity );
-			AnimationHelper.IsGrounded = Controller.characterController.IsOnGround;
+			AnimationHelper.IsGrounded = Controller.useCharacterController ? Controller.characterController.IsOnGround : true;
 			AnimationHelper.WithLook( 
                 FindChooseEnemy.Enemy != null ? 
 
@@ -57,11 +67,50 @@ public sealed class GruntAI : AIAgent
 
                 1, 1, 1.0f );
 			AnimationHelper.MoveStyle = AnimationHelper.MoveStyles.Run;
-			//AnimationHelper.DuckLevel = (MathF.Abs( _smoothEyeHeight ) / 32.0f);
+			AnimationHelper.DuckLevel = smoothCrouch;
 			AnimationHelper.HoldType = EnemyWeaponDealer.Weapon.GetHoldType();
 			AnimationHelper.Handedness = EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both;
 			AnimationHelper.AimBodyWeight = 0.1f;
 		}
+    }
+
+    public (CoverContext cover, float distance) CheckCover()
+    {
+        float dis = 1000;
+        if(currentCover == null)
+        {
+            CoverContext newCover = CoverFinder.GetClosestCover(Transform.Position,FindChooseEnemy.Enemy.Transform.Position);
+            if(newCover != null) ClaimCover(newCover);
+        }
+        else
+        {
+            if(!CoverFinder.IsValidCover(currentCover, FindChooseEnemy.Enemy.Transform.Position))
+            {
+                DropCover();
+            }
+        }
+        
+        if(currentCover!=null) dis = Vector3.DistanceBetween(Transform.Position,currentCover.Transform.Position);
+
+        return (currentCover,dis);
+    }
+
+
+    public bool RetreatToFireLine()
+    {
+        return Vector3.DistanceBetween(Transform.Position,FindChooseEnemy.Enemy.Transform.Position) < AttackDistance;
+    }
+
+    public void ClaimCover(CoverContext coverContext)
+    {
+        coverContext.owned = true;
+        currentCover = coverContext;
+    }
+
+    public void DropCover()
+    {
+        currentCover.owned = false;
+        currentCover = null;
     }
 
     public void CanSeeEnemy()
@@ -222,6 +271,8 @@ public class FIRE_DISTANCE : AIState
 public class COVER : AIState
 {
     GruntAI gruntAI;
+
+    float coverValue;
 	public void Enter( AIAgent agent )
 	{
 		gruntAI = agent.Components.Get<GruntAI>();
@@ -238,7 +289,23 @@ public class COVER : AIState
 	}
 	public void Update( AIAgent agent )
 	{
+        GameObject enemy = gruntAI.FindChooseEnemy.Enemy;
 
+        gruntAI.FaceThing(enemy);
+
+        (CoverContext currentCover, float distance) = gruntAI.CheckCover();
+
+        gruntAI.Controller.currentTarget = currentCover == null ? 
+        
+            (gruntAI.RetreatToFireLine() ? gruntAI.Transform.Position - (enemy.Transform.Position - gruntAI.Transform.Position).Normal*150f : gruntAI.Transform.Position)
+            
+            :
+            
+            currentCover.Transform.Position;
+        
+        gruntAI.IsCrouching = (Noise.Perlin(Time.Now,gruntAI.Transform.Position.Length) > coverValue) && (distance < 20);
+        
+        
 		if(gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy))
         {
             gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = true;

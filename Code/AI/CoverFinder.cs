@@ -1,4 +1,5 @@
 using Sandbox;
+using Softsplit;
 
 public sealed class CoverFinder : Component
 {
@@ -10,41 +11,64 @@ public sealed class CoverFinder : Component
     [Property] public float flatFaceAngleCheck { get; set; } = 45f;
     [Property] public float flatSpacing { get; set; } = 100f;
     [Property] public float zSpacing { get; set; } = 10f;
+    [Property] public float EnemyDistance { get; set; } = 150f;
     [Property] Vector2 pointGrid {get;set;}
-    [Property] GameObject trackedObject {get;set;}
-    protected override async void OnStart()
-    {
-        await Task.Frame();
-        GenerateCoverPoints(Transform.Position);
-
-    }
-    [Property] Vector3 trackedGenPos = Vector3.One*10000f;
     List<Vector3> generatedPoints = new List<Vector3>();
-	protected override void OnFixedUpdate()
-	{
-		if(trackedObject==null) return;
 
-        if(MathF.Abs(trackedObject.Transform.Position.x - trackedGenPos.x) > pointGrid.x || MathF.Abs(trackedObject.Transform.Position.y - trackedGenPos.y) > pointGrid.y || MathF.Abs(trackedObject.Transform.Position.z - trackedGenPos.z) > zSpacing)
+    public CoverContext GetClosestCover(Vector3 position,Vector3 enemyPosition)
+    {
+        GenerateCoverPoints(position);
+        List<GameObject> gameObjects = Scene.FindInPhysics(BBox.FromPositionAndSize(position,MathF.Max(pointGrid.x,pointGrid.y))).ToList();
+
+        CoverContext idealCover = null;
+        float idealDis = pointGrid.x+pointGrid.y;
+
+        foreach(GameObject g in gameObjects)
         {
-            trackedGenPos = new Vector3
-            (
-                MathF.Round(trackedObject.Transform.Position.x*trackedGenPos.x)/trackedGenPos.x,
-                MathF.Round(trackedObject.Transform.Position.y*trackedGenPos.y)/trackedGenPos.y,
-                MathF.Round(trackedObject.Transform.Position.z*zSpacing)/zSpacing
-            );
+            if(!g.Tags.Contains("cover")) continue;
 
-            if(generatedPoints.Contains(trackedGenPos)) return;
-            
-            generatedPoints.Add(trackedGenPos);
+            float distance = Vector3.DistanceBetween(position,g.Transform.Position);
 
-            GenerateCoverPoints(trackedGenPos);
+            if(distance > idealDis) continue;
+
+            CoverContext coverContext = g.Components.Get<CoverContext>();
+
+            if(coverContext == null) continue;
+
+            if(coverContext.owned) continue;
+
+            if(!IsValidCover(coverContext, enemyPosition)) continue;
+
+            idealCover = coverContext;
+            idealDis = distance;
+
         }
-	}
 
+        return idealCover;
+    }
+    public bool IsValidCover(CoverContext cover, Vector3 enemyPosition)
+    {
+
+        if(Vector3.DistanceBetween(cover.Transform.Position, enemyPosition) < EnemyDistance) return false;
+
+        if(GetAngleBetweenDirections(cover.Transform.World.Forward,enemyPosition-cover.Transform.Position) > cover.angle) return false;
+
+        return true;
+    }
+ 
 
 	void GenerateCoverPoints(Vector3 position)
 	{
-        Log.Info("Generating Cover Points!");
+        Vector3 clampedPos = new Vector3
+        (
+            MathF.Round(position.x / pointGrid.x)*pointGrid.x,
+            MathF.Round(position.y / pointGrid.y)*pointGrid.y,
+            MathF.Round(position.z / zSpacing)*zSpacing
+        );
+        if(generatedPoints.Contains(clampedPos)) return;
+        generatedPoints.Add(clampedPos);
+
+        position = clampedPos;
 		for ( float x = -pointGrid.x / 2; x <= pointGrid.x / 2; x += flatSpacing )
 		{
 			for ( float y = -pointGrid.y / 2; y <= pointGrid.y / 2; y += flatSpacing )
@@ -115,12 +139,13 @@ public sealed class CoverFinder : Component
             return;
         }
 		GameObject point = new GameObject();
-		point.Tags.Add("cover");
 		point.Components.Create<SphereCollider>();
-        point.Components.Create<ModelRenderer>();
+        //point.Components.Create<ModelRenderer>();
 		point.Transform.Position = location;
 		point.Transform.Rotation = Rotation.LookAt(centerDirection);
-        point.Tags.Add(angle.ToString());   
+
+        CoverContext coverContext = point.Components.Create<CoverContext>();
+        coverContext.angle = angle;
 
 		point.SetParent(GameObject);
 	}

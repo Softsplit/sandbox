@@ -52,22 +52,23 @@
       "Flags": 0,
       "Name": "Covers",
       "Position": "0,0,0.0003420925",
+      "Tags": "cover",
       "Enabled": true,
       "NetworkMode": 1,
       "Components": [
         {
           "__type": "CoverFinder",
-          "__guid": "6c1c276e-74cc-43c2-84b8-53472308e872",
-          "trackedGenPos": "10000,10000,10000",
+          "__guid": "7a7cf6ee-9ca6-422a-9be6-dbeda1c213b6",
           "coverCheckDistance": 50,
           "coverHeight": 38,
           "CoverRadius": 20,
-          "coverSpacing": 75,
+          "coverSpacing": 50,
+          "EnemyDistance": 150,
           "flatFaceAngleCheck": 45,
           "flatSpacing": 150,
           "pointGrid": "1000,1000",
           "wallHeight": 60,
-          "zSpacing": 300
+          "zSpacing": 50
         }
       ]
     },
@@ -150,7 +151,7 @@
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
           "EnableCollision": true,
-          "MapName": "facepunch.construct23",
+          "MapName": "maps/dev/preview_flat.vmap",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }

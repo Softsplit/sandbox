@@ -60,7 +60,7 @@ public sealed class FindChooseEnemy : Component
 		
 		if (closest == null) return;
 
-		if(Enemy == null)
+		if(!Enemy.IsValid())
 		{
 			Enemy = closest;
 			EnemyRelations = closestRelations;

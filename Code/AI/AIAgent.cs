@@ -5,12 +5,14 @@ public abstract class AIAgent : Component
     public AIStateMachine stateMachine { get; set; }
     public string initialState { get; set; }
     public NavMeshCharacter Controller { get; set; }
+    public NavMeshAgent Agent { get; set; }
 
     protected override void OnStart()
     {
         if(!Networking.IsHost) Enabled = false;
         
         Controller = Components.GetOrCreate<NavMeshCharacter>();
+        Agent = Components.GetOrCreate<NavMeshAgent>();
         Controller.currentTarget = Transform.Position;
         stateMachine = new AIStateMachine(this);
         SetStates();

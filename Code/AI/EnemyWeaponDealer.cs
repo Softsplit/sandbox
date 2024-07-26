@@ -31,8 +31,6 @@ public sealed class EnemyWeaponDealer : Component
 		
 		Gizmo.Draw.Line(Weapon.Muzzle.Transform.Position,Weapon.Muzzle.Transform.Position+Weapon.Muzzle.Transform.World.Forward*1024f);
 
-		Log.Info(trace.GameObject);
-
 		return trace.GameObject == target || trace.GameObject.Parent == target;
 	}
 

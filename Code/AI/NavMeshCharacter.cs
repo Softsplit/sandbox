@@ -5,6 +5,7 @@ using Sandbox.Navigation;
 public sealed class NavMeshCharacter : Component
 {
 	public CharacterController characterController {get;set;}
+	[Category("Character Controller"), Property] public bool useCharacterController = true;
 	[Category("Character Controller"), Property, Range(0,200)] public float Radius {get;set;} = 16f;
 	[Category("Character Controller"), Property, Range(0,200)] public float Height {get;set;} = 64f;
 	[Category("Character Controller"), Property, Range(0,50)] public float StepHeight {get;set;} = 18f;
@@ -34,21 +35,25 @@ public sealed class NavMeshCharacter : Component
 		boxCollider = g.Components.GetOrCreate<BoxCollider>();
 		boxCollider.Scale = new Vector3(Radius*2,Radius*2,Height);
 		boxCollider.Center = new Vector3(0,0,Height/2);
-
-		characterController = Components.GetOrCreate<CharacterController>();
-		characterController.Radius = Radius;
-		characterController.Height = Height;
-		characterController.StepHeight = StepHeight;
-		characterController.GroundAngle = GroundAngle;
-		characterController.Acceleration = Acceleration;
-		characterController.Bounciness = Bounciness;
-		characterController.UseCollisionRules = UseProjetcCollisionRules;
-		characterController.IgnoreLayers = IgnoreLayers;
+		if(useCharacterController)
+		{
+			characterController = Components.GetOrCreate<CharacterController>();
+			characterController.Radius = Radius;
+			characterController.Height = Height;
+			characterController.StepHeight = StepHeight;
+			characterController.GroundAngle = GroundAngle;
+			characterController.Acceleration = Acceleration;
+			characterController.Bounciness = Bounciness;
+			characterController.UseCollisionRules = UseProjetcCollisionRules;
+			characterController.IgnoreLayers = IgnoreLayers;
+		}
 		
 		CurrentPath = new List<Vector3>(){Transform.Position};
 	}
 	bool AtTarget;
 	public Vector3 velocity;
+
+	Vector3 lastPos;
 	protected override void OnUpdate()
 	{
 		MoveTo();
@@ -56,22 +61,33 @@ public sealed class NavMeshCharacter : Component
 		if(!AtTarget)
 		{
 			Move();	
-			velocity = characterController.Velocity;
+			var direction = (CurrentPath[0]-Transform.Position).Normal;
+			velocity = useCharacterController ? characterController.Velocity : direction*Speed;
 		}
 		else
 		{
 			if(CurrentPath.Count > 1) CurrentPath.RemoveAt(0);
 			velocity = Vector3.Zero;
 		}
+		
+		//lastPos = Transform.Position;
 	}
 	void Move()
 	{
 		var gravity = Game.ActiveScene.PhysicsWorld.Gravity;
 		var direction = (CurrentPath[0]-Transform.Position).Normal;
-		characterController.Velocity.WithZ(0);
-		characterController.Velocity = Vector3.Lerp(characterController.Velocity, direction*Speed, SpeedSmoothing*Time.Delta);
-		if(!characterController.IsOnGround) characterController.Velocity += Vector3.Up*gravity;
-		characterController.Move();
+		if(useCharacterController)
+		{
+			characterController.Velocity.WithZ(0);
+			characterController.Velocity = Vector3.Lerp(characterController.Velocity, direction*Speed, SpeedSmoothing*Time.Delta);
+			if(!characterController.IsOnGround) characterController.Velocity += Vector3.Up*gravity;
+			characterController.Move();
+		}
+		else
+		{
+			Transform.Position += direction*Speed*Time.Delta;
+		}
+		
 		
 		if(Gizmos)
 		{
