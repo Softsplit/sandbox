@@ -90,10 +90,10 @@ public sealed class Weld : ToolComponent
 		weldContext1.point2 = point2Pos;
 
 		WeldContext weldContext2 = object2?.Components.Create<WeldContext>();
-		weldContext2.weldedObject = weldContext1;
+		weldContext2.connectedObject = weldContext1;
 		weldContext2.body = object2?.Components.Get<Rigidbody>()?.PhysicsBody;
 
-		weldContext1.weldedObject = weldContext2;
+		weldContext1.connectedObject = weldContext2;
 		weldContext1.body = object1?.Components.Get<Rigidbody>()?.PhysicsBody;
 
 		PlayerPawn owner = player?.Components.Get<PlayerPawn>();
@@ -126,9 +126,9 @@ public sealed class Weld : ToolComponent
 		{
 			WeldContext weldToRemove = weldContext?.ElementAt( 0 );
 			if ( weldToRemove.MainWeld ) weldToRemove?.weldJoint?.Remove();
-			else weldToRemove?.weldedObject?.weldJoint?.Remove();
+			else weldToRemove?.weldJoint?.Remove();
 
-			weldToRemove?.weldedObject?.Destroy();
+			weldToRemove?.connectedObject?.Destroy();
 			weldToRemove?.Destroy();
 		}
 	}

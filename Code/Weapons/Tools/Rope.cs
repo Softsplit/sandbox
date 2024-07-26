@@ -90,10 +90,10 @@ public sealed class Rope : ToolComponent
 		ropeContext1.point2 = point2Pos;
 
 		RopeContext ropeContext2 = object2?.Components.Create<RopeContext>();
-		ropeContext2.ropededObject = ropeContext1;
+		ropeContext2.connectedObject = ropeContext1;
 		ropeContext2.body = object2?.Components.Get<Rigidbody>()?.PhysicsBody;
 
-		ropeContext1.ropededObject = ropeContext2;
+		ropeContext1.connectedObject = ropeContext2;
 		ropeContext1.body = object1?.Components.Get<Rigidbody>()?.PhysicsBody;
 
 		PlayerPawn owner = player?.Components.Get<PlayerPawn>();
@@ -126,9 +126,9 @@ public sealed class Rope : ToolComponent
 		{
 			RopeContext ropeToRemove = ropeContext?.ElementAt( 0 );
 			if ( ropeToRemove.MainRope ) ropeToRemove?.ropeJoint?.Remove();
-			else ropeToRemove?.ropededObject?.ropeJoint?.Remove();
+			else ropeToRemove?.ropeJoint?.Remove();
 
-			ropeToRemove?.ropededObject?.Destroy();
+			ropeToRemove?.connectedObject?.Destroy();
 			ropeToRemove?.Destroy();
 		}
 	}

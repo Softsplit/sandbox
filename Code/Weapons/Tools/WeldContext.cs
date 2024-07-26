@@ -2,18 +2,16 @@ using Sandbox.Physics;
 
 namespace Softsplit;
 
-public sealed class WeldContext : Component
+public sealed class WeldContext : JointContext
 {
-	[Property] public WeldContext weldedObject { get; set; }
 	public PhysicsJoint weldJoint;
-	[Property] public PhysicsBody body { get; set; }
 	[Property] public bool MainWeld { get; set; }
 	[Property] public Vector3 point1 { get; set; }
 	[Property] public Vector3 point2 { get; set; }
 
 	protected override void OnStart()
 	{
-		if ( weldedObject == null )
+		if ( connectedObject == null )
 			Destroy();
 
 		if ( MainWeld )
@@ -27,16 +25,16 @@ public sealed class WeldContext : Component
 
 			var p1 = new PhysicsPoint( body, point1 );
 
-			if ( weldedObject?.Components.Get<Rigidbody>() == null )
+			if ( connectedObject?.Components.Get<Rigidbody>() == null )
 				return;
 
-			weldedObject.body = weldedObject?.Components.Get<Rigidbody>()?.PhysicsBody;
+			connectedObject.body = connectedObject?.Components.Get<Rigidbody>()?.PhysicsBody;
 
-			if ( weldedObject?.body == null ) return;
+			if ( connectedObject?.body == null ) return;
 
-			var p2 = new PhysicsPoint( weldedObject?.body, point2 );
+			var p2 = new PhysicsPoint( connectedObject?.body, point2 );
 
-			if ( body.Equals( weldedObject.body ) )
+			if ( body.Equals( connectedObject.body ) )
 				return;
 
 			weldJoint = PhysicsJoint.CreateFixed( p1, p2 );

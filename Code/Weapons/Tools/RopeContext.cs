@@ -2,18 +2,16 @@ using Sandbox.Physics;
 
 namespace Softsplit;
 
-public sealed class RopeContext : Component
+public sealed class RopeContext : JointContext
 {
-	[Property] public RopeContext ropededObject { get; set; }
 	public PhysicsJoint ropeJoint;
-	[Property] public PhysicsBody body { get; set; }
 	[Property] public bool MainRope { get; set; }
 	[Property] public Vector3 point1 { get; set; }
 	[Property] public Vector3 point2 { get; set; }
 
 	protected override void OnStart()
 	{
-		if ( ropededObject == null )
+		if ( connectedObject == null )
 			Destroy();
 
 		if ( MainRope )
@@ -27,16 +25,16 @@ public sealed class RopeContext : Component
 
 			var p1 = new PhysicsPoint( body, point1 );
 
-			if ( ropededObject?.Components.Get<Rigidbody>() == null )
+			if ( connectedObject?.Components.Get<Rigidbody>() == null )
 				return;
 
-			ropededObject.body = ropededObject?.Components.Get<Rigidbody>()?.PhysicsBody;
+			connectedObject.body = connectedObject?.Components.Get<Rigidbody>()?.PhysicsBody;
 
-			if ( ropededObject?.body == null ) return;
+			if ( connectedObject?.body == null ) return;
 
-			var p2 = new PhysicsPoint( ropededObject?.body, point2 );
+			var p2 = new PhysicsPoint( connectedObject?.body, point2 );
 
-			if ( body.Equals( ropededObject.body ) )
+			if ( body.Equals( connectedObject.body ) )
 				return;
 
 			ropeJoint = PhysicsJoint.CreateSpring( p1, p2, 20, 200 );
