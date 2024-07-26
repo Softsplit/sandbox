@@ -1,6 +1,3 @@
-using Sandbox.UI;
-using Sandbox.UI.Construct;
-
 public partial class ScoreboardEntry : Panel
 {
 	public Connection Client;
@@ -42,7 +39,7 @@ public partial class ScoreboardEntry : Panel
 		SetClass( "me", Client == Connection.Local );
 		// Kills.Text = Client.GetUserData( "kills" ).ToString();
 		// Deaths.Text = Client.GetUserData( "deaths" ).ToString();
-		Ping.Text = Client.Ping.ToString();
+		Ping.Text = Client.Ping.CeilToInt().ToString();
 	}
 
 	public virtual void UpdateFrom( Connection client )
