@@ -7,6 +7,8 @@ public sealed class RopeContext : JointContext
 	public PhysicsJoint ropeJoint;
 	[Property] public bool MainRope { get; set; }
 	[Property] public float Width { get; set; }
+	[Property] public float MinLength { get; set; }
+	[Property] public float MaxLength { get; set; }
 	[Property] public Color Color { get; set; }
 	[Property] public Vector3 point1 { get; set; }
 	[Property] public Vector3 point2 { get; set; }
@@ -40,7 +42,7 @@ public sealed class RopeContext : JointContext
 			if ( body.Equals( connectedObject.body ) )
 				return;
 
-			ropeJoint = PhysicsJoint.CreateSpring( p1, p2, 20, 200 );
+			ropeJoint = PhysicsJoint.CreateSpring( p1, p2, MinLength, MaxLength );
 
 			lineRenderer = Components.GetOrCreate<VectorLineRenderer>();
 			lineRenderer.Color = Color;

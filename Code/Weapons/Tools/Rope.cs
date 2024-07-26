@@ -49,7 +49,7 @@ public sealed class Rope : ToolComponent
 			}
 			else
 			{
-				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, localPoint, RopeMenu.Width, RopeMenu.Color );
+				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, localPoint, RopeMenu.Width, RopeMenu.Color, RopeMenu.MinLength, RopeMenu.MaxLength );
 				object1 = null;
 			}
 		}
@@ -78,7 +78,7 @@ public sealed class Rope : ToolComponent
 
 				object1G.Transform.Position += hit.EndPosition - pointWorld;
 
-				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, hit.EndPosition, RopeMenu.Width, RopeMenu.Color );
+				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, hit.EndPosition, RopeMenu.Width, RopeMenu.Color, RopeMenu.MinLength, RopeMenu.MaxLength );
 
 				object1 = null;
 			}
@@ -86,11 +86,13 @@ public sealed class Rope : ToolComponent
 	}
 
 	[Broadcast]
-	public static void CreateRope( GameObject player, GameObject object1, Vector3 point1Pos, GameObject object2, Vector3 point2Pos, float width, Color color )
+	public static void CreateRope( GameObject player, GameObject object1, Vector3 point1Pos, GameObject object2, Vector3 point2Pos, float width, Color color, float minLength, float maxLength )
 	{
 		RopeContext ropeContext1 = object1?.Components.Create<RopeContext>();
 		ropeContext1.Width = width;
 		ropeContext1.Color = color;
+		ropeContext1.MinLength = minLength;
+		ropeContext1.MaxLength = maxLength;
 		ropeContext1.MainRope = true;
 
 		ropeContext1.point1 = point1Pos;
