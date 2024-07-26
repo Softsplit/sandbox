@@ -1,6 +1,8 @@
 @import "/UI/Styles/Theme.scss";
 
 Page {
+    width: 100%;
+    height: 100%;
     background-image: url("ui/boxes.webm");
     background-size: cover;
 }
