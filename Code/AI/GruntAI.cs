@@ -8,6 +8,7 @@ public sealed class GruntAI : AIAgent
     public EnemyWeaponDealer EnemyWeaponDealer;
     public FindChooseEnemy FindChooseEnemy;
     [Property] public AnimationHelper AnimationHelper {get;set;}
+    public PlayerBody Body {get;set;}
     AgroRelations agroRelations;
     HealthComponent healthComponent;
     float lastHealth;
@@ -32,6 +33,7 @@ public sealed class GruntAI : AIAgent
     protected override void SetStates()
     {
         //currentGrenadeTime = GrenadeTime;
+        Body = AnimationHelper.Components.Get<PlayerBody>();
         healthComponent = Components.Get<HealthComponent>();
         CoverFinder = Scene.Components.GetInChildren<CoverFinder>();
         FindChooseEnemy = Components.GetOrCreate<FindChooseEnemy>();
@@ -49,8 +51,39 @@ public sealed class GruntAI : AIAgent
 
     public PlayerGlobals Global => GetGlobal<PlayerGlobals>();
 
+    [Broadcast( NetPermission.HostOnly )]
+	private void Die()
+	{
+		if ( !Body.IsValid() )
+			return;
+
+		Body.SetRagdoll( true );
+		Body.GameObject.SetParent( null, true );
+		Body.GameObject.Name = $"Ragdoll ({GameObject.Name})";
+
+        /*don't know what this is
+
+		var ev = new OnPlayerRagdolledEvent();
+		Scene.Dispatch( ev );
+
+		if ( ev.DestroyTime > 0f )
+		{
+			var comp = Body.Components.Create<TimedDestroyComponent>();
+			comp.Time = ev.DestroyTime;
+		}
+
+        */
+		Body = null;
+        GameObject.Destroy();
+	}
+
     protected override void Update()
     {
+        if(healthComponent.Health <= 0)
+        {
+            Die();
+            return;
+        }
         //currentGrenadeTime+=Time.Delta;
         //lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
         float targetCrouch = IsCrouching ? 1.5f : 0.0f;
