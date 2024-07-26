@@ -30,13 +30,19 @@ public sealed class GruntAI : AIAgent
     protected override void SetStates()
     {
         //currentGrenadeTime = GrenadeTime;
+        healthComponent = Components.Get<HealthComponent>();
         CoverFinder = Scene.Components.GetInChildren<CoverFinder>();
         FindChooseEnemy = Components.GetOrCreate<FindChooseEnemy>();
         agroRelations = Components.Get<AgroRelations>();
         EnemyWeaponDealer = Components.Get<EnemyWeaponDealer>();
-        initialState = "COVER";
+        initialState = "IDLE";
         stateMachine.RegisterState(new SUPPRESS());
+        stateMachine.RegisterState(new PRESS_ATTACK());
+        stateMachine.RegisterState(new FIRE_DISTANCE());
         stateMachine.RegisterState(new COVER());
+        stateMachine.RegisterState(new HIDE_AND_RELOAD());
+        stateMachine.RegisterState(new CAUTION_COVER());
+        stateMachine.RegisterState(new IDLE());
     }
 
     public PlayerGlobals Global => GetGlobal<PlayerGlobals>();
@@ -72,6 +78,15 @@ public sealed class GruntAI : AIAgent
 			AnimationHelper.Handedness = EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both;
 			AnimationHelper.AimBodyWeight = 0.1f;
 		}
+
+        if(FindChooseEnemy.Enemy.IsValid())
+        {
+            stateMachine.ChangeState(FindCondition());
+        }
+        else
+        {
+            stateMachine.ChangeState("IDLE");
+        }
     }
 
     public (CoverContext cover, float distance) CheckCover()
@@ -193,13 +208,37 @@ public sealed class GruntAI : AIAgent
 "HIDE_AND_RELOAD"
 "CAUTION_COVER"
 */
+public class IDLE : AIState
+{
+    GruntAI gruntAI;
+	public void Enter( AIAgent agent )
+	{
+		gruntAI = agent.Components.Get<GruntAI>();
+	}
 
+	public void Exit( AIAgent agent )
+	{
+		
+	}
+
+	public string GetID()
+	{
+		return "IDLE";
+	}
+	
+    float timeSinceLastCanShoot;
+	public void Update( AIAgent agent )
+	{
+        agent.Controller.currentTarget = agent.Transform.Position;
+	}
+}
 public class SUPPRESS : AIState
 {
     GruntAI gruntAI;
 	public void Enter( AIAgent agent )
 	{
 		gruntAI = agent.Components.Get<GruntAI>();
+        gruntAI.IsCrouching = false;
 	}
 
 	public void Exit( AIAgent agent )
@@ -230,12 +269,46 @@ public class SUPPRESS : AIState
         }
 	}
 }
+public class PRESS_ATTACK : AIState
+{
+    GruntAI gruntAI;
+	public void Enter( AIAgent agent )
+	{
+		gruntAI = agent.Components.Get<GruntAI>();
+        gruntAI.IsCrouching = false;
+	}
+
+	public void Exit( AIAgent agent )
+	{
+		gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
+	}
+
+	public string GetID()
+	{
+		return "PRESS_ATTACK";
+	}
+	
+	public void Update( AIAgent agent )
+	{
+
+        agent.Controller.currentTarget = gruntAI.FindChooseEnemy.Enemy.Transform.Position;
+		if(gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy))
+        {
+            gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = true;
+        }
+        else
+        {
+            gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
+        }
+	}
+}
 public class FIRE_DISTANCE : AIState
 {
     GruntAI gruntAI;
 	public void Enter( AIAgent agent )
 	{
 		gruntAI = agent.Components.Get<GruntAI>();
+        gruntAI.IsCrouching = false;
 	}
 
 	public void Exit( AIAgent agent )
@@ -315,4 +388,94 @@ public class COVER : AIState
             gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
         }
 	}
+    
+}
+public class HIDE_AND_RELOAD : AIState
+{
+    GruntAI gruntAI;
+
+
+	public void Enter( AIAgent agent )
+	{
+		gruntAI = agent.Components.Get<GruntAI>();
+	}
+
+	public void Exit( AIAgent agent )
+	{
+		gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
+	}
+
+	public string GetID()
+	{
+		return "HIDE_AND_RELOAD";
+	}
+	public void Update( AIAgent agent )
+	{
+        GameObject enemy = gruntAI.FindChooseEnemy.Enemy;
+
+        gruntAI.FaceThing(enemy);
+
+        (CoverContext currentCover, float distance) = gruntAI.CheckCover();
+
+        gruntAI.Controller.currentTarget = currentCover == null ? 
+        
+            (gruntAI.RetreatToFireLine() ? gruntAI.Transform.Position - (enemy.Transform.Position - gruntAI.Transform.Position).Normal*150f : gruntAI.Transform.Position)
+            
+            :
+            
+            currentCover.Transform.Position;
+        
+        gruntAI.IsCrouching = (distance < 20);
+        
+        gruntAI.EnemyWeaponDealer.Reload.ForceReload = true;
+	}
+}
+public class CAUTION_COVER : AIState
+{
+    GruntAI gruntAI;
+
+
+	public void Enter( AIAgent agent )
+	{
+		gruntAI = agent.Components.Get<GruntAI>();
+	}
+
+	public void Exit( AIAgent agent )
+	{
+		gruntAI.EnemyWeaponDealer.Reload.ForceReload = false;
+	}
+
+	public string GetID()
+	{
+		return "CAUTION_COVER";
+	}
+	public void Update( AIAgent agent )
+	{
+        GameObject enemy = gruntAI.FindChooseEnemy.Enemy;
+
+        gruntAI.FaceThing(enemy);
+
+        (CoverContext currentCover, float distance) = gruntAI.CheckCover();
+
+        gruntAI.Controller.currentTarget = currentCover == null ? 
+        
+            (gruntAI.RetreatToFireLine() ? gruntAI.Transform.Position - (enemy.Transform.Position - gruntAI.Transform.Position).Normal*150f : gruntAI.Transform.Position)
+            
+            :
+            
+            currentCover.Transform.Position;
+        
+        gruntAI.IsCrouching = (distance < 20);
+        
+        
+		if(gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy))
+        {
+            gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = true;
+        }
+        else
+        {
+            gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
+        }
+	}
+    
 }

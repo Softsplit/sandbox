@@ -119,6 +119,25 @@
         "StepHeight": 18,
         "UpdateRotation": true,
         "UseProjetcCollisionRules": false
+      },
+      {
+        "__type": "Softsplit.HealthComponent",
+        "__guid": "2f811573-66a1-4e66-8cb3-2c0716eeef90",
+        "IsGodMode": false
+      },
+      {
+        "__type": "Sandbox.ModelHitboxes",
+        "__guid": "5dcd9377-cffd-43e4-ba31-a02f81583d24",
+        "Renderer": {
+          "_type": "component",
+          "component_id": "7f60f0c0-2485-4502-a020-6ed87a599f79",
+          "go": "77954e86-76f5-49f3-8d26-ec31ce87adbb",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "Target": {
+          "_type": "gameobject",
+          "go": "77954e86-76f5-49f3-8d26-ec31ce87adbb"
+        }
       }
     ],
     "Children": [
