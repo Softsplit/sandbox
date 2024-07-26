@@ -84,7 +84,7 @@
           "ZIndex": 100
         },
         {
-          "__type": "SandboxHUD",
+          "__type": "SandboxHud",
           "__guid": "9c32408d-e0f5-4a7d-ab93-9e11b308b4a9"
         },
         {

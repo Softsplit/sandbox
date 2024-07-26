@@ -339,10 +339,11 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		HeldBody.Sleeping = false;
 		HeldBody.AutoSleep = false;
 	}
-
+	[Broadcast]
 	private void GrabEnd()
 	{
 		if ( GrabbedObject == null ) return;
+
 		if ( HeldBody.IsValid() )
 		{
 			HeldBody.AutoSleep = true;
