@@ -87,7 +87,7 @@ public sealed class GruntAI : AIAgent
         Body.GameObject.NetworkSpawn();
 	}
     [Broadcast]
-    public void Animate(Vector3 velocity, bool isOnGround, Vector3 lookDirection, float crouchLevel, AnimationHelper.HoldTypes holdType, AnimationHelper.Hand hand)
+    public void Animate(Vector3 velocity, bool isOnGround, Vector3 lookDirection, float crouchLevel, AnimationHelper.HoldTypes holdType, AnimationHelper.Hand hand, bool loweredWeapon)
     {
         AnimationHelper.WithVelocity( velocity.IsNearlyZero() ? Vector3.Zero : velocity );
 		AnimationHelper.IsGrounded = isOnGround;
@@ -97,6 +97,7 @@ public sealed class GruntAI : AIAgent
 		AnimationHelper.HoldType = holdType;
 		AnimationHelper.Handedness = hand;
 		AnimationHelper.AimBodyWeight = 0.1f;
+        AnimationHelper.IsWeaponLowered = loweredWeapon;
     }
 
     protected override void Update()
@@ -133,7 +134,8 @@ public sealed class GruntAI : AIAgent
                 FindChooseEnemy.Enemy != null ? (FindChooseEnemy.Enemy.Transform.World.PointToWorld(FindChooseEnemy.EnemyRelations.attackPoint) - Transform.World.PointToWorld(EyePos)) : Transform.World.Forward,
                 smoothCrouch,
                 EnemyWeaponDealer.Weapon.GetHoldType(),
-                EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both
+                EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both,
+                FindChooseEnemy.Enemy == null
             );
 		}
 
