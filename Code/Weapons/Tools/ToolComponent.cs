@@ -80,6 +80,7 @@ public abstract class ToolComponent : InputWeaponComponent
 			toolGunHandler.ActiveToolMenu.Enabled = !toolGunHandler.ActiveToolMenu.Enabled;
 			Equipment.Owner.Inventory.cantSwitch = toolGunHandler.ActiveToolMenu.Enabled;
 		}
+		
 	}
 
 	protected virtual void Start()

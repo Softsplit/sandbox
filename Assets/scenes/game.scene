@@ -1,5 +1,5 @@
 {
-  "__guid": "5e7e3c9b-1da6-43f2-8d0b-cf9a2ec6d17b",
+  "__guid": "95fa32d4-dffc-482b-b28f-2c30d21772ef",
   "GameObjects": [
     {
       "__guid": "a10c8afd-b44d-4a6f-a32d-70df6a98af68",
@@ -48,6 +48,31 @@
       ]
     },
     {
+      "__guid": "d21bea93-01e3-46c8-b614-4f976b9d5113",
+      "Flags": 0,
+      "Name": "Covers",
+      "Position": "0,0,0.0003420925",
+      "Tags": "cover",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "CoverFinder",
+          "__guid": "7a7cf6ee-9ca6-422a-9be6-dbeda1c213b6",
+          "coverCheckDistance": 50,
+          "coverHeight": 38,
+          "CoverRadius": 20,
+          "coverSpacing": 50,
+          "EnemyDistance": 150,
+          "flatFaceAngleCheck": 45,
+          "flatSpacing": 150,
+          "pointGrid": "1000,1000",
+          "wallHeight": 60,
+          "zSpacing": 50
+        }
+      ]
+    },
+    {
       "__guid": "bd1f6a82-367b-40c3-8957-ee49541b6d74",
       "Flags": 0,
       "Name": "Networking",
@@ -65,6 +90,26 @@
         {
           "__type": "Softsplit.PrefabInitializer",
           "__guid": "751235fb-bc40-4025-a3be-637b8052d0b9"
+        }
+      ]
+    },
+    {
+      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
+      "Flags": 0,
+      "Name": "Pause Menu",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 999
+        },
+        {
+          "__type": "Softsplit.UI.PauseMenuPanel",
+          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
         }
       ]
     },
@@ -94,29 +139,10 @@
       ]
     },
     {
-      "__guid": "b41d4338-8f83-46cb-93e1-62d97946c170",
-      "Flags": 0,
-      "Name": "Pause Menu",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "80f1fae5-11a0-4068-9e90-0ec992532dcd",
-          "AutoScreenScale": true,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 999
-        },
-        {
-          "__type": "Softsplit.UI.PauseMenuPanel",
-          "__guid": "4a1bfedb-4778-4210-9826-f74b5b59eb29"
-        }
-      ]
-    },
-    {
       "__guid": "eb0da788-a279-46db-9596-e4b9f5533691",
       "Flags": 0,
       "Name": "Map ",
+      "Position": "0,0,7.968071",
       "Tags": "map",
       "Enabled": true,
       "Components": [
@@ -125,12 +151,26 @@
           "__guid": "10b0296e-edc7-4ac6-8251-a2dcde90e73c",
           "__version": 1,
           "EnableCollision": true,
-          "MapName": "softsplit.gm_bigcity",
+          "MapName": "maps/dev/preview_flat.vmap",
           "NoOrigin": true,
           "UseMapFromLaunch": true
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "2e6221b7-c99a-4284-bcc1-b88c60b8955b",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "1013.908,-335.0464,39.03973",
+      "Enabled": true
+    },
+    {
+      "__guid": "7627e2c0-1785-4572-bfc6-6c9a38769afc",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "300,0,0",
+      "Enabled": true
     }
   ],
   "SceneProperties": {
@@ -142,7 +182,7 @@
     "TimeScale": 1,
     "UseFixedUpdate": true,
     "NavMesh": {
-      "Enabled": false,
+      "Enabled": true,
       "IncludeStaticBodies": true,
       "IncludeKeyframedBodies": true,
       "EditorAutoUpdate": true,

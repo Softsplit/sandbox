@@ -6,6 +6,7 @@ namespace Softsplit;
 public partial class ReloadWeaponComponent : InputWeaponComponent,
 	IGameEventHandler<EquipmentHolsteredEvent>
 {
+	public bool ForceReload;
 	/// <summary>
 	/// How long does it take to reload?
 	/// </summary>
@@ -33,29 +34,38 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 
 	protected override void OnInput()
 	{
+		
 		if ( CanReload() )
 		{
 			StartReload();
 		}
+		
 	}
 
 	protected override void OnUpdate()
 	{
-		if ( !Player.IsValid() )
+		if(!NotPlayerControlled)
+		{
+			if ( !Player.IsValid() && !NotPlayerControlled )
 			return;
 
-		if ( !Player.IsLocallyControlled )
-			return;
-
-		if ( SingleReload && IsReloading && Input.Pressed( "Attack1" ) )
+			if ( !Player.IsLocallyControlled && !NotPlayerControlled )
+				return;
+		}
+		
+		
+		if ( SingleReload && IsReloading && !NotPlayerControlled && Input.Pressed( "Attack1" ) )
 		{
 			_queueCancel = true;
 		}
+		
 
 		if ( IsReloading && TimeUntilReload )
 		{
 			EndReload();
 		}
+		
+		
 	}
 
 	void IGameEventHandler<EquipmentHolsteredEvent>.OnGameEvent( EquipmentHolsteredEvent eventArgs )
@@ -69,7 +79,8 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 
 	bool CanReload()
 	{
-		return !IsReloading && AmmoComponent.IsValid() && !AmmoComponent.IsFull;
+
+		return !IsReloading && AmmoComponent.IsValid() && !AmmoComponent.IsFull;		
 	}
 
 	float GetReloadTime()
@@ -89,6 +100,7 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 	[Broadcast( NetPermission.OwnerOnly )]
 	void StartReload()
 	{
+		
 		_queueCancel = false;
 
 		if ( !IsProxy )
@@ -98,8 +110,11 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 		}
 
 		// Tags will be better so we can just react to stimuli.
-		Equipment.ViewModel?.ModelRenderer?.Set( "b_reload", true );
-		Equipment.Owner?.BodyRenderer?.Set( "b_reload", true );
+		if(!NotPlayerControlled)
+		{
+			Equipment.ViewModel?.ModelRenderer?.Set( "b_reload", true );
+			Equipment.Owner?.BodyRenderer?.Set( "b_reload", true );
+		}
 
 		foreach ( var kv in GetReloadSounds() )
 		{
@@ -111,17 +126,22 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 	[Broadcast( NetPermission.OwnerOnly )]
 	void CancelReload()
 	{
+		
 		if ( !IsProxy )
 			IsReloading = false;
-
+		
 		// Tags will be better so we can just react to stimuli.
-		Equipment.ViewModel?.ModelRenderer?.Set( "b_reload", false );
-		Equipment.Owner?.BodyRenderer?.Set( "b_reload", false );
+		if(!NotPlayerControlled)
+		{
+			Equipment.ViewModel?.ModelRenderer?.Set( "b_reload", false );
+			Equipment.Owner?.BodyRenderer?.Set( "b_reload", false );
+		}
 	}
 
 	[Broadcast( NetPermission.OwnerOnly )]
 	void EndReload()
 	{
+		
 		if ( !IsProxy )
 		{
 			if ( SingleReload )
@@ -144,7 +164,7 @@ public partial class ReloadWeaponComponent : InputWeaponComponent,
 		}
 
 		// Tags will be better so we can just react to stimuli.
-		Equipment.ViewModel?.ModelRenderer.Set( "b_reload", false );
+		if(!NotPlayerControlled) Equipment.ViewModel?.ModelRenderer.Set( "b_reload", false );
 	}
 
 	[Property] public Dictionary<float, SoundEvent> TimedReloadSounds { get; set; } = new();
