@@ -46,16 +46,16 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 	protected override void OnUpdate()
 	{
-		if(rotating)
+		if ( rotating )
 		{
 			rotating = GrabbedObject != null;
 		}
 		Equipment.Owner.lockCamera = rotating;
-		beam.enabled = Grabbing && GrabbedObject!=null;
-		if(GrabbedObjectHighlight != null) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject!=null;
-		if(Grabbing && GrabbedObject!=null)
+		beam.enabled = Grabbing && GrabbedObject != null;
+		if ( GrabbedObjectHighlight != null ) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject != null;
+		if ( Grabbing && GrabbedObject != null )
 		{
-			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos / GrabbedObject.Transform.Scale), Effector.Muzzle.Transform.World.Forward );
+			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos / GrabbedObject.Transform.Scale ), Effector.Muzzle.Transform.World.Forward );
 			beam.Base = Effector.Muzzle.Transform.Position;
 			if ( GrabbedObjectHighlight == null ) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>( true );
 		}
@@ -273,14 +273,18 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 		GrabbedObject = rootEnt;
 		GrabbedObject.Network.TakeOwnership();
-		foreach(GameObject g in GetAllConnectedWelds(GrabbedObject))
+
+		if ( GetAllConnectedWelds( GrabbedObject ) != null )
 		{
-			g.Network.TakeOwnership();
+			foreach ( GameObject g in GetAllConnectedWelds( GrabbedObject ) )
+			{
+				g?.Network.TakeOwnership();
+			}
 		}
 
 		GrabbedPos = tr.GameObject.Transform.World.PointToLocal( tr.EndPosition );
 
-		
+
 		GrabbedObject.Tags.Add( GrabbedTag );
 		GrabbedObject.Tags.Add( $"{GrabbedTag}{Equipment.Owner.SteamId}" );
 
