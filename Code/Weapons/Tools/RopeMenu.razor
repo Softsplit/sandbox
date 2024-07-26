@@ -1,0 +1,43 @@
+@inherits PanelComponent
+@namespace Softsplit.UI
+
+<root class="ToolGunMenu">
+	<div class="ToolBox">
+		<div class="Title">Rope Menu</div>
+		<div class="ValueBox">
+			<div class="ValueName">Width</div>
+			<TextEntry style="width: 10%;" Value:bind=@Width/>
+            <SliderControl Min=@(0f) Max=@(10f) Step=@(0.1f) Value:bind=@Width/>
+        </div>
+
+		<div class="ValueBox">
+			<div class="ValueName">Min Length</div>
+			<TextEntry style="width: 10%;" Value:bind=@MinLength/>
+            <SliderControl Min=@(0f) Max=@(1000f) Step=@(0.1f) Value:bind=@MinLength/>
+        </div>
+
+		<div class="ValueBox">
+			<div class="ValueName">Max Length</div>
+			<TextEntry style="width: 10%;" Value:bind=@MaxLength/>
+            <SliderControl Min=@(0f) Max=@(1000f) Step=@(0.1f) Value:bind=@MaxLength/>
+        </div>
+
+		<div class="ValueBox">
+			<div class="ValueName">Colour</div>
+			<ColorPicker style="height: 100%; width: 100%" Value:bind=@Color/>
+        </div>
+	</div>
+</root>
+
+
+
+@code
+{
+	[Property] public float Width { get; set; } = 1f;
+	[Property] public Color Color { get; set; } = Color.White;
+
+	[Property] public float MinLength {get;set;} = 20;
+	[Property] public float MaxLength {get;set;} = 200;
+
+	protected override int BuildHash() => System.HashCode.Combine( Width, Color );
+}

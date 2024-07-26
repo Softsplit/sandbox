@@ -1,0 +1,10 @@
+{
+  "Sequences": [
+    {
+      "Source": "materials/fallback.png",
+      "IsLooping": true,
+      "Frames": 64
+    }
+  ],
+  "OutputTypeString": "2D"
+}

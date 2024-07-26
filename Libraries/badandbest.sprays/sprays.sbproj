@@ -1,0 +1,24 @@
+{
+  "Title": "Sprays",
+  "Type": "library",
+  "Org": "badandbest",
+  "Ident": "sprays",
+  "Schema": 1,
+  "IncludeSourceFiles": true,
+  "Resources": null,
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Metadata": {
+    "CsProjName": "Sprays",
+    "Compiler": {
+      "RootNamespace": "badandbest",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "WarningsAsErrors": "",
+      "Whitelist": true,
+      "AssemblyReferences": [],
+      "IgnoreFolders": [],
+      "DistinctAssemblyReferences": []
+    }
+  }
+}

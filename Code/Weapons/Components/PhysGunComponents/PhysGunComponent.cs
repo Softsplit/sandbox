@@ -46,16 +46,16 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 	protected override void OnUpdate()
 	{
-		if(rotating)
+		if ( rotating )
 		{
 			rotating = GrabbedObject != null;
 		}
 		Equipment.Owner.lockCamera = rotating;
-		beam.enabled = Grabbing && GrabbedObject!=null;
-		if(GrabbedObjectHighlight != null) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject!=null;
-		if(Grabbing && GrabbedObject!=null)
+		beam.enabled = Grabbing && GrabbedObject != null;
+		if ( GrabbedObjectHighlight != null ) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject != null;
+		if ( Grabbing && GrabbedObject != null )
 		{
-			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos / GrabbedObject.Transform.Scale), Effector.Muzzle.Transform.World.Forward );
+			beam.CreateEffect( Effector.Muzzle.Transform.Position, GrabbedObject.Transform.Local.PointToWorld( GrabbedPos / GrabbedObject.Transform.Scale ), Effector.Muzzle.Transform.World.Forward );
 			beam.Base = Effector.Muzzle.Transform.Position;
 			if ( GrabbedObjectHighlight == null ) GrabbedObjectHighlight = GrabbedObject.Components.Get<HighlightOutline>( true );
 		}
@@ -182,27 +182,27 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 	public static List<GameObject> GetAllConnectedWelds( GameObject gameObject )
 	{
-		Component component = gameObject.Components.Get<WeldContext>();
+		Component component = gameObject.Components.Get<JointContext>();
 
 		if ( !component.IsValid() )
 			return null;
 
-		var result = new List<WeldContext>();
+		var result = new List<JointContext>();
 		var visited = new HashSet<Component>();
 
 		CollectWelds( component, result, visited );
 
 		List<GameObject> returned = new();
 
-		foreach ( WeldContext weldContext in result )
+		foreach ( JointContext jointContext in result )
 		{
-			returned.Add( weldContext.GameObject );
+			returned.Add( jointContext.GameObject );
 		}
 
 		return returned;
 	}
 
-	private static void CollectWelds( Component component, List<WeldContext> result, HashSet<Component> visited )
+	private static void CollectWelds( Component component, List<JointContext> result, HashSet<Component> visited )
 	{
 		if ( visited.Contains( component ) )
 		{
@@ -211,15 +211,15 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 		visited.Add( component );
 
-		var weldContexts = component.Components.GetAll<WeldContext>();
+		var jointContexts = component.Components.GetAll<JointContext>();
 
-		result.AddRange( weldContexts );
+		result.AddRange( jointContexts );
 
-		foreach ( var weldContext in weldContexts )
+		foreach ( var jointContext in jointContexts )
 		{
-			if ( weldContext.weldedObject != null )
+			if ( jointContext.connectedObject != null )
 			{
-				CollectWelds( weldContext.weldedObject, result, visited );
+				CollectWelds( jointContext.connectedObject, result, visited );
 			}
 		}
 	}
@@ -274,9 +274,17 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		GrabbedObject = rootEnt;
 		GrabbedObject.Network.TakeOwnership();
 
+		if ( GetAllConnectedWelds( GrabbedObject ) != null )
+		{
+			foreach ( GameObject g in GetAllConnectedWelds( GrabbedObject ) )
+			{
+				g?.Network.TakeOwnership();
+			}
+		}
+
 		GrabbedPos = tr.GameObject.Transform.World.PointToLocal( tr.EndPosition );
 
-		
+
 		GrabbedObject.Tags.Add( GrabbedTag );
 		GrabbedObject.Tags.Add( $"{GrabbedTag}{Equipment.Owner.SteamId}" );
 
@@ -339,10 +347,11 @@ public partial class PhysGunComponent : InputWeaponComponent,
 		HeldBody.Sleeping = false;
 		HeldBody.AutoSleep = false;
 	}
-
+	[Broadcast]
 	private void GrabEnd()
 	{
 		if ( GrabbedObject == null ) return;
+
 		if ( HeldBody.IsValid() )
 		{
 			HeldBody.AutoSleep = true;
