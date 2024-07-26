@@ -164,6 +164,13 @@
       "Name": "Object",
       "Position": "1013.908,-335.0464,39.03973",
       "Enabled": true
+    },
+    {
+      "__guid": "7627e2c0-1785-4572-bfc6-6c9a38769afc",
+      "Flags": 0,
+      "Name": "Object",
+      "Position": "300,0,0",
+      "Enabled": true
     }
   ],
   "SceneProperties": {

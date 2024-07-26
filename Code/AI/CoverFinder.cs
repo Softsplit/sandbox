@@ -146,6 +146,7 @@ public sealed class CoverFinder : Component
 
         CoverContext coverContext = point.Components.Create<CoverContext>();
         coverContext.angle = angle;
+        coverContext.wall = wall;
 
 		point.SetParent(GameObject);
 	}

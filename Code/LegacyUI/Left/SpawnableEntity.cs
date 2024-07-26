@@ -24,6 +24,11 @@ namespace Softsplit;
 
 public class SpawnableEntity : Component
 {
+
+	protected override void OnStart()
+	{
+		Network.DropOwnership();
+	}
 	/// <summary>
 	/// The name of the item.
 	/// </summary>

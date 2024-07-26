@@ -33,9 +33,9 @@ public abstract class AIAgent : Component
     protected override void OnUpdate()
     {
 		
-        
-        stateMachine.Update();
         Update();
+        stateMachine.Update();
+        
     }
 
     protected virtual void Update()

@@ -38,7 +38,7 @@ public abstract class InputWeaponComponent : EquipmentComponent,
 
 	bool isDown = false;
 
-	protected bool IsDown() => isDown;
+	protected bool IsDown() => !NotPlayerControlled ? isDown : ForceShoot;
 
 	public void ForceInput()
 	{

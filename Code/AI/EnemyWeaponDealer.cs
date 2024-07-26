@@ -21,15 +21,12 @@ public sealed class EnemyWeaponDealer : Component
 
 	public bool WeaponHitsTarget(GameObject target)
 	{
-		var MuzzleNoZ = Weapon.Muzzle.Transform.Position;
-		MuzzleNoZ.z = 0;
 
-		var TargetNoZ = target.Transform.Position;
-		TargetNoZ.z = 0;
-
-		var trace = Bullet.DoTraceBulletOne(Weapon.Muzzle.Transform.Position,Weapon.Muzzle.Transform.Position+(target.Transform.Position-Weapon.Muzzle.Transform.Position)*1024f, 1);
+		var trace = Bullet.DoTraceBulletOne(Weapon.Muzzle.Transform.Position,target.Transform.Position, 1);
 		
-		Gizmo.Draw.Line(Weapon.Muzzle.Transform.Position,Weapon.Muzzle.Transform.Position+Weapon.Muzzle.Transform.World.Forward*1024f);
+		Gizmo.Draw.Line(Weapon.Muzzle.Transform.Position,target.Transform.Position);
+		
+		if(!trace.Hit) return false;
 
 		return trace.GameObject == target || trace.GameObject.Parent == target;
 	}
@@ -68,6 +65,7 @@ public sealed class EnemyWeaponDealer : Component
 			if(c.GetType().ToString() == "Softsplit.ReloadWeaponComponent")
 			{
 				Reload = (ReloadWeaponComponent)c;
+				Reload.NotPlayerControlled = true;
 			}
 		}
 		
