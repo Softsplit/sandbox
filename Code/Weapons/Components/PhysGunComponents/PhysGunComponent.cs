@@ -273,6 +273,10 @@ public partial class PhysGunComponent : InputWeaponComponent,
 
 		GrabbedObject = rootEnt;
 		GrabbedObject.Network.TakeOwnership();
+		foreach(GameObject g in GetAllConnectedWelds(GrabbedObject))
+		{
+			g.Network.TakeOwnership();
+		}
 
 		GrabbedPos = tr.GameObject.Transform.World.PointToLocal( tr.EndPosition );
 
