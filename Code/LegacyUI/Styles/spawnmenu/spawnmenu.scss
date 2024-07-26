@@ -3,99 +3,99 @@
 @import "_packagelist.scss";
 
 spawnmenu {
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  padding: 80px 100px;
-  padding-bottom: 200px;
-  pointer-events: none;
-  transition: all 0.1s ease-out;
-  position: absolute;
-  font-family: poppins;
-  opacity: 0;
-  z-index: 10;
-  backdrop-filter: blur(10px) contrast(50%) saturate(50%) brightness(10%);
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    padding: 80px 100px;
+    padding-bottom: 200px;
+    pointer-events: none;
+    transition: all 0.1s ease-out;
+    position: absolute;
+    font-family: poppins;
+    opacity: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px) contrast(50%) saturate(50%) brightness(10%);
 
-  .left {
-    flex-grow: 1;
-    flex-direction: column;
-    position: relative;
-    left: -500px;
-    transition: all 0.3s ease-in;
-
-    .body {
-      flex-grow: 1;
-    }
-
-    textentry {
-      color: white;
-      transition: opacity 0.1s ease;
-      min-height: 44px;
-      opacity: 1;
-      font-size: 16px;
-      background-color: rgba(#090d10, 0.9);
-      border-radius: 5px;
-    }
-  }
-
-  .right {
-    margin-left: 50px;
-    flex-direction: column;
-    min-width: 400px;
-    flex-shrink: 0;
-    left: 500px;
-    transition: all 0.3s ease-in;
-
-    .body {
-      //	background-color: rgba( #333, 0.95 );
-      flex-grow: 1;
-      padding: 10px;
-
-      .toollist {
-        flex-direction: column;
-        width: 150px;
-        color: #aaa;
-
-        button {
-          padding: 3px 10px;
-          font-size: 11px;
-          transition: all 0.2s ease-out;
-          cursor: pointer;
-
-          &:hover {
-            //border-left: 3px solid #3273eb;
-            color: white;
-          }
-
-          &.active {
-            //border-left: 5px solid #3273eb;
-            color: white;
-          }
-        }
-      }
-
-      .inspector {
-        //background-color: rgba( #111, 0.7 );
+    .left {
         flex-grow: 1;
-        margin-left: 5px;
-        border-radius: 0 3px 3px 0;
-      }
+        flex-direction: column;
+        position: relative;
+        left: -500px;
+        transition: all 0.3s ease-in;
+
+        .body {
+            flex-grow: 1;
+        }
+
+        textentry {
+            color: white;
+            transition: opacity 0.1s ease;
+            min-height: 44px;
+            opacity: 1;
+            font-size: 16px;
+            background-color: rgba(#090d10, 0.9);
+            border-radius: 5px;
+        }
     }
-  }
+
+    .right {
+        margin-left: 50px;
+        flex-direction: column;
+        min-width: 400px;
+        flex-shrink: 0;
+        left: 500px;
+        transition: all 0.3s ease-in;
+
+        .body {
+            //	background-color: rgba( #333, 0.95 );
+            flex-grow: 1;
+            padding: 10px;
+
+            .toollist {
+                flex-direction: column;
+                width: 150px;
+                color: #aaa;
+
+                button {
+                    padding: 3px 10px;
+                    font-size: 11px;
+                    transition: all 0.2s ease-out;
+                    cursor: pointer;
+
+                    &:hover {
+                        //border-left: 3px solid #3273eb;
+                        color: white;
+                    }
+
+                    &.active {
+                        //border-left: 5px solid #3273eb;
+                        color: white;
+                    }
+                }
+            }
+
+            .inspector {
+                //background-color: rgba( #111, 0.7 );
+                flex-grow: 1;
+                margin-left: 5px;
+                border-radius: 0 3px 3px 0;
+            }
+        }
+    }
 }
 
 .spawnmenuopen spawnmenu {
-  transition: all 0.2s ease-out;
-  pointer-events: all;
-  opacity: 1;
-  transform: scale(1);
+    transition: all 0.2s ease-out;
+    pointer-events: all;
+    opacity: 1;
+    transform: scale(1);
 
-  .left,
-  .right {
-    left: 0;
-    transition: all 0.1s ease-out;
-  }
+    .left,
+    .right {
+        left: 0;
+        transition: all 0.1s ease-out;
+    }
 }
 
 .spawnpage {
@@ -105,7 +105,6 @@ spawnmenu {
         display: flex;
         opacity: 1;
     }
-
 
     .ent {
         width: 160px;
@@ -117,8 +116,6 @@ spawnmenu {
         text-shadow: 2px 2px 0px black;
         opacity: 1;
         transform: translateY(0);
-
-
 
         .item {
             position: relative;
@@ -167,6 +164,7 @@ spawnmenu {
 
 
     .canvas {
+        position: relative;
         overflow: scroll;
         width: 100%;
         flex-grow: 1;
@@ -213,17 +211,17 @@ spawnmenu {
 }
 
 spawnmenu .sidebar {
-  flex-direction: column;
-  width: 30px;
-  padding: 10px;
-
-  .group {
     flex-direction: column;
-  }
+    width: 30px;
+    padding: 10px;
 
-  button {
-    cursor: pointer;
-    border-radius: 5px;
-    color: white;
-  }
+    .group {
+        flex-direction: column;
+    }
+
+    button {
+        cursor: pointer;
+        border-radius: 5px;
+        color: white;
+    }
 }
