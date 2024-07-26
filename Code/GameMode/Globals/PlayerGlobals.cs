@@ -38,7 +38,7 @@ public class PlayerGlobals : GlobalComponent, IGameEventHandler<ModifyDamageGlob
 	/// <summary>
 	/// The base amount of spread all weapons have.
 	/// </summary>
-	[Property, Group( "Spread" )] public float BaseSpreadAmount { get; set; } = 0.05f;
+	[Property, Group( "Spread" )] public float BaseSpreadAmount { get; set; } = 0.025f;
 
 	/// <summary>
 	/// What's our upper limit when applying spread based on velocity?

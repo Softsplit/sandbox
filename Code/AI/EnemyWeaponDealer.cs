@@ -22,7 +22,6 @@ public sealed class EnemyWeaponDealer : Component
 
 	public float CalculateEffectiveDistance(float targetRadius, float desiredHitProbability)
     {
-        Log.Info(Bullet.BulletSpread);
         float bulletSpread = MathF.Atan(Bullet.BulletSpread);
         for(int i = 0; i < 1000; i++)
         {

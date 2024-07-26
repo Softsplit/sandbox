@@ -448,16 +448,17 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	/// Runs a trace with all the data we have supplied it, and returns the result
 	/// </summary>
 	/// <returns></returns>
+	
+	public PlayerGlobals Global => GetGlobal<PlayerGlobals>();
 	protected virtual IEnumerable<SceneTraceResult> GetShootTrace()
 	{
 		var hits = new List<SceneTraceResult>();
 
 		var start = WeaponRay.Position;
 		var rot = Rotation.LookAt( WeaponRay.Forward );
-
 		var forward = rot.Forward;
 		//(Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) - Why?
-		forward += Vector3.Random * (BulletSpread + (NotPlayerControlled ? 0f : Equipment.Owner.Spread)) * 0.25f;
+		forward += Vector3.Random * (BulletSpread + (NotPlayerControlled ? Global.BaseSpreadAmount : Equipment.Owner.Spread)) * 0.25f;
 		forward = forward.Normal;
 
 		var original = DoTraceBullet( start, WeaponRay.Position + forward * MaxRange, BulletSize );

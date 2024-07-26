@@ -59,7 +59,7 @@
           "_type": "gameobject",
           "go": "35638392-aab3-4fdf-b2be-cd5151f2af29"
         },
-        "WeaponResource": "weapons/spaghelli/spaghelli.equip"
+        "WeaponResource": "weapons/mp5/mp5.equip"
       },
       {
         "__type": "FindChooseEnemy",

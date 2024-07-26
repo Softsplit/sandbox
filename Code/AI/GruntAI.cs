@@ -104,7 +104,7 @@ public sealed class GruntAI : AIAgent
         
         if(!Networking.IsHost) return;
 
-        if(AutoCalculateDistance && !distanceCalculated && EnemyWeaponDealer.Bullet.BulletSpread >= 0.1f)
+        if(AutoCalculateDistance && !distanceCalculated && EnemyWeaponDealer.Bullet.BulletSpread > 0f)
         {
             AttackDistance = EnemyWeaponDealer.CalculateEffectiveDistance(12f,0.5f);
             MaxAttackDistance = EnemyWeaponDealer.CalculateEffectiveDistance(12f,0.25f);
