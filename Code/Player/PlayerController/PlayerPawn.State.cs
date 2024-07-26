@@ -22,6 +22,7 @@ public partial class PlayerPawn
 
 	public override void OnKill( DamageInfo damageInfo )
 	{
+		
 		if ( Networking.IsHost )
 		{
 			PlayerState.RespawnState = RespawnState.Requested;
@@ -29,12 +30,12 @@ public partial class PlayerPawn
 			Inventory.Clear();
 			CreateRagdoll();
 		}
-
+		
 		PlayerBoxCollider.Enabled = false;
-
+		
 		if ( IsProxy )
 			return;
-
+		
 		PlayerState.OnKill( damageInfo );
 
 		Holster();

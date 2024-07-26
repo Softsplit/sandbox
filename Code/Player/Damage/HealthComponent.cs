@@ -120,8 +120,6 @@ public partial class HealthComponent : Component, IRespawnable
 
 	private void BroadcastDamage( DamageInfo damageInfo )
 	{
-		Log.Info( damageInfo );
-
 		BroadcastDamage( damageInfo.Damage, damageInfo.Position, damageInfo.Force,
 			damageInfo.Attacker, damageInfo.Inflictor,
 			damageInfo.Hitbox, damageInfo.Flags );
@@ -159,14 +157,20 @@ public partial class HealthComponent : Component, IRespawnable
 		{
 			Victim = this
 		};
-
+		
 		// TODO: Make this not atrociously long
+		// TROLLFACE: I made it longer lol
 		if ( damageInfo.Attacker.Network.OwnerConnection != damageInfo.Victim.Network.OwnerConnection )
 		{
-			KillFeed.Current?.AddEntry( (long)damageInfo.Attacker.Network.OwnerConnection.SteamId,
-				damageInfo.Attacker.Network.OwnerConnection.DisplayName,
-				(long)damageInfo.Victim.Network.OwnerConnection.SteamId,
-				damageInfo.Victim.Network.OwnerConnection.DisplayName, "killed" );
+			bool validAttacker = damageInfo.Attacker.Network.OwnerConnection != null;
+			bool validVictim = damageInfo.Victim.Network.OwnerConnection != null;
+			KillFeed.Current?.AddEntry( 
+				validAttacker ? (long)damageInfo.Attacker.Network.OwnerConnection.SteamId : new long(),
+				validAttacker ? damageInfo.Attacker.Network.OwnerConnection.DisplayName : damageInfo.Attacker.GameObject.Name,
+				validVictim ? (long)damageInfo.Victim.Network.OwnerConnection.SteamId : new long(),
+				validVictim ? damageInfo.Victim.Network.OwnerConnection.DisplayName : damageInfo.Victim.GameObject.Name
+				, "killed" );
+			
 		}
 		else
 		{
@@ -174,9 +178,9 @@ public partial class HealthComponent : Component, IRespawnable
 				(long)damageInfo.Victim.Network.OwnerConnection.SteamId,
 				damageInfo.Victim.Network.OwnerConnection.DisplayName, "died" );
 		}
-
+		
 		Scene.Dispatch( new KillEvent( damageInfo ) );
-
+		
 		Respawnables.ToList().ForEach( x => x.OnKill( damageInfo ) );
 	}
 }

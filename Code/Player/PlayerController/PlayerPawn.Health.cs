@@ -44,7 +44,9 @@ public partial class PlayerPawn : IGameEventHandler<DamageTakenEvent>
 			if ( headshotSound is not null )
 			{
 				var handle = Sound.Play( headshotSound, position );
-				handle.ListenLocal = attacker.IsViewer || victim.IsViewer;
+				
+				if(attacker != null) handle.ListenLocal = attacker.IsViewer || victim.IsViewer;
+				
 			}
 		}
 		else

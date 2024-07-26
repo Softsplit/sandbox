@@ -61,6 +61,7 @@ public sealed class EnemyWeaponDealer : Component
 			{
 				Bullet = (ShootWeaponComponent)c;
 				Bullet.NotPlayerControlled = true;
+				Bullet.NonPlayerComponent = this;
 			}
 			if(c.GetType().ToString() == "Softsplit.ReloadWeaponComponent")
 			{

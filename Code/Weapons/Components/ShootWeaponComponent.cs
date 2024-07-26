@@ -81,6 +81,8 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	/// </summary>
 	[Property, Group( "Fire Modes" )] public float FireModeSwitchDelay { get; set; } = 0.3f;
 
+	public Component NonPlayerComponent;
+
 	/// <summary>
 	/// What fire modes do we support?
 	/// </summary>
@@ -337,7 +339,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	[Broadcast]
 	private void InflictDamage( GameObject target, float damage, Vector3 pos, Vector3 dir, HitboxTags hitbox, DamageFlags flags )
 	{
-		var dmgInfo = new DamageInfo( NotPlayerControlled ? this : Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags );
+		var dmgInfo = new DamageInfo( NotPlayerControlled ? NonPlayerComponent : Equipment.Owner, damage, Equipment, pos, dir * damage, hitbox, flags );
 
 		target?.TakeDamage( dmgInfo );
 

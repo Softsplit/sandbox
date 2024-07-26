@@ -89,7 +89,6 @@ public sealed class GruntAI : AIAgent
         {
             stateMachine.ChangeState("IDLE");
         }
-        Log.Info(stateMachine.currentState);
 
         lastHealth = healthComponent.Health;
 
@@ -179,7 +178,6 @@ public sealed class GruntAI : AIAgent
 
         if (EnemyWeaponDealer.Reload.AmmoComponent.Ammo == 0 || EnemyWeaponDealer.Reload.AmmoComponent.Ammo < EnemyWeaponDealer.Reload.AmmoComponent.MaxAmmo/10)
         {
-            Log.Info(EnemyWeaponDealer.Reload.AmmoComponent.MaxAmmo/10);
             return "HIDE_AND_RELOAD";
         }
         else if (stateMachine.currentState == "HIDE_AND_RELOAD")

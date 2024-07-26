@@ -62,7 +62,6 @@ public sealed class FindChooseEnemy : Component
 
 		if(!Enemy.IsValid())
 		{
-			Log.Info("balls");
 			Enemy = closest;
 			EnemyRelations = closestRelations;
 			NewEnemy = true;
