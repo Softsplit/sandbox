@@ -14,9 +14,10 @@ public sealed class EnemyWeaponDealer : Component
 		ChangeWeapon();
 	}
 
-	public void ReloadWeapon()
+	protected override void OnUpdate()
 	{
-		Reload.ForceInput();
+		Weapon.ModelRenderer.Enabled = true;
+		Weapon.ModelRenderer.RenderType = ModelRenderer.ShadowRenderType.On;
 	}
 
 	public bool WeaponHitsTarget(GameObject target)
@@ -67,6 +68,7 @@ public sealed class EnemyWeaponDealer : Component
 				Reload.NotPlayerControlled = true;
 			}
 		}
+		
 		
 
 

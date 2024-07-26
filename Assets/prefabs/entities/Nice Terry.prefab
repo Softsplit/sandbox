@@ -2,7 +2,7 @@
   "RootObject": {
     "__guid": "77954e86-76f5-49f3-8d26-ec31ce87adbb",
     "Flags": 0,
-    "Name": "test",
+    "Name": "nice terry",
     "Tags": "relations",
     "Enabled": true,
     "Components": [
@@ -17,7 +17,7 @@
           "Rotation": "0,0,0,1",
           "Guid": "1ce2ffcc-71c9-457a-9d82-6e523d5845f3"
         },
-        "Name": "Angry Terry"
+        "Name": "Nice Terry"
       },
       {
         "__type": "GruntAI",
@@ -34,8 +34,6 @@
         "HideTime": 5,
         "IsCrouching": false,
         "MajorDamageAmount": 20,
-        "MaxAttackDistance": 700,
-        "MaxDistanceFromCover": 150,
         "Patience": 30,
         "SmoothCrouchSpeed": 5,
         "SuppressPatience": 15
@@ -45,10 +43,9 @@
         "__guid": "8e45a527-6313-46bb-aa5c-46824cc6256d",
         "attackPoint": "0,0,0",
         "Enemies": [
-          "Player",
-          "Nice"
+          "Enemy"
         ],
-        "Faction": "Enemy"
+        "Faction": "Nice"
       },
       {
         "__type": "EnemyWeaponDealer",
@@ -62,14 +59,14 @@
       {
         "__type": "FindChooseEnemy",
         "__guid": "a1ca8f33-b4e9-4691-b06d-427609cbe3b2",
-        "DetectRange": 1500,
+        "DetectRange": 700,
         "EnemyRelations": {
           "_type": "component",
           "component_id": "8e45a527-6313-46bb-aa5c-46824cc6256d",
           "go": "77954e86-76f5-49f3-8d26-ec31ce87adbb",
           "component_type": "AgroRelations"
         },
-        "ForceTargetRange": 450,
+        "ForceTargetRange": 300,
         "NewEnemy": false,
         "TimeSinceSeen": 0
       },
@@ -105,14 +102,6 @@
         "__type": "Softsplit.HealthComponent",
         "__guid": "2f811573-66a1-4e66-8cb3-2c0716eeef90",
         "IsGodMode": false
-      },
-      {
-        "__type": "Sandbox.ModelHitboxes",
-        "__guid": "5dcd9377-cffd-43e4-ba31-a02f81583d24",
-        "Target": {
-          "_type": "gameobject",
-          "go": "77954e86-76f5-49f3-8d26-ec31ce87adbb"
-        }
       }
     ],
     "Children": [

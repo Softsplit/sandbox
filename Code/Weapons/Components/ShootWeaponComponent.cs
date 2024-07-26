@@ -456,7 +456,7 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 		var rot = Rotation.LookAt( WeaponRay.Forward );
 
 		var forward = rot.Forward;
-		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * (BulletSpread + (NotPlayerControlled ? 0.1f : Equipment.Owner.Spread)) * 0.25f;
+		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * (BulletSpread + (NotPlayerControlled ? 0f : Equipment.Owner.Spread)) * 0.25f;
 		forward = forward.Normal;
 
 		var original = DoTraceBullet( start, WeaponRay.Position + forward * MaxRange, BulletSize );

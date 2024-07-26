@@ -14,14 +14,23 @@
                 {
                     <div class="button" onclick=@(() => InvokeMethod( data.Method ))>@data.Attribute.Name</div>
                 }
+                
             </div>
         }
+        <div class="group">
+            <label class="text white">NPC</label>
+            <div class="button" onclick=@(() => npcsettings.Think = !npcsettings.Think)>@(npcsettings.Think ? "Disable NPCs" : "Enable NPCs")</div>
+            <div class="button" onclick=@(() => npcsettings.IgnorePlayers = !npcsettings.IgnorePlayers)>@(!npcsettings.IgnorePlayers ? "NPCs Ignore Players" : "NPCs Acknowledge Players")</div>
+        </div>
+        
     </div>
 </root>
 
 @code
 {
     protected bool IsActive { get; set; }
+
+    Npcsettings npcsettings;
 
     protected override void OnTreeFirstBuilt()
     {
@@ -35,6 +44,11 @@
 
     [ConVar( "developer_mode" )]
     public static bool IsDeveloper { get; set; } = false;
+
+    protected override void OnStart()
+    {
+        npcsettings = Components.Get<Npcsettings>();
+    }
 
     protected override void OnUpdate()
     {

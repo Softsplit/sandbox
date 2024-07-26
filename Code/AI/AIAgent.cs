@@ -7,14 +7,16 @@ public abstract class AIAgent : Component
     public NavMeshCharacter Controller { get; set; }
     public NavMeshAgent Agent { get; set; }
 
+    Npcsettings npcsettings;
+
     protected override void OnStart()
     {
-        if(!Networking.IsHost) Enabled = false;;
-        
+        if(!Networking.IsHost) Enabled = false;
+        npcsettings = Scene.Components.GetInChildren<Npcsettings>();
         Controller = Components.GetOrCreate<NavMeshCharacter>();
-        //Agent = Components.GetOrCreate<NavMeshAgent>();
         Controller.currentTarget = Transform.Position;
         stateMachine = new AIStateMachine(this);
+        
         SetStates();
         InitializeState();
     }
@@ -32,7 +34,7 @@ public abstract class AIAgent : Component
 
     protected override void OnUpdate()
     {
-		
+		if(!npcsettings.Think) return;
         Update();
         if(!Networking.IsHost) return;
         stateMachine.Update();

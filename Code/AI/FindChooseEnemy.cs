@@ -10,10 +10,12 @@ public sealed class FindChooseEnemy : Component
 	[Property] public float ForceTargetRange {get;set;} = 300f;
 
 	AgroRelations agroRelations;
+	Npcsettings npcsettings;
 
 	protected override void OnStart()
 	{
 		if(!Networking.IsHost) Enabled = false;
+		npcsettings = Scene.Components.GetInChildren<Npcsettings>();
 		agroRelations = Components.GetOrCreate<AgroRelations>();
 
 		if(agroRelations.Faction == null || agroRelations.Enemies == null)
@@ -26,6 +28,12 @@ public sealed class FindChooseEnemy : Component
 	{
 		
 		if(!Networking.IsHost) return;
+
+		if(npcsettings.IgnorePlayers && Enemy!=null )
+		{
+			if(Enemy.Tags.Contains("player")) Enemy = null;
+		}
+
 		TimeSinceSeen+=Time.Delta;
 
 		List<GameObject> Detected = Scene.FindInPhysics(new Sphere(Transform.Position,DetectRange)).ToList();
@@ -39,6 +47,8 @@ public sealed class FindChooseEnemy : Component
 			if(g.Tags == null) continue;	
 			
 			if(!g.Tags.Contains("relations")) continue;
+
+			if(g.Tags.Contains("player") && npcsettings.IgnorePlayers) continue;
 			
 			AgroRelations gAgroRelations = g.Components.Get<AgroRelations>();
 			if(gAgroRelations ==null) continue;

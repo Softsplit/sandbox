@@ -15,7 +15,7 @@ public sealed class CoverFinder : Component
     [Property] Vector2 pointGrid {get;set;}
     List<Vector3> generatedPoints = new List<Vector3>();
 
-    public CoverContext GetClosestCover(Vector3 position,Vector3 enemyPosition)
+    public CoverContext GetClosestCover(Vector3 position,Vector3 enemyPosition,float AttackDistance)
     {
         GenerateCoverPoints(position);
         List<GameObject> gameObjects = Scene.FindInPhysics(BBox.FromPositionAndSize(position,MathF.Max(pointGrid.x,pointGrid.y))).ToList();
@@ -37,7 +37,7 @@ public sealed class CoverFinder : Component
 
             if(coverContext.owned) continue;
 
-            if(!IsValidCover(coverContext, enemyPosition)) continue;
+            if(!IsValidCover(coverContext, enemyPosition, AttackDistance)) continue;
 
             idealCover = coverContext;
             idealDis = distance;
@@ -46,10 +46,12 @@ public sealed class CoverFinder : Component
 
         return idealCover;
     }
-    public bool IsValidCover(CoverContext cover, Vector3 enemyPosition)
+    public bool IsValidCover(CoverContext cover, Vector3 enemyPosition, float AttackDistance)
     {
 
         if(Vector3.DistanceBetween(cover.Transform.Position, enemyPosition) < EnemyDistance) return false;
+
+        if(Vector3.DistanceBetween(cover.Transform.Position, enemyPosition) > AttackDistance) return false;
 
         if(GetAngleBetweenDirections(cover.Transform.World.Forward,enemyPosition-cover.Transform.Position) > cover.angle) return false;
 

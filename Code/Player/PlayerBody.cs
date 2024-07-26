@@ -12,6 +12,16 @@ public partial class PlayerBody : Component
 	private bool IsFirstPerson;
 	public bool IsRagdoll => Physics.Enabled;
 
+	protected override void OnStart()
+	{
+		if(!IsProxy) return;
+		var skinnedModels = Components.GetAll<ModelRenderer>( FindMode.EverythingInSelfAndDescendants );
+		foreach ( var model in skinnedModels )
+		{
+			model.RenderType = ModelRenderer.ShadowRenderType.On;
+		}
+	}
+
 	internal void SetRagdoll( bool ragdoll )
 	{
 		Physics.Enabled = ragdoll;
@@ -25,7 +35,7 @@ public partial class PlayerBody : Component
 			GameObject.Transform.LocalRotation = Rotation.Identity;
 		}
 
-		SetFirstPersonView( !ragdoll );
+		if(Player != null) SetFirstPersonView( !ragdoll );
 
 		if ( ragdoll && DamageTakenForce.LengthSquared > 0f )
 			ApplyRagdollImpulses( DamageTakenPosition, DamageTakenForce );
@@ -51,6 +61,7 @@ public partial class PlayerBody : Component
 
 	public void SetFirstPersonView( bool firstPerson )
 	{
+
 		IsFirstPerson = firstPerson;
 
 		// Disable the player's body so it doesn't render.

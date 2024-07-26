@@ -19,11 +19,13 @@ public sealed class GruntAI : AIAgent
     [Property] public float SuppressPatience {get;set;} = 15f;
     [Property] public float Patience {get;set;} = 30f;
     [Property] public float AttackDistance {get;set;} = 450f;
+    [Property] public float MaxAttackDistance {get;set;} = 700f;
     [Property] public float MajorDamageAmount {get;set;} = 20f;
     [Property] public float HealthMemory {get;set;} = 0.5f;
     [Property] public bool IsCrouching { get; set; }
     [Property] public float SmoothCrouchSpeed { get; set; } = 5.0f;
     [Property] public float HideTime { get; set; } = 5.0f;
+    [Property] public float MaxDistanceFromCover { get; set; } = 150f;
 
     CoverContext currentCover;
 
@@ -54,6 +56,8 @@ public sealed class GruntAI : AIAgent
     [Broadcast]
 	private void Die()
 	{
+        EnemyWeaponDealer.Bullet.ForceShoot = false;
+        EnemyWeaponDealer.Reload.ForceShoot = false;
 		if ( !Body.IsValid() )
 			return;
 
@@ -93,12 +97,13 @@ public sealed class GruntAI : AIAgent
     protected override void Update()
     {
         if(!Networking.IsHost) return;
-
         if(healthComponent.Health <= 0)
         {
             Die();
+            
             return;
         }
+        
         //currentGrenadeTime+=Time.Delta;
         //lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
         float targetCrouch = IsCrouching ? 1.5f : 0.0f;
@@ -116,25 +121,6 @@ public sealed class GruntAI : AIAgent
                 EnemyWeaponDealer.Weapon.GetHoldType(),
                 EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both
             );
-            /*
-			AnimationHelper.WithVelocity( Controller.velocity.IsNearlyZero() ? Vector3.Zero : Controller.velocity );
-			AnimationHelper.IsGrounded = Controller.useCharacterController ? Controller.characterController.IsOnGround : true;
-			AnimationHelper.WithLook( 
-                FindChooseEnemy.Enemy != null ? 
-
-                    (FindChooseEnemy.Enemy.Transform.World.PointToWorld(FindChooseEnemy.EnemyRelations.attackPoint) - Transform.World.PointToWorld(EyePos))
-
-                    : 
-                    
-                    Transform.World.Forward, 
-
-
-                1, 1, 1.0f );
-			AnimationHelper.MoveStyle = AnimationHelper.MoveStyles.Run;
-			AnimationHelper.DuckLevel = smoothCrouch;
-			AnimationHelper.HoldType = EnemyWeaponDealer.Weapon.GetHoldType();
-			AnimationHelper.Handedness = EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both;
-			AnimationHelper.AimBodyWeight = 0.1f;*/
 		}
 
         if(FindChooseEnemy.Enemy.IsValid())
@@ -150,6 +136,7 @@ public sealed class GruntAI : AIAgent
 
         EnemyWeaponDealer.Bullet.ForceShoot = false;
         EnemyWeaponDealer.Reload.ForceShoot = false;
+        
     }
 
     public (CoverContext cover, float distance) CheckCover()
@@ -157,12 +144,12 @@ public sealed class GruntAI : AIAgent
         float dis = 1000;
         if(currentCover == null)
         {
-            CoverContext newCover = CoverFinder.GetClosestCover(Transform.Position,FindChooseEnemy.Enemy.Transform.Position);
+            CoverContext newCover = CoverFinder.GetClosestCover(FindChooseEnemy.Enemy.Transform.Position+(Transform.Position-FindChooseEnemy.Enemy.Transform.Position).Normal*AttackDistance,FindChooseEnemy.Enemy.Transform.Position,MaxAttackDistance);
             if(newCover != null) ClaimCover(newCover);
         }
         else
         {
-            if(!CoverFinder.IsValidCover(currentCover, FindChooseEnemy.Enemy.Transform.Position))
+            if(!CoverFinder.IsValidCover(currentCover, FindChooseEnemy.Enemy.Transform.Position,MaxAttackDistance))
             {
                 DropCover();
             }
@@ -177,6 +164,11 @@ public sealed class GruntAI : AIAgent
     public bool RetreatToFireLine()
     {
         return EnemyDistance() < AttackDistance;
+    }
+
+    public bool OutsideMaxAttack()
+    {
+        return EnemyDistance() > MaxAttackDistance;
     }
 
     public float EnemyDistance()
@@ -387,9 +379,13 @@ public class FIRE_DISTANCE : AIState
         {
             gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
         }
-        if(gruntAI.EnemyDistance() > gruntAI.AttackDistance) 
+        if(gruntAI.RetreatToFireLine()) 
         {
             agent.Controller.currentTarget = agent.Transform.Position;
+        }
+        else if (gruntAI.OutsideMaxAttack())
+        {
+            gruntAI.Controller.currentTarget = gruntAI.FindChooseEnemy.Enemy.Transform.Position;
         }
         else
         {
@@ -436,6 +432,10 @@ public class COVER : AIState
             {
                 gruntAI.Controller.currentTarget = gruntAI.Transform.Position - (enemy.Transform.Position - gruntAI.Transform.Position).Normal * 150f;
             }
+            else if (gruntAI.OutsideMaxAttack())
+            {
+                gruntAI.Controller.currentTarget = gruntAI.FindChooseEnemy.Enemy.Transform.Position;
+            }
             else
             {
                 gruntAI.Controller.currentTarget = gruntAI.Transform.Position;
@@ -452,7 +452,7 @@ public class COVER : AIState
                 if (unCover)
                 {
                     if(moveOutOfCover)
-                        gruntAI.Controller.currentTarget = enemy.Transform.Position;
+                        gruntAI.Controller.currentTarget = distance < gruntAI.MaxDistanceFromCover ? enemy.Transform.Position : agent.Transform.Position;
                     else
                         gruntAI.Controller.currentTarget = currentCover.Transform.Position;
                 }
