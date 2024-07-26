@@ -1,3 +1,5 @@
+using Softsplit.UI;
+
 namespace Softsplit;
 
 public sealed class Rope : ToolComponent
@@ -7,10 +9,13 @@ public sealed class Rope : ToolComponent
 	Vector3 point1Direction;
 	Vector3 point1;
 
+	RopeMenu RopeMenu;
+
 	protected override void Start()
 	{
 		ToolName = "Rope";
 		ToolDes = "Rope objects together. Right click to snap.";
+		RopeMenu = Components.Get<RopeMenu>(true);
 	}
 
 	protected override void Update()
@@ -44,7 +49,7 @@ public sealed class Rope : ToolComponent
 			}
 			else
 			{
-				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, localPoint );
+				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, localPoint, RopeMenu.Width, RopeMenu.Color );
 				object1 = null;
 			}
 		}
@@ -73,7 +78,7 @@ public sealed class Rope : ToolComponent
 
 				object1G.Transform.Position += hit.EndPosition - pointWorld;
 
-				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, hit.EndPosition );
+				CreateRope( PlayerState.Local.Pawn.GameObject, object1, point1, hit.GameObject, hit.EndPosition, RopeMenu.Width, RopeMenu.Color );
 
 				object1 = null;
 			}
@@ -81,9 +86,11 @@ public sealed class Rope : ToolComponent
 	}
 
 	[Broadcast]
-	public static void CreateRope( GameObject player, GameObject object1, Vector3 point1Pos, GameObject object2, Vector3 point2Pos )
+	public static void CreateRope( GameObject player, GameObject object1, Vector3 point1Pos, GameObject object2, Vector3 point2Pos, float width, Color color )
 	{
 		RopeContext ropeContext1 = object1?.Components.Create<RopeContext>();
+		ropeContext1.Width = width;
+		ropeContext1.Color = color;
 		ropeContext1.MainRope = true;
 
 		ropeContext1.point1 = point1Pos;

@@ -6,8 +6,11 @@ public sealed class RopeContext : JointContext
 {
 	public PhysicsJoint ropeJoint;
 	[Property] public bool MainRope { get; set; }
+	[Property] public float Width { get; set; }
+	[Property] public Color Color { get; set; }
 	[Property] public Vector3 point1 { get; set; }
 	[Property] public Vector3 point2 { get; set; }
+	[Property] public VectorLineRenderer lineRenderer { get; set; }
 
 	protected override void OnStart()
 	{
@@ -38,7 +41,22 @@ public sealed class RopeContext : JointContext
 				return;
 
 			ropeJoint = PhysicsJoint.CreateSpring( p1, p2, 20, 200 );
+
+			lineRenderer = Components.GetOrCreate<VectorLineRenderer>();
+			lineRenderer.Color = Color;
+			lineRenderer.Width = Width;
 		}
+	}
+
+	protected override void OnPreRender()
+	{
+		if(!MainRope) return;
+		lineRenderer.Points = new List<Vector3>
+		{
+			Transform.World.PointToWorld(point1),
+			connectedObject.Transform.World.PointToWorld(point2)
+		};
+		lineRenderer.Run();
 	}
 
 	protected override void OnDestroy()
