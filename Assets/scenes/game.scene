@@ -61,7 +61,7 @@
           "__guid": "7a7cf6ee-9ca6-422a-9be6-dbeda1c213b6",
           "coverCheckDistance": 50,
           "coverHeight": 38,
-          "CoverRadius": 20,
+          "CoverRadius": 40,
           "coverSpacing": 50,
           "EnemyDistance": 150,
           "flatFaceAngleCheck": 45,

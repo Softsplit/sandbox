@@ -18,6 +18,10 @@ public sealed class GruntAI : AIAgent
     [Property] public Vector3 EyePos {get;set;}
     [Property] public float SuppressPatience {get;set;} = 15f;
     [Property] public float Patience {get;set;} = 30f;
+
+
+    bool distanceCalculated;
+    [Property] public bool AutoCalculateDistance {get;set;} = true;
     [Property] public float AttackDistance {get;set;} = 450f;
     [Property] public float MaxAttackDistance {get;set;} = 700f;
     [Property] public float MajorDamageAmount {get;set;} = 20f;
@@ -26,6 +30,7 @@ public sealed class GruntAI : AIAgent
     [Property] public float SmoothCrouchSpeed { get; set; } = 5.0f;
     [Property] public float HideTime { get; set; } = 5.0f;
     [Property] public float MaxDistanceFromCover { get; set; } = 150f;
+    [Property] public float RotateSpeed { get; set; } = 180f;
 
     CoverContext currentCover;
 
@@ -41,7 +46,7 @@ public sealed class GruntAI : AIAgent
         FindChooseEnemy = Components.GetOrCreate<FindChooseEnemy>();
         agroRelations = Components.Get<AgroRelations>();
         EnemyWeaponDealer = Components.Get<EnemyWeaponDealer>();
-        initialState = "HIDE_AND_RELOAD";
+        initialState = "IDLE";
         stateMachine.RegisterState(new SUPPRESS());
         stateMachine.RegisterState(new PRESS_ATTACK());
         stateMachine.RegisterState(new FIRE_DISTANCE());
@@ -96,7 +101,16 @@ public sealed class GruntAI : AIAgent
 
     protected override void Update()
     {
+        
         if(!Networking.IsHost) return;
+
+        if(AutoCalculateDistance && !distanceCalculated && EnemyWeaponDealer.Bullet.BulletSpread >= 0.1f)
+        {
+            AttackDistance = EnemyWeaponDealer.CalculateEffectiveDistance(12f,0.5f);
+            MaxAttackDistance = EnemyWeaponDealer.CalculateEffectiveDistance(12f,0.25f);
+            distanceCalculated = true;
+        }
+
         if(healthComponent.Health <= 0)
         {
             Die();
@@ -137,6 +151,14 @@ public sealed class GruntAI : AIAgent
         EnemyWeaponDealer.Bullet.ForceShoot = false;
         EnemyWeaponDealer.Reload.ForceShoot = false;
         
+    }
+    
+    public void FaceThing(GameObject thing)
+    {
+        Angles angles = Rotation.LookAt(thing.Transform.Position - Transform.Position);
+        angles.pitch = 0;
+        angles.roll = 0;
+        Transform.Rotation = Rotation.Lerp(Transform.Rotation,angles,RotateSpeed*Time.Delta);
     }
 
     public (CoverContext cover, float distance) CheckCover()
@@ -580,5 +602,7 @@ public class CAUTION_COVER : AIState
 
         if(hideTime>gruntAI.HideTime) agent.stateMachine.ChangeState("COVER");
 	}
+
+    
     
 }

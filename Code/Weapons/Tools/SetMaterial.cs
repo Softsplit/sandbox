@@ -25,18 +25,31 @@ public sealed class SetMaterial : ToolComponent
     }
 	protected override void SecondaryAction()
 	{
-
         var hit = Trace();
+        if(Input.Down("Run") && hit.Hit)
+        {
+            RemoveMaterial(hit.GameObject);
+            return;
+        }
+        
         if(hit.Hit && !hit.Tags.Contains("map"))
         {
             ModelRenderer modelRenderer = hit.GameObject.Components.Get<ModelRenderer>();
-            if(modelRenderer != null && setMaterialMenu.material != null)
+            if(modelRenderer != null)
             {
+                Material material = modelRenderer.GetMaterial();
+                if(material == null) return;
                 Recoil(hit.EndPosition);
-                setMaterialMenu.material = modelRenderer.GetMaterial().Name;
+                setMaterialMenu.material = material.Name;
             }
         }
 	}
+    [Broadcast]
+    public static void RemoveMaterial(GameObject gameObject)
+    {
+        ModelRenderer modelRenderer = gameObject.Components.Get<ModelRenderer>();
+        modelRenderer.MaterialOverride = null;
+    }
 
     [Broadcast]
     public static void SetModelMaterial(GameObject gameObject, string material)

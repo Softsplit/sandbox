@@ -29,6 +29,7 @@
           "component_type": "AnimationHelper"
         },
         "AttackDistance": 450,
+        "AutoCalculateDistance": true,
         "EyePos": "0,0,0",
         "HealthMemory": 0.5,
         "HideTime": 5,
@@ -37,6 +38,7 @@
         "MaxAttackDistance": 700,
         "MaxDistanceFromCover": 150,
         "Patience": 30,
+        "RotateSpeed": 180,
         "SmoothCrouchSpeed": 5,
         "SuppressPatience": 15
       },
@@ -57,7 +59,7 @@
           "_type": "gameobject",
           "go": "35638392-aab3-4fdf-b2be-cd5151f2af29"
         },
-        "WeaponResource": "weapons/usp/usp.equip"
+        "WeaponResource": "weapons/spaghelli/spaghelli.equip"
       },
       {
         "__type": "FindChooseEnemy",
