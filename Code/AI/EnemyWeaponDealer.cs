@@ -24,8 +24,6 @@ public sealed class EnemyWeaponDealer : Component
 
 		var trace = Bullet.DoTraceBulletOne(Weapon.Muzzle.Transform.Position,target.Transform.Position, 1);
 		
-		Gizmo.Draw.Line(Weapon.Muzzle.Transform.Position,target.Transform.Position);
-		
 		if(!trace.Hit) return false;
 
 		return trace.GameObject == target || trace.GameObject.Parent == target;

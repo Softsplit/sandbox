@@ -85,7 +85,7 @@
         "Bounciness": 0.3,
         "CurrentPath": [],
         "currentTarget": "0,0,0",
-        "Gizmos": true,
+        "Gizmos": false,
         "GroundAngle": 45,
         "Height": 64,
         "lastTarget": "0,0,0",
