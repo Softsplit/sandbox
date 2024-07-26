@@ -19,7 +19,7 @@ public sealed class SetMaterial : ToolComponent
             if(hit.GameObject!=null)
             {
                 Recoil(hit.EndPosition);
-                SetModelMaterial(hit.GameObject,setMaterialMenu.material);
+				SetModelMaterial( hit.GameObject, setMaterialMenu.material );
             }
         }
     }
@@ -33,18 +33,18 @@ public sealed class SetMaterial : ToolComponent
             if(modelRenderer != null && setMaterialMenu.material != null)
             {
                 Recoil(hit.EndPosition);
-                setMaterialMenu.material = modelRenderer.GetMaterial();
+                setMaterialMenu.material = modelRenderer.GetMaterial().Name;
             }
         }
 	}
 
     [Broadcast]
-    public static void SetModelMaterial(GameObject gameObject, Material material)
+    public static void SetModelMaterial(GameObject gameObject, string material)
     {
         ModelRenderer modelRenderer = gameObject.Components.Get<ModelRenderer>();
         if(modelRenderer != null && material != null)
         {
-            modelRenderer.MaterialOverride = material;
+            modelRenderer.MaterialOverride = Material.Load(material);
         }
     }
 }
