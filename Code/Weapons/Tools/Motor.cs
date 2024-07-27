@@ -12,8 +12,8 @@ public sealed class Motor : ToolComponent
 	protected override void Start()
 	{
         motorMenu = Components.Get<MotorMenu>(true);
-		ToolName = "Axis";
-		ToolDes = "Connect objects together that can rotate around an axis.";
+		ToolName = "Motor";
+		ToolDes = "Connect objects together that can rotate around an axis with a motor.";
 	}
 
 	protected override void Update()
