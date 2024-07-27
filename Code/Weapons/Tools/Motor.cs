@@ -2,16 +2,16 @@ using Softsplit.UI;
 
 namespace Softsplit;
 
-public sealed class Axis : ToolComponent
+public sealed class Motor : ToolComponent
 {
 	GameObject object1;
 	HighlightOutline object1Outline;
 	Vector3 point1Direction;
 	Vector3 point1;
-    AxisMenu axisMenu;
+   	MotorMenu motorMenu;
 	protected override void Start()
 	{
-        axisMenu = Components.Get<AxisMenu>(true);
+        motorMenu = Components.Get<MotorMenu>(true);
 		ToolName = "Axis";
 		ToolDes = "Connect objects together that can rotate around an axis.";
 	}
@@ -55,7 +55,7 @@ public sealed class Axis : ToolComponent
 
 				object1G.Transform.Position += hit.EndPosition - pointWorld;
 
-				CreateAxis( PlayerState.Local.Pawn.GameObject, object1, hit.GameObject, hit.EndPosition, hit.Normal, axisMenu.Friction);
+				CreateAxis( PlayerState.Local.Pawn.GameObject, object1, hit.GameObject, hit.EndPosition, hit.Normal, motorMenu.Friction, motorMenu.Speed, motorMenu.ForwardBind, motorMenu.BackwardBind, motorMenu.Toggle, PlayerState.Local.Pawn.Id);
 
 				object1 = null;
 			}
@@ -74,14 +74,18 @@ public sealed class Axis : ToolComponent
 	}
 
 	[Broadcast]
-	public static void CreateAxis( GameObject player, GameObject object1, GameObject object2, Vector3 point2Pos, Vector3 axis, float friction = 0, float speed = 0)
+	public static void CreateAxis( GameObject player, GameObject object1, GameObject object2, Vector3 point2Pos, Vector3 axis, float friction = 0, float speed = 0, string forward = null, string backward = null, bool toggle = false, Guid localPawn = new Guid())
 	{
 		AxisContext axisContext1 = object1?.Components.Create<AxisContext>();
         axisContext1.MainAxis = true;
 
         axisContext1.point = object2.Transform.World.PointToLocal(point2Pos);
         axisContext1.Speed = speed;
+		axisContext1.localPawn = localPawn;
         axisContext1.Friction = friction;
+		axisContext1.Forward = forward;
+		axisContext1.Backward = backward;
+		axisContext1.Toggle = toggle;
         axisContext1.axis = axis;
 
         AxisContext axisContext2 = object2?.Components.Create<AxisContext>();
