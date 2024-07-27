@@ -110,13 +110,6 @@
     ],
     "Children": [
       {
-        "__guid": "adfcad31-c7a2-49c0-b6b3-48160b8eea44",
-        "Flags": 0,
-        "Name": "Object",
-        "Position": "-214.5575,38.36696,-72.87677",
-        "Enabled": true
-      },
-      {
         "__guid": "f94ebf33-8daf-4818-ad78-16a70bd98409",
         "Flags": 0,
         "Name": "Body",
