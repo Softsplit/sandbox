@@ -280,7 +280,7 @@ public partial class PlayerPawn
 		{
 			if (!IsSlowFall )
 			{
-				if ( !IsGrounded && Input.Pressed( "Jump" ) && cc.Velocity.z > 50 )
+				if ( !IsGrounded && Input.Pressed( "Jump" ) && cc.Velocity.z < -50 )
 				{
 					IsSlowFall = true;
 				}
