@@ -16,3 +16,5 @@ Based on the original Sandbox by Facepunch
 * boxden - 🇷🇺
 * ibrs_4ever - 🇨🇳
 * ML5700 - 🇩🇪
+* arad - 🇮🇷
+* NovaDiablox - 🇹🇷
