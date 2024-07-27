@@ -21,6 +21,7 @@
         height: 50%;
         align-items: flex-start;
         flex-direction: column;
+
         .Title
         {
             border-top-left-radius: 10px;
@@ -33,11 +34,11 @@
         }
         .ValueBox {
             width: 100%;
-            padding: 0;
+            padding: 5px;
             flex-direction: row;
             text-align: center;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             border: 2px solid #464646ab;
 
             .ValueName {
@@ -56,16 +57,16 @@
             }
         }
         .Button {
-            background-color: #ffffff;
-            border: 1px solid transparent;
+            background-color: #464646ab;
+            border: 10px solid transparent;
             border-radius: 3px;
-            color: #000000;
+            color: #ffffff;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 400;
+            font-size: 15px;
             margin: 0;
             //outline: none;
             padding: 4px;
+            
             position: relative;
             text-align: center;
             align-items: baseline;
@@ -74,7 +75,7 @@
 
         .Button:hover,
         .Button:focus {
-            background-color: rgb(202, 202, 202);
+            background-color: #3a3a3aab;
         }
 
         .Button:focus {
@@ -82,7 +83,7 @@
         }
 
         .Button:active {
-            background-color: #bbbbbb;
+            background-color: #202020ab;
             box-shadow: none;
         }
 

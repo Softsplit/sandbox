@@ -1,16 +1,21 @@
 ﻿using Sandbox.Physics;
+using Softsplit.UI;
 
 namespace Softsplit;
 public class Thruster : ToolComponent
 {
+	ThrusterMenu thrusterMenu;
 	protected override void Start()
 	{
+		thrusterMenu = Components.Get<ThrusterMenu>(true);
 		ToolName = "Thruster";
 		ToolDes = "Create Thrusters";
 	}
 
 	protected override void PrimaryAction()
 	{
+		if(IsProxy) return;
+
 		var aim = Trace();
 		if ( aim.GameObject == null )
 			return;
@@ -28,12 +33,26 @@ public class Thruster : ToolComponent
 		ModelCollider modelCollider = thruster.Components.Create<ModelCollider>();
 		modelCollider.Model = Model.Load( "models/thruster/thrusterprojector.vmdl" );
 
-		thruster.Components.Create<ThrusterEntity>();
+		ThrusterEntity thrusterEntity = thruster.Components.Create<ThrusterEntity>();
+		thrusterEntity.Forward = thrusterMenu.ForwardBind;
+		thrusterEntity.Backward = thrusterMenu.BackwardBind;
+		thrusterEntity.Toggle = thrusterMenu.Toggle;
+		thrusterEntity.Force = thrusterMenu.Force;
+		thrusterEntity.localPawn = PlayerState.Local.Pawn.Id;
 
 		Rigidbody rb = thruster.Components.Create<Rigidbody>();
 
 		// Is dosnt work, idk how fix
 		PhysicsBody body = modelCollider.KeyframeBody;
+
+		thruster.NetworkSpawn();
+
+		PlayerState.Thing thing = new()
+		{
+			gameObjects = new List<GameObject>{thruster}
+		};
+
+		PlayerState.Local?.SpawnedThings.Add(thing);
 
 		Weld.CreateWeld( Player.GameObject, thruster, thruster.Transform.Position + thruster.Transform.Rotation.Down*20, aim.GameObject, aim.Body.Transform.PointToLocal( aim.HitPosition ) );
 	}

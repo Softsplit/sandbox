@@ -36,7 +36,6 @@
 
     public NpcList()
     {
-        Log.Info("balls");
         _EntitiesRepository = PrefabLibrary.FindByComponent<SpawnableEntity>()
         .Where(prefab => prefab.Path.Contains("npcs"))
         .Select(prefab =>
