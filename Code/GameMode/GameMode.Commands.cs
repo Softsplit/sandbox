@@ -108,7 +108,7 @@ partial class GameMode : Component.INetworkListener
 
 		ent.Tags.Add( "propcollide" );
 		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
-		ent.Components.Create<Highlight>(false);
+		ent.Components.Create<HighlightOutline>(false);
 		ent.NetworkSpawn( null );
 		ent.Network.DropOwnership();
 
