@@ -86,7 +86,7 @@
       {
         "__type": "NavMeshCharacter",
         "__guid": "de58556b-0bc3-4967-8705-160c5b452845",
-        "useCharacterController": false,
+        "useCharacterController": true,
         "Acceleration": 60,
         "Bounciness": 0.3,
         "CurrentPath": [],
