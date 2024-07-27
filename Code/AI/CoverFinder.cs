@@ -15,6 +15,12 @@ public sealed class CoverFinder : Component
     [Property] Vector2 pointGrid {get;set;}
     List<Vector3> generatedPoints = new List<Vector3>();
 
+    protected override async void OnStart()
+    {
+        await Task.Frame();
+        await Scene.NavMesh.Generate(Scene.PhysicsWorld);
+    }
+
     public CoverContext GetClosestCover(Vector3 position,Vector3 enemyPosition,float AttackDistance)
     {
         GenerateCoverPoints(position);

@@ -2,7 +2,7 @@ using Sandbox;
 
 public abstract class AIAgent : Component
 {
-    public AIStateMachine stateMachine { get; set; }
+    [Property] public AIStateMachine stateMachine { get; set; }
     public string initialState { get; set; }
     public NavMeshCharacter Controller { get; set; }
     public NavMeshAgent Agent { get; set; }
