@@ -29,6 +29,15 @@ public class SpawnableEntity : Component
 	{
 		Network.DropOwnership();
 	}
+	
+	/// <summary>
+	/// The catagory of the item.
+	/// </summary>
+	//[Sync]
+	//[Property]
+	//public string Catagory { get; set; }
+
+
 	/// <summary>
 	/// The name of the item.
 	/// </summary>

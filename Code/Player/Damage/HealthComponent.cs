@@ -56,13 +56,15 @@ public partial class HealthComponent : Component, IRespawnable
 	{
 		TimeSinceLifeStateChanged = 0f;
 	}
-
+	public DamageInfo latestDamageInfo;
 	public void TakeDamage( DamageInfo damageInfo )
 	{
 		Assert.True( Networking.IsHost );
 
 		damageInfo = WithThisAsVictim( damageInfo );
 		damageInfo = ModifyDamage( damageInfo );
+
+		latestDamageInfo = damageInfo;
 
 		BroadcastDamage( damageInfo );
 

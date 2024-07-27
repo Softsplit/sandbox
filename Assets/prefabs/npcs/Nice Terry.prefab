@@ -38,7 +38,7 @@
         "MaxAttackDistance": 700,
         "MaxDistanceFromCover": 150,
         "Patience": 30,
-        "RotateSpeed": 180,
+        "RotateSpeed": 25,
         "SmoothCrouchSpeed": 5,
         "SuppressPatience": 15
       },
@@ -61,9 +61,9 @@
         "WeaponResource": "weapons/spaghelli/spaghelli.equip"
       },
       {
-        "__type": "FindChooseEnemy",
+        "__type": "Softsplit.FindChooseEnemy",
         "__guid": "a1ca8f33-b4e9-4691-b06d-427609cbe3b2",
-        "DetectRange": 700,
+        "DetectRange": 1400,
         "EnemyRelations": {
           "_type": "component",
           "component_id": "8e45a527-6313-46bb-aa5c-46824cc6256d",

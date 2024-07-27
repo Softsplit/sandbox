@@ -1,44 +1,55 @@
 @using System.Threading.Tasks;
 @using Sandbox.UI;
+@using Softsplit;
 @inherits Panel;
 
 <root class="spawnpage columned">
-	<div class="nav">
-		<div class="section">
-			<PackageSortButtonGroup Value:bind=@SortOrder></PackageSortButtonGroup>
-		</div>
+	
+        @for (var index = 0; index < _EntitiesRepository.Count; index++)
+        {
+            EntityInfo info = _EntitiesRepository[index];
+           
 
-		<div class="section grow">
-        </div>
+            <div class="ent" onclick=@(() => SpawnEnt(info))>
+                <div class="background" />
+                <div class="item">
+                    <img src=@info.Icon.ResourcePath />
+                </div>
 
-		<div class="section">
-			<button active=@LocalOnly @onclick=@(() =>{ LocalOnly = !LocalOnly; } )>Local Only</button>
-		</div>
-	</div>
+               
+                <text class="name">@(info.Name)</text>
+            </div>
+        }
 
-	<div class="contents">
-		<PackageList Query=@GetQueryString() OnIconPressed=@SpawnPackage></PackageList>
-	</div>
 </root>
 
 
 @code
 {
-	string SortOrder { get; set; } = "updated";
+    public List<EntityInfo> _EntitiesRepository { get; set; }
 
-	bool LocalOnly = false;
+    public void SpawnEnt(EntityInfo info)
+    {
+        ConsoleSystem.Run("spawnent", info.PrefabPath);
+    }
 
-	public string GetQueryString()
-	{
-		var sort = $"sort:{SortOrder}";
-		var local = LocalOnly ? "local:true" : "";
-		var str = $"+game:softsplit.sandbox +runtime +npc {sort} {local} type:addon";
 
-		return str;
-	}
+    public NpcList()
+    {
+        Log.Info("balls");
+        _EntitiesRepository = PrefabLibrary.FindByComponent<SpawnableEntity>()
+        .Where(prefab => prefab.Path.Contains("npcs"))
+        .Select(prefab =>
+        {
+            var spawnMenuComponent = prefab.GetComponent<SpawnableEntity>();
+            return new EntityInfo(
+            prefab.Path,
+            spawnMenuComponent.Get<string>("Name"),
+            spawnMenuComponent.Get<string>("Description"),
+            Texture.Load(FileSystem.Mounted, spawnMenuComponent.Get<IconSettings>("Icon").Path)
+        );
+        }).ToList();
+    }
 
-	void SpawnPackage( Package package )
-	{
-		ConsoleSystem.Run( "spawnpackage", package.FullIdent );
-	}
+
 }

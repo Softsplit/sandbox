@@ -32,17 +32,14 @@
     {
         ConsoleSystem.Run("spawnent", info.PrefabPath);
     }
-   
-    
 
 
     public EntityList()
     {
         _EntitiesRepository = PrefabLibrary.FindByComponent<SpawnableEntity>()
-        //.Where(prefab => !prefab.GetComponent<SpawnMenuComponent>())
+        .Where(prefab => prefab.Path.Contains("entities"))
         .Select(prefab =>
         {
-
             var spawnMenuComponent = prefab.GetComponent<SpawnableEntity>();
             return new EntityInfo(
             prefab.Path,
@@ -51,7 +48,7 @@
             Texture.Load(FileSystem.Mounted, spawnMenuComponent.Get<IconSettings>("Icon").Path)
         );
         }).ToList();
-
     }
+
 
 }

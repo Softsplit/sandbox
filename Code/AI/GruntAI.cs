@@ -30,7 +30,7 @@ public sealed class GruntAI : AIAgent
     [Property] public float SmoothCrouchSpeed { get; set; } = 5.0f;
     [Property] public float HideTime { get; set; } = 5.0f;
     [Property] public float MaxDistanceFromCover { get; set; } = 150f;
-    [Property] public float RotateSpeed { get; set; } = 180f;
+    [Property] public float RotateSpeed { get; set; } = 0.01f;
 
     CoverContext currentCover;
 
@@ -142,6 +142,7 @@ public sealed class GruntAI : AIAgent
         if(FindChooseEnemy.Enemy.IsValid())
         {
             stateMachine.ChangeState(FindCondition());
+            FaceThing(FindChooseEnemy.Enemy);
         }
         else
         {
@@ -160,7 +161,7 @@ public sealed class GruntAI : AIAgent
         Angles angles = Rotation.LookAt(thing.Transform.Position - Transform.Position);
         angles.pitch = 0;
         angles.roll = 0;
-        Transform.Rotation = Rotation.Lerp(Transform.Rotation,angles,RotateSpeed*Time.Delta);
+        Transform.Rotation = Rotation.Lerp(Transform.Rotation, angles, RotateSpeed * Time.Delta);
     }
 
     public (CoverContext cover, float distance) CheckCover()
@@ -219,32 +220,24 @@ public sealed class GruntAI : AIAgent
 
     string FindCondition()
     {
-        if (FindChooseEnemy.NewEnemy)
+        if (stateMachine.currentState == "IDLE")
         {
             GameObject pEnemy = FindChooseEnemy.Enemy;
-            FindChooseEnemy.NewEnemy = false;
-            bool bFirstContact = false;
-            float flTimeSinceFirstSeen = FindChooseEnemy.TimeSinceSeen; // Assuming Time.Now is current time
+            //float flTimeSinceFirstSeen = FindChooseEnemy.TimeSinceSeen; // Assuming Time.Now is current time
 
-            if (flTimeSinceFirstSeen < 3.0f)
-                bFirstContact = true;
+            //if (flTimeSinceFirstSeen < 3.0f)
+                //bFirstContact = true;
 
             if ( pEnemy != null)
             {
-
-                if (!bFirstContact)
+                if (Game.Random.Next(0, 100) < 60) 
                 {
-                    if (Game.Random.Next(0, 100) < 60) 
-                    {
-                        return "FIRE_DISTANCE";
-                    }
-                    else
-                    {
-                        return "PRESS_ATTACK";
-                    }
+                    return "FIRE_DISTANCE";
                 }
-
-                return "COVER";
+                else
+                {
+                    return "PRESS_ATTACK";
+                }
             }
         }
 
@@ -363,7 +356,6 @@ public class PRESS_ATTACK : AIState
 	
 	public void Update( AIAgent agent )
 	{
-        gruntAI.FaceThing(gruntAI.FindChooseEnemy.Enemy);
         agent.Controller.currentTarget = gruntAI.EnemyDistance() > 100 ? gruntAI.FindChooseEnemy.Enemy.Transform.Position : agent.Transform.Position;
 		if(gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy))
         {
@@ -395,14 +387,10 @@ public class FIRE_DISTANCE : AIState
 	
 	public void Update( AIAgent agent )
 	{
-		if(gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy))
-        {
-            gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = true;
-        }
-        else
-        {
-            gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = false;
-        }
+
+		gruntAI.EnemyWeaponDealer.Bullet.ForceShoot = gruntAI.EnemyWeaponDealer.WeaponHitsTarget(gruntAI.FindChooseEnemy.Enemy);
+
+        
         if(gruntAI.RetreatToFireLine()) 
         {
             agent.Controller.currentTarget = agent.Transform.Position;
@@ -446,7 +434,7 @@ public class COVER : AIState
         GameObject enemy = gruntAI.FindChooseEnemy.Enemy;
         bool unCover = currentCover != null ? Noise.Perlin(Time.Now*20,currentCover.Transform.Position.Length) > 0.5f : false;
         
-        gruntAI.FaceThing(enemy);
+        
 
         
         
@@ -534,8 +522,6 @@ public class HIDE_AND_RELOAD : AIState
 	{
         GameObject enemy = gruntAI.FindChooseEnemy.Enemy;
 
-        gruntAI.FaceThing(enemy);
-
         (CoverContext currentCover, float distance) = gruntAI.CheckCover();
 
         gruntAI.Controller.currentTarget = currentCover == null ? 
@@ -578,7 +564,7 @@ public class CAUTION_COVER : AIState
         
         GameObject enemy = gruntAI.FindChooseEnemy.Enemy;
 
-        gruntAI.FaceThing(enemy);
+        
 
         (CoverContext currentCover, float distance) = gruntAI.CheckCover();
         

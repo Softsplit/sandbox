@@ -59,14 +59,17 @@ public sealed class EnemyWeaponDealer : Component
 		} );
 
 		Weapon = gameObject.Components.Get<Equipment>( FindMode.EverythingInSelfAndDescendants );
-		//Weapon.ModelRenderer = gameObject.Components.Get<SkinnedModelRenderer>();
 
 		/*
+		WHY DOESN'T THIS WORK GARRY NEWMAN
 
-		WHY DOESN'T THIS WORK S&BOX WHY
-		Bullet = Weapon.Components.GetInChildrenOrSelf<ShootWeaponComponent>();
-		Reload = Weapon.Components.GetInChildrenOrSelf<ReloadWeaponComponent>();
-		
+		Bullet = Weapon.Components.GetInDescendantsOrSelf<ShootWeaponComponent>();
+		Bullet.NotPlayerControlled = true;
+		Bullet.NonPlayerComponent = this;
+
+
+		Reload = Weapon.Components.GetInDescendantsOrSelf<ReloadWeaponComponent>();
+		Reload.NotPlayerControlled = true;
 		*/
 
 		//dumb hack
@@ -74,15 +77,15 @@ public sealed class EnemyWeaponDealer : Component
 		IEnumerable<Component> components = Weapon.GameObject.Children[1].Components.GetAll();
 		foreach(Component c in components)
 		{
-			if(c.GetType().ToString() == "Softsplit.ShootWeaponComponent")
+			if(c is ShootWeaponComponent sWC)
 			{
-				Bullet = (ShootWeaponComponent)c;
+				Bullet = sWC;
 				Bullet.NotPlayerControlled = true;
 				Bullet.NonPlayerComponent = this;
 			}
-			if(c.GetType().ToString() == "Softsplit.ReloadWeaponComponent")
+			if(c is ReloadWeaponComponent rWC)
 			{
-				Reload = (ReloadWeaponComponent)c;
+				Reload = rWC;
 				Reload.NotPlayerControlled = true;
 			}
 		}
