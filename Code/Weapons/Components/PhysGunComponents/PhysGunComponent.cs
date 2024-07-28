@@ -235,7 +235,6 @@ public partial class PhysGunComponent : InputWeaponComponent,
 			.Run();
 
 		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) ) return;
-		Log.Info( "fu" );
 		var rootEnt = tr.GameObject.Root;
 		var body = tr.Body;
 

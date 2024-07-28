@@ -1,0 +1,21 @@
+@inherits PanelComponent
+@namespace Softsplit.UI
+
+<root class="ToolGunMenu">
+	<div class="ToolBox">
+		<div class="Title">Axis Menu</div>
+		<div class="ValueBox">
+			<div class="ValueName">Frictiom</div>
+			<TextEntry style="width: 10%;" Value:bind=@Friction/>
+            <SliderControl Min=@(0f) Max=@(50f) Step=@(0.1f) Value:bind=@Friction/>
+        </div>
+	</div>
+</root>
+
+
+
+@code
+{
+	public float Friction {get;set;} = 0f;
+	//protected override int BuildHash() => System.HashCode.Combine(  );
+}

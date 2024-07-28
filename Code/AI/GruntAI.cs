@@ -54,6 +54,7 @@ public sealed class GruntAI : AIAgent
         stateMachine.RegisterState(new HIDE_AND_RELOAD());
         stateMachine.RegisterState(new CAUTION_COVER());
         stateMachine.RegisterState(new IDLE());
+        lastHealth = healthComponent.Health;
     }
 
     public PlayerGlobals Global => GetGlobal<PlayerGlobals>();
@@ -61,8 +62,8 @@ public sealed class GruntAI : AIAgent
     [Broadcast]
 	private void Die()
 	{
-        EnemyWeaponDealer.Bullet.ForceShoot = false;
-        EnemyWeaponDealer.Reload.ForceShoot = false;
+        EnemyWeaponDealer.Bullet.Destroy();
+        EnemyWeaponDealer.Reload.Destroy();
 		if ( !Body.IsValid() )
 			return;
 
@@ -115,12 +116,11 @@ public sealed class GruntAI : AIAgent
         if(healthComponent.Health <= 0)
         {
             Die();
-            
             return;
         }
         
         //currentGrenadeTime+=Time.Delta;
-        //lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
+        
         float targetCrouch = IsCrouching ? 1.5f : 0.0f;
         smoothCrouch = MathX.Lerp(smoothCrouch, targetCrouch, Time.Delta * SmoothCrouchSpeed);
 
@@ -149,8 +149,7 @@ public sealed class GruntAI : AIAgent
             stateMachine.ChangeState("IDLE");
         }
 
-        lastHealth = healthComponent.Health;
-
+        lastHealth = MathX.Lerp(lastHealth,healthComponent.Health,Time.Delta*HealthMemory);
         EnemyWeaponDealer.Bullet.ForceShoot = false;
         EnemyWeaponDealer.Reload.ForceShoot = false;
         

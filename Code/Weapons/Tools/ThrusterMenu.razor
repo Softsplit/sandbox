@@ -1,0 +1,37 @@
+@inherits PanelComponent
+@namespace Softsplit.UI
+
+<root class="ToolGunMenu">
+	<div class="ToolBox">
+		<div class="Title">Thruster Menu</div>
+		<div class="ValueBox">
+			<div class="ValueName">Force</div>
+			<TextEntry style="width: 10%;" Value:bind=@Force/>
+            <SliderControl Min=@(0f) Max=@(10000f) Step=@(0.1f) Value:bind=@Force/>
+        </div>
+		<div style="flex-direction: row; width: 100%;">
+			<div class="ValueBox">
+				<div class="ValueName" style="width: 15%;">Forward</div>
+				<KeyBind Value:bind=@ForwardBind/>
+			</div>
+			<div class="ValueBox">
+				<div class="ValueName" style="width: 15%;">Backward</div>
+				<KeyBind Value:bind=@BackwardBind/>
+			</div>
+		</div>
+		<div style="width: 100%; justify-content: center;">
+			<div onclick=@(() => Toggle = !Toggle) class="Button"> @(Toggle ? "Toggle" : "No Toggle")</div>
+		</div>
+	</div>
+</root>
+
+
+
+@code
+{
+	public float Force {get;set;} = 600f;
+	public string ForwardBind {get;set;}
+	public string BackwardBind {get;set;}
+	public bool Toggle {get;set;}
+	//protected override int BuildHash() => System.HashCode.Combine(  );
+}

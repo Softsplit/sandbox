@@ -132,13 +132,4 @@ public sealed class Weld : ToolComponent
 			weldToRemove?.Destroy();
 		}
 	}
-
-	public static Vector3 FindMidpoint( Vector3 vector1, Vector3 vector2 )
-	{
-		return new Vector3(
-			(vector1.x + vector2.x) / 2,
-			(vector1.y + vector2.z) / 2,
-			(vector1.y + vector2.z) / 2
-		);
-	}
 }

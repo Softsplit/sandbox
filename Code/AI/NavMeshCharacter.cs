@@ -80,7 +80,8 @@ public sealed class NavMeshCharacter : Component
 		{
 			characterController.Velocity.WithZ(0);
 			characterController.Velocity = Vector3.Lerp(characterController.Velocity, direction*Speed, SpeedSmoothing*Time.Delta);
-			if(!characterController.IsOnGround) characterController.Velocity += Vector3.Up*gravity;
+			Log.Info(gravity);
+			if(!characterController.IsOnGround) characterController.Velocity += gravity;
 			characterController.Move();
 		}
 		else

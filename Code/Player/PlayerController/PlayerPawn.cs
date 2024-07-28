@@ -69,9 +69,21 @@ public sealed partial class PlayerPawn : Pawn, IDescription
 		GameObject.Name = $"Player ({DisplayName})";
 
 		CameraController.SetActive( IsViewer );
+
+		
 	}
 
 	public SceneTraceResult CachedEyeTrace { get; private set; }
+
+	public static string GetInputKey()
+	{
+		foreach(InputAction iA in Input.GetActions())
+		{
+			if(Input.Pressed(iA.Name)) return iA.Name;
+			
+		}
+		return null;
+	}
 
 	protected override void OnUpdate()
 	{
