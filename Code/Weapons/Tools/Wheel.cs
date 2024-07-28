@@ -2,29 +2,21 @@ using Softsplit.UI;
 
 namespace Softsplit;
 
-public sealed class Motor : ToolComponent
+public sealed class Wheel : ToolComponent
 {
-	GameObject object1;
+	string WheelModel = "models/citizen_props/wheel01.vmdl";
 	HighlightOutline object1Outline;
-	Vector3 point1Direction;
-	Vector3 point1;
-   	MotorMenu motorMenu;
+   	WheelMenu wheelMenu;
 	protected override void Start()
 	{
-        motorMenu = Components.Get<MotorMenu>(true);
-		ToolName = "Motor";
-		ToolDes = "Connect objects together that can rotate around an axis with a motor.";
+        wheelMenu = Components.Get<WheelMenu>(true);
+		ToolName = "Wheel";
+		ToolDes = "Spawn a wheelised wheel on an object.";
 	}
 
 	protected override void Update()
 	{
-		if ( object1Outline != null )
-		{
-			object1Outline.Enabled = object1 != null;
-			if ( object1 == null ) object1Outline = null;
-		}
 
-		object1Outline = object1?.Components.Get<HighlightOutline>( true );
 	}
 
 	protected override void PrimaryAction()
@@ -33,32 +25,32 @@ public sealed class Motor : ToolComponent
 
 		if ( hit.Hit && hit.GameObject?.Name != "Map" )
 		{
-			if ( hit.GameObject == object1 || hit.Body == null ) return;
+			GameObject object1G = new GameObject();
+			object1G.Transform.Position = 0;
+			object1G.Transform.Rotation = Angles.Zero;
+			ModelCollider modelCollider = object1G.Components.Create<ModelCollider>();
+			modelCollider.Model = Model.Load(WheelModel);
+			object1G.Components.Create<ModelRenderer>().Model = Model.Load(WheelModel);
+			object1G.Components.Create<Rigidbody>();
 
-			Recoil( hit.EndPosition );
+			Vector3 point1Direction = Vector3.Zero.WithY(-1);
+			Vector3 point1 = Vector3.Zero.WithY((-modelCollider.Model.Bounds.Size.y/2)-1.5f);
 
-			Vector3 localPoint = hit.GameObject.Transform.World.PointToLocal( hit.EndPosition );
+			object1G.Transform.Rotation = Rotation.FromToRotation( point1Direction, -hit.Normal ) * object1G.Transform.Rotation;
 
-			if ( object1 == null )
+			Vector3 pointWorld = object1G.Transform.World.PointToWorld( point1 );
+
+			object1G.Transform.Position += hit.EndPosition - pointWorld;
+
+			CreateAxis( PlayerState.Local.Pawn.GameObject, object1G, hit.GameObject, hit.EndPosition, hit.Normal, wheelMenu.Friction, wheelMenu.Speed, wheelMenu.ForwardBind, wheelMenu.BackwardBind, wheelMenu.Toggle, PlayerState.Local.Pawn.Id);
+
+			object1G.NetworkSpawn();
+			PlayerState.Thing thing = new()
 			{
-				point1 = localPoint;
-				point1Direction = hit.Normal;
-				object1 = hit.GameObject;
-			}
-			else
-			{
-				GameObject object1G = object1;
+				gameObjects = new List<GameObject>{object1G}
+			};
 
-				object1G.Transform.Rotation = Rotation.FromToRotation( point1Direction, -hit.Normal ) * object1G.Transform.Rotation;
-
-				Vector3 pointWorld = object1G.Transform.World.PointToWorld( point1 );
-
-				object1G.Transform.Position += hit.EndPosition - pointWorld;
-
-				CreateAxis( PlayerState.Local.Pawn.GameObject, object1, hit.GameObject, hit.EndPosition, hit.Normal, motorMenu.Friction, motorMenu.Speed, motorMenu.ForwardBind, motorMenu.BackwardBind, motorMenu.Toggle, PlayerState.Local.Pawn.Id);
-
-				
-			}
+			PlayerState.Local?.SpawnedThings.Add(thing);
 		}
 	}
 
@@ -104,7 +96,8 @@ public sealed class Motor : ToolComponent
                 {
                     axisContext1,
                     axisContext2
-                }
+                },
+				gameObjects = new List<GameObject>{object1}
             };
 
             owner.PlayerState?.SpawnedThings?.Add(thing);
