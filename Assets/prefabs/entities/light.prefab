@@ -1,0 +1,83 @@
+{
+  "RootObject": {
+    "__guid": "4f72ffbd-3fba-45f1-a7c4-20e47004a5c4",
+    "Flags": 0,
+    "Name": "light",
+    "Tags": "light_point,light,light_directional,light_spot",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "75f7b112-4bd0-4606-b939-efe25f22ec12",
+        "BodyGroups": 18446744073709551615,
+        "Model": "models/torch/torch.vmdl",
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Softsplit.SpawnableEntity",
+        "__guid": "350bc58d-b1d2-4880-9f7b-71efe70bbd4e",
+        "Description": "Light",
+        "Icon": {
+          "Model": "",
+          "MaterialGroup": "",
+          "Colour": "1,1,1,1",
+          "Rotation": "0,0,0,1",
+          "Fov": 40,
+          "Guid": "4dab4d44-d588-4aff-aadd-4626eaf5bc83"
+        },
+        "Name": "Light"
+      },
+      {
+        "__type": "Sandbox.ModelCollider",
+        "__guid": "0ecea759-9362-45d1-b43d-3a07114082f0",
+        "IsTrigger": false,
+        "Model": "models/torch/torch.vmdl",
+        "Static": false
+      },
+      {
+        "__type": "Sandbox.Rigidbody",
+        "__guid": "f8871cea-a5d8-443a-9439-0e30a4aff6de",
+        "AngularDamping": 0,
+        "Gravity": true,
+        "LinearDamping": 0,
+        "Locking": {},
+        "MassOverride": 0,
+        "MotionEnabled": true,
+        "RigidbodyFlags": 0,
+        "StartAsleep": false
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "546d714b-f8f6-4659-9cf1-76f916e6dbd1",
+        "Flags": 0,
+        "Name": "ray",
+        "Position": "2.063354,0,0",
+        "Tags": "particles",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SpotLight",
+            "__guid": "1b561705-1882-49b7-83d4-7a51d782c21e",
+            "Attenuation": 1,
+            "ConeInner": 15,
+            "ConeOuter": 45,
+            "FogMode": "Enabled",
+            "FogStrength": 1,
+            "LightColor": "0.91373,0.98039,1,1",
+            "Radius": 500,
+            "Shadows": true
+          }
+        ]
+      }
+    ],
+    "__variables": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__references": [],
+  "__version": 1
+}
