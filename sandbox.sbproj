@@ -5,7 +5,7 @@
   "Ident": "sandbox",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "*",
+  "Resources": "/fonts/*\n/UI/*\nui/*.png\n/models/*.png",
   "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {
