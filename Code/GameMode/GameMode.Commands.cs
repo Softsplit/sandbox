@@ -38,15 +38,16 @@ partial class GameMode : Component.INetworkListener
 		return package.GetMeta( "PrimaryAsset", "" );
 	}
 
+	//TODO: Handle new viewmodels (probably to eventually replace local VM's) 
 	private static EquipmentResource HandleViewModelPackage( string packageName, PlayerPawn owner )
 	{
 		string fileformat = packageName.Substring( packageName.IndexOf( '.' ) );
 		if ( !fileformat.StartsWith( ".v_" ) ) return null;
 		string resourceFileName = fileformat.Substring( fileformat.IndexOf( '_' ) + 1 );
 
-		List<string> resourceNames = EquipmentResource.All.Select( item => item.ResourceName ).ToList();
 		EquipmentResource vm_weapon = EquipmentResource.All
-		.First( x => x.ResourceName == GameUtils.getClosestString( resourceNames, resourceFileName ) );
+		.FirstOrDefault( x => x.ResourceName == GameUtils
+		.getClosestString( EquipmentResource.All.Select( item => item.ResourceName ), resourceFileName ) );
 		owner.Inventory.Drop( null, vm_weapon );
 
 		return vm_weapon ?? null;
@@ -56,7 +57,6 @@ partial class GameMode : Component.INetworkListener
 	public static async void Spawn( string modelname )
 	{
 		var owner = PlayerState.Local.PlayerPawn;
-
 
 		if ( owner == null )
 			return;
@@ -96,7 +96,7 @@ partial class GameMode : Component.INetworkListener
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
 
-		foreach ( var shape in ent.Components.GetOrCreate<Rigidbody>()?.PhysicsBody.Shapes )
+		foreach ( var shape in ent.Components.Get<Rigidbody>()?.PhysicsBody.Shapes )
 		{
 			if ( shape.IsMeshShape )
 			{
@@ -108,7 +108,7 @@ partial class GameMode : Component.INetworkListener
 
 		ent.Tags.Add( "propcollide" );
 		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
-		ent.Components.Create<HighlightOutline>(false);
+		ent.Components.Create<HighlightOutline>( false );
 		ent.NetworkSpawn( null );
 		ent.Network.DropOwnership();
 
@@ -141,11 +141,10 @@ partial class GameMode : Component.INetworkListener
 			obj.Transform.Rotation = modelRotation;
 
 			obj.NetworkMode = NetworkMode.Object;
-			obj.NetworkSpawn();
+			obj.NetworkSpawn( null );
 
 			owner.PlayerState.AddPropToList( obj );
 			Stats.Increment( "spawn.model", 1, path );
-
 		}
 	}
 
