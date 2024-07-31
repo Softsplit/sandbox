@@ -40,11 +40,15 @@ public partial class PlayerState
 	{
 		if ( SpawnedThings?.Count > 0 )
 		{
-			DestroyLastSpawnedProp( SpawnedThings.Last() );
-			SpawnedThings?.RemoveAt( SpawnedThings.IndexOf( SpawnedThings.Last() ) );
+			var lastObj = SpawnedThings.Last();
+			using ( Rpc.FilterInclude( Connection.Host ) )
+				DestroyLastSpawnedProp( lastObj );
+
+			SpawnedThings?.RemoveAt( SpawnedThings.IndexOf( lastObj ) );
 		}
 	}
 
+	[Broadcast]
 	public void DestroyLastSpawnedProp( Thing propToDestroy )
 	{
 		if ( propToDestroy.gameObjects != null )

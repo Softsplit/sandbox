@@ -96,21 +96,21 @@ partial class GameMode : Component.INetworkListener
 		var prop = ent.Components.Create<Prop>();
 		prop.Model = model;
 
-		foreach ( var shape in ent.Components.Get<Rigidbody>()?.PhysicsBody.Shapes )
-		{
-			if ( shape.IsMeshShape )
+		if ( ent.Components.TryGet<Rigidbody>( out var rb ) )
+			foreach ( var shape in rb.PhysicsBody.Shapes )
 			{
-				var collider = ent.Components.Create<BoxCollider>();
-				collider.Center = model.PhysicsBounds.Center;
-				collider.Scale = model.PhysicsBounds.Size;
+				if ( shape.IsMeshShape )
+				{
+					var collider = ent.Components.Create<BoxCollider>();
+					collider.Center = model.PhysicsBounds.Center;
+					collider.Scale = model.PhysicsBounds.Size;
+				}
 			}
-		}
 
 		ent.Tags.Add( "propcollide" );
 		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
 		ent.Components.Create<HighlightOutline>( false );
 		ent.NetworkSpawn( null );
-		ent.Network.DropOwnership();
 
 		owner.PlayerState.AddPropToList( ent );
 		Stats.Increment( "spawn.model", 1, modelname );
@@ -140,9 +140,7 @@ partial class GameMode : Component.INetworkListener
 			obj.Transform.Position = tr.EndPosition + Vector3.Down * -5;//obj.Mins.z
 			obj.Transform.Rotation = modelRotation;
 
-			obj.NetworkMode = NetworkMode.Object;
 			obj.NetworkSpawn( null );
-
 			owner.PlayerState.AddPropToList( obj );
 			Stats.Increment( "spawn.model", 1, path );
 		}
