@@ -4,20 +4,15 @@
     "Flags": 0,
     "Name": "playerstate",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
     "Components": [
       {
         "__type": "Softsplit.PlayerState",
         "__guid": "4287ea75-f9a3-44a1-9b33-47d8171c2433",
-        "TimeSinceRespawnStateChanged": {},
-        "IsBot": false,
         "PlayerPawnPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/player/player.prefab"
         },
-        "SteamId": 0,
-        "Team": "Unassigned"
+        "SteamId": 0
       },
       {
         "__type": "Softsplit.TeamComponent",
@@ -53,7 +48,7 @@
           "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
           "component_type": "PlayerState"
         },
-        "PushToTalkInput": "voice",
+        "PushToTalkInput": "Voice_toggle",
         "Volume": 1,
         "WorldspacePlayback": false
       },

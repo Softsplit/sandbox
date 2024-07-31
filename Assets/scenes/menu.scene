@@ -6,8 +6,6 @@
       "Flags": 0,
       "Name": "Main Menu",
       "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkInterpolation": true,
       "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
