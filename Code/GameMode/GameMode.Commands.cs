@@ -48,7 +48,7 @@ partial class GameMode : Component.INetworkListener
 		EquipmentResource vm_weapon = EquipmentResource.All
 		.FirstOrDefault( x => x.ResourceName == GameUtils
 		.getClosestString( EquipmentResource.All.Select( item => item.ResourceName ), resourceFileName ) );
-		owner.Inventory.Drop( null, vm_weapon );
+		owner.Inventory.DropResource( vm_weapon );
 
 		return vm_weapon ?? null;
 	}
@@ -108,8 +108,8 @@ partial class GameMode : Component.INetworkListener
 			}
 
 		ent.Tags.Add( "propcollide" );
-		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
 		ent.Components.Create<HighlightOutline>( false );
+		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
 		ent.NetworkSpawn( null );
 
 		owner.PlayerState.AddPropToList( ent );
@@ -140,7 +140,10 @@ partial class GameMode : Component.INetworkListener
 			obj.Transform.Position = tr.EndPosition + Vector3.Down * -5;//obj.Mins.z
 			obj.Transform.Rotation = modelRotation;
 
-			obj.NetworkSpawn( null );
+			obj.Components.Create<HighlightOutline>( false );
+			obj.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
+			obj.NetworkSpawn(null);
+
 			owner.PlayerState.AddPropToList( obj );
 			Stats.Increment( "spawn.model", 1, path );
 		}
