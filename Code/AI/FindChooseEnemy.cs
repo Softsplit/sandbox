@@ -62,7 +62,7 @@ public sealed class FindChooseEnemy : Component
 			if ( !agroRelations.Enemies.Contains( gAgroRelations?.Faction ) )
 			{
 				isTrue = true;
-				agroRelations.Enemies.Add( gAgroRelations.Faction );
+				agroRelations.Enemies.Add( gAgroRelations?.Faction );
 			}
 
 			if ( isTrue )

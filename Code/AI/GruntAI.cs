@@ -123,16 +123,16 @@ public sealed class GruntAI : AIAgent
 
 		Controller.Speed = FindChooseEnemy.Enemy.IsValid() ? Global.SprintingSpeed * 0.75f : Global.WalkSpeed * 0.75f;
 
-		if ( AnimationHelper.IsValid() )
+		if ( AnimationHelper.IsValid() && FindChooseEnemy.EnemyRelations.IsValid() )
 		{
 			Animate(
 				Controller.velocity.IsNearlyZero() ? Vector3.Zero : Controller.velocity,
 				Controller.useCharacterController ? Controller.characterController.IsOnGround : true,
-				FindChooseEnemy.Enemy != null ? (FindChooseEnemy.Enemy.Transform.World.PointToWorld( FindChooseEnemy.EnemyRelations.attackPoint ) - Transform.World.PointToWorld( EyePos )) : Transform.World.Forward,
+				FindChooseEnemy?.Enemy != null ? (FindChooseEnemy.Enemy.Transform.World.PointToWorld( FindChooseEnemy.EnemyRelations.attackPoint ) - Transform.World.PointToWorld( EyePos )) : Transform.World.Forward,
 				smoothCrouch,
 				EnemyWeaponDealer.Weapon.GetHoldType(),
 				EnemyWeaponDealer.Weapon.IsValid() ? EnemyWeaponDealer.Weapon.Handedness : AnimationHelper.Hand.Both,
-				FindChooseEnemy.Enemy == null
+				FindChooseEnemy?.Enemy == null
 			);
 		}
 
