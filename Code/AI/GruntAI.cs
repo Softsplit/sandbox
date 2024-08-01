@@ -79,9 +79,8 @@ public sealed class GruntAI : AIAgent
 			comp.Time = ev.DestroyTime;
 		}
 
-		Body.GameObject.NetworkSpawn();
-
 		Body = null;
+
 		GameObject.Destroy();
 	}
 
