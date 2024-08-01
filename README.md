@@ -7,8 +7,9 @@ Based on the original Sandbox by Facepunch
 * Asphaltian - General, UI
 * TROLLFACEINREALLIFE - Entities, NPCs, Tools, UI
 * Fasught - General
-* Kolya142 - Tools
+* Kolya142 - Entities, Tools
 * somethink000 - Entities, UI
+* sonicmemes - Entities
 * ducc - Advice
 * badandbest - Sprays
 ### Localization
@@ -18,3 +19,4 @@ Based on the original Sandbox by Facepunch
 * ML5700 - 🇩🇪
 * arad - 🇮🇷
 * NovaDiablox - 🇹🇷
+* Lokiv - 🇸🇪
