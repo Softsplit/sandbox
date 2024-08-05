@@ -3,6 +3,7 @@ Sandbox for the scene system.
 
 ## Credits
 Based on the original Sandbox by Facepunch
+
 ### Programming
 * Asphaltian - General, UI
 * TROLLFACEINREALLIFE - Entities, NPCs, Tools, UI
@@ -12,6 +13,7 @@ Based on the original Sandbox by Facepunch
 * sonicmemes - Entities
 * ducc - Advice
 * badandbest - Sprays
+
 ### Localization
 * DiskGG - 🇨🇿
 * boxden - 🇷🇺
@@ -20,3 +22,4 @@ Based on the original Sandbox by Facepunch
 * arad - 🇮🇷
 * NovaDiablox - 🇹🇷
 * Lokiv - 🇸🇪
+* TrackZone1 - 🇫🇷
