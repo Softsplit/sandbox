@@ -23,3 +23,4 @@ Based on the original Sandbox by Facepunch
 * NovaDiablox - 🇹🇷
 * Lokiv - 🇸🇪
 * TrackZone1 - 🇫🇷
+* diegosace2000 - 🇪🇸
