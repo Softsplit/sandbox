@@ -23,7 +23,7 @@ public sealed class PlayerFootsteps : Component
 	private void Footstep()
 	{
 		// Don't make footsteps sometimes
-		if ( Player.IsCrouching || Player.IsSlowWalking )
+		if ( Player.IsCrouching || Player.IsSlowWalking || !Player.IsGrounded )
 			return;
 
 		var tr = Scene.Trace

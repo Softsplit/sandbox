@@ -5,7 +5,7 @@
   "Ident": "sandbox",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "*",
+  "Resources": "/fonts/*\n/UI/*\nui/*.png\n/models/*.png",
   "PackageReferences": [],
   "EditorReferences": null,
   "Metadata": {
@@ -175,12 +175,6 @@
           "GroupName": "Inventory"
         },
         {
-          "Name": "Voice",
-          "KeyboardCode": "X",
-          "GamepadCode": "None",
-          "GroupName": "Other"
-        },
-        {
           "Name": "Drop",
           "KeyboardCode": "g",
           "GamepadCode": "None",
@@ -347,6 +341,12 @@
           "KeyboardCode": "/",
           "GamepadCode": "None",
           "GroupName": "Button Binds"
+        },
+        {
+          "Name": "Voice_toggle",
+          "KeyboardCode": "X",
+          "GamepadCode": "None",
+          "GroupName": "Other"
         }
       ],
       "__guid": "e5747b22-7f31-4f90-abfe-e68afdbbd2bb"

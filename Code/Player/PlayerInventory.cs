@@ -59,13 +59,25 @@ public partial class PlayerInventory : Component
 	/// Try to drop the given held equipment item.
 	/// </summary>
 	/// <param name="weapon">Item to drop.</param>
-	/// <param name="resource">Resource itself to drop directly.</param>
 	/// <param name="forceRemove">If we can't drop, remove it from the inventory anyway.</param>
-	public void Drop( Equipment weapon = null, EquipmentResource resource = null, bool forceRemove = false )
+	public void Drop( Equipment weapon, bool forceRemove = false )
 	{
 		using ( Rpc.FilterInclude( Connection.Host ) )
 		{
-			DropHost( weapon, resource, forceRemove );
+			DropHost( weapon, null, forceRemove );
+		}
+	}
+
+	/// <summary>
+	/// Try to drop the given resource.
+	/// </summary>
+	/// <param name="resource">Resource to drop.</param>
+	/// <param name="forceRemove">If we can't drop, remove it from the inventory anyway.</param>
+	public void DropResource(EquipmentResource resource, bool forceRemove = false )
+	{
+		using ( Rpc.FilterInclude( Connection.Host ) )
+		{
+			DropHost( null, resource, forceRemove );
 		}
 	}
 
@@ -75,7 +87,7 @@ public partial class PlayerInventory : Component
 		if ( !Networking.IsHost )
 			return;
 
-		if ( !weapon.IsValid() && resource == null)
+		if ( !weapon.IsValid() && resource == null )
 			return;
 
 		var canDrop = GameMode.Instance.Get<EquipmentDropper>() is { };
@@ -252,7 +264,7 @@ public partial class PlayerInventory : Component
 		{
 			var slotCurrent = Equipment.FirstOrDefault( equipment => equipment.Enabled );
 			if ( slotCurrent.IsValid() )
-				Drop( slotCurrent, null, true );
+				Drop( slotCurrent, true );
 		}
 
 		if ( !resource.MainPrefab.IsValid() )

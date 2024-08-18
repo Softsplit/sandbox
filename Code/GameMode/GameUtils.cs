@@ -164,19 +164,18 @@ public static partial class GameUtils
 		throw new Exception( "We should have returned an item already!" );
 	}
 
-	public static string getClosestString( List<string> stringsList, string stringToCompare )
+	public static string getClosestString( IEnumerable<string> stringsList, string stringToCompare, bool returnAnyClose = false)
 	{
-		var firstTest = stringsList
-		.FirstOrDefault( item => stringToCompare.Contains( item, StringComparison.OrdinalIgnoreCase ) );
-		if ( firstTest != null )
+		var closestMatch = 
+		stringsList.FirstOrDefault( item => stringToCompare.Contains( item, StringComparison.OrdinalIgnoreCase ) );
+		if ( returnAnyClose )
 		{
-			return firstTest;
-		}
-		var matches = stringsList.Select( item => stringToCompare.Count( c => item.Contains( c ) ) );
+			var matches = stringsList.Select( item => stringToCompare.Count( c => item.Contains( c ) ) );
 
-		var closestMatch = stringsList.Zip( matches, ( str, count ) => new { String = str, Count = count } )
-									 .OrderByDescending( pair => pair.Count )
-									 .FirstOrDefault()?.String;
-		return closestMatch;
+			closestMatch = stringsList.Zip( matches, ( str, count ) => new { String = str, Count = count } )
+										.OrderByDescending( pair => pair.Count )
+										.FirstOrDefault()?.String;
+		}
+		return closestMatch ?? null;
 	}
 }
