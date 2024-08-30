@@ -43,7 +43,7 @@ public class Thruster : ToolComponent
 		Rigidbody rb = thruster.Components.Create<Rigidbody>();
 
 		// Is dosnt work, idk how fix
-		PhysicsBody body = modelCollider.KeyframeBody;
+		PhysicsBody body = rb.PhysicsBody;
 
 		thruster.NetworkSpawn();
 

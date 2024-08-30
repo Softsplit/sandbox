@@ -1,11 +1,15 @@
-﻿namespace Softsplit;
+﻿using Softsplit.UI;
+
+namespace Softsplit;
 
 public sealed class ColorTool : ToolComponent
 {
 	Dictionary<GameObject, int> colorind = new Dictionary<GameObject, int>();
 	List<Color> colorlist;
+	ColorMenu colorMenu;
 	protected override void Start()
 	{
+		colorMenu = Components.GetOrCreate<ColorMenu>();
 		ToolName = "Color";
 		ToolDes = "ColorTool";
 		colorlist = new List<Color>() { 

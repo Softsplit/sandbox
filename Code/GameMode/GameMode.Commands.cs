@@ -53,13 +53,18 @@ partial class GameMode : Component.INetworkListener
 		return vm_weapon ?? null;
 	}
 
+
 	[ConCmd( "spawn" )]
-	public static async void Spawn( string modelname )
+	private static async void SpawnCmd( string modelname )
+	{
+		_ = Spawn( modelname );
+	}
+	public static async Task<GameObject?> Spawn( string modelname )
 	{
 		var owner = PlayerState.Local.PlayerPawn;
 
 		if ( owner == null )
-			return;
+			return null;
 
 		var tr = Game.ActiveScene.Trace.Ray( owner.AimRay, 500f )
 			.UseHitboxes()
@@ -67,10 +72,8 @@ partial class GameMode : Component.INetworkListener
 			.Run();
 
 		var modelRotation = Rotation.From( new Angles( 0, owner.EyeAngles.yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
-
 		if ( HandleViewModelPackage( modelname, owner ) != null )
-			return;
-
+			return null;
 		Model model;
 
 		var needsMounting = modelname.Contains( '.' )
@@ -83,9 +86,8 @@ partial class GameMode : Component.INetworkListener
 			Instance.cachedPackageList.Add( modelname );
 		}
 		model = Model.Load( needsMounting ? await MountPackageAsync( modelname ) : modelname );
-
 		if ( model == null || model.IsError )
-			return;
+			return null;
 
 		var ent = new GameObject();
 		ent.Transform.Position = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z;
@@ -94,10 +96,11 @@ partial class GameMode : Component.INetworkListener
 		ent.Tags.Add( "solid" );
 
 		var prop = ent.Components.Create<Prop>();
+		ent.Components.Create<BreakOnPhysics>();
 		prop.Model = model;
-
 		if ( ent.Components.TryGet<Rigidbody>( out var rb ) )
-			foreach ( var shape in rb.PhysicsBody.Shapes )
+		{
+			foreach ( var shape in ent.Components.Get<Rigidbody>()?.PhysicsBody.Shapes )
 			{
 				if ( shape.IsMeshShape )
 				{
@@ -106,14 +109,17 @@ partial class GameMode : Component.INetworkListener
 					collider.Scale = model.PhysicsBounds.Size;
 				}
 			}
+		}
 
+		ent.NetworkSpawn();
+		ent.Network.DropOwnership();
 		ent.Tags.Add( "propcollide" );
 		ent.Components.Create<HighlightOutline>( false );
 		ent.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
 		ent.NetworkSpawn( null );
-
 		owner.PlayerState.AddPropToList( ent );
 		Stats.Increment( "spawn.model", 1, modelname );
+		return ent;
 	}
 
 
