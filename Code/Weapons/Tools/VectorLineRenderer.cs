@@ -73,7 +73,6 @@ public sealed class VectorLineRenderer : Component, Component.ExecuteInEditor
 
     [Group("Rendering")]
     [Property]
-    [DefaultValue(true)]
     public bool Opaque { get; set; } = true;
 
 

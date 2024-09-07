@@ -13,6 +13,7 @@
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
           "ZIndex": 100
         },
         {

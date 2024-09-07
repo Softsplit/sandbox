@@ -18,9 +18,9 @@ partial class GameMode : Component.INetworkListener
 	}
 
 	[Broadcast]
-	public static async void MountPackage( string packageName )
+	public static void MountPackage( string packageName )
 	{
-		await MountPackageAsync( packageName );
+		_ = MountPackageAsync( packageName );
 	}
 
 	private static async Task<string> MountPackageAsync( string packageName )
@@ -118,7 +118,7 @@ partial class GameMode : Component.INetworkListener
 
 
 	[ConCmd( "spawnent" )]
-	public static async void SpawnEnt( string path )
+	public static void SpawnEnt( string path )
 	{
 		var owner = PlayerState.Local.PlayerPawn;
 

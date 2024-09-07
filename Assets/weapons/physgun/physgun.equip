@@ -1,9 +1,8 @@
 {
   "Name": "Physgun",
   "Description": "",
-  "Slot": "Secondary",
   "DropOnDisconnect": false,
-  "Icon": "ui/weapons/guns/usp_01.png",
+  "Icon": null,
   "MainPrefab": {
     "_type": "gameobject",
     "prefab": "weapons/physgun/w_physgun.prefab"

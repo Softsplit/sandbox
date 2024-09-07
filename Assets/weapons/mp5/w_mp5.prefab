@@ -5,8 +5,6 @@
     "Name": "w_mp5",
     "Tags": "player",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
     "Components": [
       {
         "__type": "Softsplit.Equipment",
@@ -23,10 +21,6 @@
           "component_id": "b9d63729-1ff0-4775-80dc-880285741edd",
           "go": "e7468f3b-e983-4db7-8322-83185a608264",
           "component_type": "SkinnedModelRenderer"
-        },
-        "MountedPrefab": {
-          "_type": "gameobject",
-          "prefab": "weapons/mp5/mount_mp5.prefab"
         },
         "Muzzle": {
           "_type": "gameobject",
@@ -48,8 +42,6 @@
         "Position": "3.535849,0,-7.21",
         "Scale": "1.3,1.3,1.3",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
@@ -69,9 +61,7 @@
             "Name": "Muzzle",
             "Position": "13.29764,0,8.152003",
             "Scale": "0.7692308,0.7692308,0.7692308",
-            "Enabled": true,
-            "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "Enabled": true
           },
           {
             "__guid": "097578f2-ecfc-4da2-9df4-fa57152dc0f7",
@@ -80,9 +70,7 @@
             "Position": "2.157239,-0.7262903,8.819459",
             "Scale": "1.153846,1.153846,1.153846",
             "Tags": "particles",
-            "Enabled": true,
-            "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "Enabled": true
           }
         ]
       },
@@ -91,8 +79,6 @@
         "Flags": 0,
         "Name": "Functions",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Softsplit.AmmoComponent",
@@ -140,6 +126,7 @@
             },
             "FireModeSwitchDelay": 0.3,
             "FireRate": 740,
+            "ForceShoot": false,
             "InAirSpreadMultiplier": 2,
             "InputActions": [
               "Attack1"
@@ -151,6 +138,7 @@
               "_type": "gameobject",
               "prefab": "prefabs/weapon_effects/pistol_muzzleflash.prefab"
             },
+            "NotPlayerControlled": false,
             "PenetrationThickness": 32,
             "PlayerVelocityLimit": 300,
             "RequiresAllInputActions": false,
@@ -180,9 +168,11 @@
               "2": "sounds/guns/mp5/reload/mp5.mag.sound"
             },
             "EmptyReloadTime": 2,
+            "ForceShoot": false,
             "InputActions": [
               "Reload"
             ],
+            "NotPlayerControlled": false,
             "ReloadTime": 1.5,
             "RequiresAllInputActions": false,
             "SingleReload": false,
@@ -195,7 +185,7 @@
           {
             "__type": "Softsplit.RecoilWeaponComponent",
             "__guid": "cb42a28e-d8b2-4f33-acba-2a3a4cdef920",
-            "HorizontalSpread": "2.00,-2.00,1",
+            "HorizontalSpread": "2 -2",
             "RecoilPattern": {
               "Points": [
                 "-0.0251255,4.851695",
@@ -204,7 +194,7 @@
                 "-0.1758795,4.279661",
                 "-0.4103851,4.067797",
                 "-0.6783919,3.877119",
-                "-0.8626466,3.728814",
+                "-0.8626471,3.728814",
                 "-1.130653,3.601695",
                 "-1.281407,3.368644",
                 "-1.080402,3.15678",
@@ -233,34 +223,7 @@
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": true,
-            "VerticalSpread": "3.50,0.00,0"
-          },
-          {
-            "__type": "Softsplit.AimWeaponComponent",
-            "__guid": "dfdced3b-f729-47a4-a151-4caf974cafc7",
-            "InputActions": [
-              "Attack2"
-            ],
-            "RequiresAllInputActions": false
-          },
-          {
-            "__type": "Softsplit.ViewPunch",
-            "__guid": "7b56d2e0-b645-4546-8417-6d4ce46e798f",
-            "AnglesOffset": "-0.5,0.1,0.5",
-            "Curve": [
-              {},
-              {
-                "x": 0.32886904,
-                "y": 1
-              },
-              {
-                "x": 1
-              }
-            ],
-            "Lifetime": 0.15,
-            "MaxAnglesOffset": "-0.5,0.1,0.5",
-            "MaxPositionOffset": "0.5,0.2,1",
-            "PositionOffset": "0.5,0.2,1"
+            "VerticalSpread": "3.5"
           }
         ]
       }

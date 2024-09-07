@@ -4,7 +4,7 @@
 @inherits Panel;
 
 <root class="spawnpage columned">
-	
+	@*
         @for (var index = 0; index < _EntitiesRepository.Count; index++)
         {
             EntityInfo info = _EntitiesRepository[index];
@@ -20,7 +20,7 @@
                 <text class="name">@(info.Name)</text>
             </div>
         }
-
+	*@
 </root>
 
 
@@ -36,6 +36,8 @@
 
     public NpcList()
     {
+        return; // Disabled for now.
+
         _EntitiesRepository = PrefabLibrary.FindByComponent<SpawnableEntity>()
         .Where(prefab => prefab.Path.Contains("npcs"))
         .Select(prefab =>

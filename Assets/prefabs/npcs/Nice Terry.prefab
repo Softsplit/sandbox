@@ -180,54 +180,6 @@
               "component_type": "SkinnedModelRenderer"
             },
             "RigidbodyFlags": 0
-          },
-          {
-            "__type": "Softsplit.EquipmentMountPoints",
-            "__guid": "c2543456-856b-4f37-9138-f60878a48abd",
-            "MountPoints": [
-              {
-                "Slot": "Primary",
-                "GameObjects": [
-                  {
-                    "_type": "gameobject",
-                    "go": "a99f424a-92ac-40ed-9c61-52ddc6252e89"
-                  }
-                ]
-              },
-              {
-                "Slot": "Secondary",
-                "GameObjects": [
-                  {
-                    "_type": "gameobject",
-                    "go": "1c92fa20-e5fb-48a0-8dc8-9b5a7804ca44"
-                  }
-                ]
-              },
-              {
-                "Slot": "Utility",
-                "GameObjects": [
-                  {
-                    "_type": "gameobject",
-                    "go": "b39b8d20-1fe8-4fea-981a-9e103d56fcbd"
-                  }
-                ]
-              },
-              {
-                "Slot": "Special",
-                "GameObjects": [
-                  {
-                    "_type": "gameobject",
-                    "go": "edc29226-6c69-4a27-8749-7492ce450613"
-                  }
-                ]
-              }
-            ],
-            "Player": {
-              "_type": "component",
-              "component_id": "3370799f-99ac-4881-9678-016414bdb61f",
-              "go": "a4f94dfd-8684-4032-89b1-b08190beab32",
-              "component_type": "PlayerPawn"
-            }
           }
         ],
         "Children": [
@@ -956,7 +908,7 @@
                   },
                   {
                     "__guid": "d7ec4600-5b93-4c91-81b8-6a0222d4777e",
-                    "Flags": 0,
+                    "Flags": 4,
                     "Name": "leg_glute_helper_R",
                     "Position": "0,0,0",
                     "Rotation": "-0.000001056968,-0.0000006258488,-0.7071052,0.7071084",
@@ -1046,13 +998,77 @@
                   },
                   {
                     "__guid": "1c72f7c6-702c-424f-91ab-b00cabc98c83",
-                    "Flags": 0,
+                    "Flags": 4,
                     "Name": "leg_glute_helper_L",
                     "Position": "0,0,0",
                     "Rotation": "-0.000001011624,-0.0000006854534,-0.7071055,0.707108",
                     "Enabled": true
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "__guid": "5df85fc5-58d7-436e-ad74-b2aaf609f10e",
+            "Flags": 4,
+            "Name": "root_IK",
+            "Position": "1.266575,0.0000071965,0",
+            "Enabled": true,
+            "Children": [
+              {
+                "__guid": "e7f7ae7f-7b61-47bc-b68e-2afa3d3aac39",
+                "Flags": 4,
+                "Name": "hand_R_IK_target",
+                "Position": "0.6939846,-20.39473,39.24799",
+                "Rotation": "0.2871271,0.2142481,-0.5281312,0.7698917",
+                "Enabled": true
+              },
+              {
+                "__guid": "57ece852-b53e-4da0-bb55-26974ccdfd67",
+                "Flags": 4,
+                "Name": "hand_L_IK_target",
+                "Position": "0.6941153,20.3947,39.24792",
+                "Rotation": "0.7698929,0.5281296,-0.2142482,0.2871265",
+                "Enabled": true
+              },
+              {
+                "__guid": "967dbbe8-05b5-4561-a8e6-31ecab689e92",
+                "Flags": 4,
+                "Name": "aim_matrix_02a",
+                "Position": "4.638925,-0.0000008343591,9.8425",
+                "Enabled": true,
+                "Children": [
+                  {
+                    "__guid": "24a198a5-a524-482a-9bc4-222763d32188",
+                    "Flags": 4,
+                    "Name": "aim_matrix_02b",
+                    "Position": "3.937002,-0.0000004822496,-0.0000009536743",
+                    "Enabled": true
+                  }
+                ]
+              },
+              {
+                "__guid": "0ba04764-bece-42ed-9bc6-d9d1cf2f69bb",
+                "Flags": 4,
+                "Name": "aim_matrix_01",
+                "Position": "4.638925,-0.0000008343591,11.811",
+                "Enabled": true
+              },
+              {
+                "__guid": "cfffd4ce-cc7d-4aee-988c-0c0898c4ef1d",
+                "Flags": 4,
+                "Name": "foot_R_IK_target",
+                "Position": "-0.8840668,-4.427395,3.807913",
+                "Rotation": "0.6508946,0.2762884,-0.2762875,0.6508964",
+                "Enabled": true
+              },
+              {
+                "__guid": "2cdb3827-c09c-42e6-ab77-6f6076812bf3",
+                "Flags": 4,
+                "Name": "foot_L_IK_target",
+                "Position": "-0.884093,4.427404,3.807924",
+                "Rotation": "0.650896,0.276287,-0.2762894,0.6508948",
+                "Enabled": true
               }
             ]
           }

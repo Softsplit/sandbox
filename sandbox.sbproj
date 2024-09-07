@@ -8,6 +8,7 @@
   "Resources": "/fonts/*\n/UI/*\nui/*.png\n/models/*.png",
   "PackageReferences": [],
   "EditorReferences": null,
+  "IsWhitelistDisabled": false,
   "Metadata": {
     "MaxPlayers": 64,
     "MinPlayers": 1,
@@ -79,25 +80,25 @@
           "GroupName": "Movement"
         },
         {
-          "Name": "attack1",
+          "Name": "Attack1",
           "KeyboardCode": "mouse1",
           "GamepadCode": "RightTrigger",
           "GroupName": "Actions"
         },
         {
-          "Name": "attack2",
+          "Name": "Attack2",
           "KeyboardCode": "mouse2",
           "GamepadCode": "LeftTrigger",
           "GroupName": "Actions"
         },
         {
-          "Name": "reload",
+          "Name": "Reload",
           "KeyboardCode": "r",
           "GamepadCode": "X",
           "GroupName": "Actions"
         },
         {
-          "Name": "use",
+          "Name": "Use",
           "KeyboardCode": "e",
           "GamepadCode": "Y",
           "GroupName": "Actions"
@@ -194,19 +195,19 @@
         },
         {
           "Name": "Menu",
-          "KeyboardCode": "Q",
+          "KeyboardCode": "q",
           "GamepadCode": "SwitchRightMenu",
           "GroupName": "Other"
         },
         {
           "Name": "Chat",
-          "KeyboardCode": "Y",
+          "KeyboardCode": "enter",
           "GamepadCode": "None",
           "GroupName": "Other"
         },
         {
           "Name": "Noclip",
-          "KeyboardCode": "V",
+          "KeyboardCode": "n",
           "GamepadCode": "None",
           "GroupName": "Movement"
         },
@@ -217,134 +218,32 @@
           "GroupName": "Developer"
         },
         {
-          "Name": "undo",
+          "Name": "Undo",
           "KeyboardCode": "Z",
           "GamepadCode": "None",
           "GroupName": "Actions"
         },
         {
-          "Name": "ToolGunMenu",
+          "Name": "View",
           "KeyboardCode": "C",
-          "GamepadCode": "None",
+          "GamepadCode": "RightJoystickButton",
           "GroupName": "Other"
         },
         {
           "Name": "Spray",
           "KeyboardCode": "T",
           "GamepadCode": "None",
-          "GroupName": "Developer"
+          "GroupName": "Other"
         },
         {
-          "Name": "Action 1",
-          "KeyboardCode": "Y",
+          "Name": "Voice",
+          "KeyboardCode": "v",
           "GamepadCode": "None",
-          "GroupName": "Button Binds"
+          "GroupName": "Other"
         },
         {
-          "Name": "Action 36",
-          "KeyboardCode": "U",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 37",
-          "KeyboardCode": "I",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 38",
-          "KeyboardCode": "O",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 39",
-          "KeyboardCode": "P",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 40",
-          "KeyboardCode": "[",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 41",
-          "KeyboardCode": "]",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 42",
-          "KeyboardCode": "H",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 43",
-          "KeyboardCode": "J",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 44",
-          "KeyboardCode": "K",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 45",
-          "KeyboardCode": "L",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 46",
-          "KeyboardCode": "SEMICOLON",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 47",
-          "KeyboardCode": "\u0027",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 48",
-          "KeyboardCode": "N",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 49",
-          "KeyboardCode": "M",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 50",
-          "KeyboardCode": ",",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 51",
-          "KeyboardCode": ".",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Action 52",
-          "KeyboardCode": "/",
-          "GamepadCode": "None",
-          "GroupName": "Button Binds"
-        },
-        {
-          "Name": "Voice_toggle",
-          "KeyboardCode": "X",
+          "Name": "ToolGunMenu",
+          "KeyboardCode": "m",
           "GamepadCode": "None",
           "GroupName": "Other"
         }

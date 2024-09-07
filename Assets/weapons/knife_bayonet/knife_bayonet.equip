@@ -1,14 +1,8 @@
 {
   "Name": "M9 Bayonet",
   "Description": "",
-  "Slot": "Melee",
-  "Team": "Unassigned",
-  "CanOtherTeamPickUp": true,
   "DropOnDisconnect": false,
-  "Icon": "ui/weapons/melee/trench_knife_01.png",
-  "IsPurchasable": false,
-  "Price": 0,
-  "KillReward": 1500,
+  "Icon": null,
   "MainPrefab": {
     "_type": "gameobject",
     "prefab": "weapons/knife_bayonet/w_bayonet.prefab"

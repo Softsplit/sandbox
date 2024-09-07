@@ -192,20 +192,8 @@ public abstract class GameEventComponent<T> : Component, IGameEventHandler<T>
 	[Property]
 	public GameEventAction<T>? OnEvent { get; set; }
 
-	/// <summary>
-	/// If this component is within a state machine, optional state to transition
-	/// to when this event is dispatched.
-	/// </summary>
-	[Property]
-	public StateComponent? NextState { get; set; }
-
 	void IGameEventHandler<T>.OnGameEvent( T eventArgs )
 	{
 		OnEvent?.Invoke( eventArgs );
-
-		if ( NextState is not null )
-		{
-			Components.GetInAncestorsOrSelf<StateMachineComponent>()?.Transition( NextState );
-		}
 	}
 }

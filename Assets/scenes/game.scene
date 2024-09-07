@@ -105,6 +105,7 @@
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
           "ZIndex": 999
         },
         {
@@ -126,6 +127,7 @@
           "AutoScreenScale": true,
           "Opacity": 1,
           "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
           "ZIndex": 100
         },
         {
@@ -157,6 +159,8 @@
           "EnableCollision": true,
           "MapName": "facepunch.construct23",
           "NoOrigin": true,
+          "OnMapLoaded": null,
+          "OnMapUnloaded": null,
           "UseMapFromLaunch": true
         }
       ],
