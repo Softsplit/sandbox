@@ -27,7 +27,7 @@ public class CurrentTool : Panel
 	ToolComponent GetCurrentTool()
 	{
 		var player = PlayerState.Viewer?.PlayerPawn;
-		if ( player?.CurrentEquipment.Resource.Name != "Toolgun" )
+		if ( player?.CurrentEquipment?.Resource.Name != "Toolgun" )
 			return null;
 
 		return (ToolComponent)(player?.Components.Get<ToolGunHandler>( FindMode.EverythingInSelfAndDescendants )?.ActiveTool);
