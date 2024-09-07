@@ -5,8 +5,6 @@
     "Name": "w_spaghelli",
     "Tags": "player",
     "Enabled": true,
-    "NetworkMode": 2,
-    "NetworkInterpolation": true,
     "Components": [
       {
         "__type": "Softsplit.Equipment",
@@ -23,10 +21,6 @@
           "component_id": "0da0ed03-c109-424d-b320-a0a41f8a9896",
           "go": "092bf9bf-6f26-4ec8-844b-c1e3d184478a",
           "component_type": "SkinnedModelRenderer"
-        },
-        "MountedPrefab": {
-          "_type": "gameobject",
-          "prefab": "weapons/spaghelli/mount_spaghelli.prefab"
         },
         "Muzzle": {
           "_type": "gameobject",
@@ -49,8 +43,6 @@
         "Rotation": "0,-0.01657987,0,0.9998626",
         "Scale": "1.2,1.2,1.2",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
@@ -69,18 +61,14 @@
             "Flags": 0,
             "Name": "Muzzle",
             "Position": "0,0,0",
-            "Enabled": true,
-            "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "Enabled": true
           },
           {
             "__guid": "8010d538-161c-486a-9781-1e812c0cc52d",
             "Flags": 0,
             "Name": "EjectionPort",
             "Position": "-0.2785015,-1.175216,6.871462",
-            "Enabled": true,
-            "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "Enabled": true
           }
         ]
       },
@@ -89,8 +77,6 @@
         "Flags": 0,
         "Name": "Functions",
         "Enabled": true,
-        "NetworkMode": 2,
-        "NetworkInterpolation": true,
         "Components": [
           {
             "__type": "Softsplit.AmmoComponent",
@@ -133,18 +119,22 @@
             "BulletCount": 10,
             "BulletSize": 1,
             "BulletSpread": 0.13,
-            "DryFireDelay": 1,
+            "BurstAmount": 3,
+            "BurstEndDelay": 0.2,
+            "CurrentFireMode": "Automatic",
             "DryFireSound": "sounds/guns/gun_dryfire.sound",
+            "DryShootDelay": 0.15,
             "EjectionPrefab": {
               "_type": "gameobject",
               "prefab": "prefabs/weapon_effects/12g_casing.prefab"
             },
+            "FireModeSwitchDelay": 0.3,
             "FireRate": 175,
+            "ForceShoot": false,
             "InAirSpreadMultiplier": 2,
             "InputActions": [
               "Attack1"
             ],
-            "InputType": "Pressed",
             "MaxEffectsPlayDistance": 4194304,
             "MaxRange": 1024000,
             "MaxRicochetAngle": 45,
@@ -152,12 +142,16 @@
               "_type": "gameobject",
               "prefab": "prefabs/weapon_effects/shotgun_muzzleflash.prefab"
             },
+            "NotPlayerControlled": false,
             "PenetrationThickness": 32,
             "PlayerVelocityLimit": 300,
             "RequiresAllInputActions": false,
             "RequiresAmmoComponent": true,
             "RicochetMaxHits": 2,
             "ShootSound": "sounds/guns/r870/shotgun1_shoot.sound",
+            "SupportedFireModes": [
+              "Automatic"
+            ],
             "VelocitySpreadScale": 0.25
           },
           {
@@ -171,10 +165,11 @@
             },
             "EmptyReloadSounds": {},
             "EmptyReloadTime": 0.5,
+            "ForceShoot": false,
             "InputActions": [
               "Reload"
             ],
-            "InputType": "Pressed",
+            "NotPlayerControlled": false,
             "ReloadTime": 0.5,
             "RequiresAllInputActions": false,
             "SingleReload": true,
@@ -185,66 +180,14 @@
           {
             "__type": "Softsplit.RecoilWeaponComponent",
             "__guid": "396ad2c5-482e-413a-a595-107f634880bf",
-            "HorizontalSpread": "3.00,-3.00,1",
+            "HorizontalSpread": "3 -3",
             "RecoilPattern": {
               "Points": []
             },
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": false,
-            "VerticalSpread": "20.00,0.00,0"
-          },
-          {
-            "__type": "Softsplit.ManualOffset",
-            "__guid": "9fb89bb9-f727-4ba4-a175-8251dc3fcbe7",
-            "AimAngleOffset": "0,0,7",
-            "AimOffset": "-6,3.835,3.3",
-            "InputActions": [
-              "Attack2"
-            ],
-            "InputType": "Down",
-            "RequiresAllInputActions": false
-          },
-          {
-            "__type": "Softsplit.ViewPunch",
-            "__guid": "82c14c44-b65a-49dc-bf0a-5c5e04d913ea",
-            "AnglesOffset": "-0.5,0.1,0.5",
-            "Curve": [
-              {},
-              {
-                "x": 0.5,
-                "y": 1
-              },
-              {
-                "x": 1
-              }
-            ],
-            "Lifetime": 0.3,
-            "MaxAnglesOffset": "-0.5,0.1,0.5",
-            "MaxPositionOffset": "0.5,0.2,0.75",
-            "PositionOffset": "0.5,0.2,0.75"
-          },
-          {
-            "__type": "Softsplit.ScreenShakeOnShot",
-            "__guid": "9f63c89b-30fd-4abb-8960-f952f59c9687",
-            "Length": 0.2,
-            "Size": 4
-          },
-          {
-            "__type": "Softsplit.FovOffset",
-            "__guid": "a3a677ad-2963-4d3e-b8af-6131205c26b9",
-            "Curve": [
-              {},
-              {
-                "x": 0.15,
-                "y": 1
-              },
-              {
-                "x": 1
-              }
-            ],
-            "Length": 0.2,
-            "Size": 5
+            "VerticalSpread": "20"
           }
         ]
       }

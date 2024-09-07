@@ -179,43 +179,14 @@
           {
             "__type": "Softsplit.RecoilWeaponComponent",
             "__guid": "4b68ac05-70af-4150-9d3c-2901ddc3dc55",
-            "HorizontalSpread": "1.40,-1.40,1",
+            "HorizontalSpread": "1.4 -1.4",
             "RecoilPattern": {
               "Points": []
             },
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": false,
-            "VerticalSpread": "2.00,0.00,0"
-          },
-          {
-            "__type": "Softsplit.ViewPunch",
-            "__guid": "c7fe5140-2864-4dc7-908c-34e52c63014f",
-            "AnglesOffset": "-0.5,0.1,0.5",
-            "Curve": [
-              {},
-              {
-                "x": 0.20833333,
-                "y": 1
-              },
-              {
-                "x": 1
-              }
-            ],
-            "Lifetime": 0.1,
-            "MaxAnglesOffset": "-0.5,0.1,0.5",
-            "MaxPositionOffset": "0.5,0.2,1.5",
-            "PositionOffset": "0.5,0.2,1.5"
-          },
-          {
-            "__type": "Softsplit.ManualOffset",
-            "__guid": "a4ab8706-e8d7-4e87-87a1-bb39ede630c6",
-            "AimAngleOffset": "0,0,0",
-            "AimOffset": "5,0,0",
-            "InputActions": [
-              "Attack2"
-            ],
-            "RequiresAllInputActions": false
+            "VerticalSpread": "2"
           }
         ]
       }
