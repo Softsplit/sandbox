@@ -10,7 +10,6 @@ public struct IconSettings : IEquatable<IconSettings>
 	public Color Colour { get; set; }
 	public Vector3 Position { get; set; }
 	public Rotation Rotation { get; set; }
-	[DefaultValue(40f)]
 	public float Fov { get; set; }
 	public Guid Guid { get; set; }
 

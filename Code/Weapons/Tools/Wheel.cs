@@ -5,7 +5,7 @@ namespace Softsplit;
 public sealed class Wheel : ToolComponent
 {
 	string WheelModel = "models/citizen_props/wheel01.vmdl";
-	HighlightOutline object1Outline;
+	//HighlightOutline object1Outline;
    	WheelMenu wheelMenu;
 	protected override void Start()
 	{

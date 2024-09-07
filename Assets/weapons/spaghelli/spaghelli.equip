@@ -1,11 +1,8 @@
 {
   "Name": "Spaghelli",
   "Description": "",
-  "Slot": "Primary",
-  "Icon": "ui/weapons/guns/spaghellim4_01.png",
-  "IsPurchasable": true,
-  "Price": 2000,
-  "KillReward": 900,
+  "DropOnDisconnect": false,
+  "Icon": null,
   "MainPrefab": {
     "_type": "gameobject",
     "prefab": "weapons/spaghelli/w_spaghelli.prefab"
@@ -15,6 +12,8 @@
     "prefab": "weapons/spaghelli/vm_spaghelli.prefab"
   },
   "WorldModel": "models/weapons/sbox_shotgun_spaghellim4/w_spaghellim4.vmdl",
+  "DroppedSize": "8,2,8",
+  "DroppedCenter": "0,0,0",
   "__references": [
     "facepunch.w_spaghellim4"
   ],

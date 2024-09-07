@@ -601,11 +601,14 @@ public partial class ShootWeaponComponent : InputWeaponComponent,
 	}
 	protected override void OnInputUpdate()
 	{
+		// TODO: Fire mode?
+		/*
 		if (Input.Pressed( "FireMode" ) && !NotPlayerControlled)
 		{
 			CycleFireMode();
 			return;
 		}
+		*/
 
 		if ( IsBurstFiring && BurstCount >= BurstAmount - 1 || (Tags.Has( "reloading" ) && IsBurstFiring) )
 		{

@@ -115,8 +115,8 @@ public abstract class ToolComponent : InputWeaponComponent
 		}
 	}
 
-	private GameObject p1;
-	private GameObject p2;
+	private GameObject p1 = null;
+	private GameObject p2 = null;
 
 	protected SceneTraceResult Trace()
 	{

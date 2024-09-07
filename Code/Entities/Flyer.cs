@@ -1,12 +1,12 @@
 ﻿namespace Softsplit.Ents;
 public class Flyer : Component, IUse
 {
-	private float scaleFactor = 1.0f;
-	private float scaleSpeed = 0.01f;
+	//private float scaleFactor = 1.0f;
+	//private float scaleSpeed = 0.01f;
 	private PlayerPawn player;
 	private Vector3 offset;
 	private Guid player_id { get; set; }
-	[Property] private Rigidbody rb;
+	[Property] private Rigidbody rb = null;
 
 	void Start()
 	{

@@ -10,7 +10,7 @@ public sealed class Camera : ToolComponent
 	bool right;
 	float roll;
 	float fov = 80;
-	Model camera = Cloud.Model( "https://sbox.game/smlp/camera" );
+	Model camera = Cloud.Model( "smlp.camera" );
 	bool inp;
 	protected override void Start()
 	{

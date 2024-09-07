@@ -53,7 +53,7 @@ public sealed class NavMeshCharacter : Component
 	bool AtTarget;
 	public Vector3 velocity;
 
-	Vector3 lastPos;
+	//Vector3 lastPos;
 	protected override void OnUpdate()
 	{
 		MoveTo();

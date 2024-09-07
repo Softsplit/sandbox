@@ -14,6 +14,7 @@ public sealed class GruntAI : AIAgent
 	//public int Grenades {get;set;} = 3;
 	//public float GrenadeTime {get;set;} = 30f;
 	//public float GrenadeRange {get;set;} = 250f;
+	
 	[Property] public Vector3 EyePos { get; set; }
 	[Property] public float SuppressPatience { get; set; } = 15f;
 	[Property] public float Patience { get; set; } = 30f;
@@ -288,7 +289,7 @@ public class IDLE : AIState
 		return "IDLE";
 	}
 
-	float timeSinceLastCanShoot;
+	//float timeSinceLastCanShoot;
 	public void Update( AIAgent agent )
 	{
 		agent.Controller.currentTarget = agent.Transform.Position;
@@ -405,7 +406,7 @@ public class COVER : AIState
 {
 	GruntAI gruntAI;
 
-	float coverValue = 0.5f;
+	//float coverValue = 0.5f;
 	float patience;
 	public void Enter( AIAgent agent )
 	{
