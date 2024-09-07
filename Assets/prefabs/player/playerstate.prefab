@@ -27,7 +27,7 @@
           "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
           "component_type": "PlayerState"
         },
-        "PushToTalkInput": "Voice_toggle",
+        "PushToTalkInput": "Voice",
         "Volume": 1,
         "WorldspacePlayback": false
       }
