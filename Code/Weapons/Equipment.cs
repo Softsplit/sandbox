@@ -100,12 +100,12 @@ public partial class Equipment : Component, Component.INetworkListener, IEquipme
 	/// </summary>
 	public void UpdateRenderMode( bool force = false )
 	{
-		var on = force || (Owner.IsValid() && !Owner.IsViewer && IsDeployed);
+		var on = force || Owner.IsValid() && !(Owner.IsViewer && Owner.CameraController.Mode == CameraMode.FirstPerson);
 
 		if ( !Owner.IsValid() && !force )
 			on = false;
 
-		ModelRenderer.Enabled = on;
+		ModelRenderer.Enabled = IsDeployed;
 		ModelRenderer.RenderType = on
 			? Sandbox.ModelRenderer.ShadowRenderType.On
 			: Sandbox.ModelRenderer.ShadowRenderType.ShadowsOnly;
