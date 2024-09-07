@@ -41,7 +41,7 @@ public class DispatchTests
 	}
 }
 
-public class ExampleEventArgs
+public class ExampleEventArgs : IGameEvent
 {
 	public int HandleCount { get; set; }
 }
