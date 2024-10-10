@@ -13,6 +13,9 @@
     "MaxPlayers": 64,
     "MinPlayers": 1,
     "CsProjName": "",
-    "ControlModes": {}
+    "ControlModes": {},
+    "LaunchMode": "Launcher",
+    "StartupScene": "scenes/minimal.scene",
+    "MapStartupScene": "scenes/minimal.scene"
   }
 }

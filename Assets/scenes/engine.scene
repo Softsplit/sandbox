@@ -1,0 +1,180 @@
+{
+  "__guid": "cd285893-d0ab-4423-9b5f-9a94f46ce96c",
+  "GameObjects": [
+    {
+      "__guid": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
+      "Flags": 0,
+      "Name": "Camera",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.CameraComponent",
+          "__guid": "d3e929e2-6c1f-48f2-94ff-dfa7125d2444",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 90,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 100000,
+          "ZNear": 1
+        },
+        {
+          "__type": "Sandbox.Tonemapping",
+          "__guid": "bb1d4e00-68b9-4153-b1ed-499d0521de51",
+          "__version": 1,
+          "AutoExposureEnabled": true,
+          "ExposureBias": 2,
+          "ExposureCompensation": 0,
+          "ExposureMethod": "RGB",
+          "MaximumExposure": 3,
+          "MinimumExposure": 1,
+          "Mode": "Legacy",
+          "Rate": 1
+        },
+        {
+          "__type": "Sandbox.AmbientOcclusion",
+          "__guid": "3720c288-defb-4bd0-942a-b79509572b31",
+          "FalloffDistance": 1,
+          "Intensity": 8,
+          "Quality": "High",
+          "Radius": 32
+        },
+        {
+          "__type": "Sandbox.Highlight",
+          "__guid": "dcb8dac7-34ae-4f23-82f2-41fdfec6cfb1"
+        }
+      ]
+    },
+    {
+      "__guid": "66cee047-c868-48ac-a5c2-ec230a2274e3",
+      "Flags": 0,
+      "Name": "UI",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "95f61551-065c-4412-8f96-a99621d0555d",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "FollowDesktopScaling",
+          "ZIndex": 100
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "5c673de9-a7fd-43fa-98e2-dd28a882bd68",
+          "Flags": 0,
+          "Name": "Chat",
+          "Enabled": true,
+          "NetworkMode": 1,
+          "Components": [
+            {
+              "__type": "Chat",
+              "__guid": "985588db-f75c-4ef0-a141-6da603c5fe1d"
+            }
+          ]
+        },
+        {
+          "__guid": "de8144e0-9097-4d00-8cff-f13b67233318",
+          "Flags": 0,
+          "Name": "Scoreboard",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Scoreboard",
+              "__guid": "f78202da-066b-4ebb-8273-d63c9b59cc4a"
+            }
+          ]
+        },
+        {
+          "__guid": "9ca25d97-bab9-4eb9-8622-fc4111cb8adf",
+          "Flags": 0,
+          "Name": "Hud",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Hud",
+              "__guid": "f3159882-fc04-4b93-a652-1ccd9b1cf6a4"
+            }
+          ],
+          "Children": [
+            {
+              "__guid": "941e6cbd-c42d-41a1-9cdb-e6bbbbcc30f8",
+              "Flags": 0,
+              "Name": "Inventory",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Inventory",
+                  "__guid": "17161ed8-5572-4448-a8c2-94d34804e22f",
+                  "CancelSound": "audio/ui/inventory-cancel.sound",
+                  "SelectSound": "audio/ui/inventory-select.sound",
+                  "SwitchSound": "audio/ui/inventory-switch.sound"
+                }
+              ]
+            },
+            {
+              "__guid": "550829a6-d1e5-4b13-85d5-bb0b465a7532",
+              "Flags": 0,
+              "Name": "CrosshairTooltip",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.CrosshairTooltip",
+                  "__guid": "e9e06e7d-8c10-42fe-a737-b9736ff32210"
+                }
+              ]
+            },
+            {
+              "__guid": "9198aa42-df9f-4ac9-98c8-49fa0ffab8f7",
+              "Flags": 0,
+              "Name": "Collectables",
+              "Enabled": true,
+              "Components": [
+                {
+                  "__type": "Sandbox.Collectables",
+                  "__guid": "3d8db16f-fdb8-4a31-a318-3ec538b066b3"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "engine",
+  "Description": "",
+  "ResourceVersion": 1,
+  "__references": [],
+  "IsValid": true,
+  "__version": 1
+}
