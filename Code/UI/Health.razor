@@ -1,0 +1,20 @@
+@using Sandbox.UI
+@using Sandbox.UI.Construct
+
+@inherits Panel
+
+<root>
+    <label @ref="label" class="value">100</label>
+</root>
+
+@code {
+    private Label label;
+
+    public override void Tick()
+    {
+        var player = Player.FindLocalPlayer();
+        if (!player.IsValid()) return;
+
+        label.Text = $"{player.Health.CeilToInt()}";
+    }
+}

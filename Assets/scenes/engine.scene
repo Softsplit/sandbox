@@ -65,86 +65,10 @@
           "Scale": 1,
           "ScaleStrategy": "FollowDesktopScaling",
           "ZIndex": 100
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "5c673de9-a7fd-43fa-98e2-dd28a882bd68",
-          "Flags": 0,
-          "Name": "Chat",
-          "Enabled": true,
-          "NetworkMode": 1,
-          "Components": [
-            {
-              "__type": "Chat",
-              "__guid": "985588db-f75c-4ef0-a141-6da603c5fe1d"
-            }
-          ]
         },
         {
-          "__guid": "de8144e0-9097-4d00-8cff-f13b67233318",
-          "Flags": 0,
-          "Name": "Scoreboard",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Scoreboard",
-              "__guid": "f78202da-066b-4ebb-8273-d63c9b59cc4a"
-            }
-          ]
-        },
-        {
-          "__guid": "9ca25d97-bab9-4eb9-8622-fc4111cb8adf",
-          "Flags": 0,
-          "Name": "Hud",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Hud",
-              "__guid": "f3159882-fc04-4b93-a652-1ccd9b1cf6a4"
-            }
-          ],
-          "Children": [
-            {
-              "__guid": "941e6cbd-c42d-41a1-9cdb-e6bbbbcc30f8",
-              "Flags": 0,
-              "Name": "Inventory",
-              "Enabled": true,
-              "Components": [
-                {
-                  "__type": "Inventory",
-                  "__guid": "17161ed8-5572-4448-a8c2-94d34804e22f",
-                  "CancelSound": "audio/ui/inventory-cancel.sound",
-                  "SelectSound": "audio/ui/inventory-select.sound",
-                  "SwitchSound": "audio/ui/inventory-switch.sound"
-                }
-              ]
-            },
-            {
-              "__guid": "550829a6-d1e5-4b13-85d5-bb0b465a7532",
-              "Flags": 0,
-              "Name": "CrosshairTooltip",
-              "Enabled": true,
-              "Components": [
-                {
-                  "__type": "Sandbox.CrosshairTooltip",
-                  "__guid": "e9e06e7d-8c10-42fe-a737-b9736ff32210"
-                }
-              ]
-            },
-            {
-              "__guid": "9198aa42-df9f-4ac9-98c8-49fa0ffab8f7",
-              "Flags": 0,
-              "Name": "Collectables",
-              "Enabled": true,
-              "Components": [
-                {
-                  "__type": "Sandbox.Collectables",
-                  "__guid": "3d8db16f-fdb8-4a31-a318-3ec538b066b3"
-                }
-              ]
-            }
-          ]
+          "__type": "Hud",
+          "__guid": "2fad2687-4a2a-4a90-a4fe-150c1117d0ab"
         }
       ]
     }

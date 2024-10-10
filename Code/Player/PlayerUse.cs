@@ -71,7 +71,7 @@ public sealed class PlayerUse : Component
 	private void StartCarry( Rigidbody rb )
 	{
 		if ( !rb.Network.TakeOwnership() )
-			return;
+			rb.Network.DropOwnership();
 
 		carrying = rb;
 		carryOriginalTransform = rb.Transform.World;

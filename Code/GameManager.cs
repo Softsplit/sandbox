@@ -1,4 +1,4 @@
-public sealed class GameManager : GameObjectSystem<GameManager>, IPlayerEvent, Component.INetworkListener, ISceneStartup
+public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayerEvent, Component.INetworkListener, ISceneStartup
 {
 	public GameManager( Scene scene ) : base( scene )
 	{
