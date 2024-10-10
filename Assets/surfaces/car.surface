@@ -1,30 +1,28 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-	"BaseSurface": "surfaces/metal.surface",
-	"AudioMaterial": null,
-	"Description": "",
-	"Friction": 0.075000,
-	"Elasticity": 0,
-	"Density": 2000,
-	"Thickness": -1,
-	"Dampening": 0,
-	"BounceThreshold": 0,
-	"ImpactEffects":
+	data = 
 	{
-		"Regular":
-		[
-		],
-		"Bullet":
-		[
-		],
-		"BulletDecal":
-		[
-		]
-	},
-	"Sounds":
-	{
-		"RoughScrape": ""
-	},
-	"Breakables":
-	{
+		BaseSurface = resource:"surfaces/metal.surface"
+		AudioMaterial = null
+		Description = ""
+		Friction = 0.075
+		Elasticity = 0
+		Density = 2000
+		Thickness = -1
+		Dampening = 0
+		BounceThreshold = 0
+		ImpactEffects = 
+		{
+			Regular = [  ]
+			Bullet = [  ]
+			BulletDecal = [  ]
+		}
+		Sounds = 
+		{
+			RoughScrape = ""
+		}
+		Breakables = 
+		{
+		}
 	}
 }

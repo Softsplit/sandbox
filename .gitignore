@@ -7,19 +7,22 @@
 .vscode/*
 *.csproj
 obj
-**/.bin
+bin
 Properties/*
 code/obj/*
 code/Properties/*
 
 # Auto-generated asset related files
+.sbox/*
 *.generated.*
 *.*_c
 !*.shader_c
 *.los
 *.vpk
-*.tomfoolery/
 *launchSettings.json
 *.sln
 
 *idea
+
+# Exported / standalone games
+Exports/
