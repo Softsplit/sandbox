@@ -14,12 +14,20 @@ public sealed partial class GameManager
 
 		var modelRotation = Rotation.From( new Angles( 0, player.EyeTransform.Rotation.Angles().yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
 
+		SpawnModel(modelname, tr.EndPosition, modelRotation, player.GameObject);
+	}
+
+	[Broadcast]
+	static async void SpawnModel(string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject)
+	{
+		if(!Networking.IsHost)
+			return;
 		//
 		// Does this look like a package?
 		//
 		if ( modelname.Count( x => x == '.' ) == 1 && !modelname.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", StringComparison.OrdinalIgnoreCase ) )
 		{
-			modelname = await SpawnPackageModel( modelname, tr.EndPosition, modelRotation, player.GameObject );
+			modelname = await SpawnPackageModel( modelname, endPos, modelRotation, playerObject );
 			if ( modelname == null )
 				return;
 		}
@@ -30,7 +38,7 @@ public sealed partial class GameManager
 
 		var go = new GameObject
 		{
-			WorldPosition = tr.EndPosition + Vector3.Down * model.PhysicsBounds.Mins.z,
+			WorldPosition = endPos + Vector3.Down * model.PhysicsBounds.Mins.z,
 			WorldRotation = modelRotation
 		};
 
@@ -62,7 +70,7 @@ public sealed partial class GameManager
 		if ( !source.IsValid() ) return null; // source gameobject died or disconnected or something
 
 		var model = package.GetMeta( "PrimaryAsset", "models/dev/error.vmdl" );
-
+			
 		// downloads if not downloads, mounts if not mounted
 		await package.MountAsync();
 
