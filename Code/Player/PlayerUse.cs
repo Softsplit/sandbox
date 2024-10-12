@@ -4,11 +4,6 @@ public sealed class PlayerUse : Component
 	[RequireComponent] public Player Player { get; set; }
 
 	IPressable pressed;
-	Rigidbody carrying;
-	Transform carryTransform;
-	Transform carryOriginalTransform;
-
-	public bool interactive;
 
 	protected override void OnUpdate()
 	{
@@ -27,11 +22,6 @@ public sealed class PlayerUse : Component
 				button.Press( new IPressable.Event( this ) );
 				pressed = button;
 			}
-
-			if ( lookingAt is Rigidbody rb )
-			{
-				StartCarry( rb );
-			}
 		}
 
 		if ( Input.Released( "use" ) )
@@ -41,82 +31,7 @@ public sealed class PlayerUse : Component
 				pressed.Release( new IPressable.Event( this ) );
 				pressed = default;
 			}
-
-			if ( carrying is not null )
-			{
-				StopCarrying();
-			}
 		}
-
-		if ( pressed is not null || carrying.IsValid() )
-		{
-			interactive = false;
-			return;
-		}
-
-		if ( lookingAt is IPressable )
-		{
-			interactive = true;
-		}
-		else if ( lookingAt is Rigidbody rb && CanCarry( rb ) )
-		{
-			interactive = true;
-		}
-		else
-		{
-			interactive = false;
-		}
-	}
-
-	private void StartCarry( Rigidbody rb )
-	{
-		if ( !rb.Network.TakeOwnership() )
-			rb.Network.DropOwnership();
-
-		carrying = rb;
-		carryOriginalTransform = rb.Transform.World;
-		carryTransform = Player.EyeTransform.ToLocal( rb.Transform.World );
-	}
-
-	void StopCarrying()
-	{
-		if ( carrying.IsValid() )
-		{
-			carrying.Network.DropOwnership();
-		}
-
-		carrying = default;
-	}
-
-	protected override void OnFixedUpdate()
-	{
-		base.OnFixedUpdate();
-
-		if ( carrying.IsValid() )
-		{
-			var targetTransform = Player.EyeTransform.ToWorld( carryTransform );
-			targetTransform.Rotation = carryOriginalTransform.Rotation.Angles().WithYaw( targetTransform.Rotation.Angles().yaw );
-
-			var distance = Vector3.DistanceBetween( targetTransform.Position, carrying.WorldPosition );
-			if ( distance > 50.0f )
-			{
-				StopCarrying();
-				return;
-			}
-
-			var mass = carrying.PhysicsBody.Mass;
-			var moveSpeed = mass.Remap( 50, 3000, 0.05f, 2.0f, true );
-
-			carrying.PhysicsBody.SmoothMove( targetTransform, moveSpeed, Time.Delta );
-		}
-	}
-
-	private bool CanCarry( Rigidbody rb )
-	{
-		if ( !rb.IsValid() ) return false;
-		if ( !rb.Network.Active ) return false;
-
-		return true;
 	}
 
 	protected override void OnDisabled()
@@ -139,9 +54,6 @@ public sealed class PlayerUse : Component
 
 		var button = eyeTrace.GameObject.Components.Get<IPressable>();
 		if ( button is not null && button.CanPress( new IPressable.Event( this ) ) ) return button;
-
-		var rigidbody = eyeTrace.GameObject.Components.Get<Rigidbody>();
-		if ( CanCarry( rigidbody ) ) return rigidbody;
 
 		return default;
 	}

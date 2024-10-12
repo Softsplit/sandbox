@@ -1,0 +1,15 @@
+@using Sandbox.UI
+
+@inherits Panel
+
+<root>
+    @for (int i = 0; i < 9; i++)
+    {
+        <InventoryIcon Index="@i" Parent="@this" />
+    }
+</root>
+
+@code
+{
+    PlayerInventory inventory;
+}

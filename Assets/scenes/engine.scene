@@ -67,8 +67,8 @@
           "ZIndex": 100
         },
         {
-          "__type": "Hud",
-          "__guid": "2fad2687-4a2a-4a90-a4fe-150c1117d0ab"
+          "__type": "SandboxHud",
+          "__guid": "8124fa5c-9488-4a35-b0da-eb5511f066f7"
         }
       ]
     }
@@ -99,6 +99,5 @@
   "Description": "",
   "ResourceVersion": 1,
   "__references": [],
-  "IsValid": true,
   "__version": 1
 }
