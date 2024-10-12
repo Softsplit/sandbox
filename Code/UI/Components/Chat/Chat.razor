@@ -3,110 +3,110 @@
 @inherits Panel
 
 <root>
-	<div class="canvas" @ref=Canvas />
-	<TextEntry @ref=Input onsubmit=@Submit onblur=@Close />
+    <div class="canvas" @ref=Canvas />
+    <TextEntry @ref=Input onsubmit=@Submit onblur=@Close />
 </root>
 
 @code
 {
     public static Chat Current { get; protected set; }
 
-	public Panel Canvas { get; protected set; }
-	public TextEntry Input { get; protected set; }
+    public Panel Canvas { get; protected set; }
+    public TextEntry Input { get; protected set; }
 
-	Queue<ChatRow> Rows = new();
+    Queue<ChatRow> Rows = new();
 
-	protected int MaxItems => 100;
-	protected float MessageLifetime => 10f;
+    protected int MaxItems => 100;
+    protected float MessageLifetime => 10f;
 
-	public bool IsOpen
-	{
-		get => HasClass( "open" );
-		set
-		{
-			SetClass( "open", value );
-			if ( value )
-			{
-				Input.Focus();
-				Input.Text = string.Empty;
-				Input.Label.SetCaretPosition( 0 );
-			}
-		}
-	}
+    public bool IsOpen
+    {
+        get => HasClass("open");
+        set
+        {
+            SetClass("open", value);
+            if (value)
+            {
+                Input.Focus();
+                Input.Text = string.Empty;
+                Input.Label.SetCaretPosition(0);
+            }
+        }
+    }
 
-	protected override void OnAfterTreeRender( bool firstTime )
-	{
-		base.OnAfterTreeRender( firstTime );
+    protected override void OnAfterTreeRender(bool firstTime)
+    {
+        base.OnAfterTreeRender(firstTime);
 
-		Canvas.PreferScrollToBottom = true;
-		Input.AcceptsFocus = true;
-		Input.AllowEmojiReplace = true;
+        Canvas.PreferScrollToBottom = true;
+        Input.AcceptsFocus = true;
+        Input.AllowEmojiReplace = true;
 
-		Current = this;
-	}
+        Current = this;
+    }
 
-	public override void Tick()
-	{
-		if ( Sandbox.Input.Pressed( "chat" ) )
-			Open();
+    public override void Tick()
+    {
+        if (Sandbox.Input.Pressed("chat"))
+            Open();
 
-		Input.Placeholder = string.IsNullOrEmpty( Input.Text ) ? "Enter your message..." : string.Empty;
-	}
+        Input.Placeholder = string.IsNullOrEmpty(Input.Text) ? "Enter your message..." : string.Empty;
+    }
 
-	void Open()
-	{
-		AddClass( "open" );
-		Input.Focus();
-		Canvas.TryScrollToBottom();
-	}
+    void Open()
+    {
+        AddClass("open");
+        Input.Focus();
+        Canvas.TryScrollToBottom();
+    }
 
-	void Close()
-	{
-		RemoveClass( "open" );
-		Input.Blur();
-		Input.Text = string.Empty;
-		Input.Label.SetCaretPosition( 0 );
-	}
+    void Close()
+    {
+        RemoveClass("open");
+        Input.Blur();
+        Input.Text = string.Empty;
+        Input.Label.SetCaretPosition(0);
+    }
 
-	void Submit()
-	{
-		var msg = Input.Text.Trim();
-		Input.Text = "";
+    void Submit()
+    {
+        var msg = Input.Text.Trim();
+        Input.Text = "";
 
-		Close();
+        Close();
 
-		if ( string.IsNullOrWhiteSpace( msg ) ) return;
+        if (string.IsNullOrWhiteSpace(msg)) return;
 
-		Say( msg );
-	}
+        Say(msg);
+    }
 
-	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
-	{
-		var e = Canvas.AddChild<ChatRow>();
+    public void AddEntry(string name, string message, long playerId = 0, bool isInfo = false)
+    {
+        var e = Canvas.AddChild<ChatRow>();
 
-		var player = Player.FindLocalPlayer();
-		if ( !player.IsValid() ) return;
+        var player = Player.FindLocalPlayer();
+        if (!player.IsValid()) return;
 
-		if ( playerId > 0 )
-			e.PlayerId = playerId;
+        if (playerId > 0)
+            e.PlayerId = playerId;
 
-		e.Message = message;
-		e.Name = $"{name}";
+        e.Message = message;
+        e.Name = $"{name}";
 
-		e.SetClass( "noname", string.IsNullOrEmpty( name ) );
-		e.SetClass( "info", isInfo );
-		e.BindClass( "stale", () => e.Lifetime > MessageLifetime );
+        e.SetClass("noname", string.IsNullOrEmpty(name));
+        e.SetClass("info", isInfo);
+        e.BindClass("stale", () => e.Lifetime > MessageLifetime);
 
         var cl = new Friend(playerId);
 
-		e.SetClass( "friend", cl.IsFriend || Game.SteamId == playerId );
+        e.SetClass("friend", cl.IsFriend || Game.SteamId == playerId);
 
-		Canvas.TryScrollToBottom();
+        Canvas.TryScrollToBottom();
 
-		Rows.Enqueue( e );
+        Rows.Enqueue(e);
 
-		// Kill an item if we need to
-		if ( Rows.Count > MaxItems )
-			Rows.Dequeue().Delete();
-	}
+        // Kill an item if we need to
+        if (Rows.Count > MaxItems)
+            Rows.Dequeue().Delete();
+    }
 }
