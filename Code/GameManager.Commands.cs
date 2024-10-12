@@ -1,7 +1,7 @@
 public sealed partial class GameManager
 {
 	[ConCmd( "spawn" )]
-	public static async Task Spawn( string modelname )
+	public static void Spawn( string modelname )
 	{
 		var player = Player.FindLocalPlayer();
 		if ( !player.IsValid() )
@@ -14,20 +14,21 @@ public sealed partial class GameManager
 
 		var modelRotation = Rotation.From( new Angles( 0, player.EyeTransform.Rotation.Angles().yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
 
-		SpawnModel(modelname, tr.EndPosition, modelRotation, player.GameObject);
+		SpawnModel( modelname, tr.EndPosition, modelRotation, player.GameObject );
 	}
 
 	[Broadcast]
-	static async void SpawnModel(string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject)
+	static async void SpawnModel( string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject )
 	{
-		if(!Networking.IsHost)
+		if ( !Networking.IsHost )
 			return;
+
 		//
 		// Does this look like a package?
 		//
 		if ( modelname.Count( x => x == '.' ) == 1 && !modelname.EndsWith( ".vmdl", StringComparison.OrdinalIgnoreCase ) && !modelname.EndsWith( ".vmdl_c", StringComparison.OrdinalIgnoreCase ) )
 		{
-			modelname = await SpawnPackageModel( modelname, endPos, modelRotation, playerObject );
+			modelname = await SpawnPackageModel( modelname, playerObject );
 			if ( modelname == null )
 				return;
 		}
@@ -58,7 +59,7 @@ public sealed partial class GameManager
 		// Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
 
-	static async Task<string> SpawnPackageModel( string packageName, Vector3 pos, Rotation rotation, GameObject source )
+	static async Task<string> SpawnPackageModel( string packageName, GameObject source )
 	{
 		var package = await Package.Fetch( packageName, false );
 		if ( package == null || package.TypeName != "model" || package.Revision == null )
@@ -70,7 +71,7 @@ public sealed partial class GameManager
 		if ( !source.IsValid() ) return null; // source gameobject died or disconnected or something
 
 		var model = package.GetMeta( "PrimaryAsset", "models/dev/error.vmdl" );
-			
+
 		// downloads if not downloads, mounts if not mounted
 		await package.MountAsync();
 
