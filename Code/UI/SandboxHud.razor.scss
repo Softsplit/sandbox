@@ -1,7 +1,6 @@
 ﻿$blue: #3273eb;
 
 @import "/UI/Styles/spawnmenu/spawnmenu.scss";
-@import "/UI/Styles/toolbar/toolbar.scss";
 @import "/UI/Styles/hud/chatbox.scss";
 
 CurrentTool {
@@ -13,7 +12,6 @@ CurrentTool {
     padding: 20px 50px;
     flex-direction: column;
     opacity: 0.0;
-
 
     &.active {
         opacity: 1.0;
@@ -38,10 +36,10 @@ CurrentTool {
         mix-blend-mode: lighten;
         text-transform: uppercase;
     }
-}
 
-.spawnmenuopen CurrentTool {
-    opacity: 0.01;
+    &.spawnmenuopen {
+        opacity: 0.01;
+    }
 }
 
 rootpanel {

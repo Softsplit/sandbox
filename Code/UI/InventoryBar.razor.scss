@@ -1,0 +1,13 @@
+?InventoryBar {
+    position: absolute;
+    width: 100%;
+    bottom: 48px;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 100;
+    transition: all 0.2s ease;
+
+    &.spawnmenuopen {
+        bottom: 22px;
+    }
+}
