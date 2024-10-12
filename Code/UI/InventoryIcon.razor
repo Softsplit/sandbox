@@ -4,19 +4,11 @@
 @inherits Panel
 
 <root>
-    <label @ref="label" class="item-name">empty</label>
+    <label class="item-name">empty</label>
     <label class="slot-number">@(Index + 1)</label>
 </root>
 
 @code
 {
     public int Index { get; set; }
-
-    Label label;
-
-    public void Clear()
-    {
-        label.Text = "";
-        SetClass("active", false);
-    }
 }

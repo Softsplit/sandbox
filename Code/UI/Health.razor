@@ -4,17 +4,17 @@
 @inherits Panel
 
 <root>
-    <label @ref="label" class="value">100</label>
+    <label @ref="Label" class="value">100</label>
 </root>
 
 @code {
-    private Label label;
+    public Label Label { get; set; }
 
     public override void Tick()
     {
         var player = Player.FindLocalPlayer();
         if (!player.IsValid()) return;
 
-        label.Text = $"{player.Health.CeilToInt()}";
+        Label.Text = $"{player.Health.CeilToInt()}";
     }
 }

@@ -53,7 +53,7 @@ public sealed partial class GameManager
 	static async Task<string> SpawnPackageModel( string packageName, Vector3 pos, Rotation rotation, GameObject source )
 	{
 		var package = await Package.Fetch( packageName, false );
-		if ( package == null || package.PackageType != Package.Type.Model || package.Revision == null )
+		if ( package == null || package.TypeName != "model" || package.Revision == null )
 		{
 			// spawn error particles
 			return null;

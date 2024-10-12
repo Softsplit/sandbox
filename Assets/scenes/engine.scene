@@ -56,6 +56,7 @@
       "Flags": 0,
       "Name": "UI",
       "Enabled": true,
+      "NetworkMode": 1,
       "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
