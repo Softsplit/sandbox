@@ -1,46 +1,5 @@
 ﻿$blue: #3273eb;
 
-@import "/UI/Styles/spawnmenu/spawnmenu.scss";
-
-CurrentTool {
-    border-left: 10px solid $blue;
-    position: absolute;
-    background-color: rgba( #111, 0.5 );
-    top: 100px;
-    left: 100px;
-    padding: 20px 50px;
-    flex-direction: column;
-    opacity: 0.0;
-
-    &.active {
-        opacity: 1.0;
-    }
-
-    .title {
-        font-size: 30px;
-        color: white;
-        font-family: Poppins;
-        font-weight: 800;
-        mix-blend-mode: lighten;
-        text-transform: uppercase;
-    }
-
-    .description {
-        font-size: 12px;
-        font-weight: normal;
-        color: white;
-        opacity: 0.5;
-        font-family: Poppins;
-        font-weight: 500;
-        mix-blend-mode: lighten;
-        text-transform: uppercase;
-    }
-
-    &.spawnmenuopen {
-        opacity: 0.01;
-    }
-}
-
 rootpanel {
     &.devcamera {
         display: none;

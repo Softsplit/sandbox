@@ -1,0 +1,15 @@
+﻿@using Sandbox.UI
+@using Sandbox.UI.Construct
+
+@inherits Panel
+
+<root>
+    <label @ref="Title" class="title">Tool</label>
+    <label @ref="Description" class="description">This is a tool</label>
+</root>
+
+@code
+{
+    public Label Title { get; set; }
+    public Label Description { get; set; }
+}
