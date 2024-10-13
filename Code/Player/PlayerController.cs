@@ -13,6 +13,7 @@ public sealed class PlayerController : Component
 	[Property] public CitizenAnimationHelper AnimationHelper { get; set; }
 
 	[Sync] public bool Crouching { get; set; }
+	[Sync] public bool Noclipping { get; set; }
 	[Sync] public Angles EyeAngles { get; set; }
 	[Sync] public Vector3 WishVelocity { get; set; }
 
@@ -38,13 +39,80 @@ public sealed class PlayerController : Component
 		if ( IsProxy )
 			return;
 
-		CrouchingInput();
-		MovementInput();
+		Noclipping = Input.Pressed( "noclip" ) ? !Noclipping : Noclipping;
+
+		if ( Noclipping )
+		{
+			NoclippingInput();
+			ToggleCollision( false );
+		}
+		else
+		{
+			CrouchingInput();
+			MovementInput();
+			ToggleCollision( true );
+		}
+	}
+
+	private void ToggleCollision( bool enabled )
+	{
+		var pp = GetComponentInChildren<PlayerPusher>( true );
+		if ( pp.IsValid() )
+		{
+			pp.GameObject.Enabled = enabled;
+		}
+
+		var bc = GetComponentInChildren<BoxCollider>( true );
+		if ( bc.IsValid() )
+		{
+			bc.GameObject.Enabled = enabled;
+		}
+	}
+
+	private void NoclippingInput()
+	{
+		if ( !CharacterController.IsValid() )
+			return;
+
+		var cc = CharacterController;
+		var player = GetComponent<Player>();
+
+		var input = Input.AnalogMove;
+		var fwd = input.x.Clamp( -1f, 1f );
+		var left = input.y.Clamp( -1f, 1f );
+		var rotation = player.EyeTransform.Rotation;
+
+		var vel = (rotation.Forward * fwd) + (rotation.Left * left);
+
+		if ( Input.Down( "jump" ) )
+		{
+			vel += Vector3.Up * 1;
+		}
+
+		vel = vel.Normal * 2000;
+
+		if ( Input.Down( "run" ) )
+			vel *= 5.0f;
+
+		if ( Input.Down( "duck" ) )
+			vel *= 0.2f;
+
+		cc.Velocity += vel * Time.Delta;
+
+		if ( cc.Velocity.LengthSquared > 0.01f )
+		{
+			WorldPosition += cc.Velocity * Time.Delta;
+		}
+
+		cc.Velocity = cc.Velocity.Approach( 0, cc.Velocity.Length * Time.Delta * 5.0f );
+		cc.GroundObject = null;
+
+		WishVelocity = cc.Velocity;
 	}
 
 	private void MouseInput()
 	{
-		var player = Components.Get<Player>();
+		var player = GetComponent<Player>();
 		var input = Input.AnalogLook;
 
 		// allow listeners to modify the input eye angles
@@ -264,6 +332,7 @@ public sealed class PlayerController : Component
 		AnimationHelper.WithVelocity( CharacterController.Velocity );
 		AnimationHelper.IsGrounded = CharacterController.IsOnGround;
 		AnimationHelper.DuckLevel = Crouching ? 1.0f : 0.0f;
+		AnimationHelper.IsNoclipping = Noclipping;
 		AnimationHelper.MoveStyle = wv < 160f ? CitizenAnimationHelper.MoveStyles.Walk : CitizenAnimationHelper.MoveStyles.Run;
 
 		var lookDir = EyeAngles.ToRotation().Forward * 1024f;

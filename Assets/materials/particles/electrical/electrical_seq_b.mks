@@ -1,0 +1,115 @@
+packmode flat
+sequence 0
+loop
+frame electrical_seq/lightning_seq_b_00000.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00001.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00002.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00003.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00004.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00005.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00006.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00007.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00008.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00009.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00010.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00011.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00012.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00013.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00014.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00015.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00016.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00017.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00018.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00019.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00020.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00021.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00022.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00023.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00024.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00025.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00026.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00027.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00028.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00029.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00030.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00031.tga 1.000000 
+sequence 1
+loop
+frame electrical_seq/lightning_seq_b_00006.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00007.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00008.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00009.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00010.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00011.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00012.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00013.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00014.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00015.tga 1.000000 
+sequence 2
+loop
+frame electrical_seq/lightning_seq_b_00014.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00015.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00016.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00017.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00018.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00019.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00020.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00021.tga 1.000000 
+sequence 3
+loop
+frame electrical_seq/lightning_seq_b_00019.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00020.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00021.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00022.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00023.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00024.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00025.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00026.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00027.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00028.tga 1.000000 
+sequence 4
+loop
+frame electrical_seq/lightning_seq_b_00021.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00022.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00023.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00024.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00025.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00026.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00027.tga 1.000000 
+sequence 5
+loop
+frame electrical_seq/lightning_seq_b_00008.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00009.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00010.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00011.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00012.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00013.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00014.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00015.tga 1.000000 
+sequence 6
+loop
+frame electrical_seq/lightning_seq_b_00012.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00013.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00014.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00015.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00016.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00017.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00018.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00019.tga 1.000000 
+sequence 7
+loop
+frame electrical_seq/lightning_seq_b_00020.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00021.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00022.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00023.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00024.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00025.tga 1.000000 
+sequence 8
+loop
+frame electrical_seq/lightning_seq_b_00025.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00026.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00027.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00028.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00029.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00030.tga 1.000000 
+frame electrical_seq/lightning_seq_b_00031.tga 1.000000 
