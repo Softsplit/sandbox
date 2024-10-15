@@ -16,6 +16,7 @@
     "ControlModes": {},
     "LaunchMode": "Launcher",
     "StartupScene": "scenes/minimal.scene",
-    "MapStartupScene": "scenes/minimal.scene"
+    "MapStartupScene": "scenes/minimal.scene",
+    "ParentPackage": ""
   }
 }
