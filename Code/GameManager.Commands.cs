@@ -46,6 +46,11 @@ public sealed partial class GameManager
 		var prop = go.AddComponent<Prop>();
 		prop.Model = model;
 
+		var propHelper = go.AddComponent<PropHelper>();
+		propHelper.ModelPhysics = go.GetComponent<ModelPhysics>();
+		propHelper.Rigidbody = go.GetComponent<Rigidbody>();
+		propHelper.Prop = prop;
+
 		var rb = go.GetComponent<Rigidbody>();
 		if ( rb.IsValid() )
 		{
@@ -60,7 +65,8 @@ public sealed partial class GameManager
 			}
 		}
 
-		go.NetworkSpawn( null );
+		go.NetworkSpawn();
+		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 
 		// Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
