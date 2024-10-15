@@ -2,7 +2,7 @@
 
 @inherits Panel
 
-<root>
+<root class="package-list">
     @foreach (var package in Packages)
     {
         <PackageIcon Package=@package OnIconPressed=@(() => OnIconPressed?.Invoke( package )) />
