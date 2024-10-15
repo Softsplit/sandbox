@@ -32,6 +32,10 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 
 	void Component.INetworkListener.OnActive( Connection channel )
 	{
+		// TODO: We can probably make this easier.
+		if ( Application.IsHeadless && Connection.Local == channel )
+			return;
+
 		SpawnPlayerForConnection( channel );
 	}
 
@@ -42,7 +46,7 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 
 		// Spawn this object and make the client the owner
 		var playerGo = GameObject.Clone( "/prefabs/player.prefab", new CloneConfig { Name = $"Player - {channel.DisplayName}", StartEnabled = true, Transform = startLocation } );
-		var player = playerGo.Components.Get<Player>( true );
+		var player = playerGo.GetComponent<Player>( true );
 		playerGo.NetworkSpawn( channel );
 
 		IPlayerEvent.Post( x => x.OnSpawned( player ) );

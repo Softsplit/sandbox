@@ -166,7 +166,7 @@ public sealed class PlayerController : Component
 		{
 			lastJump = 0f;
 			cc.Punch( Vector3.Up * 300f );
-			IPlayerEvent.Post( x => x.OnJump( Components.Get<Player>() ) );
+			IPlayerEvent.Post( x => x.OnJump( GetComponent<Player>() ) );
 		}
 
 		if ( !WishVelocity.IsNearlyZero() )
@@ -307,7 +307,7 @@ public sealed class PlayerController : Component
 		camera.FieldOfView = Screen.CreateVerticalFieldOfView( Preferences.FieldOfView );
 
 		// allow hooks
-		var player = Components.Get<Player>();
+		var player = GetComponent<Player>();
 		IPlayerEvent.Post( x => x.OnCameraSetup( player, camera ) );
 		IPlayerEvent.Post( x => x.OnCameraPostSetup( player, camera ) );
 	}
