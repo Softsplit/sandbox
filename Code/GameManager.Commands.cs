@@ -46,15 +46,21 @@ public sealed partial class GameManager
 		var prop = go.AddComponent<Prop>();
 		prop.Model = model;
 
-		go.NetworkSpawn( null );
-
-		// If there's no physics model, create a simple OBB
-		/*
-		if ( !ent.PhysicsBody.IsValid() )
+		var rb = go.GetComponent<Rigidbody>();
+		if ( rb.IsValid() )
 		{
-			ent.SetupPhysicsFromOBB( PhysicsMotionType.Dynamic, ent.CollisionBounds.Mins, ent.CollisionBounds.Maxs );
+			// If there's no physics model, create a simple OBB
+			foreach ( var shape in rb.PhysicsBody.Shapes )
+			{
+				if ( !shape.IsMeshShape )
+					continue;
+
+				var newCollider = go.AddComponent<BoxCollider>();
+				newCollider.Scale = model.PhysicsBounds.Size;
+			}
 		}
-		*/
+
+		go.NetworkSpawn( null );
 
 		// Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
