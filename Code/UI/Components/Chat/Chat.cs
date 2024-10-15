@@ -21,6 +21,9 @@ public partial class Chat
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
+		if ( message.ToLower().Contains( "bloxwich" ) )
+			Sandbox.Services.Achievements.Unlock( "secret_phrase" );
+
 		Log.Info( $"{Connection.Local}: {message}" );
 		AddChatEntry( Connection.Local.DisplayName, message, Connection.Local.SteamId );
 	}

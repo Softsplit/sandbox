@@ -15,6 +15,7 @@ public sealed partial class GameManager
 		var modelRotation = Rotation.From( new Angles( 0, player.EyeTransform.Rotation.Angles().yaw, 0 ) ) * Rotation.FromAxis( Vector3.Up, 180 );
 
 		SpawnModel( modelname, tr.EndPosition, modelRotation, player.GameObject );
+		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
 
 	[Broadcast]
@@ -67,8 +68,6 @@ public sealed partial class GameManager
 
 		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
-
-		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
 
 	static async Task<string> SpawnPackageModel( string packageName, GameObject source )
