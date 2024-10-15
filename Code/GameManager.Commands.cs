@@ -68,7 +68,7 @@ public sealed partial class GameManager
 		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 
-		// Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
+		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
 
 	static async Task<string> SpawnPackageModel( string packageName, GameObject source )

@@ -1,9 +1,7 @@
-using static Sandbox.Component;
-
 /// <summary>
 /// Holds player information like health
 /// </summary>
-public sealed class Player : Component, IDamageable
+public sealed class Player : Component, Component.IDamageable
 {
 	public static Player FindLocalPlayer()
 	{
