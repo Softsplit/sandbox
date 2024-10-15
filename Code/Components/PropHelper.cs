@@ -3,19 +3,19 @@
 /// </summary>
 public sealed class PropHelper : Component, Component.ICollisionListener
 {
-	private struct BodyInfo
+	public struct BodyInfo
 	{
 		public PhysicsBodyType Type { get; set; }
 		public Transform Transform { get; set; }
 	}
 
-	[Property, Sync] public Prop Prop { get; set; }
-	[Property, Sync] public ModelPhysics ModelPhysics { get; set; }
-	[Property, Sync] public Rigidbody Rigidbody { get; set; }
-	[Property, Sync] public Vector3 Velocity { get; set; }
 	[Property, Sync] public float Health { get; set; } = 1f;
+	[Property, Sync] public Vector3 Velocity { get; set; }
 
-	[Sync] NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
+	[Sync] public Prop Prop { get; set; }
+	[Sync] public ModelPhysics ModelPhysics { get; set; }
+	[Sync] public Rigidbody Rigidbody { get; set; }
+	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
 	private Vector3 lastPosition = Vector3.Zero;
 
