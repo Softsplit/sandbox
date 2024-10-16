@@ -129,7 +129,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	{
 		if ( !ModelPhysics.IsValid() )
 		{
-			ModelPhysics = GetComponent<ModelPhysics>();
+			ModelPhysics = Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 			Rigidbody = GetComponent<Rigidbody>();
 
 			return;

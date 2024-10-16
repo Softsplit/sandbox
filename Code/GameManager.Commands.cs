@@ -48,7 +48,7 @@ public sealed partial class GameManager
 		prop.Model = model;
 
 		var propHelper = go.AddComponent<PropHelper>();
-		propHelper.ModelPhysics = go.GetComponent<ModelPhysics>();
+		propHelper.ModelPhysics = go.Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		propHelper.Rigidbody = go.GetComponent<Rigidbody>();
 		propHelper.Prop = prop;
 
