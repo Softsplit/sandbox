@@ -28,8 +28,10 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		}
 	}
 
+	public int WeaponsMod = 0;
 	void Pickup( string prefabName )
 	{
+		WeaponsMod++;
 		var prefab = GameObject.Clone( prefabName, new CloneConfig { Parent = GameObject, StartEnabled = false } );
 		prefab.NetworkSpawn( false, Network.Owner );
 
@@ -45,7 +47,6 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	public void SwitchWeapon( int Slot )
 	{
 		SlotIndex = Slot;
-		Log.Info(SlotIndex);
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = false;

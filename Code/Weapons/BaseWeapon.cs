@@ -33,7 +33,7 @@ public class BaseWeapon : Component
 
 
 	// TR - When third person is added, fix this.
-	bool UseWorldModel => IsProxy;
+	public bool UseWorldModel => IsProxy;
 
 
 	protected override void OnPreRender()
@@ -42,6 +42,7 @@ public class BaseWeapon : Component
 
 		ViewModel.WorldPosition =  Scene.Camera.WorldPosition;
 		ViewModel.WorldRotation = Scene.Camera.WorldRotation;
+		ViewModel.Transform.ClearInterpolation();
 	}
 	protected override void OnUpdate()
 	{

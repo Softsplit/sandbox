@@ -5,6 +5,8 @@
 partial class MP5 : Weapon
 {
 	[Property] public ParticleSystem EjectBrass;
+	[Property] public GameObject BrassVM;
+	[Property] public GameObject BrassWM;
 
 	public override void ActiveStart()
 	{
@@ -23,16 +25,13 @@ partial class MP5 : Weapon
 		//
 		ShootEffects();
 		//Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
-
-		//
-		// Shoot the bullets
-		//
 		ShootBullet( 0.1f, 1.5f, 5.0f, 3.0f );
+		
 	}
 
 	public override void OnControl()
 	{
-
+		base.OnControl();
 		var attack_hold = !IsReloading && Input.Down( "attack1" ) ? 1.0f : 0.0f;
 		Owner.ModelRenderer?.Set( "attack_hold", attack_hold );
 		ViewModel?.Set( "attack_hold", attack_hold );
@@ -42,6 +41,6 @@ partial class MP5 : Weapon
 	protected override void ShootEffects()
 	{
 		base.ShootEffects();
-		CreateParticleSystem( EjectBrass.ResourcePath , Muzzle.WorldPosition, Muzzle.WorldRotation );
+		CreateParticleSystem( EjectBrass.ResourcePath , UseWorldModel ? BrassWM.WorldPosition : BrassVM.WorldPosition, Rotation.Identity );
 	}
 }

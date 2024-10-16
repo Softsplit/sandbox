@@ -67,7 +67,6 @@ public partial class Weapon : BaseWeapon
 	bool beenEnabled = false;
 	public override void DoEnabled()
 	{
-		Log.Info(beenEnabled);
 		if(beenEnabled)
 			return;
 		ActiveStart();
@@ -77,7 +76,7 @@ public partial class Weapon : BaseWeapon
 
 	public virtual void ActiveStart()
 	{
-		Log.Info("FUCK YOU");
+		
 	}
 
 	bool PressedDown(string key)
@@ -87,14 +86,13 @@ public partial class Weapon : BaseWeapon
 
 	public override void OnControl()
 	{
+		
 		if ( TimeSinceDeployed < 0.6f )
 			return;
 
+		
         TimeSincePrimaryAttack+=Time.Delta*100;
         TimeSinceSecondaryAttack+=Time.Delta*100;
-
-        Log.Info(ReloadTime);
-
         /*
 		if ( !IsReloading )
 		{
@@ -252,6 +250,7 @@ public partial class Weapon : BaseWeapon
     public LegacyParticleSystem CreateParticleSystem( string particle, Vector3 pos, Rotation rot, float decay = 5f )
 	{
 		var gameObject = Scene.CreateObject();
+		gameObject.Name = particle;
 		gameObject.WorldPosition = pos;
 		gameObject.WorldRotation = rot;
 
@@ -266,11 +265,13 @@ public partial class Weapon : BaseWeapon
 
     private DecalRenderer CreateDecal( Material material, Vector3 pos, Vector3 normal, float rotation, float size, float depth, float destroyTime = 3f, GameObject parent = null )
 	{
+		
 		var gameObject = Scene.CreateObject();
+		gameObject.Name = material.Name;
 		gameObject.WorldPosition = pos;
 		gameObject.WorldRotation = Rotation.LookAt( -normal );
 		if ( parent != null ) gameObject.SetParent( parent );
-
+		
 		gameObject.WorldRotation *= Rotation.FromAxis( Vector3.Forward, rotation );
 
 		var decalRenderer = gameObject.Components.Create<DecalRenderer>();
@@ -285,14 +286,17 @@ public partial class Weapon : BaseWeapon
     private void CreateImpactEffects( SceneTraceResult tr )
 	{
 		var decalPath = Game.Random.FromList( tr.Surface.ImpactEffects.BulletDecal, "decals/bullethole.decal" );
+			
 		if ( ResourceLibrary.TryGet<DecalDefinition>( decalPath, out var decalResource ) )
 		{
 			var decal = Game.Random.FromList( decalResource.Decals );
-
-			CreateDecal( decal.Material, tr.EndPosition, tr.Normal, decal.Rotation.GetValue(), decal.Width.GetValue() / 1.5f, decal.Depth.GetValue(), 30f, tr.GameObject.Parent );
+			
+			if ( decal != null ) CreateDecal( decal.Material, tr.EndPosition, tr.Normal, decal.Rotation.GetValue(), decal.Width.GetValue() / 1.5f, decal.Depth.GetValue(), 30f, tr.GameObject.Parent );
+				
 		}
+		
 
-		if ( !string.IsNullOrEmpty( tr.Surface.Sounds.Bullet ) )
+		if ( !string.IsNullOrEmpty( tr.Surface.Sounds.Bullet ) && tr.Surface.IsValid())
 		{
 			Sound.Play( tr.Surface.Sounds.Bullet, tr.EndPosition );
 		}

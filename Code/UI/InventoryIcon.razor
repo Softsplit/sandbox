@@ -16,5 +16,5 @@
     public int SlotIndex { get; set; }
     public PlayerInventory PlayerInventory {get;set;}
 
-    protected override int BuildHash() => System.HashCode.Combine( PlayerInventory.SlotIndex );
+    protected override int BuildHash() => System.HashCode.Combine( PlayerInventory.SlotIndex, PlayerInventory.WeaponsMod);
 }
