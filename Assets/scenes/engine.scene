@@ -70,6 +70,10 @@
         {
           "__type": "SandboxHud",
           "__guid": "8124fa5c-9488-4a35-b0da-eb5511f066f7"
+        },
+        {
+          "__type": "Sandbox.InventoryBar",
+          "__guid": "891a7f0e-65dd-4fb0-9369-1a43367dfd10"
         }
       ]
     }

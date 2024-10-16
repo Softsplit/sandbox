@@ -5,6 +5,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 {
 	[RequireComponent] public PlayerController PlayerController { get; set; }
 	[RequireComponent] public Player Player { get; set; }
+	[Property] public int SlotIndex {get;set;}
 
 	public BaseWeapon ActiveWeapon { get; private set; }
 
@@ -43,7 +44,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	[Broadcast]
 	public void SwitchWeapon( int Slot )
 	{
-		
+		SlotIndex = Slot;
+		Log.Info(SlotIndex);
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = false;

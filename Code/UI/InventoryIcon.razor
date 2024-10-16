@@ -3,12 +3,18 @@
 
 @inherits Panel
 
-<root>
-    <label class="item-name">empty</label>
+
+
+<root class=@(Index == PlayerInventory.SlotIndex ? "active" : "")>
+    <label class="item-name">@(Index < PlayerInventory.Weapons.Count ? PlayerInventory.Weapons[Index].DisplayName : "empty")</label>
     <label class="slot-number">@(Index + 1)</label>
 </root>
 
 @code
 {
     public int Index { get; set; }
+    public int SlotIndex { get; set; }
+    public PlayerInventory PlayerInventory {get;set;}
+
+    protected override int BuildHash() => System.HashCode.Combine( PlayerInventory.SlotIndex );
 }

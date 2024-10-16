@@ -47,6 +47,7 @@ public class BaseWeapon : Component
 	{
 		WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
 		ViewModel.GameObject.Enabled = !UseWorldModel;
+		ViewModel.RenderType = ModelRenderer.ShadowRenderType.Off;
 
 		GameObject.NetworkInterpolation = false;
 

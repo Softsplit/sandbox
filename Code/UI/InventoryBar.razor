@@ -1,14 +1,29 @@
-@using Sandbox.UI
-
-@inherits Panel
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
 
 <root>
-    @for (int i = 0; i < 9; i++)
+	@for (int i = 0; i < 9; i++)
     {
-        <InventoryIcon Index="@i" Parent="@this" />
+        <InventoryIcon Index="@i" PlayerInventory="@playerInventory" />
     }
 </root>
 
 @code
 {
+	PlayerInventory _playerInventory;
+    public PlayerInventory playerInventory
+    {
+        get
+        {
+            if(!_playerInventory.IsValid())
+            {
+                _playerInventory = Player.FindLocalPlayer().Components.Get<PlayerInventory>();
+            }
+
+            return _playerInventory;
+        }
+    }
+	protected override int BuildHash() => System.HashCode.Combine( playerInventory.SlotIndex);
 }
