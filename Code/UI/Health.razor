@@ -13,7 +13,11 @@
     public override void Tick()
     {
         var player = Player.FindLocalPlayer();
-        if (!player.IsValid()) return;
+        if (!player.IsValid())
+        {
+            Label.Text = "0";
+            return;
+        }
 
         Label.Text = $"{player.Health.CeilToInt()}";
     }

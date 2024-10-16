@@ -178,7 +178,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		return body;
 	}
 
-	public void OnCollisionStart( Collision collision )
+	void ICollisionListener.OnCollisionStart( Collision collision )
 	{
 		if ( IsProxy )
 			return;
@@ -189,9 +189,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( otherSpeed > speed )
 			speed = otherSpeed;
 
-		if ( speed >= 1200 )
+		if ( speed >= 500f )
 		{
-			var dmg = speed / 8f;
+			var dmg = speed / 10f;
 
 			Damage( dmg );
 

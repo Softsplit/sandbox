@@ -34,7 +34,7 @@ public sealed class Player : Component, Component.IDamageable
 		var originalBody = Body.Components.Get<SkinnedModelRenderer>();
 
 		var go = new GameObject( true, "Ragdoll" );
-		go.Tags.Add( "ragdoll" );
+		go.Tags.Add( "ragdoll", "solid", "debris" );
 		go.Transform.World = Transform.World;
 
 		var mainBody = go.Components.Create<SkinnedModelRenderer>();
@@ -75,13 +75,13 @@ public sealed class Player : Component, Component.IDamageable
 	public void TakeDamage( float amount )
 	{
 		if ( IsProxy ) return;
-		if ( Health < 0 ) return;
+		if ( Health <= 0 ) return;
 
 		Health -= amount;
 
 		IPlayerEvent.Post( x => x.OnTakeDamage( this, amount ) );
 
-		if ( Health < 0 )
+		if ( Health <= 0 )
 		{
 			Health = 0;
 			Death();

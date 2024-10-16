@@ -1,0 +1,62 @@
+@using Sandbox.UI
+@using Sandbox.UI.Construct
+
+@inherits Panel
+@typeparam T where T : ScoreboardEntry, new()
+
+<root class="scoreboard">
+    <Panel class="header">
+        <label class="name">Name</label>
+        <label class="kills">Kills</label>
+        <label class="deaths">Deaths</label>
+        <label class="ping">Ping</label>
+    </Panel>
+
+    <Panel @ref="Canvas" class="canvas" />
+</root>
+
+@code
+{
+    public Panel Canvas { get; protected set; }
+    public Dictionary<Connection, T> Rows { get; protected set; } = new();
+
+    public override void Tick()
+    {
+        base.Tick();
+
+        SetClass("open", ShouldBeOpen());
+
+        if (!IsVisible)
+            return;
+
+        //
+        // Clients that were added
+        //
+        foreach (var client in Connection.All.Except(Rows.Keys))
+        {
+            var entry = AddClient(client);
+            Rows[client] = entry;
+        }
+
+        foreach (var client in Rows.Keys.Except(Connection.All))
+        {
+            if (Rows.TryGetValue(client, out var row))
+            {
+                row?.Delete();
+                Rows.Remove(client);
+            }
+        }
+    }
+
+    public virtual bool ShouldBeOpen()
+    {
+        return Input.Down("score");
+    }
+
+    protected virtual T AddClient(Connection entry)
+    {
+        var p = Canvas.AddChild<T>();
+        p.Client = entry;
+        return p;
+    }
+}

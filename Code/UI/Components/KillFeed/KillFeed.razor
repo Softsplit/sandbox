@@ -1,0 +1,30 @@
+﻿@using Sandbox.UI
+
+@inherits Panel
+
+<root />
+
+@code
+{
+    public static KillFeed Current { get; protected set; }
+
+    public KillFeed()
+    {
+        Current = this;
+    }
+
+    public virtual Panel AddEntry(long lsteamid, string left, long rsteamid, string right, string method)
+    {
+        var e = AddChild<KillFeedEntry>();
+
+        e.Left.Text = left;
+        e.Left.SetClass("me", lsteamid == (Game.SteamId));
+
+        e.Method.Text = method;
+
+        e.Right.Text = right;
+        e.Right.SetClass("me", rsteamid == (Game.SteamId));
+
+        return e;
+    }
+}
