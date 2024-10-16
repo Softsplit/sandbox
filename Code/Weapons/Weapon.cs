@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class Weapon : BaseWeapon
 {
-	public virtual float ReloadTime => 3.0f;
+	[Property] public float ReloadTime = 3.0f;
 
 	[Sync]
 	public TimeSince TimeSinceReload { get; set; }
@@ -15,8 +15,9 @@ public partial class Weapon : BaseWeapon
 	[Sync]
 	public TimeSince TimeSinceDeployed { get; set; }
 
-    public virtual float PrimaryRate => 15.0f;
-	public virtual float SecondaryRate => 1.0f;
+    [Property] public float PrimaryRate = 15.0f;
+	[Property] public float SecondaryRate = 1.0f;
+	[Property] public bool Hold = false;
 
     public float TimeSincePrimaryAttack = 100000f;
     public float TimeSinceSecondaryAttack = 100000f;
@@ -63,10 +64,25 @@ public partial class Weapon : BaseWeapon
 
 		Tags.Add( "weapon" );
 	}
-
-	public override void ActiveStart()
+	bool beenEnabled = false;
+	public override void DoEnabled()
 	{
+		Log.Info(beenEnabled);
+		if(beenEnabled)
+			return;
+		ActiveStart();
+		beenEnabled = true;
 		TimeSinceDeployed = 0;
+	}
+
+	public virtual void ActiveStart()
+	{
+		Log.Info("FUCK YOU");
+	}
+
+	bool PressedDown(string key)
+	{
+		return Hold ? Input.Down(key) : Input.Pressed(key);
 	}
 
 	public override void OnControl()
@@ -74,10 +90,10 @@ public partial class Weapon : BaseWeapon
 		if ( TimeSinceDeployed < 0.6f )
 			return;
 
-        TimeSincePrimaryAttack+=Time.Delta*1000;
-        TimeSinceSecondaryAttack+=Time.Delta*1000;
+        TimeSincePrimaryAttack+=Time.Delta*100;
+        TimeSinceSecondaryAttack+=Time.Delta*100;
 
-        Log.Info(CanPrimaryAttack());
+        Log.Info(ReloadTime);
 
         /*
 		if ( !IsReloading )
@@ -88,9 +104,9 @@ public partial class Weapon : BaseWeapon
         Figure out the purpose of this
         */
 
-        if(CanPrimaryAttack() && Input.Pressed("attack1"))
+        if(CanPrimaryAttack() && PressedDown("attack1"))
             AttackPrimary();
-        else if(CanSecondaryAttack() && Input.Pressed("attack2"))
+        else if(CanSecondaryAttack() && PressedDown("attack2"))
             AttackSecondary();
         else if(CanReload() && Input.Pressed("reload"))
             Reload();
@@ -129,7 +145,7 @@ public partial class Weapon : BaseWeapon
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.IgnoreGameObject( GameObject )
+				.IgnoreGameObjectHierarchy( Owner.GameObject )
 				.Size( radius );
 
 		//
@@ -153,7 +169,7 @@ public partial class Weapon : BaseWeapon
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.IgnoreGameObject( GameObject );
+				.IgnoreGameObjectHierarchy( Owner.GameObject );
 
 		var tr = trace.Run();
 
@@ -233,7 +249,7 @@ public partial class Weapon : BaseWeapon
 		}
 	}
 
-    private LegacyParticleSystem CreateParticleSystem( string particle, Vector3 pos, Rotation rot, float decay = 5f )
+    public LegacyParticleSystem CreateParticleSystem( string particle, Vector3 pos, Rotation rot, float decay = 5f )
 	{
 		var gameObject = Scene.CreateObject();
 		gameObject.WorldPosition = pos;

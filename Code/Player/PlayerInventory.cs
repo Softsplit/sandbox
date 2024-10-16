@@ -60,6 +60,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = true;
+			ActiveWeapon.DoEnabled();
 		}
 	}
 

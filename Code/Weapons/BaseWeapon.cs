@@ -79,17 +79,6 @@ public class BaseWeapon : Component
 	{
 	}
 
-	bool hasStarted = false;
-	protected override void OnEnabled()
-	{
-		if(!hasStarted)
-			return;
-		
-		ActiveStart();
-		hasStarted = true;
-	}
-
-	public virtual void ActiveStart()
-	{
-	}
+	public virtual void DoEnabled()
+	{}
 }

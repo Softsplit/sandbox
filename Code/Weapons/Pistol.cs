@@ -4,16 +4,10 @@ using Sandbox;
 [Library( "weapon_pistol", Title = "Pistol" )]
 partial class Pistol : Weapon
 {
-	public override float ReloadTime => 1.5f;
-	public override float PrimaryRate => 15.0f;
-	public override float SecondaryRate => 1.0f;
 
 	public TimeSince TimeSinceDischarge { get; set; }
-	public override void Spawn()
+	public override void ActiveStart()
 	{
-		base.Spawn();
-
-		LocalScale = 1.5f;
 	}
 
 	protected override void OnEnabled( )
@@ -36,7 +30,7 @@ partial class Pistol : Weapon
 		ViewModel?.Set( "b_attack", true );
 
 		ShootEffects();
-		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+		//Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 
