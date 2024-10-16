@@ -11,7 +11,10 @@ public sealed class Player : Component, Component.IDamageable
 	[RequireComponent] public PlayerController PlayerController { get; set; }
 
 	[Property] public GameObject Body { get; set; }
+	[Property] public SkinnedModelRenderer ModelRenderer { get; set; }
 	[Property, Range( 0, 100 ), Sync] public float Health { get; set; } = 100;
+
+	public Ray AimRay => new Ray(Scene.Camera.WorldPosition,Scene.Camera.Transform.World.Forward*10000f);
 
 	public bool IsDead => Health <= 0;
 
@@ -28,6 +31,12 @@ public sealed class Player : Component, Component.IDamageable
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled
 	/// </summary>
+	/// 
+	protected override void OnStart()
+	{
+		ModelRenderer = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
+	}
+
 	[Broadcast]
 	void CreateRagdoll()
 	{

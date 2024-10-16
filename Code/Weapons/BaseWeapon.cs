@@ -3,21 +3,62 @@ using Sandbox.Citizen;
 public class BaseWeapon : Component
 {
 	[Property] public string DisplayName { get; set; } = "My Weapon";
+	
 	[Property] public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.HoldItem;
-	[Property] public string ParentBone { get; set; } = "hold_r";
+	[Property] public string ParentBoneName { get; set; } = "hand_R";
 	[Property] public Transform BoneOffset { get; set; } = new Transform( 0 );
 
+	[Property] public SkinnedModelRenderer WorldModel { get; set; }
+	[Property] public SkinnedModelRenderer ViewModel { get; set; }
+
+	[Property] public GameObject WorldModelMuzzle { get; set; }
+	[Property] public GameObject ViewModelMuzzle { get; set; }
+	public GameObject Muzzle => IsProxy ? WorldModelMuzzle : ViewModelMuzzle;
+
+	//GameObject Root => IsProxy ? Owner.ModelRenderer.GetBoneObject(ParentBone) : Scene.Camera.GameObject;
+
+	GameObject _parentBone;
+	public GameObject ParentBone
+	{
+		get
+		{
+			if(!_parentBone.IsValid())
+			{
+				_parentBone = Owner.ModelRenderer.GetBoneObject(ParentBoneName);
+			}
+			return _parentBone;
+		}
+	}
+	public Player Owner;
+
+
+	// TR - When third person is added, fix this.
+	bool UseWorldModel => IsProxy;
+
+
+	protected override void OnPreRender()
+	{
+		if ( !Owner.IsValid() ) return;
+
+		ViewModel.WorldPosition =  Scene.Camera.WorldPosition;
+		ViewModel.WorldRotation = Scene.Camera.WorldRotation;
+	}
 	protected override void OnUpdate()
 	{
+		WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
+		ViewModel.GameObject.Enabled = !UseWorldModel;
+
 		GameObject.NetworkInterpolation = false;
 
-		var owner = GameObject.Components.GetInAncestorsOrSelf<Player>();
-		if ( !owner.IsValid() ) return;
+		Owner = GameObject.Components.GetInAncestorsOrSelf<Player>();
+		if ( !Owner.IsValid() ) return;
 
-		var body = owner.Body.Components.Get<SkinnedModelRenderer>();
+		var body = Owner.Body.Components.Get<SkinnedModelRenderer>();
 		body.Set( "holdtype", (int)HoldType );
 
-		var obj = body.GetBoneObject( ParentBone );
+		//From what I see original s&box has a sine wave bob
+
+		var obj = body.GetBoneObject( ParentBoneName );
 		if ( obj.IsValid() )
 		{
 			GameObject.Parent = obj;
@@ -27,10 +68,28 @@ public class BaseWeapon : Component
 		if ( IsProxy )
 			return;
 
-		OnControl( owner );
+		OnControl();
 	}
 
-	public virtual void OnControl( Player player )
+	public virtual void Spawn()
+	{
+	}
+
+	public virtual void OnControl()
+	{
+	}
+
+	bool hasStarted = false;
+	protected override void OnEnabled()
+	{
+		if(!hasStarted)
+			return;
+		
+		ActiveStart();
+		hasStarted = true;
+	}
+
+	public virtual void ActiveStart()
 	{
 	}
 }

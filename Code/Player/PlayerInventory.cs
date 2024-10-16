@@ -1,3 +1,4 @@
+using Sandbox.Citizen;
 using Sandbox.Diagnostics;
 
 public sealed class PlayerInventory : Component, IPlayerEvent
@@ -13,6 +14,19 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	{
 	}
 
+	protected override void OnFixedUpdate()
+	{
+		if(IsProxy)
+			return;
+		
+		for(int i = 1; i < 9; i++)
+		{
+			if(!Input.Pressed($"Slot{i}")) continue;
+			SwitchWeapon(i-1);
+			break;
+		}
+	}
+
 	void Pickup( string prefabName )
 	{
 		var prefab = GameObject.Clone( prefabName, new CloneConfig { Parent = GameObject, StartEnabled = false } );
@@ -22,16 +36,26 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		Assert.NotNull( weapon );
 
 		IPlayerEvent.Post( e => e.OnWeaponAdded( Player, weapon ) );
+
+		weapon.Spawn();
 	}
 
-	public void SwitchWeapon( BaseWeapon weapon )
+	[Broadcast]
+	public void SwitchWeapon( int Slot )
 	{
+		
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = false;
 		}
 
-		ActiveWeapon = weapon;
+		if(Slot >= Weapons.Count)
+		{
+			Player.ModelRenderer.Set( "holdtype", (int)CitizenAnimationHelper.HoldTypes.None );
+			return;
+		}
+
+		ActiveWeapon = Weapons[Slot];
 
 		if ( ActiveWeapon.IsValid() )
 		{
@@ -45,5 +69,11 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 			return;
 
 		GiveDefaultWeapons();
+	}
+
+	[ConCmd( "Add_Weapon" )]
+	public static void AddWeaponCommand(string weaponName)
+	{
+		Player.FindLocalPlayer().Components.Get<PlayerInventory>().Pickup($"prefabs/weapons/{weaponName}.prefab");
 	}
 }
