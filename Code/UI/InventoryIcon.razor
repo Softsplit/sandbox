@@ -1,0 +1,14 @@
+@using Sandbox.UI
+@using Sandbox.UI.Construct
+
+@inherits Panel
+
+<root>
+    <label class="item-name">empty</label>
+    <label class="slot-number">@(Index + 1)</label>
+</root>
+
+@code
+{
+    public int Index { get; set; }
+}

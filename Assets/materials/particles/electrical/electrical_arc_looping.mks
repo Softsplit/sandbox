@@ -1,0 +1,16 @@
+packmode flat
+sequence 0
+frame electrical_arc_looping.tga(0,0,204,2047) 1.000000 
+
+sequence 1
+frame electrical_arc_looping.tga(205,0,410,2047) 1.000000 
+
+sequence 2
+frame electrical_arc_looping.tga(411,0,614,2047) 1.000000 
+
+sequence 3
+frame electrical_arc_looping.tga(615,0,819,2047) 1.000000 
+
+sequence 4
+frame electrical_arc_looping.tga(820,0,1023,2047) 1.000000 
+

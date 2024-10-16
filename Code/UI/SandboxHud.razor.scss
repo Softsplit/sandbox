@@ -1,0 +1,27 @@
+﻿$blue: #3273eb;
+
+rootpanel {
+    &.devcamera {
+        display: none;
+    }
+}
+
+icon, iconpanel {
+    font-family: "material icons";
+    flex-grow: 1;
+    text-align: left;
+}
+
+i {
+    font-family: "material icons";
+    text-align: center;
+}
+
+.tooltip {
+    font-family: Roboto;
+    background-color: rgba( #fea, 0.95 );
+    border: 1px solid rgba( #555, 0.1 );
+    padding: 2px 5px;
+    border-radius: 3px;
+    color: #222;
+}

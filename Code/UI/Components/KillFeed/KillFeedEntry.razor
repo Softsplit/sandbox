@@ -1,0 +1,27 @@
+﻿@using Sandbox.UI
+@using Sandbox.UI.Construct
+
+@inherits Panel
+
+<root>
+    <label @ref="Left" class="left"></label>
+    <label @ref="Method" class="method"></label>
+    <label @ref="Right" class="right"></label>
+</root>
+
+@code
+{
+    public Label Left { get; set; }
+    public Label Method { get; set; }
+    public Label Right { get; set; }
+
+    RealTimeSince timeSinceBorn = 0;
+
+    public override void Tick()
+    {
+        if (timeSinceBorn > 6)
+        {
+            Delete();
+        }
+    }
+}

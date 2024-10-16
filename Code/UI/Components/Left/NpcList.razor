@@ -1,0 +1,42 @@
+﻿@using Sandbox.UI
+
+@inherits Panel
+
+<root class="spawnpage columned">
+    <div class="nav">
+        <div class="section">
+            <PackageSortButtonGroup Value:bind=@SortOrder />
+        </div>
+
+        <div class="section grow" />
+
+        <div class="section">
+            <button active=@LocalOnly @onclick=@(() => { LocalOnly = !LocalOnly; })>Local Only</button>
+        </div>
+    </div>
+
+    <div class="contents">
+        <PackageList Query=@GetQueryString() OnIconPressed=@SpawnPackage />
+    </div>
+</root>
+
+
+@code
+{
+    public string SortOrder { get; set; } = "updated";
+    public bool LocalOnly { get; set; } = false;
+
+    public string GetQueryString()
+    {
+        var sort = $"sort:{SortOrder}";
+        var local = LocalOnly ? "local:true" : "";
+        var str = $"+game:facepunch.sandbox +runtime +npc {sort} {local} type:addon";
+
+        return str;
+    }
+
+    void SpawnPackage(Package package)
+    {
+        // ConsoleSystem.Run("spawnpackage", package.FullIdent);
+    }
+}

@@ -1,0 +1,35 @@
+packmode flat
+sequence 0
+loop
+frame electrical_seq/electrical_seq_00000.tga 1.000000 
+frame electrical_seq/electrical_seq_00001.tga 1.000000 
+frame electrical_seq/electrical_seq_00002.tga 1.000000 
+frame electrical_seq/electrical_seq_00003.tga 1.000000 
+frame electrical_seq/electrical_seq_00004.tga 1.000000 
+frame electrical_seq/electrical_seq_00005.tga 1.000000 
+frame electrical_seq/electrical_seq_00006.tga 1.000000 
+frame electrical_seq/electrical_seq_00007.tga 1.000000 
+frame electrical_seq/electrical_seq_00008.tga 1.000000 
+frame electrical_seq/electrical_seq_00009.tga 1.000000 
+frame electrical_seq/electrical_seq_00010.tga 1.000000 
+frame electrical_seq/electrical_seq_00011.tga 1.000000 
+frame electrical_seq/electrical_seq_00012.tga 1.000000 
+frame electrical_seq/electrical_seq_00013.tga 1.000000 
+frame electrical_seq/electrical_seq_00014.tga 1.000000 
+frame electrical_seq/electrical_seq_00015.tga 1.000000 
+frame electrical_seq/electrical_seq_00016.tga 1.000000 
+frame electrical_seq/electrical_seq_00017.tga 1.000000 
+frame electrical_seq/electrical_seq_00018.tga 1.000000 
+frame electrical_seq/electrical_seq_00019.tga 1.000000 
+frame electrical_seq/electrical_seq_00020.tga 1.000000 
+frame electrical_seq/electrical_seq_00021.tga 1.000000 
+frame electrical_seq/electrical_seq_00022.tga 1.000000 
+frame electrical_seq/electrical_seq_00023.tga 1.000000 
+frame electrical_seq/electrical_seq_00024.tga 1.000000 
+frame electrical_seq/electrical_seq_00025.tga 1.000000 
+frame electrical_seq/electrical_seq_00026.tga 1.000000 
+frame electrical_seq/electrical_seq_00027.tga 1.000000 
+frame electrical_seq/electrical_seq_00028.tga 1.000000 
+frame electrical_seq/electrical_seq_00029.tga 1.000000 
+frame electrical_seq/electrical_seq_00030.tga 1.000000 
+frame electrical_seq/electrical_seq_00031.tga 1.000000 

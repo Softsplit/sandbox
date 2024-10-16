@@ -1,0 +1,28 @@
+packmode flat
+sequence 0
+frame electrical_arc03\electrical_arc03_a.tga 1.000000 
+
+sequence 1
+frame electrical_arc03\electrical_arc03_b.tga 1.000000 
+
+sequence 2
+frame electrical_arc03\electrical_arc03_c.tga 1.000000 
+
+sequence 3
+frame electrical_arc03\electrical_arc03_d.tga 1.000000 
+
+sequence 4
+frame electrical_arc03\electrical_arc03_e.tga 1.000000 
+
+sequence 5
+frame electrical_arc03\electrical_arc03_f.tga 1.000000 
+
+sequence 6
+frame electrical_arc03\electrical_arc03_g.tga 1.000000 
+
+
+sequence 7
+frame electrical_arc03\electrical_arc03_i.tga 1.000000 
+
+
+

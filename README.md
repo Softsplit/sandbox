@@ -5,14 +5,7 @@ Sandbox for the scene system.
 Based on the original Sandbox by Facepunch
 
 ### Programming
-* Asphaltian - General, UI
-* TROLLFACEINREALLIFE - Entities, NPCs, Tools, UI
-* Fasught - General
-* Kolya142 - Entities, Tools
-* somethink000 - Entities, UI
-* sonicmemes - Entities
-* ducc - Advice
-* badandbest - Sprays
+* Asphaltian - Everything (for now)
 
 ### Localization
 * DiskGG - 🇨🇿

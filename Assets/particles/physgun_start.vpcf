@@ -2,8 +2,6 @@
 {
 	_class = "CParticleSystemDefinition"
 	m_nBehaviorVersion = 10
-	m_nMaxParticles = 10000
-	m_flStartFadeDistance = 20000.0
 	m_controlPointConfigurations = 
 	[
 		{
@@ -1477,8 +1475,6 @@
 	[
 		{
 			m_ChildRef = resource:"particles/physgun_light.vpcf"
-			m_bEndCap = true
-			m_bDisableChild = true
 		},
 	]
 }
