@@ -107,6 +107,7 @@
                 "Flags": 0,
                 "Name": "Brass",
                 "Position": "3.558376,-1.066853,3.101104",
+                "Rotation": "0.2458992,0.2458992,-0.6629733,0.6629733",
                 "Tags": "particles",
                 "Enabled": true
               }
@@ -281,6 +282,7 @@
                 "Flags": 0,
                 "Name": "Brass (1)",
                 "Position": "4.069456,-1.066853,2.73866",
+                "Rotation": "0.2458992,0.2458992,-0.6629733,0.6629733",
                 "Tags": "particles",
                 "Enabled": true
               }

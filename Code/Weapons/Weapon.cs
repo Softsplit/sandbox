@@ -249,12 +249,15 @@ public partial class Weapon : BaseWeapon
 
     public LegacyParticleSystem CreateParticleSystem( string particle, Vector3 pos, Rotation rot, float decay = 5f )
 	{
+		
 		var gameObject = Scene.CreateObject();
 		gameObject.Name = particle;
 		gameObject.WorldPosition = pos;
 		gameObject.WorldRotation = rot;
 
 		var p = gameObject.Components.Create<LegacyParticleSystem>();
+		p.ControlPoints = new();
+		p.ControlPoints.Add(new ParticleControlPoint{GameObjectValue = gameObject, Value = ParticleControlPoint.ControlPointValueInput.GameObject});
 		p.Particles = ParticleSystem.Load( particle );
 		gameObject.Transform.ClearInterpolation();
 
@@ -295,6 +298,8 @@ public partial class Weapon : BaseWeapon
 				
 		}
 		
+		var particlePath = Game.Random.FromList( tr.Surface.ImpactEffects.Bullet, "particles/impact.generic.vpcf" );;
+		CreateParticleSystem( particlePath, tr.EndPosition, Rotation.LookAt(tr.Normal));
 
 		if ( !string.IsNullOrEmpty( tr.Surface.Sounds.Bullet ) && tr.Surface.IsValid())
 		{
