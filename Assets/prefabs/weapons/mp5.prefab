@@ -33,7 +33,7 @@
         "HoldType": "Rifle",
         "ParentBoneName": "hold_R",
         "PrimaryRate": 15,
-        "ReloadTime": 3,
+        "ReloadTime": 2.5,
         "SecondaryRate": 1,
         "ViewModel": {
           "_type": "component",

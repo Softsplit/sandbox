@@ -7,24 +7,35 @@ public partial class Weapon : BaseWeapon
 
 	[Sync] public RealTimeSince TimeSinceReload { get; set; }
 	[Sync] public RealTimeSince TimeSinceDeployed { get; set; }
+	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
+	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 	[Sync] public bool IsReloading { get; set; }
-
-	public float TimeSincePrimaryAttack = 100000f;
-	public float TimeSinceSecondaryAttack = 100000f;
 
 	public virtual bool CanPrimaryAttack()
 	{
-		return TimeSincePrimaryAttack > PrimaryRate;
+		if ( !Owner.IsValid() || !Input.Down( "attack1" ) ) return false;
+
+		var rate = PrimaryRate;
+		if ( rate <= 0 ) return true;
+
+		return TimeSincePrimaryAttack > (1 / rate);
 	}
 
 	public virtual bool CanSecondaryAttack()
 	{
-		return TimeSinceSecondaryAttack > PrimaryRate;
+		if ( !Owner.IsValid() || !Input.Down( "attack2" ) ) return false;
+
+		var rate = SecondaryRate;
+		if ( rate <= 0 ) return true;
+
+		return TimeSinceSecondaryAttack > (1 / rate);
 	}
 
 	public virtual bool CanReload()
 	{
-		return !IsReloading;
+		if ( !Owner.IsValid() || !Input.Down( "reload" ) ) return false;
+
+		return true;
 	}
 
 	public virtual void Reload()
@@ -72,18 +83,13 @@ public partial class Weapon : BaseWeapon
 	{
 	}
 
-	bool PressedDown( string key )
-	{
-		return Hold ? Input.Down( key ) : Input.Pressed( key );
-	}
-
 	public override void OnControl()
 	{
 		if ( TimeSinceDeployed < 0.6f )
 			return;
 
-		TimeSincePrimaryAttack += Time.Delta * 100;
-		TimeSinceSecondaryAttack += Time.Delta * 100;
+		if ( CanReload() )
+			Reload();
 
 		// Explanation: This was logic you had to do in order to
 		// run custom weapon code on the entity system
@@ -94,19 +100,16 @@ public partial class Weapon : BaseWeapon
 		}
         */
 
-		if ( CanPrimaryAttack() && PressedDown( "attack1" ) )
+		if ( CanPrimaryAttack() )
 		{
+			TimeSincePrimaryAttack = 0;
 			AttackPrimary();
-			TimeSinceReload = ReloadTime;
 		}
-		else if ( CanSecondaryAttack() && PressedDown( "attack2" ) )
+
+		if ( CanSecondaryAttack() )
 		{
+			TimeSinceSecondaryAttack = 0;
 			AttackSecondary();
-			TimeSinceReload = ReloadTime;
-		}
-		else if ( CanReload() && Input.Pressed( "reload" ) )
-		{
-			Reload();
 		}
 
 		if ( IsReloading && TimeSinceReload > ReloadTime )

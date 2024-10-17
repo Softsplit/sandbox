@@ -21,7 +21,11 @@ partial class MP5 : Weapon
 		// Tell the clients to play the shoot effects
 		//
 		ShootEffects();
-		// Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+		Sound.Play( "rust_smg.shoot", WorldPosition );
+
+		//
+		// Shoot the bullets
+		//
 		ShootBullet( 0.1f, 1.5f, 5.0f, 3.0f );
 	}
 
