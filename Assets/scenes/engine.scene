@@ -16,7 +16,7 @@
           "IsMainCamera": true,
           "Orthographic": false,
           "OrthographicHeight": 1204,
-          "Priority": 1,
+          "Priority": 2,
           "RenderExcludeTags": "viewmodel",
           "RenderTags": "",
           "TargetEye": "None",
@@ -55,24 +55,23 @@
           "__guid": "42a07be5-eba9-40c8-951f-90d3a99f71e0",
           "Flags": 0,
           "Name": "View Model Camera",
-          "Tags": "maincamera",
           "Enabled": true,
           "Components": [
             {
               "__type": "Sandbox.CameraComponent",
               "__guid": "9acfbe38-c3cd-4376-abbe-ce25f6796b2a",
               "BackgroundColor": "0.33333,0.46275,0.52157,1",
-              "ClearFlags": "Stencil",
+              "ClearFlags": "Depth",
               "FieldOfView": 90,
-              "IsMainCamera": true,
+              "IsMainCamera": false,
               "Orthographic": false,
               "OrthographicHeight": 1204,
-              "Priority": 1,
+              "Priority": 2,
               "RenderExcludeTags": "",
-              "RenderTags": "viewmodel",
+              "RenderTags": "viewmodel,light",
               "TargetEye": "None",
               "Viewport": "0,0,1,1",
-              "ZFar": 10000,
+              "ZFar": 100000,
               "ZNear": 1
             }
           ]
