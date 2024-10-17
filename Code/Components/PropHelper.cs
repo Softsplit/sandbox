@@ -51,6 +51,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var gib in gibs )
 		{
+			gib.Tags.Add( "solid" );
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
@@ -198,9 +199,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			Damage( dmg );
 
-			if ( collision.Other.GameObject.Root.Components.TryGet<Player>( out var player ) )
+			if ( collision.Other.GameObject.Root.Components.TryGet<IDamageable>( out var damageable ) )
 			{
-				player.TakeDamage( dmg );
+				damageable.OnDamage( new DamageInfo( dmg, GameObject, null ) );
 			}
 		}
 	}

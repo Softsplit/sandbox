@@ -1,4 +1,3 @@
-using Sandbox.Citizen;
 using Sandbox.Diagnostics;
 
 public sealed class PlayerInventory : Component, IPlayerEvent
@@ -18,17 +17,22 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		Pickup( "prefabs/weapons/mp5.prefab" );
 	}
 
-	protected override void OnFixedUpdate()
+	protected override void OnUpdate()
 	{
 		if ( IsProxy )
 			return;
 
-		for ( int i = 0; i < 10; i++ )
-		{
-			if ( !Input.Pressed( $"Slot{i}" ) ) continue;
-			SwitchWeapon( i - 1 );
-			break;
-		}
+		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( 0 );
+		if ( Input.Pressed( "slot2" ) ) SetActiveSlot( 1 );
+		if ( Input.Pressed( "slot3" ) ) SetActiveSlot( 2 );
+		if ( Input.Pressed( "slot4" ) ) SetActiveSlot( 3 );
+		if ( Input.Pressed( "slot5" ) ) SetActiveSlot( 4 );
+		if ( Input.Pressed( "slot6" ) ) SetActiveSlot( 5 );
+		if ( Input.Pressed( "slot7" ) ) SetActiveSlot( 6 );
+		if ( Input.Pressed( "slot8" ) ) SetActiveSlot( 7 );
+		if ( Input.Pressed( "slot9" ) ) SetActiveSlot( 8 );
+
+		if ( Input.MouseWheel != 0 ) SwitchActiveSlot( (int)-Input.MouseWheel.y );
 	}
 
 	private void Pickup( string prefabName )
@@ -43,32 +47,46 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 		weapon.Spawn();
 
-		SwitchWeapon( Weapons.Count - 1 );
+		SetActiveSlot( Weapons.Count - 1 );
 	}
 
 	[Broadcast]
-	public void SwitchWeapon( int Slot )
+	public void SetActiveSlot( int slot )
 	{
-		SlotIndex = Slot;
+		SlotIndex = slot;
 
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = false;
 		}
 
-		if ( Slot >= Weapons.Count )
+		if ( slot >= Weapons.Count )
 		{
-			Player.ModelRenderer.Set( "holdtype", (int)CitizenAnimationHelper.HoldTypes.None );
+			SlotIndex = Weapons.Count - 1;
 			return;
 		}
 
-		ActiveWeapon = Weapons[Slot];
+		ActiveWeapon = Weapons[slot];
 
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = true;
 			ActiveWeapon.DoEnabled();
 		}
+	}
+
+	[Broadcast]
+	public void SwitchActiveSlot( int idelta )
+	{
+		var count = Weapons.Count;
+		if ( count == 0 ) return;
+
+		var nextSlot = SlotIndex + idelta;
+
+		while ( nextSlot < 0 ) nextSlot += count;
+		while ( nextSlot >= count ) nextSlot -= count;
+
+		SetActiveSlot( nextSlot );
 	}
 
 	void IPlayerEvent.OnSpawned( Player player )
