@@ -202,24 +202,22 @@ public partial class Weapon : BaseWeapon
 		{
 			CreateImpactEffects( tr );
 
-			//
-			// We turn predictiuon off for this, so any exploding effects don't get culled etc
-			//
-			// Explanation: This code was supposed to run on the server in the entity system,
-			// you can see more about client-side prediction below.
-			// https://en.wikipedia.org/wiki/Client-side_prediction
-			//
-			/*
-			using ( Prediction.Off() )
-			{
-				var damageInfo = DamageInfo.FromBullet( tr.EndPosition, forward * 100 * force, damage )
-					.UsingTraceResult( tr )
-					.WithAttacker( Owner )
-					.WithWeapon( this );
+			var damageInfo = new DamageInfo( damage, Owner.GameObject, GameObject );
 
-				tr.Entity.TakeDamage( damageInfo );
+			if ( tr.GameObject.Components.TryGet<Rigidbody>( out var rb ) )
+			{
+				rb.ApplyImpulseAt( tr.EndPosition, forward * 100 * force );
 			}
-            */
+
+			if ( tr.GameObject.Components.TryGet<ModelPhysics>( out var modelPhysics ) )
+			{
+				modelPhysics.PhysicsGroup.ApplyImpulse( forward * 100 * force );
+			}
+
+			if ( tr.GameObject.Components.TryGet<IDamageable>( out var damageable ) )
+			{
+				damageable.OnDamage( in damageInfo );
+			}
 		}
 	}
 

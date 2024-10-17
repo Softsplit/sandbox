@@ -66,6 +66,7 @@ public sealed partial class GameManager
 			}
 		}
 
+		go.Tags.Add( "solid" );
 		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 	}
