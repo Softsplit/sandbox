@@ -103,9 +103,9 @@ public partial class Weapon : BaseWeapon
         */
 
         if(CanPrimaryAttack() && PressedDown("attack1"))
-            AttackPrimary();
+            {AttackPrimary(); TimeSinceReload = ReloadTime;}
         else if(CanSecondaryAttack() && PressedDown("attack2"))
-            AttackSecondary();
+            {AttackSecondary(); TimeSinceReload = ReloadTime;}
         else if(CanReload() && Input.Pressed("reload"))
             Reload();
 

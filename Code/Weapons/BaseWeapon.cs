@@ -10,6 +10,7 @@ public class BaseWeapon : Component
 
 	[Property] public SkinnedModelRenderer WorldModel { get; set; }
 	[Property] public SkinnedModelRenderer ViewModel { get; set; }
+	[Property] public SkinnedModelRenderer ViewModelArms { get; set; }
 
 	[Property] public GameObject WorldModelMuzzle { get; set; }
 	[Property] public GameObject ViewModelMuzzle { get; set; }
@@ -49,6 +50,7 @@ public class BaseWeapon : Component
 		WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
 		ViewModel.GameObject.Enabled = !UseWorldModel;
 		ViewModel.RenderType = ModelRenderer.ShadowRenderType.Off;
+		if(ViewModelArms.IsValid()) ViewModelArms.RenderType = ModelRenderer.ShadowRenderType.Off;
 
 		GameObject.NetworkInterpolation = false;
 
@@ -59,7 +61,7 @@ public class BaseWeapon : Component
 		body.Set( "holdtype", (int)HoldType );
 
 		//From what I see original s&box has a sine wave bob
-
+		
 		var obj = body.GetBoneObject( ParentBoneName );
 		if ( obj.IsValid() )
 		{

@@ -41,6 +41,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		IPlayerEvent.Post( e => e.OnWeaponAdded( Player, weapon ) );
 
 		weapon.Spawn();
+
+		SwitchWeapon(Weapons.Count-1);
 	}
 
 	[Broadcast]
