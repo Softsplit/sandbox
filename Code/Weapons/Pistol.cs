@@ -9,7 +9,7 @@ partial class Pistol : Weapon
 
 	protected override void OnEnabled()
 	{
-		base.OnStart();
+		base.OnEnabled();
 
 		ViewModel?.Set( "b_deploy", true );
 	}

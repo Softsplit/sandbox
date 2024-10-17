@@ -110,6 +110,7 @@
         "__guid": "2b72f34f-7689-4055-94ed-1b232e268a2f",
         "Flags": 0,
         "Name": "ViewModel",
+        "Tags": "viewmodel",
         "Enabled": true,
         "Components": [
           {
@@ -835,6 +836,7 @@
         "__guid": "effd19c1-069a-4299-ac4e-c0e2f9b29cc1",
         "Flags": 0,
         "Name": "first_person_arms",
+        "Tags": "viewmodel",
         "Enabled": true,
         "Components": [
           {

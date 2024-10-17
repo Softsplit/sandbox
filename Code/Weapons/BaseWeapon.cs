@@ -4,7 +4,7 @@ public class BaseWeapon : Component
 {
 	[Property] public string DisplayName { get; set; } = "My Weapon";
 	[Property] public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.HoldItem;
-	[Property] public string ParentBoneName { get; set; } = "hand_R";
+	[Property] public string ParentBoneName { get; set; } = "hold_R";
 	[Property] public Transform BoneOffset { get; set; } = new Transform( 0 );
 
 	[Property] public SkinnedModelRenderer WorldModel { get; set; }
@@ -15,8 +15,6 @@ public class BaseWeapon : Component
 	[Property] public GameObject ViewModelMuzzle { get; set; }
 
 	public GameObject Muzzle => IsProxy ? WorldModelMuzzle : ViewModelMuzzle;
-
-	// GameObject Root => IsProxy ? Owner.ModelRenderer.GetBoneObject(ParentBone) : Scene.Camera.GameObject;
 
 	GameObject _parentBone;
 
@@ -69,6 +67,7 @@ public class BaseWeapon : Component
 
 		// TR: From what I see original Sandbox has a sine wave bob
 		// AS: Yeah it does.
+
 		var obj = body.GetBoneObject( ParentBoneName );
 		if ( obj.IsValid() )
 		{
@@ -89,5 +88,11 @@ public class BaseWeapon : Component
 
 	public virtual void DoEnabled()
 	{
+	}
+
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+		DoEnabled();
 	}
 }

@@ -17,7 +17,7 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "",
+          "RenderExcludeTags": "viewmodel",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
@@ -48,6 +48,34 @@
         {
           "__type": "Sandbox.Highlight",
           "__guid": "c47e021d-53aa-4341-b5ae-3fd6a3fb1526"
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "95f0941c-6d1d-43e8-8588-f489b61a3829",
+          "Flags": 0,
+          "Name": "View Model Camera",
+          "Tags": "maincamera",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.CameraComponent",
+              "__guid": "08367559-a1ca-4266-9ab1-d2dbe3c14d20",
+              "BackgroundColor": "0.33333,0.46275,0.52157,1",
+              "ClearFlags": "Stencil",
+              "FieldOfView": 90,
+              "IsMainCamera": true,
+              "Orthographic": false,
+              "OrthographicHeight": 1204,
+              "Priority": 1,
+              "RenderExcludeTags": "",
+              "RenderTags": "viewmodel",
+              "TargetEye": "None",
+              "Viewport": "0,0,1,1",
+              "ZFar": 10000,
+              "ZNear": 1
+            }
+          ]
         }
       ]
     },
