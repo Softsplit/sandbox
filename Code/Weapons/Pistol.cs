@@ -16,7 +16,7 @@ partial class Pistol : Weapon
 
 	public override bool CanPrimaryAttack()
 	{
-		return base.CanPrimaryAttack();
+		return base.CanPrimaryAttack() && Input.Pressed( "attack1" );
 	}
 
 	public override void AttackPrimary()
@@ -28,7 +28,7 @@ partial class Pistol : Weapon
 		ViewModel?.Set( "b_attack", true );
 
 		ShootEffects();
-		// Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+		Sound.Play( "rust_pistol.shoot", Muzzle.WorldPosition );
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 
@@ -43,8 +43,7 @@ partial class Pistol : Weapon
 		var rot = Muzzle.WorldRotation;
 
 		ShootEffects();
-		// Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
-
+		Sound.Play( "rust_pistol.shoot", Muzzle.WorldPosition );
 		ShootBullet( pos, rot.Forward, 0.05f, 1.5f, 9.0f, 3.0f );
 
 		// TODO: Figure out what this is

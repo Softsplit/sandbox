@@ -2,8 +2,6 @@ using Sandbox.Diagnostics;
 
 public sealed class PlayerInventory : Component, IPlayerEvent
 {
-	[Property] public int SlotIndex { get; set; }
-
 	[RequireComponent] public PlayerController PlayerController { get; set; }
 	[RequireComponent] public Player Player { get; set; }
 
@@ -51,22 +49,19 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	}
 
 	[Broadcast]
-	public void SetActiveSlot( int slot )
+	public void SetActiveSlot( int i )
 	{
-		SlotIndex = slot;
+		var weapon = GetSlot( i );
+		if ( ActiveWeapon == weapon )
+			return;
+
+		if ( weapon == null )
+			return;
 
 		if ( ActiveWeapon.IsValid() )
-		{
 			ActiveWeapon.GameObject.Enabled = false;
-		}
 
-		if ( slot >= Weapons.Count )
-		{
-			SlotIndex = Weapons.Count - 1;
-			return;
-		}
-
-		ActiveWeapon = Weapons[slot];
+		ActiveWeapon = weapon;
 
 		if ( ActiveWeapon.IsValid() )
 		{
@@ -75,13 +70,21 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		}
 	}
 
+	public BaseWeapon GetSlot( int i )
+	{
+		if ( Weapons.Count <= i ) return null;
+		if ( i < 0 ) return null;
+
+		return Weapons[i];
+	}
+
 	[Broadcast]
 	public void SwitchActiveSlot( int idelta )
 	{
 		var count = Weapons.Count;
 		if ( count == 0 ) return;
 
-		var nextSlot = SlotIndex + idelta;
+		var nextSlot = Weapons.IndexOf( ActiveWeapon ) + idelta;
 
 		while ( nextSlot < 0 ) nextSlot += count;
 		while ( nextSlot >= count ) nextSlot -= count;
