@@ -4,7 +4,7 @@
 @namespace Sandbox
 
 <root>
-	@for (int i = 0; i < 9; i++)
+    @for (int i = 0; i < 9; i++)
     {
         <InventoryIcon Index="@i" PlayerInventory="@playerInventory" />
     }
@@ -12,12 +12,13 @@
 
 @code
 {
-	PlayerInventory _playerInventory;
+    PlayerInventory _playerInventory;
+
     public PlayerInventory playerInventory
     {
         get
         {
-            if(!_playerInventory.IsValid())
+            if (!_playerInventory.IsValid())
             {
                 _playerInventory = Player.FindLocalPlayer().Components.Get<PlayerInventory>();
             }

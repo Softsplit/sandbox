@@ -1,7 +1,4 @@
-﻿using Sandbox;
-
-[Spawnable]
-[Library( "weapon_mp5", Title = "MP5" )]
+﻿[Library( "weapon_mp5", Title = "MP5" )]
 partial class MP5 : Weapon
 {
 	[Property] public ParticleSystem EjectBrass;
@@ -24,23 +21,24 @@ partial class MP5 : Weapon
 		// Tell the clients to play the shoot effects
 		//
 		ShootEffects();
-		//Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+		// Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 		ShootBullet( 0.1f, 1.5f, 5.0f, 3.0f );
-		
 	}
 
 	public override void OnControl()
 	{
 		base.OnControl();
-		var attack_hold = !IsReloading && Input.Down( "attack1" ) ? 1.0f : 0.0f;
-		Owner.ModelRenderer?.Set( "attack_hold", attack_hold );
-		ViewModel?.Set( "attack_hold", attack_hold );
+
+		var attackHold = !IsReloading && Input.Down( "attack1" ) ? 1.0f : 0.0f;
+
+		Owner.ModelRenderer?.Set( "attack_hold", attackHold );
+		ViewModel?.Set( "attack_hold", attackHold );
 	}
 
 	[Broadcast]
 	protected override void ShootEffects()
 	{
 		base.ShootEffects();
-		CreateParticleSystem( EjectBrass.ResourcePath , UseWorldModel ? BrassWM.WorldPosition : BrassVM.WorldPosition, Rotation.Identity );
+		CreateParticleSystem( EjectBrass.ResourcePath, UseWorldModel ? BrassWM.WorldPosition : BrassVM.WorldPosition, Rotation.Identity );
 	}
 }

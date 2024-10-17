@@ -139,6 +139,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		{
 			var rootBody = FindRootBody();
 
+			if ( NetworkedBodies is null )
+				return;
+
 			foreach ( var (groupId, info) in NetworkedBodies )
 			{
 				var group = ModelPhysics.PhysicsGroup.GetBody( groupId );

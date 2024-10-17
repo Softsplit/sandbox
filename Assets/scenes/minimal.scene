@@ -70,38 +70,6 @@
         }
       ],
       "Children": []
-    },
-    {
-      "__guid": "3314ba24-7532-4e56-b083-b67c262ab4bd",
-      "Flags": 0,
-      "Name": "Cube",
-      "Position": "425.4724,1244.823,90.93094",
-      "Enabled": true,
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "9ad68d59-6948-4728-aae7-fa265397aab3",
-          "BodyGroups": 18446744073709551615,
-          "Model": "models/dev/box.vmdl",
-          "RenderOptions": {
-            "GameLayer": true,
-            "OverlayLayer": false,
-            "BloomLayer": false,
-            "AfterUILayer": false
-          },
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "ce9b1c91-6df6-4912-9871-9dff68bcaecd",
-          "Center": "0,0,0",
-          "IsTrigger": false,
-          "Scale": "50,50,50",
-          "Static": false,
-          "Surface": "surfaces/water.surface"
-        }
-      ]
     }
   ],
   "SceneProperties": {

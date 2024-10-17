@@ -1,13 +1,8 @@
-using Sandbox.Diagnostics;
-using Scene = Sandbox.Scene;
-namespace Softsplit;
-
 public static partial class GameObjectExtensions
 {
-
-	public static async void DestroyAsync( this GameObject go, float time)
+	public static async void DestroyAsync( this GameObject go, float time )
 	{
-		await Task.Delay((int)(time * 1000.0f));
+		await Task.Delay( (int)(time * 1000.0f) );
 		go.Destroy();
 	}
 

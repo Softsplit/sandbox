@@ -14,7 +14,7 @@ public sealed class Player : Component, Component.IDamageable
 	[Property] public SkinnedModelRenderer ModelRenderer { get; set; }
 	[Property, Range( 0, 100 ), Sync] public float Health { get; set; } = 100;
 
-	public Ray AimRay => new Ray(Scene.Camera.WorldPosition,Scene.Camera.Transform.World.Forward*10000f);
+	public Ray AimRay => new( Scene.Camera.WorldPosition, Scene.Camera.Transform.World.Forward * 10000f );
 
 	public bool IsDead => Health <= 0;
 
@@ -28,15 +28,15 @@ public sealed class Player : Component, Component.IDamageable
 		}
 	}
 
-	/// <summary>
-	/// Creates a ragdoll but it isn't enabled
-	/// </summary>
-	/// 
 	protected override void OnStart()
 	{
 		ModelRenderer = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
 	}
 
+	/// <summary>
+	/// Creates a ragdoll but it isn't enabled
+	/// </summary>
+	/// 
 	[Broadcast]
 	void CreateRagdoll()
 	{
@@ -105,18 +105,6 @@ public sealed class Player : Component, Component.IDamageable
 		IPlayerEvent.Post( x => x.OnDied( this ) );
 
 		GameObject.Destroy();
-	}
-
-	protected override void OnUpdate()
-	{
-		base.OnUpdate();
-
-		if ( !IsProxy )
-			OnControl();
-	}
-
-	void OnControl()
-	{
 	}
 
 	void IDamageable.OnDamage( in DamageInfo damage )

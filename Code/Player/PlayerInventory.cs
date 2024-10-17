@@ -3,9 +3,10 @@ using Sandbox.Diagnostics;
 
 public sealed class PlayerInventory : Component, IPlayerEvent
 {
+	[Property] public int SlotIndex { get; set; }
+
 	[RequireComponent] public PlayerController PlayerController { get; set; }
 	[RequireComponent] public Player Player { get; set; }
-	[Property] public int SlotIndex {get;set;}
 
 	public BaseWeapon ActiveWeapon { get; private set; }
 
@@ -13,25 +14,25 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	public void GiveDefaultWeapons()
 	{
+		Pickup( "prefabs/weapons/pistol.prefab" );
+		Pickup( "prefabs/weapons/mp5.prefab" );
 	}
 
 	protected override void OnFixedUpdate()
 	{
-		if(IsProxy)
+		if ( IsProxy )
 			return;
-		
-		for(int i = 1; i < 9; i++)
+
+		for ( int i = 0; i < 10; i++ )
 		{
-			if(!Input.Pressed($"Slot{i}")) continue;
-			SwitchWeapon(i-1);
+			if ( !Input.Pressed( $"Slot{i}" ) ) continue;
+			SwitchWeapon( i - 1 );
 			break;
 		}
 	}
 
-	public int WeaponsMod = 0;
-	void Pickup( string prefabName )
+	private void Pickup( string prefabName )
 	{
-		WeaponsMod++;
 		var prefab = GameObject.Clone( prefabName, new CloneConfig { Parent = GameObject, StartEnabled = false } );
 		prefab.NetworkSpawn( false, Network.Owner );
 
@@ -42,19 +43,20 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 		weapon.Spawn();
 
-		SwitchWeapon(Weapons.Count-1);
+		SwitchWeapon( Weapons.Count - 1 );
 	}
 
 	[Broadcast]
 	public void SwitchWeapon( int Slot )
 	{
 		SlotIndex = Slot;
+
 		if ( ActiveWeapon.IsValid() )
 		{
 			ActiveWeapon.GameObject.Enabled = false;
 		}
 
-		if(Slot >= Weapons.Count)
+		if ( Slot >= Weapons.Count )
 		{
 			Player.ModelRenderer.Set( "holdtype", (int)CitizenAnimationHelper.HoldTypes.None );
 			return;
@@ -77,9 +79,9 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		GiveDefaultWeapons();
 	}
 
-	[ConCmd( "Add_Weapon" )]
-	public static void AddWeaponCommand(string weaponName)
+	[ConCmd( "give" )]
+	public static void AddWeaponCommand( string weaponName )
 	{
-		Player.FindLocalPlayer().Components.Get<PlayerInventory>().Pickup($"prefabs/weapons/{weaponName}.prefab");
+		Player.FindLocalPlayer().Components.Get<PlayerInventory>().Pickup( $"prefabs/weapons/{weaponName}.prefab" );
 	}
 }

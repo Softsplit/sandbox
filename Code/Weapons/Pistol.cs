@@ -1,18 +1,16 @@
-using Sandbox;
-
-[Spawnable]
 [Library( "weapon_pistol", Title = "Pistol" )]
 partial class Pistol : Weapon
 {
+	public RealTimeSince TimeSinceDischarge { get; set; }
 
-	public TimeSince TimeSinceDischarge { get; set; }
 	public override void ActiveStart()
 	{
 	}
 
-	protected override void OnEnabled( )
+	protected override void OnEnabled()
 	{
 		base.OnStart();
+
 		ViewModel?.Set( "b_deploy", true );
 	}
 
@@ -30,7 +28,7 @@ partial class Pistol : Weapon
 		ViewModel?.Set( "b_attack", true );
 
 		ShootEffects();
-		//Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+		// Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 
@@ -45,15 +43,16 @@ partial class Pistol : Weapon
 		var rot = Muzzle.WorldRotation;
 
 		ShootEffects();
-		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+		// Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
+
 		ShootBullet( pos, rot.Forward, 0.05f, 1.5f, 9.0f, 3.0f );
 
-		// Figure out what this is
-		//ApplyAbsoluteImpulse( rot.Backward * 200.0f );
+		// TODO: Figure out what this is
+		// ApplyAbsoluteImpulse( rot.Backward * 200.0f );
 	}
 
 
-	//TR - Implement This
+	// TODO: Implement this
 	/*
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
 	{
@@ -63,5 +62,4 @@ partial class Pistol : Weapon
 		}
 	}
 	*/
-
 }
