@@ -108,15 +108,15 @@
                 "__guid": "b7ae813e-7fa4-473e-8641-971f04fe526f",
                 "Flags": 0,
                 "Name": "Muzzle",
-                "Position": "14.50011,0.00000002029338,2.626029",
+                "Position": "14.50006,0.00000002029338,2.65",
                 "Enabled": true
               },
               {
                 "__guid": "cf7085a6-6a46-4f37-a05b-6ce25ce35e15",
                 "Flags": 0,
                 "Name": "Brass",
-                "Position": "3.558376,-1.066853,3.101104",
-                "Rotation": "0.2458992,0.2458992,-0.6629733,0.6629733",
+                "Position": "3.5,-0.9999974,3.499999",
+                "Rotation": "0.2418447,0.2418447,-0.664463,0.664463",
                 "Tags": "particles",
                 "Enabled": true
               }
@@ -282,16 +282,16 @@
               {
                 "__guid": "3535089c-dfdc-4d79-99b1-13d4b6ec45c1",
                 "Flags": 0,
-                "Name": "Object",
-                "Position": "14.91904,0.0000001957212,2.427026",
+                "Name": "Muzzle",
+                "Position": "15,0.0000001957212,2.25",
                 "Enabled": true
               },
               {
                 "__guid": "da335051-5cf5-4163-875d-dab3aa941a04",
                 "Flags": 0,
-                "Name": "Brass (1)",
-                "Position": "4.069456,-1.066853,2.73866",
-                "Rotation": "0.2458992,0.2458992,-0.6629733,0.6629733",
+                "Name": "Brass ",
+                "Position": "4,-1,3",
+                "Rotation": "0.2418447,0.2418447,-0.664463,0.664463",
                 "Tags": "particles",
                 "Enabled": true
               }
