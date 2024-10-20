@@ -1,5 +1,76 @@
 {
-  "RootObject": null,
+  "RootObject": {
+    "__guid": "75d3afaf-459e-4cc3-bab8-3c929fae8fdb",
+    "Flags": 0,
+    "Name": "fists",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Fists",
+        "__guid": "4645266c-467e-44d8-a758-85f65e3b4986",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "DisplayName": "Fists",
+        "Hand": "Both",
+        "Hold": false,
+        "HoldType": "Punch",
+        "ParentBoneName": "pelvis",
+        "PrimaryRate": 2,
+        "ReloadTime": 3,
+        "SecondaryRate": 2,
+        "ViewModel": {
+          "_type": "component",
+          "component_id": "f4f6e7a2-6b13-4d1d-ba73-21b0454ce298",
+          "go": "ab59d99e-bee7-414d-8b09-ffed339a729c",
+          "component_type": "SkinnedModelRenderer"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "ab59d99e-bee7-414d-8b09-ffed339a729c",
+        "Flags": 0,
+        "Name": "ViewModel",
+        "Tags": "viewmodel",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "f4f6e7a2-6b13-4d1d-ba73-21b0454ce298",
+            "AnimationGraph": "models/first_person/first_person_arms_punching.vanmgrph",
+            "BodyGroups": 21,
+            "CreateBoneObjects": false,
+            "Model": "models/first_person/first_person_arms.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ]
+      }
+    ],
+    "__variables": []
+  },
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
