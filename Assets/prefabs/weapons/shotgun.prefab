@@ -27,6 +27,7 @@
           "Rotation": "0,0,0,1"
         },
         "DisplayName": "Shotgun",
+        "Hand": "Right",
         "Hold": false,
         "HoldType": "Shotgun",
         "ParentBoneName": "hold_R",
@@ -60,7 +61,6 @@
         "__guid": "30e4646f-4550-49ec-bbe0-d7a581861b4e",
         "Flags": 0,
         "Name": "WorldModel",
-        "Scale": "1.5,1.5,1.5",
         "Enabled": true,
         "Components": [
           {

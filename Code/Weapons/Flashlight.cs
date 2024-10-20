@@ -65,7 +65,14 @@ partial class Flashlight : Weapon
 
 	public override void AttackSecondary()
 	{
-		MeleeAttack();
+		if(MeleeAttack())
+		{
+			OnMeleeHit();
+		}
+		else
+		{
+			OnMeleeMiss();
+		}
 
 		Log.Info("Shmuck");
 
@@ -74,7 +81,6 @@ partial class Flashlight : Weapon
 
 	private bool MeleeAttack()
 	{
-        MeleeAttackEffects();
 
 		var ray = Owner.AimRay;
 		
@@ -96,11 +102,19 @@ partial class Flashlight : Weapon
 
 		return hit;
 	}
+	[Broadcast]
+	private void OnMeleeMiss()
+	{
+		Owner.ModelRenderer?.Set("b_attack",true);
+		ViewModel?.Set( "b_attack_has_hit", false );
+		ViewModel?.Set( "b_attack", true );
+	}
 
 	[Broadcast]
-	private void MeleeAttackEffects()
+	private void OnMeleeHit()
 	{
-        Owner.ModelRenderer?.Set("b_attack",true);
-		ViewModel.Set( "attack", true );
+		Owner.ModelRenderer?.Set("b_attack",true);
+		ViewModel?.Set( "b_attack_has_hit", true );
+		ViewModel?.Set( "b_attack", true );
 	}
 }

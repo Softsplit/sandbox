@@ -49,9 +49,14 @@ public class BaseWeapon : Component
 	{
 		Update();
 
-		WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
-		ViewModel.Enabled = !UseWorldModel;
-		ViewModel.RenderType = ModelRenderer.ShadowRenderType.Off;
+		if(WorldModel.IsValid())
+			WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
+		
+		if(ViewModel.IsValid)
+		{
+			ViewModel.Enabled = !UseWorldModel;
+			ViewModel.RenderType = ModelRenderer.ShadowRenderType.Off;
+		}
 
 		if ( ViewModelArms.IsValid() )
 		{
