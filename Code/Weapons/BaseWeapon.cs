@@ -4,6 +4,7 @@ public class BaseWeapon : Component
 {
 	[Property] public string DisplayName { get; set; } = "My Weapon";
 	[Property] public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.HoldItem;
+	[Property] public CitizenAnimationHelper.Hand Hand { get; set; } = CitizenAnimationHelper.Hand.Right;
 	[Property] public string ParentBoneName { get; set; } = "hold_R";
 	[Property] public Transform BoneOffset { get; set; } = new Transform( 0 );
 
@@ -46,9 +47,10 @@ public class BaseWeapon : Component
 
 	protected override void OnUpdate()
 	{
+		Update();
 
 		WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
-		ViewModel.GameObject.Enabled = !UseWorldModel;
+		ViewModel.Enabled = !UseWorldModel;
 		ViewModel.RenderType = ModelRenderer.ShadowRenderType.Off;
 
 		if ( ViewModelArms.IsValid() )
@@ -66,6 +68,7 @@ public class BaseWeapon : Component
 
 		var body = Owner.Body.Components.Get<SkinnedModelRenderer>();
 		body.Set( "holdtype", (int)HoldType );
+		body.Set( "holdtype_handedness", (int)Hand );
 
 		// TR: From what I see original Sandbox has a sine wave bob
 		// AS: Yeah it does.
@@ -88,6 +91,10 @@ public class BaseWeapon : Component
 	}
 
 	public virtual void OnControl()
+	{
+	}
+
+	public virtual void Update()
 	{
 	}
 

@@ -289,7 +289,7 @@ public partial class Weapon : BaseWeapon
 		return decalRenderer;
 	}
 
-	private void CreateImpactEffects( SceneTraceResult tr )
+	public void CreateImpactEffects( SceneTraceResult tr )
 	{
 		var decalPath = Game.Random.FromList( tr.Surface.ImpactEffects.BulletDecal, "decals/bullethole.decal" );
 
