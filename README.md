@@ -8,6 +8,9 @@ Based on the original Sandbox by Facepunch
 * Asphaltian - Base, UI
 * TROLLFACEINREALLIFE - Weapons
 
+### Archives
+* Sanguchito - Toolgun Model
+
 ### Localization
 * DiskGG - 🇨🇿
 * boxden - 🇷🇺
