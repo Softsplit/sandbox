@@ -1,7 +1,4 @@
-﻿using Sandbox;
-
-[Spawnable]
-[Library( "weapon_fists", Title = "Fists" )]
+﻿[Library( "weapon_fists", Title = "Fists" )]
 partial class Fists : Weapon
 {
 
