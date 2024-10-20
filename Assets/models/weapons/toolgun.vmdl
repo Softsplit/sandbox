@@ -67,6 +67,7 @@
 							exception_list = 
 							[
 								"HL2DM_toolgun_reference",
+								"renderMesh0",
 							]
 						}
 					},
