@@ -5,7 +5,8 @@ Sandbox for the scene system.
 Based on the original Sandbox by Facepunch
 
 ### Programming
-* Asphaltian - Everything (for now)
+* Asphaltian - Base, UI
+* TROLLFACEINREALLIFE - Weapons
 
 ### Localization
 * DiskGG - 🇨🇿
