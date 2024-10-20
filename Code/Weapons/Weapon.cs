@@ -135,8 +135,9 @@ public partial class Weapon : BaseWeapon
 	{
 		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Muzzle.WorldPosition, Muzzle.WorldRotation );
 
-		ViewModel?.Set( "fire", true );
-		WorldModel?.Set( "fire", true );
+		Owner.ModelRenderer?.Set( "b_attack", true );
+		ViewModel?.Set( "b_attack", true );
+		WorldModel?.Set( "b_attack", true );
 	}
 
 	public IEnumerable<SceneTraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )

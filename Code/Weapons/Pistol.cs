@@ -28,7 +28,7 @@ partial class Pistol : Weapon
 		ViewModel?.Set( "b_attack", true );
 
 		ShootEffects();
-		Sound.Play( "rust_pistol.shoot", Muzzle.WorldPosition );
+		Sound.Play( "weapons/rust_pistol/sound/rust_pistol.shoot.sound", Muzzle.WorldPosition );
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 

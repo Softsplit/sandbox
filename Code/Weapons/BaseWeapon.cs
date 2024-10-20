@@ -46,15 +46,17 @@ public class BaseWeapon : Component
 
 	protected override void OnUpdate()
 	{
-		if ( IsProxy )
-			return;
 
 		WorldModel.RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
 		ViewModel.GameObject.Enabled = !UseWorldModel;
 		ViewModel.RenderType = ModelRenderer.ShadowRenderType.Off;
 
 		if ( ViewModelArms.IsValid() )
+		{
 			ViewModelArms.RenderType = ModelRenderer.ShadowRenderType.Off;
+			ViewModelArms.GameObject.Enabled = !UseWorldModel;
+		}
+			
 
 		GameObject.NetworkInterpolation = false;
 
@@ -74,6 +76,9 @@ public class BaseWeapon : Component
 			GameObject.Parent = obj;
 			GameObject.LocalTransform = BoneOffset.WithScale( 1f );
 		}
+
+		if ( IsProxy )
+			return;
 
 		OnControl();
 	}

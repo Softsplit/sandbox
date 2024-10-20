@@ -11,6 +11,7 @@ partial class MP5 : Weapon
 
 	public override void AttackPrimary()
 	{
+		
 		TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 
@@ -38,11 +39,5 @@ partial class MP5 : Weapon
 		Owner.ModelRenderer?.Set( "attack_hold", attackHold );
 		ViewModel?.Set( "attack_hold", attackHold );
 	}
-
-	[Broadcast]
-	protected override void ShootEffects()
-	{
-		base.ShootEffects();
-		CreateParticleSystem( EjectBrass.ResourcePath, UseWorldModel ? BrassWM.WorldPosition : BrassVM.WorldPosition, Rotation.Identity );
-	}
+	
 }
