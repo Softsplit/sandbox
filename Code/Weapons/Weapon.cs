@@ -195,7 +195,7 @@ public partial class Weapon : BaseWeapon
 	public virtual void ShootBullet( Vector3 pos, Vector3 dir, float spread, float force, float damage, float bulletSize )
 	{
 		var forward = dir;
-		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
+		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 2500f;
 		forward = forward.Normal;
 
 		//

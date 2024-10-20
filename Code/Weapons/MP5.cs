@@ -15,9 +15,6 @@ partial class MP5 : Weapon
 		TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 
-		Owner.ModelRenderer?.Set( "b_attack", true );
-		ViewModel?.Set( "b_attack", true );
-
 		//
 		// Tell the clients to play the shoot effects
 		//
@@ -40,4 +37,9 @@ partial class MP5 : Weapon
 		ViewModel?.Set( "attack_hold", attackHold );
 	}
 	
+	protected override void ShootEffects()
+	{
+		base.ShootEffects();
+		CreateParticleSystem( EjectBrass.ResourcePath, UseWorldModel ? BrassWM.WorldPosition : BrassVM.WorldPosition, UseWorldModel ? BrassWM.WorldRotation : BrassVM.WorldRotation );
+	}
 }
