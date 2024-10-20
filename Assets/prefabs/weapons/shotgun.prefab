@@ -882,6 +882,7 @@
   "ResourceVersion": 1,
   "__references": [
     "facepunch.9mm_ejectbrass#58914",
+    "rust.rust_pumpshotgun#43965",
     "rust.v_rust_pumpshotgun#43971"
   ],
   "__version": 1
