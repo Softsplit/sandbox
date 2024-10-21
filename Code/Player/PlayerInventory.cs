@@ -13,8 +13,12 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	public void GiveDefaultWeapons()
 	{
-		Pickup( "prefabs/weapons/pistol.prefab" );
 		Pickup( "prefabs/weapons/mp5.prefab" );
+		Pickup( "prefabs/weapons/fists.prefab" );
+		Pickup( "prefabs/weapons/flashlight.prefab" );
+		Pickup( "prefabs/weapons/pistol.prefab" );
+		Pickup( "prefabs/weapons/toolgun.prefab" );
+		Pickup( "prefabs/weapons/physgun.prefab" );
 	}
 
 	protected override void OnUpdate()

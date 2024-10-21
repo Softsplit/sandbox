@@ -74,8 +74,6 @@ partial class Flashlight : Weapon
 			OnMeleeMiss();
 		}
 
-		Log.Info("Shmuck");
-
 		//PlaySound( "rust_flashlight.attack" );
 	}
 
@@ -106,15 +104,13 @@ partial class Flashlight : Weapon
 	private void OnMeleeMiss()
 	{
 		Owner.ModelRenderer?.Set("b_attack",true);
-		ViewModel?.Set( "b_attack_has_hit", false );
-		ViewModel?.Set( "b_attack", true );
+		ViewModel?.Set( "attack", true );
 	}
 
 	[Broadcast]
 	private void OnMeleeHit()
 	{
 		Owner.ModelRenderer?.Set("b_attack",true);
-		ViewModel?.Set( "b_attack_has_hit", true );
-		ViewModel?.Set( "b_attack", true );
+		ViewModel?.Set( "attack", true );
 	}
 }

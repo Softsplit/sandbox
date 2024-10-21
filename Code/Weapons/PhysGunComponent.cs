@@ -53,6 +53,8 @@ public partial class PhysGunComponent : BaseWeapon
 		{
 			rotating = GrabbedObject != null;
 		}
+		if(!Owner.IsValid())
+			return;
 		Owner.PlayerController.lockCamera = rotating;
 		//beam.enabled = Grabbing && GrabbedObject != null;
 		if ( GrabbedObjectHighlight != null ) GrabbedObjectHighlight.Enabled = Grabbing && GrabbedObject != null;
@@ -68,8 +70,8 @@ public partial class PhysGunComponent : BaseWeapon
 		if ( !HeldBody.IsValid() )
 			return;
 
-		// if ( GrabbedObject.Root.Components.Get<PlayerPawn>().IsValid() )
-		//	return;
+		if ( GrabbedObject.Root.Components.Get<Player>().IsValid() )
+			return;
 
 		var velocity = HeldBody.Velocity;
 		Vector3.SmoothDamp( HeldBody.Position, HoldPos, ref velocity, 0.075f, Time.Delta );
@@ -378,8 +380,7 @@ public partial class PhysGunComponent : BaseWeapon
 	{
 		if ( !HeldBody.IsValid() )
 			return;
-
-		HoldPos = Scene.Camera.Transform.World.ForwardRay.Project(HoldDistance);//startPos - HeldPos * HeldBody.Rotation + dir * HoldDistance;
+		HoldPos = startPos - HeldPos * HeldBody.Rotation + dir.Normal * HoldDistance;
 
 		if ( GrabbedObject.Root.Components.TryGet<PlayerController>( out var player ) )
 		{
