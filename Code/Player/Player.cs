@@ -9,6 +9,7 @@ public sealed class Player : Component, Component.IDamageable
 	}
 
 	[RequireComponent] public PlayerController PlayerController { get; set; }
+	[RequireComponent] public PlayerInventory PlayerInventory { get; set; }
 
 	[Property] public GameObject Body { get; set; }
 	[Property] public SkinnedModelRenderer ModelRenderer { get; set; }

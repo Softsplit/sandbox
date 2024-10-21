@@ -19,6 +19,7 @@ public sealed class PlayerController : Component
 
 	public Vector3 EyePosition => WorldPosition + Vector3.Up * eyeHeight;
 
+	public bool lockCamera;
 	public bool wishCrouch;
 	public float eyeHeight = 64f;
 	public float duckHeight = 28f;
@@ -112,9 +113,11 @@ public sealed class PlayerController : Component
 
 	private void MouseInput()
 	{
+		if(lockCamera)
+			return;
 		var player = GetComponent<Player>();
 		var input = Input.AnalogLook;
-
+		
 		// allow listeners to modify the input eye angles
 		Scene.RunEvent<IPlayerEvent>( x => x.OnCameraMove( player, ref input ) );
 

@@ -5,6 +5,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	[RequireComponent] public PlayerController PlayerController { get; set; }
 	[RequireComponent] public Player Player { get; set; }
 
+	public bool lockSwitch;
+
 	public BaseWeapon ActiveWeapon { get; private set; }
 
 	public List<BaseWeapon> Weapons => Scene.Components.GetAll<BaseWeapon>( FindMode.EverythingInSelfAndDescendants ).Where( x => x.Network.OwnerId == Network.OwnerId ).ToList();
@@ -17,7 +19,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	protected override void OnUpdate()
 	{
-		if ( IsProxy )
+		if ( IsProxy || lockSwitch)
 			return;
 
 		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( 0 );

@@ -18,12 +18,15 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public ModelPhysics ModelPhysics { get; set; }
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
-	[Sync] public List<Sandbox.Physics.FixedJoint> Welds {get;set;} = new();
+	public List<Sandbox.Physics.FixedJoint> Welds {get;set;} = new();
+	public List<PhysicsJoint> Joints {get;set;} = new();
 
 	private Vector3 lastPosition = Vector3.Zero;
 
 	protected override void OnStart()
 	{
+		Welds = new List<Sandbox.Physics.FixedJoint>();
+		Joints = new List<PhysicsJoint>();
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
@@ -221,7 +224,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, toPoint);
 		var fixedJoint = PhysicsJoint.CreateFixed(point1,point2);
 		Welds.Add(fixedJoint);
+		Joints.Add(fixedJoint);
 		propHelper?.Welds.Add(fixedJoint);
+		propHelper?.Joints.Add(fixedJoint);
 	}
 
 	[Broadcast]
@@ -233,5 +238,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 
 		Welds.RemoveAll(item => !item.IsValid());
+		Joints.RemoveAll(item => !item.IsValid());
 	}
 }
