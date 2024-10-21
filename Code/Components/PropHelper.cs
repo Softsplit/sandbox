@@ -201,7 +201,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		if ( speed >= 500f )
 		{
-			var dmg = speed / 10f;
+			var dmg = speed * Rigidbody.Mass * 0.000015f;
 
 			Damage( dmg );
 
