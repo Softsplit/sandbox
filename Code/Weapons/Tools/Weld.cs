@@ -1,8 +1,31 @@
 
 public class Weld : BaseTool
 {
+    GameObject welded;
+    Vector3 point1;
 	public override void Primary( SceneTraceResult Trace )
 	{
-		Log.Info("GO FUCK YOURSELF");
+		if(welded == null)
+        {
+            welded = Trace.GameObject;
+            point1 = Trace.GameObject.Transform.World.PointToLocal(Trace.EndPosition);
+            return;
+        }
+
+        PropHelper propHelper = Trace.GameObject.Components.Get<PropHelper>();
+
+        if(!propHelper.IsValid())
+            return;
+        
+        propHelper.Weld(welded, propHelper.Transform.World.PointToLocal(Trace.EndPosition), point1);
+	}
+	public override void Secondary( SceneTraceResult Trace )
+	{
+		PropHelper propHelper = Trace.GameObject.Components.Get<PropHelper>();
+
+        if(!propHelper.IsValid())
+            return;
+        
+        propHelper.UnWeld();
 	}
 }

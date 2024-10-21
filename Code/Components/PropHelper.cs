@@ -1,6 +1,8 @@
 /// <summary>
 /// A component to help deal with Props.
 /// </summary>
+
+using Sandbox.Physics;
 public sealed class PropHelper : Component, Component.ICollisionListener
 {
 	public struct BodyInfo
@@ -16,6 +18,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public ModelPhysics ModelPhysics { get; set; }
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
+	[Sync] public List<Sandbox.Physics.FixedJoint> Welds {get;set;} = new();
 
 	private Vector3 lastPosition = Vector3.Zero;
 
@@ -204,5 +207,31 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				damageable.OnDamage( new DamageInfo( dmg, GameObject, null ) );
 			}
 		}
+	}
+	[Broadcast]
+	public void Weld (GameObject to, Vector3 fromPoint, Vector3 toPoint)
+	{
+		PropHelper propHelper = to.Components.Get<PropHelper>();
+		Rigidbody connectedBody = to.Components.Get<Rigidbody>();
+		
+		if(!connectedBody.IsValid())
+			return;
+
+		var point1 = new PhysicsPoint(Rigidbody.PhysicsBody, fromPoint);
+		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, toPoint);
+		var fixedJoint = PhysicsJoint.CreateFixed(point1,point2);
+		Welds.Add(fixedJoint);
+		propHelper?.Welds.Add(fixedJoint);
+	}
+
+	[Broadcast]
+	public void UnWeld()
+	{
+		foreach(var weld in Welds)
+		{
+			weld?.Remove();
+		}
+
+		Welds.RemoveAll(item => !item.IsValid());
 	}
 }

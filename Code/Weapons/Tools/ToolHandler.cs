@@ -1,7 +1,7 @@
 [Library( "tool_handler", Title = "Tool Handler" )]
 public class ToolHandler : Weapon
 {
-	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "Scale";
+	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "Weld";
 	public BaseTool ActiveTool {get;set;}
 	public override void DoEnabled()
 	{
