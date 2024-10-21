@@ -6,17 +6,15 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "Pistol",
-        "__guid": "5f3c4b7f-7c86-4e66-be17-9f267ef7787d",
+        "__type": "ToolHandler",
+        "__guid": "611d0522-8330-4fcb-b655-ebcf91ceada8",
         "BoneOffset": {
-          "UniformScale": 1.5,
+          "UniformScale": 1,
           "IsValid": true,
           "ForwardRay": {
-            "Position": "2.7735,0,-4.794",
             "Forward": "1,0,0"
           },
-          "Position": "2.7735,0,-4.794",
-          "Scale": "1.5,1.5,1.5",
+          "Scale": "1,1,1",
           "Rotation": "0,0,0,1"
         },
         "DisplayName": "Tool Gun",
@@ -24,9 +22,9 @@
         "Hold": false,
         "HoldType": "Pistol",
         "ParentBoneName": "hold_R",
-        "PrimaryRate": 15,
+        "PrimaryRate": 2,
         "ReloadTime": 3,
-        "SecondaryRate": 1,
+        "SecondaryRate": 2,
         "ViewModel": {
           "_type": "component",
           "component_id": "8e5b94eb-a0e9-4448-8ea7-5707876db5f1",
@@ -41,7 +39,7 @@
         },
         "ViewModelMuzzle": {
           "_type": "gameobject",
-          "go": "55dba968-fc8c-450b-b779-20f4c2c575b8"
+          "go": "26149457-4bc1-4582-a9d5-35f3ef47c46e"
         },
         "WorldModel": {
           "_type": "component",
