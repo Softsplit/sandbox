@@ -1382,6 +1382,7 @@
 			{
 				m_nType = "PF_TYPE_LITERAL"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
+				m_NamedValue = ""
 				m_flLiteralValue = 5.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
@@ -1429,6 +1430,7 @@
 			{
 				m_nType = "PF_TYPE_LITERAL"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
+				m_NamedValue = ""
 				m_flLiteralValue = 10.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
@@ -1470,12 +1472,14 @@
 					m_vDomainMaxs = [ 0.0, 0.0 ]
 				}
 			}
+			m_nOrientationType = 1
 		},
 	]
 	m_Children = 
 	[
 		{
 			m_ChildRef = resource:"particles/physgun_light.vpcf"
+			m_bDisableChild = true
 		},
 	]
 }

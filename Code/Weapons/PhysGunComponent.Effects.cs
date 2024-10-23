@@ -6,7 +6,6 @@ namespace Softsplit;
 
 public partial class PhysGunComponent
 {
-	//CapsuleLightEntity? BeamLight;
 	LegacyParticleSystem Beam;
 	LegacyParticleSystem EndNoHit;
 
@@ -67,20 +66,12 @@ public partial class PhysGunComponent
 
 		Beam ??= CreateBeam(tr.EndPosition);
 
-		/*
-		if ( !BeamLight.IsValid() )
-		{
-			BeamLight = new CapsuleLightEntity
-			{
-				Color = Color.FromBytes( 4, 20, 70 )
-			};
-		}
-		*/
+		var muzzle = UseWorldModel ? WorldModelMuzzle : ViewModelMuzzle;
 
-		Beam.WorldPosition = ViewModelMuzzle.WorldPosition;
-		Beam.WorldRotation = ViewModelMuzzle.WorldRotation;
+		Beam.WorldPosition = muzzle.WorldPosition;
+		Beam.WorldRotation = muzzle.WorldRotation;
 
-		if ( GrabbedObject.IsValid())// && !GrabbedObject.IsWorld )
+		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains("world") )
 		{
 			var physGroup = HeldBody.PhysicsGroup;
 
@@ -94,7 +85,7 @@ public partial class PhysGunComponent
 			}
 			else
 			{
-				Beam.SceneObject.SetControlPoint(1,GrabbedObject.WorldPosition);
+				Beam.SceneObject.SetControlPoint( 1, GrabbedObject.Transform.World.PointToWorld( GrabbedPos ) );
 			}
 
 			lastBeamPos = GrabbedObject.WorldPosition + GrabbedObject.WorldRotation * GrabbedPos;
@@ -127,7 +118,7 @@ public partial class PhysGunComponent
 		}
 		else
 		{
-			lastBeamPos = tr.EndPosition;// Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
+			lastBeamPos = Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
 			Beam.SceneObject.SetControlPoint(1,lastBeamPos);
 
 			if ( EndNoHit == null )
@@ -135,20 +126,7 @@ public partial class PhysGunComponent
 
 			EndNoHit.SceneObject.SetControlPoint(0,lastBeamPos);
 		}
-		/*
-		if ( BeamLight.IsValid() )
-		{
-			var muzzle = IsFirstPersonMode && ViewModelEntity.IsValid ? ViewModelEntity.GetAttachment( "muzzle" ) ?? default : GetAttachment( "muzzle" ) ?? default;
-			var pos = muzzle.Position;
-
-			BeamLight.CapsuleLength = ( pos - lastBeamPos ).Length * 0.5f;
-			BeamLight.LightSize = 0.5f + ( MathF.Sin( Time.Now * 10 ) * 0.5f);
-			BeamLight.Position = ( pos + lastBeamPos ) * 0.5f;
-			BeamLight.Rotation = Rotation.LookAt( ( pos - lastBeamPos ).Normal );
-
-			BeamLight.Color = Color.Lerp( BeamLight.Color, new Color( 0.1f, 1.0f, 1.0f, 1.0f ) * 0.039f, Time.Delta * 10 );
-		}
-		*/
+		
 	}
 
 	LegacyParticleSystem CreateBeam(Vector3 endPos)
