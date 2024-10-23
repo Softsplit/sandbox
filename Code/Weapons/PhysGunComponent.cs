@@ -48,6 +48,8 @@ public partial class PhysGunComponent : BaseWeapon
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
+
+		UpdateEffects();
 		
 		if ( rotating )
 		{

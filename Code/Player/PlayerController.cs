@@ -307,6 +307,7 @@ public sealed class PlayerController : Component
 
 		camera.WorldPosition = targetCameraPos;
 		camera.WorldRotation = EyeAngles;
+		camera.Transform.ClearInterpolation();
 		camera.FieldOfView = Screen.CreateVerticalFieldOfView( Preferences.FieldOfView );
 
 		// allow hooks

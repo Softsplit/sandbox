@@ -247,22 +247,27 @@ public partial class Weapon : BaseWeapon
 		}
 	}
 
-	public LegacyParticleSystem CreateParticleSystem( string particle, Vector3 pos, Rotation rot, float decay = 5f )
+	public static LegacyParticleSystem CreateParticleSystem( string particle, Vector3 pos, Rotation rot, float decay = 5f, bool addControl = true )
 	{
-		var gameObject = Scene.CreateObject();
+		var gameObject = Game.ActiveScene.CreateObject();
 		gameObject.Name = particle;
 		gameObject.WorldPosition = pos;
 		gameObject.WorldRotation = rot;
 
 		var p = gameObject.Components.Create<LegacyParticleSystem>();
-		p.ControlPoints = new()
-		{
-			new ParticleControlPoint { GameObjectValue = gameObject, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
-		};
+		if(addControl)
+			p.ControlPoints = new()
+			{
+				new ParticleControlPoint { GameObjectValue = gameObject, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
+			};
 
 		p.Particles = ParticleSystem.Load( particle );
 
 		gameObject.Transform.ClearInterpolation();
+
+		if(decay < 0)
+			return p;
+		
 		gameObject.DestroyAsync( decay );
 
 		return p;
