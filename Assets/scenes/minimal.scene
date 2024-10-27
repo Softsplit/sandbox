@@ -33,6 +33,10 @@
           "OnMapLoaded": null,
           "OnMapUnloaded": null,
           "UseMapFromLaunch": true
+        },
+        {
+          "__type": "MapPlayerSpawner",
+          "__guid": "3966a6fc-2262-4539-b528-4104452cd041"
         }
       ],
       "Children": []

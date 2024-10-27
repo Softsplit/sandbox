@@ -1,0 +1,15 @@
+{
+	"UI": false,
+	"Volume": 0.200000,
+	"VolumeRandom": 0,
+	"Pitch": 1,
+	"PitchRandom": 0.050000,
+	"Decibels": 80,
+	"Sounds":
+	[
+		"weapons/rust_flashlight/sounds/flashlight-attack.vsnd"
+	],
+	"SelectionMode": 3,
+	"MaximumDistance": 1484.321400,
+	"MinimumDistance": 74.216070
+}

@@ -2,6 +2,21 @@
   "__guid": "cd285893-d0ab-4423-9b5f-9a94f46ce96c",
   "GameObjects": [
     {
+      "__guid": "c6b03cd7-9a07-487f-8821-bdb72bd0a523",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "31238e35-2aa9-455f-b445-72b18bbafc3d",
+          "Description": "",
+          "SceneTags": "",
+          "Title": "engine"
+        }
+      ]
+    },
+    {
       "__guid": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
       "Flags": 0,
       "Name": "Camera",
@@ -17,7 +32,7 @@
           "Orthographic": false,
           "OrthographicHeight": 1204,
           "Priority": 1,
-          "RenderExcludeTags": "viewmodel",
+          "RenderExcludeTags": "",
           "RenderTags": "",
           "TargetEye": "None",
           "Viewport": "0,0,1,1",
@@ -48,33 +63,6 @@
         {
           "__type": "Sandbox.Highlight",
           "__guid": "dcb8dac7-34ae-4f23-82f2-41fdfec6cfb1"
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "42a07be5-eba9-40c8-951f-90d3a99f71e0",
-          "Flags": 0,
-          "Name": "View Model Camera",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.CameraComponent",
-              "__guid": "9acfbe38-c3cd-4376-abbe-ce25f6796b2a",
-              "BackgroundColor": "1,1,1,0",
-              "ClearFlags": "Depth, Stencil",
-              "FieldOfView": 90,
-              "IsMainCamera": false,
-              "Orthographic": false,
-              "OrthographicHeight": 1204,
-              "Priority": 1,
-              "RenderExcludeTags": "",
-              "RenderTags": "viewmodel,light",
-              "TargetEye": "None",
-              "Viewport": "0,0,1,1",
-              "ZFar": 100000,
-              "ZNear": 1
-            }
-          ]
         }
       ]
     },
@@ -110,6 +98,9 @@
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "engine"
+    },
     "NavMesh": {
       "Enabled": false,
       "IncludeStaticBodies": true,
@@ -123,9 +114,9 @@
       "IncludedBodies": ""
     }
   },
+  "ResourceVersion": 2,
   "Title": "engine",
-  "Description": "",
-  "ResourceVersion": 1,
+  "Description": null,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }
