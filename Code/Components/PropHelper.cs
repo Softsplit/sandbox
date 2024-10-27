@@ -123,7 +123,10 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			lastPosition = Prop.WorldPosition;
 		}
 
-		UpdateNetworkedBodies();
+		if ( NetworkedBodies is not null )
+		{
+			UpdateNetworkedBodies();
+		}
 	}
 
 	private void UpdateNetworkedBodies()
@@ -139,9 +142,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( !Network.IsOwner )
 		{
 			var rootBody = FindRootBody();
-
-			if ( NetworkedBodies is null )
-				return;
 
 			foreach ( var (groupId, info) in NetworkedBodies )
 			{

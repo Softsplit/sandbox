@@ -132,6 +132,14 @@
         }
       ],
       "Children": []
+    },
+    {
+      "__guid": "c683a967-9343-4be4-8e99-cf8e625f9059",
+      "Flags": 0,
+      "Name": "v_physgun",
+      "Enabled": true,
+      "__Prefab": "prefabs/weapons/physgun/v_physgun.prefab",
+      "__PrefabVariables": {}
     }
   ],
   "SceneProperties": {
