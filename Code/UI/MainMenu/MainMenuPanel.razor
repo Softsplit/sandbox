@@ -1,0 +1,30 @@
+@inherits PanelComponent
+
+<root class="@(IsHidden ? "hidden" : "")">
+    <MainMenu />
+</root>
+
+@code
+{
+    [Property] public bool InGame { get; set; }
+
+    public bool IsHidden { get; private set; }
+
+    public static MainMenuPanel Current { get; private set; }
+
+    protected override void OnStart()
+    {
+        Current = this;
+    }
+
+    protected override void OnUpdate()
+    {
+        if (Input.EscapePressed)
+        {
+            Input.EscapePressed = false;
+            IsHidden = !IsHidden;
+
+            StateHasChanged();
+        }
+    }
+}

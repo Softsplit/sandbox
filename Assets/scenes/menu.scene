@@ -1,58 +1,53 @@
 {
-  "__guid": "5ac316db-4ec3-4d8c-addf-c9fb1edff57a",
+  "__guid": "355f6036-02ca-4930-b9e1-80283f434d3f",
   "GameObjects": [
     {
-      "__guid": "c04e4680-2f3d-4edb-8e03-e56e5b5376b4",
+      "__guid": "42da5338-2ac7-489b-8408-40ba9fc08680",
       "Flags": 0,
       "Name": "Scene Information",
       "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.SceneInformation",
-          "__guid": "58b103ac-523c-4fa4-af73-bf9575d3c9f9",
-          "Description": "",
+          "__guid": "d8941553-177e-4738-bb9b-c19e20c07bdc",
           "SceneTags": "",
-          "Title": "minimal"
+          "Title": "menu"
         }
       ]
     },
     {
-      "__guid": "c2e2b2e8-62e8-4ef3-8336-002a3a68f88e",
+      "__guid": "7747ef44-adc0-4b45-8674-295d9376aaaf",
       "Flags": 0,
-      "Name": "Map Loader",
-      "Tags": "world",
+      "Name": "UI",
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.MapInstance",
-          "__guid": "053b9354-3f9b-4cbf-837b-932a5a04f3ae",
-          "__version": 1,
-          "EnableCollision": true,
-          "MapName": "facepunch.square",
-          "NoOrigin": true,
-          "OnMapLoaded": null,
-          "OnMapUnloaded": null,
-          "UseMapFromLaunch": true
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "625d9dd5-6d5d-4637-b98b-90e57995dd0a",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "FollowDesktopScaling",
+          "ZIndex": 100
         },
         {
-          "__type": "MapPlayerSpawner",
-          "__guid": "3966a6fc-2262-4539-b528-4104452cd041"
+          "__type": "MainMenuPanel",
+          "__guid": "75e769af-c781-4d91-a846-a71069a34eb2"
         }
-      ],
-      "Children": []
+      ]
     }
   ],
   "SceneProperties": {
     "FixedUpdateFrequency": 50,
     "MaxFixedUpdates": 5,
-    "NetworkFrequency": 60,
+    "NetworkFrequency": 30,
     "NetworkInterpolation": true,
     "PhysicsSubSteps": 1,
     "ThreadedAnimation": true,
     "TimeScale": 1,
     "UseFixedUpdate": true,
     "Metadata": {
-      "Title": "minimal"
+      "Title": "menu"
     },
     "NavMesh": {
       "Enabled": false,
@@ -68,7 +63,7 @@
     }
   },
   "ResourceVersion": 2,
-  "Title": "minimal",
+  "Title": "menu",
   "Description": null,
   "__references": [],
   "__version": 2

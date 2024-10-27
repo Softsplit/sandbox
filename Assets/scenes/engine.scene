@@ -67,9 +67,32 @@
       ]
     },
     {
+      "__guid": "5a5f1f19-4a15-4a42-b2eb-c3f2cc066e68",
+      "Flags": 0,
+      "Name": "Main Menu",
+      "Enabled": true,
+      "NetworkMode": 0,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "d74f709a-6a6c-4d6d-bb96-614bbe9ec3a7",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "FollowDesktopScaling",
+          "ZIndex": 1000
+        },
+        {
+          "__type": "MainMenuPanel",
+          "__guid": "5552cec8-a7ed-422f-a15d-74ff17ed9ee3",
+          "InGame": true
+        }
+      ]
+    },
+    {
       "__guid": "66cee047-c868-48ac-a5c2-ec230a2274e3",
       "Flags": 0,
-      "Name": "UI",
+      "Name": "HUD",
       "Enabled": true,
       "NetworkMode": 1,
       "Components": [

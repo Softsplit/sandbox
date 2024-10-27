@@ -1,0 +1,31 @@
+@using Sandbox.UI
+
+@inherits NavHostPanel
+
+<root class="gamemainmenu">
+    <div class="navigator-canvas" slot="navigator-canvas" />
+</root>
+
+@code
+{
+    public MainMenu()
+    {
+        DefaultUrl = "/";
+
+        AddDestination("/", typeof(FrontPage));
+
+        BindClass( "ingame", () => MainMenuPanel.Current.InGame );
+        BindClass( "hidden", () => MainMenuPanel.Current.IsHidden );
+    }
+
+    protected override void OnEvent( PanelEvent e )
+    {
+		if ( e.Name == "package.changed" )
+		{
+			StateHasChanged();
+			return;
+		}
+
+		base.OnEvent( e );
+	}
+}

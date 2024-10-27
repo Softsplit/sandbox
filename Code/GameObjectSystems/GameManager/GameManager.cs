@@ -11,10 +11,8 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 
 	void ISceneStartup.OnHostInitialize()
 	{
-		//
-		// TODO: We don't have a menu, but if we did we could put a special component in the menu
-		// scene that we'd now be able to detect, and skip doing the stuff below.
-		//
+		if ( Game.ActiveScene.GetComponentInChildren<SceneInformation>().Title != "game" )
+			return;
 
 		//
 		// Spawn the engine scene.

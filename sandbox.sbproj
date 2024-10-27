@@ -14,9 +14,9 @@
     "MinPlayers": 1,
     "CsProjName": "",
     "ControlModes": {},
-    "LaunchMode": "Launcher",
-    "StartupScene": "scenes/minimal.scene",
-    "MapStartupScene": "scenes/minimal.scene",
+    "LaunchMode": "Normal",
+    "StartupScene": "scenes/menu.scene",
+    "MapStartupScene": "scenes/game.scene",
     "ParentPackage": ""
   }
 }
