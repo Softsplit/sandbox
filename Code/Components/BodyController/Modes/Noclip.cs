@@ -1,53 +1,63 @@
 namespace Sandbox.Movement;
 
-[Icon( "flight" ), Group( "Movement" ), Title( "MoveMode - Noclip" )]
+[Icon("flight"), Group("Movement"), Title("MoveMode - Noclip")]
 public partial class MoveModeNoclip : MoveMode
 {
-	[Property] public int Priority { get; set; } = 1;
+    [Property] public int Priority { get; set; } = 1;
 
-	public override int Score( BodyController controller )
-	{
-		if ( Controller.IsNoclipping ) return Priority;
-		return -100;
-	}
+    [ConVar("sv_noclip_speed")] private float noclipSpeedFactor = 0.1f;
+    [ConVar("sv_noclip_speed_max")] private const float maxSpeedFactor = 5.0f;
+    [ConVar("sv_noclip_speed_acceleration")] private const float accelerationRate = 0.05f;
 
-	public override void UpdateRigidBody( Rigidbody body )
-	{
-		body.Enabled = !Controller.IsNoclipping;
-	}
+    public override int Score(BodyController controller)
+    {
+        if (Controller.IsNoclipping) return Priority;
+        return -100;
+    }
 
-	public override void AddVelocity()
-	{
-		var fwd = Input.AnalogMove.x.Clamp( -1f, 1f );
-		var left = Input.AnalogMove.y.Clamp( -1f, 1f );
-		var rotation = Controller.EyeAngles.ToRotation();
+    public override void UpdateRigidBody(Rigidbody body)
+    {
+        body.Enabled = !Controller.IsNoclipping;
+    }
 
-		var vel = (rotation.Forward * fwd) + (rotation.Left * left);
+    public override void AddVelocity()
+    {
+        var fwd = Input.AnalogMove.x.Clamp(-1f, 1f);
+        var left = Input.AnalogMove.y.Clamp(-1f, 1f);
+        var rotation = Controller.EyeAngles.ToRotation();
 
-		if ( Input.Down( "jump" ) )
-		{
-			vel += Vector3.Up * 1;
-		}
+        var vel = (rotation.Forward * fwd) + (rotation.Left * left);
 
-		vel = vel.Normal * 20000;
+        if (Input.Down("jump"))
+        {
+            vel += Vector3.Up * 1;
+        }
 
-		if ( Input.Down( "run" ) )
-			vel *= 5.0f;
+        vel = vel.Normal * 20000 * noclipSpeedFactor;
 
-		if ( Input.Down( "duck" ) )
-			vel *= 0.2f;
+        if (Input.Down("run"))
+            vel *= 5.0f;
 
-		Controller.Velocity += vel * Time.Delta;
+        if (Input.Down("duck"))
+            vel *= 0.2f;
 
-		if ( Controller.Velocity.LengthSquared > 0.01f )
-		{
-			WorldPosition += Controller.Velocity * Time.Delta;
-		}
+        Controller.Velocity += vel * Time.Delta;
 
-		Controller.Velocity = Controller.Velocity.Approach( 0, Controller.Velocity.Length * Time.Delta * 5.0f );
-		Controller.EyeAngles = rotation;
-		Controller.WishVelocity = Controller.Velocity;
-		Controller.GroundObject = null;
-		Controller.GroundVelocity = Vector3.Zero;
-	}
+        if (Controller.Velocity.LengthSquared > 0.01f)
+        {
+            noclipSpeedFactor += accelerationRate * Time.Delta;
+            noclipSpeedFactor = Math.Clamp(noclipSpeedFactor, 0.1f, maxSpeedFactor);
+            WorldPosition += Controller.Velocity * Time.Delta;
+        }
+        else
+        {
+            noclipSpeedFactor = Math.Max(noclipSpeedFactor - accelerationRate * Time.Delta, 0.1f);
+        }
+
+        Controller.Velocity = Controller.Velocity.Approach(0, Controller.Velocity.Length * Time.Delta * 5.0f);
+        Controller.EyeAngles = rotation;
+        Controller.WishVelocity = Controller.Velocity;
+        Controller.GroundObject = null;
+        Controller.GroundVelocity = Vector3.Zero;
+    }
 }
