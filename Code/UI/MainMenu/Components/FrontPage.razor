@@ -6,7 +6,7 @@
     </div>
 
     <div class="controls">
-        @if ( MainMenuPanel.Current.InGame == true )
+        @if ( MainMenuPanel.Current?.InGame == true )
         {
             <a class="button" onclick=@LeaveGame>Leave Game</a>
             <span style="height: 20px;"></span>

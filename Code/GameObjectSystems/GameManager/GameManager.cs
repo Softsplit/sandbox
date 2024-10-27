@@ -9,25 +9,6 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 		Log.Info( $"Sandbox Classic: Loading scene {scene.ResourceName}" );
 	}
 
-	void ISceneStartup.OnHostInitialize()
-	{
-		if ( Game.ActiveScene.GetComponentInChildren<SceneInformation>().Title != "game" )
-			return;
-
-		//
-		// Spawn the engine scene.
-		// This scene is sent to clients when they join.
-		//
-		var slo = new SceneLoadOptions();
-		slo.IsAdditive = true;
-		slo.SetScene( "scenes/engine.scene" );
-		Scene.Load( slo );
-
-		// If we're not hosting a lobby, start hosting one
-		// so that people can join this game.
-		Networking.CreateLobby();
-	}
-
 	void Component.INetworkListener.OnActive( Connection channel )
 	{
 		SpawnPlayerForConnection( channel );
