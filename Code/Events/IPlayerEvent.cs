@@ -12,6 +12,8 @@ public interface IPlayerEvent : ISceneEvent<IPlayerEvent>
 	void OnDied( Player player ) { }
 	void OnSuicide( Player player ) { }
 
+	void OnWeaponAdded( Player player, BaseWeapon baseweapon ) { }
+
 	void OnCameraMove( Player player, ref Angles angles ) { }
 	void OnCameraSetup( Player player, CameraComponent camera ) { }
 	void OnCameraPostSetup( Player player, CameraComponent camera ) { }

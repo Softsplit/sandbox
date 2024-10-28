@@ -1,6 +1,8 @@
 /// <summary>
 /// A component to help deal with Props.
 /// </summary>
+
+using Sandbox.Physics;
 public sealed class PropHelper : Component, Component.ICollisionListener
 {
 	public struct BodyInfo
@@ -16,11 +18,15 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public ModelPhysics ModelPhysics { get; set; }
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
+	public List<Sandbox.Physics.FixedJoint> Welds {get;set;} = new();
+	public List<PhysicsJoint> Joints {get;set;} = new();
 
 	private Vector3 lastPosition = Vector3.Zero;
 
 	protected override void OnStart()
 	{
+		Welds = new List<Sandbox.Physics.FixedJoint>();
+		Joints = new List<PhysicsJoint>();
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
@@ -51,7 +57,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var gib in gibs )
 		{
-			gib.Tags.Add( "debris" );
+			gib.Tags.Add( "solid" );
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
@@ -123,10 +129,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			lastPosition = Prop.WorldPosition;
 		}
 
-		if ( NetworkedBodies is not null )
-		{
-			UpdateNetworkedBodies();
-		}
+		UpdateNetworkedBodies();
 	}
 
 	private void UpdateNetworkedBodies()
@@ -142,6 +145,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( !Network.IsOwner )
 		{
 			var rootBody = FindRootBody();
+
+			if ( NetworkedBodies is null )
+				return;
 
 			foreach ( var (groupId, info) in NetworkedBodies )
 			{
@@ -187,24 +193,51 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
-		float minDamageVelocity = 750f;
-		float relativeVelocity = collision.Contact.Speed.Length;
+		var speed = Velocity.Length;
+		var otherSpeed = collision.Other.Body.Velocity.Length;
 
-		if ( relativeVelocity > minDamageVelocity )
+		if ( otherSpeed > speed )
+			speed = otherSpeed;
+
+		if ( speed >= 500f )
 		{
-			float impactForce = Rigidbody.Mass * relativeVelocity;
-			float damage = (impactForce - minDamageVelocity) * 8f;
+			var dmg = speed * Rigidbody.Mass * 0.000015f;
 
-			Damage( damage );
+			Damage( dmg );
 
-			if ( collision.Other.GameObject.Components.TryGet<PropHelper>( out var prop ) )
+			if ( collision.Other.GameObject.Root.Components.TryGet<IDamageable>( out var damageable ) )
 			{
-				prop.Damage( damage );
-			}
-			else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
-			{
-				player.TakeDamage( damage );
+				damageable.OnDamage( new DamageInfo( dmg, GameObject, null ) );
 			}
 		}
+	}
+	[Broadcast]
+	public void Weld (GameObject to, Vector3 fromPoint, Vector3 toPoint)
+	{
+		PropHelper propHelper = to.Components.Get<PropHelper>();
+		Rigidbody connectedBody = to.Components.Get<Rigidbody>();
+		
+		if(!connectedBody.IsValid())
+			return;
+
+		var point1 = new PhysicsPoint(Rigidbody.PhysicsBody, fromPoint);
+		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, toPoint);
+		var fixedJoint = PhysicsJoint.CreateFixed(point1,point2);
+		Welds.Add(fixedJoint);
+		Joints.Add(fixedJoint);
+		propHelper?.Welds.Add(fixedJoint);
+		propHelper?.Joints.Add(fixedJoint);
+	}
+
+	[Broadcast]
+	public void UnWeld()
+	{
+		foreach(var weld in Welds)
+		{
+			weld?.Remove();
+		}
+
+		Welds.RemoveAll(item => !item.IsValid());
+		Joints.RemoveAll(item => !item.IsValid());
 	}
 }

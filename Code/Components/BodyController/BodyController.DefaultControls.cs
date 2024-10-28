@@ -7,6 +7,8 @@ public sealed partial class BodyController : Component
 	/// <summary>
 	/// The direction we're looking.
 	/// </summary>
+	
+	public bool LockCamera;
 	[Sync] public Angles EyeAngles { get; set; }
 
 	/// <summary>
@@ -86,6 +88,8 @@ public sealed partial class BodyController : Component
 	[Property, Feature( "Animator" )] public float FootstepVolume { get; set; } = 1;
 	[Property, Feature( "Animator" )] public MixerHandle FootstepMixer { get; set; }
 
+	public bool UseWorldModel => !(_cameraDistance < 20 || (!ThirdPerson && HideBodyInFirstPerson));
+
 	/// <summary>
 	/// Draw debug overlay on footsteps
 	/// </summary>
@@ -139,6 +143,9 @@ public sealed partial class BodyController : Component
 
 	void UpdateEyeAngles()
 	{
+		if(LockCamera)
+			return;
+
 		var input = Input.AnalogLook;
 
 		IEvents.PostToGameObject( GameObject, x => x.OnEyeAngles( ref input ) );
@@ -156,25 +163,14 @@ public sealed partial class BodyController : Component
 
 	void UpdateVisibility()
 	{
-		if ( !UseCameraControls ) return;
-		if ( Scene.Camera is not CameraComponent cam ) return;
+		ModelRenderer.ShadowRenderType RenderType = UseWorldModel ? ModelRenderer.ShadowRenderType.On : ModelRenderer.ShadowRenderType.ShadowsOnly;
 
-		// we we looking through this GameObject?
-		bool viewer = !ThirdPerson;
-		viewer = viewer && HideBodyInFirstPerson;
-		viewer = viewer && !IsProxy;
+		var BodyRenderers = Renderer.Components.GetAll<ModelRenderer>(FindMode.EverythingInSelfAndChildren);
 
-		if ( !IsProxy && _cameraDistance < 20 )
+		foreach( var renderer in BodyRenderers)
 		{
-			viewer = true;
-		}
-
-		if ( IsProxy )
-		{
-			viewer = false;
-		}
-
-		GameObject.Tags.Set( "viewer", viewer );
+			renderer.RenderType = RenderType;
+		}	
 	}
 
 	void UpdateCameraPosition()
@@ -233,7 +229,7 @@ public sealed partial class BodyController : Component
 			eyePosition = eyePosition + cameraDelta.Normal * _cameraDistance;
 		}
 
-		GameObject.Tags.Set( "viewer", _cameraDistance < 20 || (!ThirdPerson && HideBodyInFirstPerson) );
+		//GameObject.Tags.Set( "viewer", _cameraDistance < 20 || (!ThirdPerson && HideBodyInFirstPerson) );
 		cam.WorldPosition = eyePosition;
 		cam.FieldOfView = Screen.CreateVerticalFieldOfView( Preferences.FieldOfView );
 
