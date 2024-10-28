@@ -3,6 +3,7 @@
     "__guid": "bb7e21a3-4f2e-4c7b-8773-a7d8934c6ddf",
     "Flags": 0,
     "Name": "w_flashlight",
+    "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {

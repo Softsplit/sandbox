@@ -1,5 +1,36 @@
 {
-  "RootObject": null,
+  "RootObject": {
+    "__guid": "514b3480-b943-435c-8092-44278b8e9e2e",
+    "Flags": 0,
+    "Name": "w_fists",
+    "Tags": "item,weapon",
+    "Enabled": true,
+    "Children": [],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,

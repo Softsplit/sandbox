@@ -11,6 +11,7 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 	}
 
 	[RequireComponent] public BodyController Controller { get; set; }
+	[RequireComponent] public PlayerInventory Inventory { get; set; }
 
 	[Property] public GameObject Body { get; set; }
 	[Property, Range( 0, 100 ), Sync] public float Health { get; set; } = 100;
@@ -18,6 +19,8 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 	public bool IsDead => Health <= 0;
 
 	public Transform EyeTransform => Controller.EyeTransform;
+
+	public Ray AimRay => new( EyeTransform.Position, EyeTransform.Forward );
 
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled

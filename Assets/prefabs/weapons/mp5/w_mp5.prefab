@@ -4,6 +4,7 @@
     "Flags": 0,
     "Name": "w_mp5",
     "Scale": "1.5,1.5,1.5",
+    "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {

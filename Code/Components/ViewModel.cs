@@ -2,30 +2,26 @@
 public class ViewModel : Component
 {
 	[Property] public bool EnableSwingAndBob { get; set; } = true;
+	[Property] public float SwingInfluence { get; set; } = 0.05f;
+	[Property] public float ReturnSpeed { get; set; } = 5.0f;
+	[Property] public float MaxOffsetLength { get; set; } = 10.0f;
+	[Property] public float BobCycleTime { get; set; } = 7;
+	[Property] public Vector3 BobDirection { get; set; } = new( 0.0f, 1.0f, 0.5f );
+	[Property] public float InertiaDamping { get; set; } = 20.0f;
 
 	[RequireComponent] public SkinnedModelRenderer SkinnedModelRenderer { get; set; }
 
 	public float YawInertia { get; private set; }
 	public float PitchInertia { get; private set; }
 
-	protected float SwingInfluence => 0.05f;
-	protected float ReturnSpeed => 5.0f;
-	protected float MaxOffsetLength => 10.0f;
-	protected float BobCycleTime => 7;
-	protected Vector3 BobDirection => new( 0.0f, 1.0f, 0.5f );
-	protected float InertiaDamping => 20.0f;
-
 	private Vector3 swingOffset;
+
 	private float lastPitch;
 	private float lastYaw;
 	private float bobAnim;
 	private float bobSpeed;
-	private bool activated = false;
 
-	protected override void OnStart()
-	{
-		GameObject.SetParent( Scene.Camera.GameObject );
-	}
+	private bool activated = false;
 
 	protected override void OnPreRender()
 	{
@@ -72,9 +68,10 @@ public class ViewModel : Component
 
 		if ( EnableSwingAndBob )
 		{
-			var playerVelocity = Player.FindLocalPlayer().Controller.Velocity;
+			var player = Player.FindLocalPlayer();
+			var playerVelocity = player.Controller.Velocity;
 
-			if ( Player.FindLocalPlayer() is Player player && player.IsValid() )
+			if ( player.IsValid() )
 			{
 				var controller = player.Controller;
 				if ( controller.IsValid() && controller.IsNoclipping )

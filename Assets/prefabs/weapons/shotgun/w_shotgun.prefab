@@ -3,6 +3,7 @@
     "__guid": "e7d01cce-80f0-4272-a038-e133d2b41065",
     "Flags": 0,
     "Name": "w_shotgun",
+    "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {

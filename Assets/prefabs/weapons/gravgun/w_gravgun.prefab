@@ -2,7 +2,8 @@
   "RootObject": {
     "__guid": "543861fb-2906-4175-8265-02b4e8a8e1d7",
     "Flags": 0,
-    "Name": "w_physgun",
+    "Name": "w_gravgun",
+    "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {

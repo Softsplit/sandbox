@@ -8,6 +8,7 @@
       {
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "649b75ec-b254-4538-84ab-1e580425cf86",
+        "AnimationGraph": "models/first_person/first_person_arms_punching.vanmgrph",
         "BodyGroups": 21,
         "CreateBoneObjects": false,
         "Model": "models/first_person/first_person_arms.vmdl",
@@ -32,7 +33,13 @@
       {
         "__type": "ViewModel",
         "__guid": "7694f2c6-f954-4c47-8fc5-5b6f9546a91f",
-        "EnableSwingAndBob": true
+        "BobCycleTime": 7,
+        "BobDirection": "0,1,0.5",
+        "EnableSwingAndBob": true,
+        "InertiaDamping": 20,
+        "MaxOffsetLength": 10,
+        "ReturnSpeed": 5,
+        "SwingInfluence": 0.05
       }
     ],
     "Children": [],

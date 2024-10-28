@@ -4,6 +4,7 @@
     "Flags": 0,
     "Name": "w_pistol",
     "Scale": "1.5,1.5,1.5",
+    "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {
@@ -19,6 +20,13 @@
         },
         "RenderType": "On",
         "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Pistol",
+        "__guid": "abb9f231-0776-4973-95c6-0a95fcf36de3",
+        "PrimaryRate": 15,
+        "ReloadTime": 1.5,
+        "SecondaryRate": 1
       }
     ],
     "Children": [],
