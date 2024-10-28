@@ -1,4 +1,5 @@
 ﻿using Sandbox.Movement;
+
 namespace Sandbox;
 
 [Icon( "directions_walk" )]
@@ -21,7 +22,6 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 	public BoxCollider FeetCollider { get; private set; }
 
 	bool _showRigidBodyComponent;
-
 
 	[Property, Group( "Body" )] public float BodyRadius { get; set; } = 16.0f;
 	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 72.0f;
@@ -65,8 +65,7 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 		}
 	}
 
-	[Sync]
-	public Vector3 WishVelocity { get; set; }
+	[Sync] public Vector3 WishVelocity { get; set; }
 
 	public bool IsOnGround => GroundObject.IsValid();
 
@@ -188,5 +187,4 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 
 		Body.Velocity = currentVel;
 	}
-
 }

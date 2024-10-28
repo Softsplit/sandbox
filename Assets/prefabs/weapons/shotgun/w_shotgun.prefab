@@ -1,0 +1,58 @@
+{
+  "RootObject": {
+    "__guid": "e7d01cce-80f0-4272-a038-e133d2b41065",
+    "Flags": 0,
+    "Name": "w_shotgun",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "abfc91ee-c839-4cba-aea0-d832ed3796a0",
+        "BodyGroups": 18446744073709551615,
+        "Model": "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl",
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      }
+    ],
+    "Children": [],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [
+    "rust.rust_pumpshotgun#43965"
+  ],
+  "__version": 1
+}

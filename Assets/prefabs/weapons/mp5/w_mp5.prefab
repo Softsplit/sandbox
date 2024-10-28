@@ -1,0 +1,59 @@
+{
+  "RootObject": {
+    "__guid": "fba57dd6-c569-4ae9-ad96-2ca6ea29b45e",
+    "Flags": 0,
+    "Name": "w_mp5",
+    "Scale": "1.5,1.5,1.5",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "a1404db8-3164-4612-9484-24acb367f7fb",
+        "BodyGroups": 3,
+        "Model": "models/weapons/sbox_smg_mp5/w_mp5.vmdl",
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      }
+    ],
+    "Children": [],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [
+    "facepunch.w_mp5#33703"
+  ],
+  "__version": 1
+}

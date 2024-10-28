@@ -1,51 +1,57 @@
 {
   "RootObject": {
-    "__guid": "75d3afaf-459e-4cc3-bab8-3c929fae8fdb",
+    "__guid": "d6d104e0-3ea1-4fd0-9779-c152c3d342da",
     "Flags": 0,
-    "Name": "fists",
+    "Name": "v_mp5",
     "Enabled": true,
     "Components": [
       {
-        "__type": "Fists",
-        "__guid": "4645266c-467e-44d8-a758-85f65e3b4986",
-        "BoneOffset": {
-          "UniformScale": 1,
-          "IsValid": true,
-          "ForwardRay": {
-            "Forward": "1,0,0"
-          },
-          "Scale": "1,1,1",
-          "Rotation": "0,0,0,1"
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "99a326f9-c9de-4186-a861-d1d8156c841e",
+        "BodyGroups": 147,
+        "CreateBoneObjects": false,
+        "Model": "models/weapons/sbox_smg_mp5/v_mp5.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
         },
-        "DisplayName": "Fists",
-        "Hand": "Both",
-        "Hold": false,
-        "HoldType": "Punch",
-        "ParentBoneName": "pelvis",
-        "PrimaryRate": 2,
-        "ReloadTime": 3,
-        "SecondaryRate": 2,
-        "ViewModel": {
-          "_type": "component",
-          "component_id": "f4f6e7a2-6b13-4d1d-ba73-21b0454ce298",
-          "go": "ab59d99e-bee7-414d-8b09-ffed339a729c",
-          "component_type": "SkinnedModelRenderer"
-        }
+        "RenderOptions": {
+          "GameLayer": false,
+          "OverlayLayer": true,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "Off",
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      },
+      {
+        "__type": "ViewModel",
+        "__guid": "1a378c00-e605-44bf-8713-51d7724f8d63",
+        "EnableSwingAndBob": true
       }
     ],
     "Children": [
       {
-        "__guid": "ab59d99e-bee7-414d-8b09-ffed339a729c",
+        "__guid": "e4df9561-c7f5-49a3-a346-3b3071ceaa9c",
         "Flags": 0,
-        "Name": "ViewModel",
-        "Tags": "viewmodel",
+        "Name": "Arms",
         "Enabled": true,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
-            "__guid": "f4f6e7a2-6b13-4d1d-ba73-21b0454ce298",
-            "AnimationGraph": "models/first_person/first_person_arms_punching.vanmgrph",
+            "__guid": "57d73b7e-08aa-41ac-adbc-66873df66949",
             "BodyGroups": 21,
+            "BoneMergeTarget": {
+              "_type": "component",
+              "component_id": "99a326f9-c9de-4186-a861-d1d8156c841e",
+              "go": "d6d104e0-3ea1-4fd0-9779-c152c3d342da",
+              "component_type": "SkinnedModelRenderer"
+            },
             "CreateBoneObjects": false,
             "Model": "models/first_person/first_person_arms.vmdl",
             "Morphs": {},
@@ -62,14 +68,9 @@
               "BloomLayer": false,
               "AfterUILayer": false
             },
-            "RenderType": "On",
+            "RenderType": "Off",
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
-          },
-          {
-            "__type": "ViewModel",
-            "__guid": "25de0173-e0a3-4964-82bf-ed62f2e8e4ac",
-            "EnableSwingAndBob": true
           }
         ]
       }
@@ -104,6 +105,8 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
-  "__references": [],
+  "__references": [
+    "facepunch.v_mp5#64494"
+  ],
   "__version": 1
 }

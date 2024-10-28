@@ -1,11 +1,11 @@
-@using Sandbox.UI;
+@using Sandbox.UI
 
-@inherits Panel;
+@inherits Panel
 
 <root>
     @for (int i = 0; i < 9; i++)
     {
-        <InventoryIcon Index="@i" Parent="@this" PlayerInventory="@(Player.FindLocalPlayer().GetComponent<PlayerInventory>())" />
+        <InventoryIcon Index="@i" Parent="@this" />
     }
 </root>
 

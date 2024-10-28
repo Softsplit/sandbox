@@ -17,6 +17,7 @@
     "LaunchMode": "Normal",
     "StartupScene": "scenes/menu.scene",
     "MapStartupScene": "scenes/game.scene",
-    "ParentPackage": ""
+    "ParentPackage": "",
+    "DedicatedServerStartupScene": "scenes/game.scene"
   }
 }

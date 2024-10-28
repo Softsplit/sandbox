@@ -15,22 +15,9 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 	[Property] public GameObject Body { get; set; }
 	[Property, Range( 0, 100 ), Sync] public float Health { get; set; } = 100;
 
-	[Property] public SkinnedModelRenderer ModelRenderer { get; set; }
-	[Property] public BodyController BodyController { get; set; }
-	[Property] public PlayerInventory PlayerInventory { get; set; }
-
-	public Ray AimRay => new( Scene.Camera.WorldPosition, Scene.Camera.Transform.World.Forward * 10000f );
-
 	public bool IsDead => Health <= 0;
 
 	public Transform EyeTransform => Controller.EyeTransform;
-
-	protected override void OnStart()
-	{
-		ModelRenderer = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
-		BodyController = Components.GetInChildrenOrSelf<BodyController>();
-		PlayerInventory = Components.GetInChildrenOrSelf<PlayerInventory>();
-	}
 
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled

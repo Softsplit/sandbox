@@ -7,12 +7,10 @@ public interface IPlayerEvent : ISceneEvent<IPlayerEvent>
 
 	void OnJump( Player player ) { }
 	void OnLand( Player player, float distance, Vector3 velocity ) { }
-	
+
 	void OnTakeDamage( Player player, float damage ) { }
 	void OnDied( Player player ) { }
 	void OnSuicide( Player player ) { }
-
-	void OnWeaponAdded( Player player, BaseWeapon baseweapon ) { }
 
 	void OnCameraMove( Player player, ref Angles angles ) { }
 	void OnCameraSetup( Player player, CameraComponent camera ) { }

@@ -12,17 +12,20 @@ public class ViewModel : Component
 	protected float ReturnSpeed => 5.0f;
 	protected float MaxOffsetLength => 10.0f;
 	protected float BobCycleTime => 7;
-	protected Vector3 BobDirection => new Vector3( 0.0f, 1.0f, 0.5f );
+	protected Vector3 BobDirection => new( 0.0f, 1.0f, 0.5f );
 	protected float InertiaDamping => 20.0f;
 
 	private Vector3 swingOffset;
-
 	private float lastPitch;
 	private float lastYaw;
 	private float bobAnim;
 	private float bobSpeed;
-
 	private bool activated = false;
+
+	protected override void OnStart()
+	{
+		GameObject.SetParent( Scene.Camera.GameObject );
+	}
 
 	protected override void OnPreRender()
 	{
@@ -92,6 +95,7 @@ public class ViewModel : Component
 			var offset = CalcSwingOffset( pitchDelta, yawDelta );
 			offset += CalcBobbingOffset( bobSpeed );
 
+			// TODO: Fix this IsNaN bullshit
 			WorldPosition += WorldRotation * offset;
 		}
 		else
@@ -112,7 +116,7 @@ public class ViewModel : Component
 		var swingVelocity = new Vector3( 0, yawDelta, pitchDelta );
 
 		swingOffset -= swingOffset * ReturnSpeed * Time.Delta;
-		swingOffset += (swingVelocity * SwingInfluence);
+		swingOffset += swingVelocity * SwingInfluence;
 
 		if ( swingOffset.Length > MaxOffsetLength )
 			swingOffset = swingOffset.Normal * MaxOffsetLength;
