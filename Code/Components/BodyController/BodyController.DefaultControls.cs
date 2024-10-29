@@ -146,7 +146,7 @@ public sealed partial class BodyController : Component
 		var ee = EyeAngles;
 		ee += input;
 		ee.roll = 0;
-		ee.pitch = ee.pitch.Clamp( -90, 90 );
+		ee.pitch = ee.pitch.Clamp( -89.9f, 89.9f );
 
 		EyeAngles = ee;
 	}
