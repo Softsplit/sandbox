@@ -19,6 +19,38 @@
         },
         "RenderType": "On",
         "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "Softsplit.PhysGunComponent",
+        "__guid": "245c7473-1f85-43a0-916f-63f2f2442916",
+        "AngularDampingRatio": 1,
+        "AngularFrequency": 20,
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "Handedness": "Right",
+        "HoldType": "HoldItem",
+        "LinearDampingRatio": 1,
+        "LinearFrequency": 20,
+        "MaxTargetDistance": 10000,
+        "MinTargetDistance": 0,
+        "ParentBone": "hold_r",
+        "PrimaryRate": 5,
+        "ReloadTime": 3,
+        "RotateSnapAt": 45,
+        "RotateSpeed": 0.125,
+        "SecondaryRate": 15,
+        "TargetDistanceSpeed": 25,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/physgun/v_physgun.prefab"
+        }
       }
     ],
     "Children": [],

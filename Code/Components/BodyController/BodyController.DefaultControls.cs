@@ -139,6 +139,9 @@ public sealed partial class BodyController : Component
 
 	void UpdateEyeAngles()
 	{
+		if(!UseCameraControls)
+			return;
+			
 		var input = Input.AnalogLook;
 
 		IEvents.PostToGameObject( GameObject, x => x.OnEyeAngles( ref input ) );
