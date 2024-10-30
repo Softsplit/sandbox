@@ -53,9 +53,6 @@ partial class MP5 : BaseWeapon
 	{
 		base.ShootEffects();
 
-		if ( ViewModel.Tags.Has( "viewer" ) )
-			return;
-
 		var go = new GameObject
 		{
 			Name = EjectBrass.Name,

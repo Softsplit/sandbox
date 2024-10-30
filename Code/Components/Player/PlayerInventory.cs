@@ -6,12 +6,13 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	public List<BaseWeapon> Weapons => Scene.Components.GetAll<BaseWeapon>( FindMode.EverythingInSelfAndDescendants ).Where( x => x.Network.OwnerId == Network.OwnerId ).ToList();
 
-	public BaseWeapon ActiveWeapon { get; set; }
+	[Sync] public BaseWeapon ActiveWeapon { get; set; }
 
 	public void GiveDefaultWeapons()
 	{
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", true );
 		Pickup( "prefabs/weapons/mp5/w_mp5.prefab", false );
+		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab", false );
 	}
 
 	protected override void OnUpdate()

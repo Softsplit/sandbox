@@ -7,21 +7,53 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
-        "__guid": "abfc91ee-c839-4cba-aea0-d832ed3796a0",
-        "BodyGroups": 18446744073709551615,
-        "Model": "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl",
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": false,
-          "AfterUILayer": false
+        "__type": "Shotgun",
+        "__guid": "4e253d37-03ec-4714-9420-9b71c33574d3",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
         },
-        "RenderType": "On",
-        "Tint": "1,1,1,1"
+        "Handedness": "Both",
+        "HoldType": "Shotgun",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 1,
+        "ReloadTime": 0.5,
+        "SecondaryRate": 1,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/shotgun/v_shotgun.prefab"
+        }
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "d07f6e10-3747-4401-8524-290da8a5950a",
+        "Flags": 0,
+        "Name": "Model",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "abfc91ee-c839-4cba-aea0-d832ed3796a0",
+            "BodyGroups": 18446744073709551615,
+            "Model": "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl",
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          }
+        ]
+      }
+    ],
     "__variables": [],
     "__properties": {
       "FixedUpdateFrequency": 50,

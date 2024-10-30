@@ -98,7 +98,7 @@ public static partial class SandboxBaseExtensions
 			};
 
 			go.NetworkSpawn();
-			go.DestroyAsync();
+			go.DestroyAsync( 5f );
 
 			return legacyParticleSystem;
 		}

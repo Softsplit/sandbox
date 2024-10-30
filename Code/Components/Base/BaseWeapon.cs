@@ -142,6 +142,9 @@ public partial class BaseWeapon : Component
 
 	protected virtual void ShootEffects()
 	{
+		if ( ViewModel.Tags.Has( "viewer" ) )
+			return;
+
 		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );
 
 		var go = new GameObject
@@ -304,19 +307,12 @@ public partial class BaseWeapon : Component
 				player.TakeDamage( damage );
 			}
 
+			// TODO: Make other non-host clients able to apply impulse too
 			if ( tr.Body.IsValid() )
 			{
-				BroadcastApplyImpulseAt( tr, tr.EndPosition, forward * 5000 );
+				tr.Body.ApplyImpulseAt( tr.EndPosition, forward * 5000 );
 			}
 		}
-	}
-
-	[Broadcast]
-	private void BroadcastApplyImpulseAt( SceneTraceResult tr, Vector3 position, Vector3 velocity )
-	{
-		if ( !Networking.IsHost ) return;
-
-		tr.Body.ApplyImpulseAt( position, velocity );
 	}
 
 	/// <summary>

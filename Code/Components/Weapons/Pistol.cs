@@ -29,7 +29,7 @@ partial class Pistol : BaseWeapon, Component.ICollisionListener
 	}
 
 	// TODO: These methods are for the weapon's pickup-able state,
-	// which hasn't been implemented yet
+	// which haven't been implemented yet
 
 	private void Discharge()
 	{
