@@ -13,10 +13,7 @@ partial class Flashlight : BaseWeapon
 		base.OnStart();
 
 		worldLight = GetComponentInChildren<SpotLight>();
-		worldLight.Enabled = false;
-
 		viewLight = ViewModel?.GetComponentInChildren<SpotLight>();
-		viewLight.Enabled = LightEnabled;
 	}
 
 	public override void OnControl()
