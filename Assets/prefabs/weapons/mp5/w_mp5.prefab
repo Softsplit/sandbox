@@ -3,26 +3,60 @@
     "__guid": "fba57dd6-c569-4ae9-ad96-2ca6ea29b45e",
     "Flags": 0,
     "Name": "w_mp5",
-    "Scale": "1.5,1.5,1.5",
     "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
-        "__guid": "a1404db8-3164-4612-9484-24acb367f7fb",
-        "BodyGroups": 3,
-        "Model": "models/weapons/sbox_smg_mp5/w_mp5.vmdl",
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": false,
-          "AfterUILayer": false
+        "__type": "MP5",
+        "__guid": "e6d6f931-f23d-4fdb-adf9-20b8273f056f",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Position": "2.1855,0,-8.196",
+            "Forward": "1,0,0"
+          },
+          "Position": "2.1855,0,-8.196",
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
         },
-        "RenderType": "On",
-        "Tint": "1,1,1,1"
+        "Handedness": "Both",
+        "HoldType": "Rifle",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 15,
+        "ReloadTime": 2.5,
+        "SecondaryRate": 1,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/mp5/v_mp5.prefab"
+        }
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "d5754c80-fad6-48cd-b995-0c6b3cdc5dd6",
+        "Flags": 0,
+        "Name": "Model",
+        "Scale": "1.5,1.5,1.5",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.ModelRenderer",
+            "__guid": "a1404db8-3164-4612-9484-24acb367f7fb",
+            "BodyGroups": 3,
+            "Model": "models/weapons/sbox_smg_mp5/w_mp5.vmdl",
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          }
+        ]
+      }
+    ],
     "__variables": [],
     "__properties": {
       "FixedUpdateFrequency": 50,

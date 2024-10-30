@@ -11,6 +11,7 @@ public partial class BaseWeapon : Component
 	[Property] public string ParentBone { get; set; } = "hold_r";
 	[Property] public Transform BoneOffset { get; set; } = new Transform( 0 );
 	[Property] public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.HoldItem;
+	[Property] public CitizenAnimationHelper.Hand Handedness { get; set; } = CitizenAnimationHelper.Hand.Right;
 	[Property] public float PrimaryRate { get; set; } = 5.0f;
 	[Property] public float SecondaryRate { get; set; } = 15.0f;
 	[Property] public float ReloadTime { get; set; } = 3.0f;
@@ -21,8 +22,8 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
-	public Player Owner => GameObject?.Root?.Components?.Get<Player>();
-	public ViewModel ViewModel => Scene?.Camera?.GetComponentInChildren<ViewModel>( true );
+	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
+	public Player Owner => GameObject?.Root?.GetComponent<Player>();
 
 	protected override void OnAwake()
 	{
@@ -56,7 +57,7 @@ public partial class BaseWeapon : Component
 	{
 		if ( IsProxy ) return;
 
-		ViewModel.GameObject.Destroy();
+		ViewModel.DestroyGameObject();
 	}
 
 	protected override void OnUpdate()
@@ -64,6 +65,7 @@ public partial class BaseWeapon : Component
 		GameObject.NetworkInterpolation = false;
 
 		Owner?.Controller?.Renderer?.Set( "holdtype", (int)HoldType );
+		Owner?.Controller?.Renderer?.Set( "holdtype_handedness", (int)Handedness );
 
 		var obj = Owner?.Controller?.Renderer?.GetBoneObject( ParentBone );
 		if ( obj is not null )
@@ -72,10 +74,10 @@ public partial class BaseWeapon : Component
 			GameObject.LocalTransform = BoneOffset.WithScale( 1 );
 		}
 
-		ViewModel.GameObject.Enabled = !Owner.Controller.ThirdPerson;
-
 		if ( IsProxy )
 			return;
+
+		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
 
 		OnControl();
 	}
@@ -135,9 +137,9 @@ public partial class BaseWeapon : Component
 	public virtual void StartReloadEffects()
 	{
 		ViewModel?.Renderer?.Set( "b_reload", true );
-
-		// TODO - player third person model reload
 	}
+
+	// TODO: Probably should unify these particle methods + make it work for world models
 
 	[Broadcast]
 	protected virtual void ShootEffects()

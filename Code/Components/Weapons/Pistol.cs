@@ -21,6 +21,9 @@ partial class Pistol : BaseWeapon, Component.ICollisionListener
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 
+	// TODO: These methods are for the weapon's pickup-able state,
+	// which hasn't been implemented yet
+
 	private void Discharge()
 	{
 		if ( TimeSinceDischarge < 0.5f )
