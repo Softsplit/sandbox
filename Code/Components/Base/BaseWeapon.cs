@@ -133,7 +133,6 @@ public partial class BaseWeapon : Component
 		IsReloading = false;
 	}
 
-	[Broadcast]
 	public virtual void StartReloadEffects()
 	{
 		ViewModel?.Renderer?.Set( "b_reload", true );
@@ -141,7 +140,6 @@ public partial class BaseWeapon : Component
 
 	// TODO: Probably should unify these particle methods + make it work for world models
 
-	[Broadcast]
 	protected virtual void ShootEffects()
 	{
 		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );

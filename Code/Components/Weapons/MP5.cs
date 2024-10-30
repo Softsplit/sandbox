@@ -8,14 +8,14 @@ partial class MP5 : BaseWeapon
 		TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 
-		Owner?.Controller?.Renderer?.Set( "b_attack", true );
+		BroadcastAttackPrimary();
+
 		ViewModel?.Renderer?.Set( "b_attack", true );
 
 		//
 		// Tell the clients to play the shoot effects
 		//
 		ShootEffects();
-		Sound.Play( "rust_smg.shoot", WorldPosition );
 
 		//
 		// Shoot the bullets
@@ -23,13 +23,27 @@ partial class MP5 : BaseWeapon
 		ShootBullet( 0.1f, 1.5f, 5.0f, 3.0f );
 	}
 
+	[Broadcast]
+	private void BroadcastAttackPrimary()
+	{
+		Owner?.Controller?.Renderer?.Set( "b_attack", true );
+		Sound.Play( "rust_smg.shoot", WorldPosition );
+	}
+
 	public override void OnControl()
 	{
 		base.OnControl();
 
-		var attack_hold = !IsReloading && Input.Down( "attack1" ) ? 1.0f : 0.0f;
-		Owner?.Controller?.Renderer?.Set( "attack_hold", attack_hold );
-		ViewModel?.Renderer?.Set( "attack_hold", attack_hold );
+		var attackHold = !IsReloading && Input.Down( "attack1" ) ? 1.0f : 0.0f;
+
+		BroadcastOnControl( attackHold );
+
+		ViewModel?.Renderer?.Set( "attack_hold", attackHold );
+	}
+
+	private void BroadcastOnControl( float attackHold )
+	{
+		Owner?.Controller?.Renderer?.Set( "attack_hold", attackHold );
 	}
 
 	// TODO: Probably should unify these particle methods + make it work for world models
