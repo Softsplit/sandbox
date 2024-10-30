@@ -46,7 +46,14 @@ public partial class PhysGun
 
 	protected virtual void UpdateEffects()
 	{
+
 		var owner = Owner;
+
+		if ( owner == null || !GrabbedObject.IsValid() || !owner.GameObject.IsDescendant(GameObject) )
+		{
+			KillEffects();
+			return;
+		}
 
 		var startPos = owner.EyeTransform.Position;
 		var dir = owner.EyeTransform.Forward;
