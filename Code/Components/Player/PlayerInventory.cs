@@ -13,6 +13,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	{
 		Pickup( "prefabs/weapons/physgun/w_physgun.prefab", true );
 		Pickup( "prefabs/weapons/fists/w_fists.prefab", true );
+		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab", false );
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", false );
 		Pickup( "prefabs/weapons/mp5/w_mp5.prefab", false );
 		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab", false );
@@ -37,7 +38,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		if ( Input.Pressed( "slot8" ) ) SetActiveSlot( 7 );
 		if ( Input.Pressed( "slot9" ) ) SetActiveSlot( 8 );
 
-		if ( Input.MouseWheel != 0 ) SwitchActiveSlot( (int)-Input.MouseWheel.y );
+		if ( Input.MouseWheel != 0 ) SwitchActiveSlot( (int)Input.MouseWheel.y );
 	}
 
 	private void Pickup( string prefabName, bool equip = true )
