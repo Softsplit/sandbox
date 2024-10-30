@@ -238,6 +238,7 @@ public partial class PhysGun : BaseWeapon
 		var rootEnt = tr.GameObject;
 
 		GrabbedObject = rootEnt;
+		
 
 		bool isRagdoll = GrabbedObject.Components.Get<ModelPhysics>().IsValid();
 
@@ -254,15 +255,15 @@ public partial class PhysGun : BaseWeapon
 
 		GrabbedPos = tr.Body.Transform.PointToLocal(tr.EndPosition);
 
-		
-
 		UnFreeze();
 	}
-
+	[Broadcast]
 	private void TryEndGrab()
 	{
 		GrabbedObject = null;
+		lastGrabbed = null;
 	}
+
 
 	private void MoveTargetDistance( float distance )
 	{
