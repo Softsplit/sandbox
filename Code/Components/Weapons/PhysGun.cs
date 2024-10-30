@@ -1,10 +1,8 @@
 using Sandbox.Physics;
 
-namespace Softsplit;
-
 public partial class PhysGun : BaseWeapon, IPlayerEvent
 {
-	[Property ] public float MinTargetDistance { get; set; } = 0.0f;
+	[Property] public float MinTargetDistance { get; set; } = 0.0f;
 	[Property] public float MaxTargetDistance { get; set; } = 10000.0f;
 	[Property] public float LinearFrequency { get; set; } = 20.0f;
 	[Property] public float LinearDampingRatio { get; set; } = 1.0f;
@@ -19,18 +17,20 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Sync] public GameObject GrabbedObject { get; set; }
 	[Sync] public Vector3 GrabbedPos { get; set; }
 	[Sync] public int GrabbedBone { get; set; } = -1;
+
 	GameObject lastGrabbed = null;
 	PhysicsBody _heldBody;
+
 	PhysicsBody HeldBody
 	{
 		get
 		{
-			if(GrabbedObject != lastGrabbed && GrabbedObject != null)
+			if ( GrabbedObject != lastGrabbed && GrabbedObject != null )
 			{
-				if(GrabbedBone > -1)
+				if ( GrabbedBone > -1 )
 				{
 					ModelPhysics modelPhysics = GrabbedObject.Components.Get<ModelPhysics>();
-					_heldBody = modelPhysics.PhysicsGroup.GetBody(GrabbedBone);
+					_heldBody = modelPhysics.PhysicsGroup.GetBody( GrabbedBone );
 				}
 				else
 				{
@@ -38,21 +38,15 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 					_heldBody = rigidbody.PhysicsBody;
 				}
 			}
+
 			lastGrabbed = GrabbedObject;
 			return _heldBody;
 		}
 	}
 
-	public const string GrabbedTag = "grabbed";
-
-	protected Ray WeaponRay => Owner.AimRay;
-
-	bool rotating = false;
-
 	float HoldDistance;
-	
-	Vector3 HeldPos;
 
+	Vector3 HeldPos;
 	Rotation HeldRot;
 
 	protected override void OnEnabled()
@@ -69,15 +63,14 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	protected override void OnUpdate()
 	{
-
 		base.OnUpdate();
 
-		if(!GrabbedObject.IsValid())
+		if ( !GrabbedObject.IsValid() )
 			return;
 
-		if(GrabbedObject.IsProxy)
+		if ( GrabbedObject.IsProxy )
 			return;
-		
+
 		var velocity = HeldBody.Velocity;
 		Vector3.SmoothDamp( HeldBody.Position, HoldPos, ref velocity, 0.075f, Time.Delta );
 		HeldBody.Velocity = velocity;
@@ -85,30 +78,29 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		var angularVelocity = HeldBody.AngularVelocity;
 		Rotation.SmoothDamp( HeldBody.Rotation, HoldRot, ref angularVelocity, 0.075f, Time.Delta );
 		HeldBody.AngularVelocity = angularVelocity;
-		
 	}
 
 	public override void OnControl()
 	{
 		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
 
-		Owner.Controller.UseCameraControls = !Input.Down("use") || !GrabbedObject.IsValid();
+		Owner.Controller.UseCameraControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
 		base.OnControl();
 
-		if(Input.Pressed("attack1"))
+		if ( Input.Pressed( "attack1" ) )
 			TryStartGrab();
 
-		if(Input.Released("attack1"))
+		if ( Input.Released( "attack1" ) )
 			TryEndGrab();
 
-		if(!GrabbedObject.IsValid())
+		if ( !GrabbedObject.IsValid() )
 			return;
 
-		if ( Input.Pressed("attack2") )
+		if ( Input.Pressed( "attack2" ) )
 		{
 			Freeze();
-			
+
 			if ( GrabbedObject.IsValid() )
 			{
 			}
@@ -116,17 +108,16 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			GrabbedObject = null;
 			return;
 		}
-		
+
 		MoveTargetDistance( Input.MouseWheel.y * TargetDistanceSpeed );
 
-		if(Input.Down("use"))
+		if ( Input.Down( "use" ) )
 			DoRotate( eyeRot, Input.MouseDelta * RotateSpeed );
-		
-		HoldPos = WeaponRay.Position - HeldPos * HeldBody.Rotation + WeaponRay.Forward * HoldDistance;
 
+		HoldPos = Owner.AimRay.Position - HeldPos * HeldBody.Rotation + Owner.AimRay.Forward * HoldDistance;
 		HoldRot = Owner.Controller.EyeAngles * HeldRot;
 
-		if ( Input.Down("run") && Input.Down("use"))
+		if ( Input.Down( "run" ) && Input.Down( "use" ) )
 		{
 			var angles = HoldRot.Angles();
 
@@ -190,8 +181,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		foreach ( PhysicsJoint joint in result )
 		{
-			returned.Add( joint.Body1.GetGameObject());
-			returned.Add( joint.Body2.GetGameObject());
+			returned.Add( joint.Body1.GetGameObject() );
+			returned.Add( joint.Body2.GetGameObject() );
 		}
 
 		return returned;
@@ -199,55 +190,50 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	private static void CollectWelds( PropHelper propHelper, List<PhysicsJoint> result, HashSet<PropHelper> visited )
 	{
-		
 		if ( visited.Contains( propHelper ) )
 			return;
 
 		visited.Add( propHelper );
-
 		result.AddRange( propHelper.Joints );
 
 		foreach ( var joint in propHelper.Joints )
 		{
 			GameObject jointObject = joint.Body1.GetGameObject();
 
-			if(jointObject == propHelper.GameObject)
+			if ( jointObject == propHelper.GameObject )
 			{
 				jointObject = joint.Body2.GetGameObject();
 			}
 
-			if(!jointObject.IsValid())
+			if ( !jointObject.IsValid() )
 				return;
 
 			PropHelper propHelper1 = jointObject.Components.Get<PropHelper>();
 
-			if(!propHelper1.IsValid())
+			if ( !propHelper1.IsValid() )
 				return;
-			
+
 			CollectWelds( propHelper1, result, visited );
 		}
 	}
 
 	private void TryStartGrab()
 	{
-
-		var tr = Scene.Trace.Ray( WeaponRay, 1024f )
+		var tr = Scene.Trace.Ray( Owner.AimRay, 1024f )
 			.UseHitboxes()
 			.WithAnyTags( "solid", "player", "debris", "nocollide" )
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) || tr.Tags.Contains(GrabbedTag) ) return;
-		var rootEnt = tr.GameObject;
+		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) || tr.Tags.Contains( "grabbed" ) ) return;
 
+		var rootEnt = tr.GameObject;
 		GrabbedObject = rootEnt;
-		
 
 		bool isRagdoll = GrabbedObject.Components.Get<ModelPhysics>().IsValid();
-
 		GrabbedBone = isRagdoll ? tr.Body.GroupIndex : -1;
 
-		HoldDistance = Vector3.DistanceBetween( WeaponRay.Position, tr.EndPosition );
+		HoldDistance = Vector3.DistanceBetween( Owner.AimRay.Position, tr.EndPosition );
 		HoldDistance = HoldDistance.Clamp( MinTargetDistance, MaxTargetDistance );
 
 		HeldRot = Owner.Controller.EyeAngles.ToRotation().Inverse * HeldBody.Rotation;
@@ -256,17 +242,17 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		HoldPos = HeldBody.Position;
 		HoldRot = HeldBody.Rotation;
 
-		GrabbedPos = tr.Body.Transform.PointToLocal(tr.EndPosition);
+		GrabbedPos = tr.Body.Transform.PointToLocal( tr.EndPosition );
 
 		UnFreeze();
 	}
+
 	[Broadcast]
 	private void TryEndGrab()
 	{
 		GrabbedObject = null;
 		lastGrabbed = null;
 	}
-
 
 	private void MoveTargetDistance( float distance )
 	{

@@ -22,20 +22,22 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
+	public SkinnedModelRenderer WorldModel { get; set; }
+
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
 
-	public Transform Muzzle => Attachment("muzzle");
+	public Transform Muzzle => Attachment( "muzzle" );
 
-	public Transform Attachment(string name)
+	public Transform Attachment( string name )
 	{
-		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment(name) ?? default;
+		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? default;
 	}
 
-	SkinnedModelRenderer WorldModel;
 	protected override void OnAwake()
 	{
 		WorldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
+
 		if ( IsProxy ) return;
 
 		ViewModelPrefab?.Clone( new CloneConfig()
@@ -155,13 +157,13 @@ public partial class BaseWeapon : Component
 		if ( ViewModel.Tags.Has( "viewer" ) )
 			return;
 
-		CreateParticleSystem("particles/pistol_muzzleflash.vpcf", Muzzle, 1, ViewModel.GameObject);
+		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Muzzle, 1, ViewModel.GameObject );
 
 		ViewModel?.Renderer?.Set( "fire", true );
-		WorldModel?.Set("fire", true);
+		WorldModel?.Set( "fire", true );
 	}
 
-	public static LegacyParticleSystem CreateParticleSystem(string path, Transform transform, float time = 1, GameObject parent = null)
+	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
 	{
 		var particleSystem = ParticleSystem.Load( path );
 
@@ -179,8 +181,8 @@ public partial class BaseWeapon : Component
 			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
 		};
 
-		if(time > 0)
-			go.DestroyAsync(time);
+		if ( time > 0 )
+			go.DestroyAsync( time );
 
 		return legacyParticleSystem;
 	}

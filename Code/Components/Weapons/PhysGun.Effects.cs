@@ -1,10 +1,4 @@
-﻿using Sandbox;
-using System.Linq;
-using System;
-
-namespace Softsplit;
-
-public partial class PhysGun
+﻿public partial class PhysGun
 {
 	LegacyParticleSystem Beam;
 	LegacyParticleSystem EndNoHit;
@@ -14,10 +8,10 @@ public partial class PhysGun
 
 	protected virtual void KillEffects()
 	{
-		//BeamLight?.Delete();
+		// BeamLight?.Delete();
 		Beam?.GameObject.Destroy();
 		Beam = null;
-		//BeamLight = null;
+		// BeamLight = null;
 
 		EndNoHit?.GameObject.Destroy();
 		EndNoHit = null;
@@ -27,7 +21,7 @@ public partial class PhysGun
 			foreach ( var child in lastGrabbedObject.Children )
 			{
 				if ( !child.Components.Get<ModelRenderer>().IsValid() )
-						continue;
+					continue;
 
 				if ( child.Components.TryGet<HighlightOutline>( out var childglow ) )
 				{
@@ -46,23 +40,27 @@ public partial class PhysGun
 
 	protected virtual void UpdateEffects()
 	{
-		var owner = Owner;
+		if ( Owner == null || !GrabbedObject.IsValid() || !Owner.GameObject.IsDescendant( GameObject ) )
+		{
+			KillEffects();
+			return;
+		}
 
-		var startPos = owner.EyeTransform.Position;
-		var dir = owner.EyeTransform.Forward;
+		var startPos = Owner.EyeTransform.Position;
+		var dir = Owner.EyeTransform.Forward;
 
 		var tr = Scene.Trace.Ray( startPos, startPos + dir * MaxTargetDistance )
 			.UseHitboxes()
-			.IgnoreGameObject( owner.GameObject )
+			.IgnoreGameObject( Owner.GameObject )
 			.WithAllTags( "solid" )
 			.Run();
 
-		Beam ??= CreateBeam(tr.EndPosition);
+		Beam ??= CreateBeam( tr.EndPosition );
 
 		Beam.WorldPosition = Muzzle.Position;
 		Beam.WorldRotation = Muzzle.Rotation;
 
-		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains("world") )
+		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains( "world" ) )
 		{
 			var physGroup = HeldBody.PhysicsGroup;
 
@@ -83,8 +81,6 @@ public partial class PhysGun
 
 			EndNoHit?.GameObject.Destroy();
 			EndNoHit = null;
-
-			
 
 			if ( GrabbedObject.Components.Get<ModelRenderer>().IsValid() )
 			{
@@ -110,19 +106,18 @@ public partial class PhysGun
 		else
 		{
 			lastBeamPos = Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
-			Beam.SceneObject.SetControlPoint(1,lastBeamPos);
+			Beam.SceneObject.SetControlPoint( 1, lastBeamPos );
 
-			if ( EndNoHit == null )
-				EndNoHit = CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
+			EndNoHit ??= CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
 
-			EndNoHit.SceneObject.SetControlPoint(0,lastBeamPos);
+			EndNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
 		}
-		
+
 	}
 
-	LegacyParticleSystem CreateBeam(Vector3 endPos)
+	LegacyParticleSystem CreateBeam( Vector3 endPos )
 	{
-		LegacyParticleSystem beam = CreateParticleSystem( "particles/physgun_beam.vpcf", new Transform( endPos ), 0);
+		LegacyParticleSystem beam = CreateParticleSystem( "particles/physgun_beam.vpcf", new Transform( endPos ), 0 );
 
 		return beam;
 	}

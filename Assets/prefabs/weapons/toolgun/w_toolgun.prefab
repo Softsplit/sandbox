@@ -19,7 +19,7 @@
           "Rotation": "0,0,0,1"
         },
         "Handedness": "Right",
-        "HoldType": "HoldItem",
+        "HoldType": "Pistol",
         "ParentBone": "hold_r",
         "PrimaryRate": 5,
         "ReloadTime": 3,
@@ -34,24 +34,14 @@
       {
         "__guid": "50945b1b-3a5c-4cb9-b98d-87a656031850",
         "Flags": 0,
-        "Name": "Object",
-        "Position": "-2.555882,-0.0000001523425,-0.323567",
+        "Name": "Model",
         "Enabled": true,
         "Components": [
           {
-            "__type": "Sandbox.SkinnedModelRenderer",
+            "__type": "Sandbox.ModelRenderer",
             "__guid": "cb89f206-3e9d-4b0f-ba06-cc79d8e5b835",
             "BodyGroups": 18446744073709551615,
-            "CreateBoneObjects": false,
-            "Model": "models/weapons/w_toolgun.vmdl",
-            "Morphs": {},
-            "Parameters": {
-              "bools": {},
-              "ints": {},
-              "floats": {},
-              "vectors": {},
-              "rotations": {}
-            },
+            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -59,8 +49,7 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
-            "Tint": "1,1,1,1",
-            "UseAnimGraph": true
+            "Tint": "1,1,1,1"
           }
         ]
       }
@@ -95,6 +84,8 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
-  "__references": [],
+  "__references": [
+    "rust.rust_pistol#43964"
+  ],
   "__version": 1
 }

@@ -1,5 +1,4 @@
 using Sandbox.Diagnostics;
-using Softsplit;
 
 public sealed class PlayerInventory : Component, IPlayerEvent
 {
@@ -24,10 +23,9 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	{
 		if ( IsProxy )
 			return;
-		
+
 		if ( ActiveWeapon is PhysGun physgun && physgun.GrabbedObject.IsValid() )
 			return;
-		
 
 		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( 0 );
 		if ( Input.Pressed( "slot2" ) ) SetActiveSlot( 1 );
