@@ -21,8 +21,8 @@
         "Tint": "1,1,1,1"
       },
       {
-        "__type": "Softsplit.PhysGunComponent",
-        "__guid": "245c7473-1f85-43a0-916f-63f2f2442916",
+        "__type": "Softsplit.PhysGun",
+        "__guid": "7e490e0f-4193-4a1b-b52f-af13409e7e5e",
         "AngularDampingRatio": 1,
         "AngularFrequency": 20,
         "BoneOffset": {
@@ -35,7 +35,9 @@
           "Rotation": "0,0,0,1"
         },
         "Handedness": "Right",
-        "HoldType": "HoldItem",
+        "HoldPos": "0,0,0",
+        "HoldRot": "0,0,0,0",
+        "HoldType": "Pistol",
         "LinearDampingRatio": 1,
         "LinearFrequency": 20,
         "MaxTargetDistance": 10000,

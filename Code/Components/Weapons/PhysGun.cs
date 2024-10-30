@@ -2,7 +2,7 @@ using Sandbox.Physics;
 
 namespace Softsplit;
 
-public partial class PhysGunComponent : BaseWeapon
+public partial class PhysGun : BaseWeapon
 {
 	[Property] public float MinTargetDistance { get; set; } = 0.0f;
 	[Property] public float MaxTargetDistance { get; set; } = 10000.0f;
