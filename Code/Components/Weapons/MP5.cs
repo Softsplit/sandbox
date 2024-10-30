@@ -41,6 +41,7 @@ partial class MP5 : BaseWeapon
 		ViewModel?.Renderer?.Set( "attack_hold", attackHold );
 	}
 
+	[Broadcast]
 	private void BroadcastOnControl( float attackHold )
 	{
 		Owner?.Controller?.Renderer?.Set( "attack_hold", attackHold );
@@ -69,7 +70,6 @@ partial class MP5 : BaseWeapon
 			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
 		};
 
-		go.NetworkSpawn();
 		go.DestroyAsync();
 	}
 }

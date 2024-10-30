@@ -57,7 +57,7 @@ public partial class BaseWeapon : Component
 	{
 		if ( IsProxy ) return;
 
-		ViewModel.DestroyGameObject();
+		if ( ViewModel.IsValid() ) ViewModel.DestroyGameObject();
 	}
 
 	protected override void OnUpdate()
@@ -158,7 +158,6 @@ public partial class BaseWeapon : Component
 			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
 		};
 
-		go.NetworkSpawn();
 		go.DestroyAsync();
 
 		ViewModel?.Renderer?.Set( "fire", true );
@@ -179,9 +178,14 @@ public partial class BaseWeapon : Component
 		TimeSinceReload = 0;
 		IsReloading = true;
 
-		Owner?.Controller?.Renderer?.Set( "b_reload", true );
-
+		BroadcastReload();
 		StartReloadEffects();
+	}
+
+	[Broadcast]
+	private void BroadcastReload()
+	{
+		Owner?.Controller?.Renderer?.Set( "b_reload", true );
 	}
 
 	public virtual bool CanPrimaryAttack()
