@@ -148,6 +148,10 @@
         "Scale": "16,16,36",
         "Static": false,
         "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "PlayerInventory",
+        "__guid": "a8ddabbb-9d8b-4dce-9726-34e0b4d9daaf"
       }
     ],
     "Children": [

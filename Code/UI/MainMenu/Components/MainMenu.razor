@@ -17,15 +17,4 @@
         BindClass( "ingame", () => MainMenuPanel.Current.InGame );
         BindClass( "hidden", () => MainMenuPanel.Current.IsHidden );
     }
-
-    protected override void OnEvent( PanelEvent e )
-    {
-		if ( e.Name == "package.changed" )
-		{
-			StateHasChanged();
-			return;
-		}
-
-		base.OnEvent( e );
-	}
 }

@@ -83,7 +83,9 @@
         {
           "__type": "MainMenuPanel",
           "__guid": "4579cdb6-6fdb-425a-a7ee-b0864a2103b5",
-          "InGame": true
+          "GameScene": "scenes/game.scene",
+          "InGame": true,
+          "MenuScene": "scenes/menu.scene"
         }
       ]
     },

@@ -32,7 +32,10 @@
         },
         {
           "__type": "MainMenuPanel",
-          "__guid": "75e769af-c781-4d91-a846-a71069a34eb2"
+          "__guid": "75e769af-c781-4d91-a846-a71069a34eb2",
+          "GameScene": "scenes/game.scene",
+          "InGame": false,
+          "MenuScene": "scenes/menu.scene"
         }
       ]
     }

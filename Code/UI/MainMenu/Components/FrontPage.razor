@@ -1,12 +1,14 @@
 @using Sandbox.UI
 
+@inherits Panel
+
 <root style="flex-direction: column;">
     <div class="game-title">
         Sandbox Classic
     </div>
 
     <div class="controls">
-        @if ( MainMenuPanel.Current?.InGame == true )
+        @if (MainMenuPanel.Current?.InGame == true)
         {
             <a class="button" onclick=@LeaveGame>Leave Game</a>
             <span style="height: 20px;"></span>
@@ -28,16 +30,16 @@
     void LeaveGame()
     {
         Networking.Disconnect();
-        Game.ActiveScene.LoadFromFile( "/scenes/menu.scene" );
+        Scene.Load(MainMenuPanel.Current.MenuScene);
     }
 
     void CreateNewGame()
     {
-        Game.Overlay.ShowPackageSelector( "type:map sort:trending", ( package ) =>
+        Game.Overlay.ShowPackageSelector("type:map sort:trending", (package) =>
         {
             LaunchArguments.Map = package.FullIdent;
-            Game.ActiveScene.LoadFromFile( "/scenes/game.scene" );
-        } );
+            Scene.Load(MainMenuPanel.Current.GameScene);
+        });
     }
 
     void OpenServerList()
