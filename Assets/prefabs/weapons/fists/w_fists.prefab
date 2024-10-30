@@ -5,6 +5,31 @@
     "Name": "w_fists",
     "Tags": "item,weapon",
     "Enabled": true,
+    "Components": [
+      {
+        "__type": "Fists",
+        "__guid": "dfd749e0-fa8e-442e-893e-a5499d1e5580",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "Handedness": "Both",
+        "HoldType": "Punch",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 2,
+        "ReloadTime": 3,
+        "SecondaryRate": 2,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/fists/v_fists.prefab"
+        }
+      }
+    ],
     "Children": [],
     "__variables": [],
     "__properties": {

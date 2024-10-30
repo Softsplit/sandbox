@@ -10,7 +10,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	public void GiveDefaultWeapons()
 	{
-		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", true );
+		Pickup( "prefabs/weapons/fists/w_fists.prefab", true );
+		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", false );
 		Pickup( "prefabs/weapons/mp5/w_mp5.prefab", false );
 		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab", false );
 	}
@@ -19,6 +20,11 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	{
 		if ( IsProxy )
 			return;
+
+		/*
+		if ( ActiveWeapon is PhysGun physgun && physgun.BeamActive )
+			return;
+		*/
 
 		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( 0 );
 		if ( Input.Pressed( "slot2" ) ) SetActiveSlot( 1 );
