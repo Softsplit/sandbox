@@ -306,9 +306,17 @@ public partial class BaseWeapon : Component
 
 			if ( tr.Body.IsValid() )
 			{
-				tr.Body.ApplyImpulseAt( tr.EndPosition, forward * 5000 );
+				BroadcastApplyImpulseAt( tr, tr.EndPosition, forward * 5000 );
 			}
 		}
+	}
+
+	[Broadcast]
+	private void BroadcastApplyImpulseAt( SceneTraceResult tr, Vector3 position, Vector3 velocity )
+	{
+		if ( !Networking.IsHost ) return;
+
+		tr.Body.ApplyImpulseAt( position, velocity );
 	}
 
 	/// <summary>
