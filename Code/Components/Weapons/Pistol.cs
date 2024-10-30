@@ -14,10 +14,10 @@ partial class Pistol : BaseWeapon, Component.ICollisionListener
 		TimeSinceSecondaryAttack = 0;
 
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
-		// ViewModelEntity?.SetAnimParameter( "b_attack", true );
+		ViewModel?.Renderer?.Set( "b_attack", true );
 
 		ShootEffects();
-		GameObject.PlaySound( new SoundEvent( "rust_pistol.shoot" ) );
+		Sound.Play( "rust_pistol.shoot", WorldPosition );
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 
@@ -28,13 +28,13 @@ partial class Pistol : BaseWeapon, Component.ICollisionListener
 
 		TimeSinceDischarge = 0;
 
-		// var muzzle = GetAttachment( "muzzle" ) ?? default;
-		// var pos = muzzle.Position;
-		// var rot = muzzle.Rotation;
+		var muzzle = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default;
+		var pos = muzzle.Position;
+		var rot = muzzle.Rotation;
 
 		ShootEffects();
-		GameObject.PlaySound( new SoundEvent( "rust_pistol.shoot" ) );
-		// ShootBullet( pos, rot.Forward, 0.05f, 1.5f, 9.0f, 3.0f );
+		Sound.Play( "rust_pistol.shoot", WorldPosition );
+		ShootBullet( pos, rot.Forward, 0.05f, 1.5f, 9.0f, 3.0f );
 
 		// ApplyAbsoluteImpulse( rot.Backward * 200.0f );
 	}

@@ -20,7 +20,7 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 
 	public Transform EyeTransform => Controller.EyeTransform;
 
-	public Ray AimRay => new( EyeTransform.Position, EyeTransform.Forward );
+	public Ray AimRay => new( EyeTransform.Position, EyeTransform.Rotation.Forward );
 
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled
@@ -46,9 +46,9 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 		go.NetworkSpawn( Rpc.Caller );
 	}
 
+	[Broadcast]
 	public void TakeDamage( float amount )
 	{
-		if ( IsProxy ) return;
 		if ( Health <= 0 ) return;
 
 		Health -= amount;

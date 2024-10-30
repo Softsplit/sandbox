@@ -8,16 +8,8 @@ public static partial class SandboxBaseExtensions
 	/// <summary>
 	/// Create a particle effect and play an impact sound for this surface being hit by a bullet
 	/// </summary>
-	public static SceneParticles DoBulletImpact( this Surface self, SceneTraceResult tr )
+	public static LegacyParticleSystem DoBulletImpact( this Surface self, SceneTraceResult tr )
 	{
-		//
-		// No effects on resimulate
-		//
-		/*
-		if ( !Prediction.FirstTime )
-			return null;
-		*/
-
 		//
 		// Drop a decal
 		//
@@ -32,9 +24,26 @@ public static partial class SandboxBaseExtensions
 
 		if ( !string.IsNullOrWhiteSpace( decalPath ) )
 		{
+			// TODO: Fix decals for ragdolls
+
 			if ( ResourceLibrary.TryGet<DecalDefinition>( decalPath, out var decal ) )
 			{
-				// Decal.Place( decal, tr );
+				var go = new GameObject
+				{
+					Name = decalPath,
+					Parent = tr.GameObject,
+					WorldPosition = tr.EndPosition,
+					WorldRotation = Rotation.LookAt( -tr.Normal )
+				};
+
+				var randomDecal = decal.Decals[Random.Shared.Next( decal.Decals.Count )];
+
+				var decalRenderer = go.AddComponent<DecalRenderer>();
+				decalRenderer.Material = randomDecal.Material;
+				decalRenderer.Size = new Vector3( randomDecal.Width.GetValue(), randomDecal.Height.GetValue(), randomDecal.Depth.GetValue() );
+
+				go.NetworkSpawn();
+				go.DestroyAsync( 10f );
 			}
 		}
 
@@ -73,12 +82,25 @@ public static partial class SandboxBaseExtensions
 
 		if ( !string.IsNullOrWhiteSpace( particleName ) )
 		{
-			/*
-			var ps = Particles.Create( particleName, tr.EndPosition );
-			ps.SetForward( 0, tr.Normal );
+			var go = new GameObject
+			{
+				Name = particleName,
+				Parent = tr.GameObject,
+				WorldPosition = tr.EndPosition,
+				WorldRotation = Rotation.LookAt( tr.Normal )
+			};
 
-			return ps;
-			*/
+			var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
+			legacyParticleSystem.Particles = ParticleSystem.Load( particleName );
+			legacyParticleSystem.ControlPoints = new()
+			{
+				new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
+			};
+
+			go.NetworkSpawn();
+			go.DestroyAsync();
+
+			return legacyParticleSystem;
 		}
 
 		return default;

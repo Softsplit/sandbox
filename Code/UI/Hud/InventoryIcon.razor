@@ -3,14 +3,23 @@
 
 @inherits Panel
 
-<root>
-    <label class="item-name">empty</label>
-    <label class="slot-number">@(Index + 1)</label>
-</root>
+<root />
 
 @code
 {
-    public int Index { get; set; }
+    public Label Label { get; set; }
+    public Label Number { get; set; }
 
-    // protected override int BuildHash() => System.HashCode.Combine();
+    public InventoryIcon(int i, Panel parent)
+    {
+        Parent = parent;
+        Label = Add.Label("empty", "item-name");
+        Number = Add.Label($"{i}", "slot-number");
+    }
+
+    public void Clear()
+    {
+        Label.Text = "";
+        SetClass("active", false);
+    }
 }

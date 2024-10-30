@@ -59,62 +59,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		GameObject.DestroyImmediate();
 	}
 
-	public void AddForce( int bodyIndex, Vector3 force )
-	{
-		if ( IsProxy )
-			return;
-
-		var body = ModelPhysics?.PhysicsGroup?.GetBody( bodyIndex );
-		if ( body.IsValid() )
-		{
-			body.ApplyForce( force );
-		}
-		else if ( bodyIndex == 0 && Rigidbody.IsValid() )
-		{
-			Rigidbody.Velocity += force / Rigidbody.PhysicsBody.Mass;
-		}
-	}
-
-	public async void AddDamagingForce( Vector3 force, float damage )
-	{
-		if ( IsProxy )
-			return;
-
-		if ( ModelPhysics.IsValid() )
-		{
-			foreach ( var body in ModelPhysics.PhysicsGroup.Bodies )
-			{
-				AddForce( body.GroupIndex, force );
-			}
-		}
-		else
-		{
-			AddForce( 0, force );
-		}
-
-		await GameTask.DelaySeconds( 1f / Scene.FixedUpdateFrequency + 0.05f );
-
-		Damage( damage );
-	}
-
-	[Broadcast]
-	public void BroadcastAddForce( int bodyIndex, Vector3 force )
-	{
-		if ( IsProxy )
-			return;
-
-		AddForce( bodyIndex, force );
-	}
-
-	[Broadcast]
-	public void BroadcastAddDamagingForce( Vector3 force, float damage )
-	{
-		if ( IsProxy )
-			return;
-
-		AddDamagingForce( force, damage );
-	}
-
 	protected override void OnFixedUpdate()
 	{
 		if ( Prop.IsValid() )
@@ -191,7 +135,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		if ( relativeVelocity > minDamageVelocity )
 		{
-			float impactForce = Rigidbody.Mass * relativeVelocity;
+			float impactForce = collision.Other.Body.Mass * relativeVelocity;
 			float damage = (impactForce - minDamageVelocity) * 8f;
 
 			Damage( damage );

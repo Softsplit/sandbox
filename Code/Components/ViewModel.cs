@@ -9,7 +9,7 @@ public class ViewModel : Component
 	[Property] public Vector3 BobDirection { get; set; } = new( 0.0f, 1.0f, 0.5f );
 	[Property] public float InertiaDamping { get; set; } = 20.0f;
 
-	[RequireComponent] public SkinnedModelRenderer SkinnedModelRenderer { get; set; }
+	[RequireComponent] public SkinnedModelRenderer Renderer { get; set; }
 
 	public float YawInertia { get; private set; }
 	public float PitchInertia { get; private set; }
@@ -42,13 +42,13 @@ public class ViewModel : Component
 			activated = true;
 		}
 
-		var cameraBone = SkinnedModelRenderer.Model.Bones.GetBone( "camera" );
+		var cameraBone = Renderer.Model.Bones.GetBone( "camera" );
 		if ( cameraBone is not null )
 		{
 			var cameraBoneIndex = cameraBone.Index;
 			if ( cameraBoneIndex != -1 )
 			{
-				var bone = SkinnedModelRenderer.Model.GetBoneTransform( cameraBoneIndex );
+				var bone = Renderer.Model.GetBoneTransform( cameraBoneIndex );
 				Scene.Camera.WorldPosition += bone.Position;
 				Scene.Camera.WorldRotation *= bone.Rotation;
 			}
@@ -92,13 +92,12 @@ public class ViewModel : Component
 			var offset = CalcSwingOffset( pitchDelta, yawDelta );
 			offset += CalcBobbingOffset( bobSpeed );
 
-			// TODO: Fix this IsNaN bullshit
 			WorldPosition += WorldRotation * offset;
 		}
 		else
 		{
-			SkinnedModelRenderer.Set( "aim_yaw_inertia", YawInertia );
-			SkinnedModelRenderer.Set( "aim_pitch_inertia", PitchInertia );
+			Renderer.Set( "aim_yaw_inertia", YawInertia );
+			Renderer.Set( "aim_pitch_inertia", PitchInertia );
 		}
 
 		lastPitch = newPitch;

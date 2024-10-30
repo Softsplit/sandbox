@@ -1,3 +1,5 @@
+using Sandbox.Citizen;
+
 /// <summary>
 /// A common base we can use for weapons so we don't have to implement the logic over and over
 /// again. Feel free to not use this and to implement it however you want to.
@@ -5,6 +7,10 @@
 [Icon( "sports_martial_arts" )]
 public partial class BaseWeapon : Component
 {
+	[Property] public GameObject ViewModelPrefab { get; set; }
+	[Property] public string ParentBone { get; set; } = "hold_r";
+	[Property] public Transform BoneOffset { get; set; } = new Transform( 0 );
+	[Property] public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.HoldItem;
 	[Property] public float PrimaryRate { get; set; } = 5.0f;
 	[Property] public float SecondaryRate { get; set; } = 15.0f;
 	[Property] public float ReloadTime { get; set; } = 3.0f;
@@ -15,14 +21,66 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
-	public Player Owner => Scene.GetAllComponents<Player>().Where( x => x.Network.OwnerId == Network.OwnerId ).FirstOrDefault();
+	public Player Owner => GameObject?.Root?.Components?.Get<Player>();
+	public ViewModel ViewModel => Scene?.Camera?.GetComponentInChildren<ViewModel>( true );
+
+	protected override void OnAwake()
+	{
+		if ( IsProxy ) return;
+
+		ViewModelPrefab?.Clone( new CloneConfig()
+		{
+			StartEnabled = false,
+			Parent = Scene.Camera.GameObject,
+			Transform = Scene.Camera.WorldTransform
+		} );
+	}
 
 	protected override void OnEnabled()
 	{
 		TimeSinceDeployed = 0;
+
+		if ( IsProxy ) return;
+
+		ViewModel.GameObject.Enabled = true;
 	}
 
-	protected override void OnFixedUpdate()
+	protected override void OnDisabled()
+	{
+		if ( IsProxy ) return;
+
+		ViewModel.GameObject.Enabled = false;
+	}
+
+	protected override void OnDestroy()
+	{
+		if ( IsProxy ) return;
+
+		ViewModel.GameObject.Destroy();
+	}
+
+	protected override void OnUpdate()
+	{
+		GameObject.NetworkInterpolation = false;
+
+		Owner?.Controller?.Renderer?.Set( "holdtype", (int)HoldType );
+
+		var obj = Owner?.Controller?.Renderer?.GetBoneObject( ParentBone );
+		if ( obj is not null )
+		{
+			GameObject.Parent = obj;
+			GameObject.LocalTransform = BoneOffset.WithScale( 1 );
+		}
+
+		ViewModel.GameObject.Enabled = !Owner.Controller.ThirdPerson;
+
+		if ( IsProxy )
+			return;
+
+		OnControl();
+	}
+
+	public virtual void OnControl()
 	{
 		if ( TimeSinceDeployed < 0.6f )
 			return;
@@ -76,7 +134,7 @@ public partial class BaseWeapon : Component
 	[Broadcast]
 	public virtual void StartReloadEffects()
 	{
-		// ViewModelEntity?.SetAnimParameter( "b_reload", true );
+		ViewModel?.Renderer?.Set( "b_reload", true );
 
 		// TODO - player third person model reload
 	}
@@ -84,8 +142,26 @@ public partial class BaseWeapon : Component
 	[Broadcast]
 	protected virtual void ShootEffects()
 	{
-		// Particles.Create( "particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle" );
-		// ViewModelEntity?.SetAnimParameter( "fire", true );
+		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );
+
+		var go = new GameObject
+		{
+			Name = particleSystem.Name,
+			Parent = ViewModel.GameObject,
+			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default,
+		};
+
+		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
+		legacyParticleSystem.Particles = particleSystem;
+		legacyParticleSystem.ControlPoints = new()
+		{
+			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
+		};
+
+		go.NetworkSpawn();
+		go.DestroyAsync();
+
+		ViewModel?.Renderer?.Set( "fire", true );
 	}
 
 	public virtual bool CanReload()
@@ -103,7 +179,7 @@ public partial class BaseWeapon : Component
 		TimeSinceReload = 0;
 		IsReloading = true;
 
-		Owner.Controller.Renderer.Set( "b_reload", true );
+		Owner?.Controller?.Renderer?.Set( "b_reload", true );
 
 		StartReloadEffects();
 	}
@@ -149,7 +225,7 @@ public partial class BaseWeapon : Component
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.IgnoreGameObjectHierarchy( GameObject )
+				.IgnoreGameObjectHierarchy( GameObject.Root )
 				.Size( radius );
 
 		//
@@ -175,7 +251,7 @@ public partial class BaseWeapon : Component
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.IgnoreGameObjectHierarchy( GameObject );
+				.IgnoreGameObjectHierarchy( GameObject.Root );
 
 		var tr = trace.Run();
 
@@ -215,13 +291,18 @@ public partial class BaseWeapon : Component
 
 			if ( !tr.GameObject.IsValid() ) continue;
 
-			if ( tr.Component is PropHelper prop )
+			if ( tr.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 			{
 				prop.Damage( damage );
 			}
-			else if ( tr.Component is Player player )
+			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( damage );
+			}
+
+			if ( tr.Body.IsValid() )
+			{
+				tr.Body.ApplyImpulseAt( tr.EndPosition, forward * 5000 );
 			}
 		}
 	}
