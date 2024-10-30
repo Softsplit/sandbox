@@ -7,20 +7,6 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
-        "__guid": "4601d044-1e9a-4769-b7bf-74b1dff621ab",
-        "BodyGroups": 18446744073709551615,
-        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": false,
-          "AfterUILayer": false
-        },
-        "RenderType": "On",
-        "Tint": "1,1,1,1"
-      },
-      {
         "__type": "Softsplit.PhysGun",
         "__guid": "7e490e0f-4193-4a1b-b52f-af13409e7e5e",
         "AngularDampingRatio": 1,
@@ -35,8 +21,6 @@
           "Rotation": "0,0,0,1"
         },
         "Handedness": "Right",
-        "HoldPos": "0,0,0",
-        "HoldRot": "0,0,0,0",
         "HoldType": "Pistol",
         "LinearDampingRatio": 1,
         "LinearFrequency": 20,
@@ -53,6 +37,30 @@
           "_type": "gameobject",
           "prefab": "prefabs/weapons/physgun/v_physgun.prefab"
         }
+      },
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "4601d044-1e9a-4769-b7bf-74b1dff621ab",
+        "BodyGroups": 18446744073709551615,
+        "CreateBoneObjects": false,
+        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
       }
     ],
     "Children": [],

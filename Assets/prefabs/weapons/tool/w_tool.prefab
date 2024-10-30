@@ -2,8 +2,7 @@
   "RootObject": {
     "__guid": "03cfc644-ef9c-44a5-a593-586029f17d9d",
     "Flags": 0,
-    "Name": "w_toolgun",
-    "Tags": "item,weapon",
+    "Name": "w_tool",
     "Enabled": true,
     "Components": [
       {

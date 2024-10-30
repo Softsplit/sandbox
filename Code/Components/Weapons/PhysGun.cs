@@ -4,7 +4,7 @@ namespace Softsplit;
 
 public partial class PhysGun : BaseWeapon
 {
-	[Property] public float MinTargetDistance { get; set; } = 0.0f;
+	[Property ] public float MinTargetDistance { get; set; } = 0.0f;
 	[Property] public float MaxTargetDistance { get; set; } = 10000.0f;
 	[Property] public float LinearFrequency { get; set; } = 20.0f;
 	[Property] public float LinearDampingRatio { get; set; } = 1.0f;
@@ -62,12 +62,15 @@ public partial class PhysGun : BaseWeapon
 		GrabbedObject = null;
 	}
 
+	protected override void OnPreRender()
+	{
+		UpdateEffects();
+	}
+
 	protected override void OnUpdate()
 	{
 
 		base.OnUpdate();
-
-		UpdateEffects();
 
 		if(!GrabbedObject.IsValid())
 			return;

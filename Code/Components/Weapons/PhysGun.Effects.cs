@@ -65,10 +65,8 @@ public partial class PhysGun
 
 		Beam ??= CreateBeam(tr.EndPosition);
 
-		var muzzle = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default;
-
-		Beam.WorldPosition = muzzle.Position;
-		Beam.WorldRotation = muzzle.Rotation;
+		Beam.WorldPosition = Muzzle.Position;
+		Beam.WorldRotation = Muzzle.Rotation;
 
 		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains("world") )
 		{

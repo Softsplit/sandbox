@@ -8,23 +8,22 @@
     "Components": [
       {
         "__type": "Pistol",
-        "__guid": "abb9f231-0776-4973-95c6-0a95fcf36de3",
+        "__guid": "a067ebac-e536-41b8-ab72-8cd8460eb5f0",
         "BoneOffset": {
           "UniformScale": 1,
           "IsValid": true,
           "ForwardRay": {
-            "Position": "2.7735,0,-4.794",
             "Forward": "1,0,0"
           },
-          "Position": "2.7735,0,-4.794",
           "Scale": "1,1,1",
           "Rotation": "0,0,0,1"
         },
+        "Handedness": "Right",
         "HoldType": "Pistol",
         "ParentBone": "hold_r",
-        "PrimaryRate": 15,
-        "ReloadTime": 1.5,
-        "SecondaryRate": 1,
+        "PrimaryRate": 5,
+        "ReloadTime": 3,
+        "SecondaryRate": 15,
         "ViewModelPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/weapons/pistol/v_pistol.prefab"
