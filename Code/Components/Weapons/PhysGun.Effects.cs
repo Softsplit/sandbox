@@ -132,4 +132,13 @@ public partial class PhysGun
 
 		return beam;
 	}
+
+	void IPlayerEvent.OnDied( Player player )
+	{
+		if ( player != Owner )
+			return;
+
+		Beam.Destroy();
+		GrabbedObject.Components.GetOrCreate<HighlightOutline>().Enabled = false;
+	}
 }
