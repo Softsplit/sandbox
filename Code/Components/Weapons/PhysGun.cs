@@ -14,11 +14,11 @@ public partial class PhysGun : BaseWeapon
 	[Property] public float RotateSpeed { get; set; } = 0.125f;
 	[Property] public float RotateSnapAt { get; set; } = 45.0f;
 
-	[Sync, Property] public Vector3 HoldPos { get; set; }
-	[Sync, Property] public Rotation HoldRot { get; set; }
-
-	[Sync, Property] public GameObject GrabbedObject { get; set; }
-
+	[Sync] public Vector3 HoldPos { get; set; }
+	[Sync] public Rotation HoldRot { get; set; }
+	[Sync] public GameObject GrabbedObject { get; set; }
+	[Sync] public Vector3 GrabbedPos { get; set; }
+	[Sync] public int GrabbedBone { get; set; } = -1;
 	GameObject lastGrabbed = null;
 	PhysicsBody _heldBody;
 	PhysicsBody HeldBody
@@ -27,7 +27,16 @@ public partial class PhysGun : BaseWeapon
 		{
 			if(GrabbedObject != lastGrabbed && GrabbedObject != null)
 			{
-				_heldBody = GrabbedObject.Components.Get<Rigidbody>().PhysicsBody;
+				if(GrabbedBone > -1)
+				{
+					ModelPhysics modelPhysics = GrabbedObject.Components.Get<ModelPhysics>();
+					_heldBody = modelPhysics.PhysicsGroup.GetBody(GrabbedBone);
+				}
+				else
+				{
+					Rigidbody rigidbody = GrabbedObject.Components.Get<Rigidbody>();
+					_heldBody = rigidbody.PhysicsBody;
+				}
 			}
 			lastGrabbed = GrabbedObject;
 			return _heldBody;
@@ -58,6 +67,8 @@ public partial class PhysGun : BaseWeapon
 
 		base.OnUpdate();
 
+		UpdateEffects();
+
 		if(!GrabbedObject.IsValid())
 			return;
 
@@ -80,7 +91,6 @@ public partial class PhysGun : BaseWeapon
 
 		Owner.Controller.UseCameraControls = !Input.Down("use") || !GrabbedObject.IsValid();
 
-		Gizmo.Draw.SolidSphere(HeldPos,10);
 		base.OnControl();
 
 		if(Input.Pressed("attack1"))
@@ -224,10 +234,14 @@ public partial class PhysGun : BaseWeapon
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) ) return;
+		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) || tr.Tags.Contains(GrabbedTag) ) return;
 		var rootEnt = tr.GameObject;
 
 		GrabbedObject = rootEnt;
+
+		bool isRagdoll = GrabbedObject.Components.Get<ModelPhysics>().IsValid();
+
+		GrabbedBone = isRagdoll ? tr.Body.GroupIndex : -1;
 
 		HoldDistance = Vector3.DistanceBetween( WeaponRay.Position, tr.EndPosition );
 		HoldDistance = HoldDistance.Clamp( MinTargetDistance, MaxTargetDistance );
@@ -237,6 +251,10 @@ public partial class PhysGun : BaseWeapon
 
 		HoldPos = HeldBody.Position;
 		HoldRot = HeldBody.Rotation;
+
+		GrabbedPos = tr.Body.Transform.PointToLocal(tr.EndPosition);
+
+		
 
 		UnFreeze();
 	}

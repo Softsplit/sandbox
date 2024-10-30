@@ -145,13 +145,20 @@ public partial class BaseWeapon : Component
 		if ( ViewModel.Tags.Has( "viewer" ) )
 			return;
 
-		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );
+			CreateParticleSystem("particles/pistol_muzzleflash.vpcf", ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default, 1, ViewModel.GameObject);
+
+		ViewModel?.Renderer?.Set( "fire", true );
+	}
+
+	public static LegacyParticleSystem CreateParticleSystem(string path, Transform transform, float time = 1, GameObject parent = null)
+	{
+		var particleSystem = ParticleSystem.Load( path );
 
 		var go = new GameObject
 		{
 			Name = particleSystem.Name,
-			Parent = ViewModel.GameObject,
-			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default,
+			Parent = parent,
+			WorldTransform = transform
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
@@ -161,9 +168,10 @@ public partial class BaseWeapon : Component
 			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
 		};
 
-		go.DestroyAsync();
+		if(time > 0)
+			go.DestroyAsync(time);
 
-		ViewModel?.Renderer?.Set( "fire", true );
+		return legacyParticleSystem;
 	}
 
 	public virtual bool CanReload()
