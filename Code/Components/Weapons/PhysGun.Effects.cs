@@ -48,12 +48,6 @@ public partial class PhysGun
 	{
 		var owner = Owner;
 
-		if ( owner == null || !GrabbedObject.IsValid() || !owner.GameObject.IsDescendant(GameObject) )
-		{
-			KillEffects();
-			return;
-		}
-
 		var startPos = owner.EyeTransform.Position;
 		var dir = owner.EyeTransform.Forward;
 
@@ -138,7 +132,6 @@ public partial class PhysGun
 		if ( player != Owner )
 			return;
 
-		Beam.Destroy();
-		GrabbedObject.Components.GetOrCreate<HighlightOutline>().Enabled = false;
+		KillEffects();
 	}
 }
