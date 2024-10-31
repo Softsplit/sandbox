@@ -3,7 +3,7 @@
     "__guid": "e7d01cce-80f0-4272-a038-e133d2b41065",
     "Flags": 0,
     "Name": "w_shotgun",
-    "Tags": "item,weapon",
+    "Tags": "weapon,item",
     "Enabled": true,
     "Components": [
       {
@@ -38,10 +38,19 @@
         "Enabled": true,
         "Components": [
           {
-            "__type": "Sandbox.ModelRenderer",
+            "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "abfc91ee-c839-4cba-aea0-d832ed3796a0",
             "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
             "Model": "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -49,7 +58,8 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
-            "Tint": "1,1,1,1"
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
           }
         ]
       }
