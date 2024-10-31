@@ -9,13 +9,12 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	public void GiveDefaultWeapons()
 	{
-		Pickup( "prefabs/weapons/physgun/w_physgun.prefab", true );
-		Pickup( "prefabs/weapons/fists/w_fists.prefab", true );
-		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab", false );
-		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", false );
-		Pickup( "prefabs/weapons/mp5/w_mp5.prefab", false );
-		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab", false );
-		Pickup( "prefabs/weapons/toolgun/w_toolgun.prefab", false );
+		Pickup( "prefabs/weapons/fists/w_fists.prefab" );
+		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab" );
+		Pickup( "prefabs/weapons/mp5/w_mp5.prefab" );
+		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
+		Pickup( "prefabs/weapons/rpg/w_rpg.prefab" );
+		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab" );
 	}
 
 	protected override void OnUpdate()
@@ -23,8 +22,10 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		if ( IsProxy )
 			return;
 
-		if ( ActiveWeapon is PhysGun physgun && physgun.GrabbedObject.IsValid() )
+		/*
+		if ( ActiveWeapon is PhysGun physgun && physgun.BeamActive )
 			return;
+		*/
 
 		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( 0 );
 		if ( Input.Pressed( "slot2" ) ) SetActiveSlot( 1 );
@@ -128,18 +129,5 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 			return;
 
 		Weapons.ForEach( x => x.DestroyGameObject() );
-	}
-
-	[ConCmd ("select_weapon")]
-	public static void Select_Weapon(string name)
-	{
-		PlayerInventory pI = Player.FindLocalPlayer().Inventory;
-		for(int i = 0; i < pI.Weapons.Count; i++)
-		{
-			if( DisplayInfo.For(pI.Weapons[i]).Name != name)
-				continue;
-			pI.SetActiveSlot(i);
-			return;
-		}
 	}
 }

@@ -7,72 +7,21 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "PhysGun",
-        "__guid": "f05dfb99-2732-462d-856b-72d860329ef7",
-        "AngularDampingRatio": 1,
-        "AngularFrequency": 20,
-        "BoneOffset": {
-          "UniformScale": 1,
-          "IsValid": true,
-          "ForwardRay": {
-            "Forward": "1,0,0"
-          },
-          "Scale": "1,1,1",
-          "Rotation": "0,0,0,1"
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "4601d044-1e9a-4769-b7bf-74b1dff621ab",
+        "BodyGroups": 18446744073709551615,
+        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
         },
-        "Handedness": "Right",
-        "HoldType": "Pistol",
-        "LinearDampingRatio": 1,
-        "LinearFrequency": 20,
-        "MaxTargetDistance": 10000,
-        "MinTargetDistance": 0,
-        "ParentBone": "hold_r",
-        "PrimaryRate": 5,
-        "ReloadTime": 3,
-        "RotateSnapAt": 45,
-        "RotateSpeed": 0.125,
-        "SecondaryRate": 15,
-        "TargetDistanceSpeed": 25,
-        "ViewModelPrefab": {
-          "_type": "gameobject",
-          "prefab": "prefabs/weapons/physgun/v_physgun.prefab"
-        }
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
       }
     ],
-    "Children": [
-      {
-        "__guid": "1b14a80f-f5b9-432b-b157-7383027e77f3",
-        "Flags": 0,
-        "Name": "Model",
-        "Enabled": true,
-        "Components": [
-          {
-            "__type": "Sandbox.SkinnedModelRenderer",
-            "__guid": "c8e87934-13ac-442a-905a-58137f91baa8",
-            "BodyGroups": 18446744073709551615,
-            "CreateBoneObjects": false,
-            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
-            "Morphs": {},
-            "Parameters": {
-              "bools": {},
-              "ints": {},
-              "floats": {},
-              "vectors": {},
-              "rotations": {}
-            },
-            "RenderOptions": {
-              "GameLayer": true,
-              "OverlayLayer": false,
-              "BloomLayer": false,
-              "AfterUILayer": false
-            },
-            "RenderType": "On",
-            "Tint": "1,1,1,1",
-            "UseAnimGraph": true
-          }
-        ]
-      }
-    ],
+    "Children": [],
     "__variables": [],
     "__properties": {
       "FixedUpdateFrequency": 50,

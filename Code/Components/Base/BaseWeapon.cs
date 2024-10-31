@@ -15,7 +15,6 @@ public partial class BaseWeapon : Component
 	[Property] public float PrimaryRate { get; set; } = 5.0f;
 	[Property] public float SecondaryRate { get; set; } = 15.0f;
 	[Property] public float ReloadTime { get; set; } = 3.0f;
-	[Property] public bool Jump { get; set; } = false;
 
 	[Sync] public bool IsReloading { get; set; }
 	[Sync] public RealTimeSince TimeSinceReload { get; set; }
@@ -23,22 +22,11 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
-	public SkinnedModelRenderer WorldModel { get; set; }
-
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
 
-	public Transform Muzzle => Attachment( "muzzle" );
-
-	public Transform Attachment( string name )
-	{
-		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? default;
-	}
-
 	protected override void OnAwake()
 	{
-		WorldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
-
 		if ( IsProxy ) return;
 
 		ViewModelPrefab?.Clone( new CloneConfig()
@@ -71,7 +59,7 @@ public partial class BaseWeapon : Component
 
 		if ( ViewModel.IsValid() ) ViewModel.DestroyGameObject();
 	}
-	bool lastGrounded;
+
 	protected override void OnUpdate()
 	{
 		GameObject.NetworkInterpolation = false;
@@ -90,8 +78,6 @@ public partial class BaseWeapon : Component
 			return;
 
 		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
-
-		ViewModel?.Renderer?.Set("b_jump", !Owner.Controller.IsOnGround && Jump);
 
 		OnControl();
 	}
@@ -154,27 +140,18 @@ public partial class BaseWeapon : Component
 
 	// TODO: Probably should unify these particle methods + make it work for world models
 
-	[Broadcast]
 	protected virtual void ShootEffects()
 	{
 		if ( ViewModel.Tags.Has( "viewer" ) )
 			return;
 
-		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Muzzle, 1, ViewModel.GameObject );
-
-		ViewModel?.Renderer?.Set( "fire", true );
-		WorldModel?.Set( "fire", true );
-	}
-
-	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
-	{
-		var particleSystem = ParticleSystem.Load( path );
+		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );
 
 		var go = new GameObject
 		{
 			Name = particleSystem.Name,
-			Parent = parent,
-			WorldTransform = transform
+			Parent = ViewModel.GameObject,
+			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
@@ -184,10 +161,9 @@ public partial class BaseWeapon : Component
 			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
 		};
 
-		if ( time > 0 )
-			go.DestroyAsync( time );
+		go.DestroyAsync();
 
-		return legacyParticleSystem;
+		ViewModel?.Renderer?.Set( "fire", true );
 	}
 
 	public virtual bool CanReload()

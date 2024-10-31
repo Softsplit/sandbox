@@ -1,6 +1,4 @@
-﻿using System.Net.Mail;
-
-[Spawnable, Library( "weapon_mp5", Title = "MP5" )]
+﻿[Spawnable, Library( "weapon_mp5", Title = "MP5" )]
 partial class MP5 : BaseWeapon
 {
 	protected ParticleSystem EjectBrass => Cloud.ParticleSystem( "facepunch.9mm_ejectbrass" );
@@ -62,7 +60,7 @@ partial class MP5 : BaseWeapon
 		{
 			Name = EjectBrass.Name,
 			Parent = ViewModel.GameObject,
-			WorldTransform = Attachment( "eject" )
+			WorldTransform = ViewModel?.Renderer?.GetAttachment( "eject" ) ?? default
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();

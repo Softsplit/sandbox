@@ -52,7 +52,7 @@
             {
                 toollist = body.Add.Panel("toollist");
                 {
-                    RebuildToolList();
+                    // RebuildToolList();
                 }
 
                 body.Add.Panel("inspector");
@@ -60,32 +60,9 @@
         }
     }
 
-    void RebuildToolList()
-	{
-		toollist.DeleteChildren( true );
-
-		foreach ( var entry in TypeLibrary.GetTypes<BaseTool>() )
-		{
-			if ( entry.Name == "BaseTool" )
-				continue;
-
-			var button = toollist.Add.Button( entry.Title );
-			button.SetClass( "active", entry.ClassName == ConsoleSystem.GetValue( "tool_current" ) );
-
-			button.AddEventListener( "onclick", () =>
-			{
-				SetActiveTool( entry.ClassName );
-
-				foreach ( var child in toollist.Children )
-					child.SetClass( "active", child == button );
-			} );
-		}
-	}
-
     void SetActiveTool(string className)
     {
         ConsoleSystem.Run("tool_current", className);
-        ConsoleSystem.Run("select_weapon", "Tool Gun");
     }
 
     public override void Tick()
