@@ -22,8 +22,6 @@ public static partial class SandboxBaseExtensions
 
 		if ( !string.IsNullOrWhiteSpace( decalPath ) )
 		{
-			// TODO: Fix decals for ragdolls
-
 			if ( ResourceLibrary.TryGet<DecalDefinition>( decalPath, out var decal ) )
 			{
 				var go = new GameObject
@@ -33,6 +31,12 @@ public static partial class SandboxBaseExtensions
 					WorldPosition = tr.EndPosition,
 					WorldRotation = Rotation.LookAt( -tr.Normal )
 				};
+
+				if ( tr.Component is ModelPhysics )
+				{
+					var decalHelper = go.AddComponent<DecalHelper>();
+					decalHelper.Body = tr.Body;
+				}
 
 				var randomDecal = decal.Decals[Random.Shared.Next( decal.Decals.Count )];
 
