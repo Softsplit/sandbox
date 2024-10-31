@@ -294,7 +294,17 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
-		return ( tr.Hit && tr.GameObject.IsValid() && tr.Component is not MapCollider && !tr.StartedSolid && !tr.Tags.Contains( "map" ) && !tr.Tags.Contains( "grabbed" ), tr);
+		return ( !(
+
+			!tr.Hit || 
+			!tr.GameObject.IsValid() || 
+			tr.Component is MapCollider || 
+			tr.StartedSolid || 
+			tr.Tags.Contains( "map" ) || 
+			tr.Tags.Contains( "grabbed" ) || 
+			(!tr.GameObject.Components.Get<Rigidbody>().IsValid() && !tr.GameObject.Components.Get<ModelPhysics>().IsValid)
+			
+			), tr);
 	}
 
 	[Broadcast]
