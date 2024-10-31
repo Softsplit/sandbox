@@ -147,6 +147,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	{
 		
 		var rootEnt = GrabbedObject;
+
 		if(!GrabbedObject.IsValid())
 		{
 			var tr = Scene.Trace.Ray( Owner.AimRay, MaxTargetDistance )
@@ -156,6 +157,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 			if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider ) return;
 			rootEnt = tr.GameObject.Root;
+
 		}
 
 		if ( !rootEnt.IsValid() ) return;
@@ -171,7 +173,14 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		for ( int i = 0; i < weldContexts.Count; i++ )
 		{
-			var body = weldContexts[i].Components.Get<Rigidbody>().PhysicsBody;
+			ModelPhysics modelPhysics = weldContexts[i].Components.Get<ModelPhysics>();
+			PhysicsBody body;
+
+			if(modelPhysics.IsValid()) body = modelPhysics.PhysicsGroup.GetBody(0);
+			else body = weldContexts[i].Components.Get<Rigidbody>().PhysicsBody;
+
+			Log.Info(body);
+
 			if ( !body.IsValid() ) continue;
 
 			if(body.PhysicsGroup.IsValid())
@@ -217,7 +226,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		CollectWelds( propHelper, result, visited );
 
-		List<GameObject> returned = new();
+		List<GameObject> returned = new List<GameObject>{ gameObject };
 
 		foreach ( PhysicsJoint joint in result )
 		{
