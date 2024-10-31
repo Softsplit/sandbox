@@ -7,8 +7,8 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "Pistol",
-        "__guid": "cb574604-c1d9-48bd-b11a-6d5ec811630e",
+        "__type": "ToolGun",
+        "__guid": "e1aead36-4b3e-4ce9-9bd6-9849b746adea",
         "BoneOffset": {
           "UniformScale": 1,
           "IsValid": true,
@@ -23,7 +23,7 @@
         "ParentBone": "hold_r",
         "PrimaryRate": 5,
         "ReloadTime": 3,
-        "SecondaryRate": 15,
+        "SecondaryRate": 5,
         "ViewModelPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"
@@ -35,13 +35,14 @@
         "__guid": "50945b1b-3a5c-4cb9-b98d-87a656031850",
         "Flags": 0,
         "Name": "Model",
+        "Position": "-2.555882,-0.0000001523425,-0.323567",
         "Enabled": true,
         "Components": [
           {
             "__type": "Sandbox.ModelRenderer",
             "__guid": "cb89f206-3e9d-4b0f-ba06-cc79d8e5b835",
             "BodyGroups": 18446744073709551615,
-            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+            "Model": "models/weapons/w_toolgun.vmdl",
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -84,8 +85,6 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
-  "__references": [
-    "rust.rust_pistol#43964"
-  ],
+  "__references": [],
   "__version": 1
 }

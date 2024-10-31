@@ -47,10 +47,19 @@
         "Enabled": true,
         "Components": [
           {
-            "__type": "Sandbox.ModelRenderer",
+            "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "c8e87934-13ac-442a-905a-58137f91baa8",
             "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
             "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -58,7 +67,8 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
-            "Tint": "1,1,1,1"
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
           }
         ]
       }
