@@ -151,7 +151,7 @@ public partial class BaseWeapon : Component
 		{
 			Name = particleSystem.Name,
 			Parent = ViewModel.GameObject,
-			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default,
+			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();

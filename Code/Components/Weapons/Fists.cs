@@ -1,4 +1,4 @@
-﻿[Spawnable, Library( "weapon_fists", Title = "Fists" )]
+﻿[Spawnable, Library( "weapon_fists" )]
 partial class Fists : BaseWeapon
 {
 	public override bool CanReload()

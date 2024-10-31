@@ -4,16 +4,16 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 {
 	[RequireComponent] public Player Player { get; set; }
 
-	public List<BaseWeapon> Weapons => Scene.Components.GetAll<BaseWeapon>( FindMode.EverythingInSelfAndDescendants ).Where( x => x.Network.OwnerId == Network.OwnerId ).ToList();
-
+	[Sync] public List<BaseWeapon> Weapons { get; set; } = new();
 	[Sync] public BaseWeapon ActiveWeapon { get; set; }
 
 	public void GiveDefaultWeapons()
 	{
 		Pickup( "prefabs/weapons/fists/w_fists.prefab", true );
 		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab", false );
-		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", false );
 		Pickup( "prefabs/weapons/mp5/w_mp5.prefab", false );
+		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", false );
+		Pickup( "prefabs/weapons/rpg/w_rpg.prefab", false );
 		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab", false );
 	}
 
@@ -51,11 +51,12 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 		IPlayerEvent.Post( e => e.OnWeaponAdded( Player, weapon ) );
 
+		Weapons.Add( weapon );
+
 		if ( equip )
 			SetActiveSlot( Weapons.IndexOf( weapon ) );
 	}
 
-	[Broadcast]
 	public void SetActiveSlot( int i )
 	{
 		var weapon = GetSlot( i );
@@ -82,7 +83,6 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		return Weapons[i];
 	}
 
-	[Broadcast]
 	public void SwitchActiveSlot( int idelta )
 	{
 		var count = Weapons.Count;
