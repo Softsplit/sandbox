@@ -79,7 +79,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		Rotation.SmoothDamp( HeldBody.Rotation, HoldRot, ref angularVelocity, 0.075f, Time.Delta );
 		HeldBody.AngularVelocity = angularVelocity;
 	}
-
+	bool grabbed;
 	public override void OnControl()
 	{
 		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
@@ -88,11 +88,21 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		base.OnControl();
 
-		if ( Input.Pressed( "attack1" ) )
+		if ( !GrabbedObject.IsValid() && Input.Down( "attack1" ) && !grabbed)
+		{
 			TryStartGrab();
+			grabbed = true;
+		}
 
 		if ( Input.Released( "attack1" ) )
+		{
 			TryEndGrab();
+			grabbed = false;
+		}
+			
+
+		if(Input.Pressed("reload") && Input.Down("run"))
+			TryUnfreezeAll();
 
 		if ( !GrabbedObject.IsValid() )
 			return;
@@ -129,21 +139,31 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		}
 	}
 
-	private void TryUnfreezeAll( Vector3 eyePos, Rotation eyeRot, Vector3 eyeDir )
+	[Broadcast]
+	private void TryUnfreezeAll( )
 	{
-		var tr = Scene.Trace.Ray( eyePos, eyePos + eyeDir * MaxTargetDistance )
+		
+		var rootEnt = GrabbedObject;
+		if(!GrabbedObject.IsValid())
+		{
+			var tr = Scene.Trace.Ray( Owner.AimRay, MaxTargetDistance )
 			.UseHitboxes()
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider ) return;
+			if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider ) return;
+			rootEnt = tr.GameObject.Root;
+		}
 
-		var rootEnt = tr.GameObject.Root;
 		if ( !rootEnt.IsValid() ) return;
 
-		var weldContexts = GetAllConnectedProps( rootEnt );
+		if(rootEnt.IsProxy)
+			return;
 
+		var weldContexts = GetAllConnectedProps( rootEnt );
 		bool unfrozen = false;
+
+		
 
 
 		for ( int i = 0; i < weldContexts.Count; i++ )
@@ -151,18 +171,35 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			var body = weldContexts[i].Components.Get<Rigidbody>().PhysicsBody;
 			if ( !body.IsValid() ) continue;
 
-			if ( body.BodyType == PhysicsBodyType.Static )
+			if(body.PhysicsGroup.IsValid())
 			{
-				body.BodyType = PhysicsBodyType.Dynamic;
-				unfrozen = true;
+				foreach(var b in body.PhysicsGroup.Bodies)
+				{
+					if ( b.BodyType == PhysicsBodyType.Static )
+					{
+						b.BodyType = PhysicsBodyType.Dynamic;
+						unfrozen = true;
+					}
+				}
+			}
+			else
+			{
+				if ( body.BodyType == PhysicsBodyType.Static )
+				{
+					body.BodyType = PhysicsBodyType.Dynamic;
+					unfrozen = true;	
+				}
 			}
 		}
-
+		
+		
 		if ( unfrozen )
 		{
 			// var freezeEffect = Particles.Create( "particles/physgun_freeze.vpcf" );
 			// freezeEffect.SetPosition( 0, tr.EndPosition );
 		}
+
+		
 	}
 
 	public static List<GameObject> GetAllConnectedProps( GameObject gameObject )
