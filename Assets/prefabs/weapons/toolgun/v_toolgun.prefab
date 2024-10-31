@@ -88,39 +88,6 @@
         "Enabled": true,
         "Children": [
           {
-            "__guid": "ae2f4577-9ba8-4b8e-97a1-c3e24deb2e75",
-            "Flags": 0,
-            "Name": "Object",
-            "Position": "0.5,0.00000001052067,-4.000001",
-            "Enabled": true,
-            "Components": [
-              {
-                "__type": "Sandbox.SkinnedModelRenderer",
-                "__guid": "b49d2bc8-41ca-4f9a-af8d-91e1eaf75f1b",
-                "BodyGroups": 18446744073709551615,
-                "CreateBoneObjects": false,
-                "Model": "models/weapons/sbox_toolgun/v_toolgun.vmdl",
-                "Morphs": {},
-                "Parameters": {
-                  "bools": {},
-                  "ints": {},
-                  "floats": {},
-                  "vectors": {},
-                  "rotations": {}
-                },
-                "RenderOptions": {
-                  "GameLayer": false,
-                  "OverlayLayer": true,
-                  "BloomLayer": false,
-                  "AfterUILayer": false
-                },
-                "RenderType": "Off",
-                "Tint": "1,1,1,1",
-                "UseAnimGraph": true
-              }
-            ]
-          },
-          {
             "__guid": "073168f9-7552-47fc-9e49-6fd35643c566",
             "Flags": 4,
             "Name": "weapon_root_children",
@@ -212,6 +179,39 @@
                     "Enabled": true
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "__guid": "ae2f4577-9ba8-4b8e-97a1-c3e24deb2e75",
+            "Flags": 0,
+            "Name": "Object",
+            "Position": "0.5,0.00000001052067,-4.000001",
+            "Enabled": true,
+            "Components": [
+              {
+                "__type": "Sandbox.SkinnedModelRenderer",
+                "__guid": "b49d2bc8-41ca-4f9a-af8d-91e1eaf75f1b",
+                "BodyGroups": 18446744073709551615,
+                "CreateBoneObjects": false,
+                "Model": "models/weapons/sbox_toolgun/v_toolgun.vmdl",
+                "Morphs": {},
+                "Parameters": {
+                  "bools": {},
+                  "ints": {},
+                  "floats": {},
+                  "vectors": {},
+                  "rotations": {}
+                },
+                "RenderOptions": {
+                  "GameLayer": false,
+                  "OverlayLayer": true,
+                  "BloomLayer": false,
+                  "AfterUILayer": false
+                },
+                "RenderType": "Off",
+                "Tint": "1,1,1,1",
+                "UseAnimGraph": true
               }
             ]
           }

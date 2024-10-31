@@ -3,7 +3,7 @@
     "__guid": "03cfc644-ef9c-44a5-a593-586029f17d9d",
     "Flags": 0,
     "Name": "w_toolgun",
-    "Tags": "weapon,item",
+    "Tags": "item,weapon",
     "Enabled": true,
     "Components": [
       {
@@ -20,6 +20,7 @@
         },
         "Handedness": "Right",
         "HoldType": "Pistol",
+        "Jump": false,
         "ParentBone": "hold_r",
         "PrimaryRate": 5,
         "ReloadTime": 3,
@@ -28,33 +29,33 @@
           "_type": "gameobject",
           "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"
         }
-      }
-    ],
-    "Children": [
+      },
       {
-        "__guid": "50945b1b-3a5c-4cb9-b98d-87a656031850",
-        "Flags": 0,
-        "Name": "Model",
-        "Position": "-2.555882,-0.0000001523425,-0.323567",
-        "Enabled": true,
-        "Components": [
-          {
-            "__type": "Sandbox.ModelRenderer",
-            "__guid": "cb89f206-3e9d-4b0f-ba06-cc79d8e5b835",
-            "BodyGroups": 18446744073709551615,
-            "Model": "models/weapons/w_toolgun.vmdl",
-            "RenderOptions": {
-              "GameLayer": true,
-              "OverlayLayer": false,
-              "BloomLayer": false,
-              "AfterUILayer": false
-            },
-            "RenderType": "On",
-            "Tint": "1,1,1,1"
-          }
-        ]
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "fce01b2d-5294-44a9-82ca-72e283239d28",
+        "BodyGroups": 18446744073709551615,
+        "CreateBoneObjects": false,
+        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
       }
     ],
+    "Children": [],
     "__variables": [],
     "__properties": {
       "FixedUpdateFrequency": 50,
@@ -85,6 +86,8 @@
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
   "ResourceVersion": 1,
-  "__references": [],
+  "__references": [
+    "rust.rust_pistol#43964"
+  ],
   "__version": 1
 }
