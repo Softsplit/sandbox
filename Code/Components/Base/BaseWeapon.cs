@@ -310,8 +310,30 @@ public partial class BaseWeapon : Component
 			// TODO: Make other non-host clients able to apply impulse too
 			if ( tr.Body.IsValid() )
 			{
-				tr.Body.ApplyImpulseAt( tr.EndPosition, forward * 5000 );
+				if ( tr.Body.GetComponent() is Rigidbody rigidbody )
+				{
+					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, (pos + dir * 5000) * force / tr.Body.Mass );
+				}
+				else if ( tr.Body.GetComponent() is ModelPhysics modelPhysics )
+				{
+					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, (pos + dir * 5000) * force );
+				}
 			}
+		}
+	}
+
+	[Broadcast]
+	private void BroadcastApplyImpulseAt( Component body, Vector3 position, Vector3 force )
+	{
+		if ( !Networking.IsHost ) return;
+
+		if ( body is Rigidbody rigidbody )
+		{
+			rigidbody.ApplyImpulseAt( position, force );
+		}
+		else if ( body is ModelPhysics modelPhysics )
+		{
+			modelPhysics.PhysicsGroup.ApplyImpulse( force / modelPhysics.PhysicsGroup.Mass, true );
 		}
 	}
 

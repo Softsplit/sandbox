@@ -9,12 +9,12 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	public void GiveDefaultWeapons()
 	{
-		Pickup( "prefabs/weapons/fists/w_fists.prefab", true );
-		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab", false );
-		Pickup( "prefabs/weapons/mp5/w_mp5.prefab", false );
-		Pickup( "prefabs/weapons/pistol/w_pistol.prefab", false );
-		Pickup( "prefabs/weapons/rpg/w_rpg.prefab", false );
-		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab", false );
+		Pickup( "prefabs/weapons/fists/w_fists.prefab" );
+		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab" );
+		Pickup( "prefabs/weapons/mp5/w_mp5.prefab" );
+		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
+		Pickup( "prefabs/weapons/rpg/w_rpg.prefab" );
+		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab" );
 	}
 
 	protected override void OnUpdate()
@@ -40,23 +40,26 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		if ( Input.MouseWheel != 0 ) SwitchActiveSlot( (int)Input.MouseWheel.y );
 	}
 
-	private void Pickup( string prefabName, bool equip = true )
+	private void Pickup( string prefabName )
 	{
 		var prefab = GameObject.Clone( prefabName, new CloneConfig { Parent = GameObject, StartEnabled = false } );
 		prefab.NetworkSpawn( false, Network.Owner );
 
 		var weapon = prefab.Components.Get<BaseWeapon>( true );
-
 		Assert.NotNull( weapon );
 
+		BroadcastPickup( weapon );
+
 		IPlayerEvent.Post( e => e.OnWeaponAdded( Player, weapon ) );
-
-		Weapons.Add( weapon );
-
-		if ( equip )
-			SetActiveSlot( Weapons.IndexOf( weapon ) );
 	}
 
+	[Broadcast]
+	private void BroadcastPickup( BaseWeapon weapon )
+	{
+		Weapons.Add( weapon );
+	}
+
+	[Broadcast]
 	public void SetActiveSlot( int i )
 	{
 		var weapon = GetSlot( i );
@@ -83,12 +86,27 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		return Weapons[i];
 	}
 
+	public int GetActiveSlot()
+	{
+		var aw = ActiveWeapon;
+		var count = Weapons.Count;
+
+		for ( int i = 0; i < count; i++ )
+		{
+			if ( Weapons[i] == aw )
+				return i;
+		}
+
+		return -1;
+	}
+
 	public void SwitchActiveSlot( int idelta )
 	{
 		var count = Weapons.Count;
 		if ( count == 0 ) return;
 
-		var nextSlot = Weapons.IndexOf( ActiveWeapon ) + idelta;
+		var slot = GetActiveSlot();
+		var nextSlot = slot + idelta;
 
 		while ( nextSlot < 0 ) nextSlot += count;
 		while ( nextSlot >= count ) nextSlot -= count;
@@ -102,6 +120,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 			return;
 
 		GiveDefaultWeapons();
+		SetActiveSlot( 0 );
 	}
 
 	void IPlayerEvent.OnDied( Player player )

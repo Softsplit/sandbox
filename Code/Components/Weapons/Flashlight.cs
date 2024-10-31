@@ -93,14 +93,35 @@ partial class Flashlight : BaseWeapon
 				player.TakeDamage( 25 );
 			}
 
-			// TODO: Make other non-host clients able to apply impulse too
 			if ( tr.Body.IsValid() )
 			{
-				tr.Body.ApplyImpulseAt( tr.EndPosition, forward * 100 );
+				if ( tr.Body.GetComponent() is Rigidbody rigidbody )
+				{
+					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, ray.Position + forward * 80 * 100 / tr.Body.Mass );
+				}
+				else if ( tr.Body.GetComponent() is ModelPhysics modelPhysics )
+				{
+					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, ray.Position + forward * 80 * 100 );
+				}
 			}
 		}
 
 		return hit;
+	}
+
+	[Broadcast]
+	private void BroadcastApplyImpulseAt( Component body, Vector3 position, Vector3 force )
+	{
+		if ( !Networking.IsHost ) return;
+
+		if ( body is Rigidbody rigidbody )
+		{
+			rigidbody.ApplyImpulseAt( position, force );
+		}
+		else if ( body is ModelPhysics modelPhysics )
+		{
+			modelPhysics.PhysicsGroup.ApplyImpulse( force / modelPhysics.PhysicsGroup.Mass, true );
+		}
 	}
 
 	private void OnMeleeMiss()

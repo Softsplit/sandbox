@@ -1,5 +1,3 @@
-namespace Sandbox;
-
 /// <summary>
 /// Extensions for Surfaces
 /// </summary>
@@ -61,7 +59,7 @@ public static partial class SandboxBaseExtensions
 
 		if ( !string.IsNullOrWhiteSpace( sound ) )
 		{
-			Sound.Play( sound, tr.EndPosition );
+			BroadcastDoBulletImpact( sound, tr.EndPosition );
 		}
 
 		//
@@ -104,5 +102,11 @@ public static partial class SandboxBaseExtensions
 		}
 
 		return default;
+	}
+
+	[Broadcast]
+	private static void BroadcastDoBulletImpact( string eventName, Vector3 position )
+	{
+		Sound.Play( eventName, position );
 	}
 }
