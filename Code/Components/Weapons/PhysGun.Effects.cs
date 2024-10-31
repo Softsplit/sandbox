@@ -12,13 +12,18 @@
 		Beam?.GameObject.Destroy();
 		Beam = null;
 		// BeamLight = null;
-
-		EndNoHit?.GameObject.Destroy();
+		EndNoHit?.GameObject?.Destroy();
 		EndNoHit = null;
 
-		if ( lastGrabbedObject.IsValid() )
+		DisableHighlights(lastGrabbedObject);
+		lastGrabbedObject = null;
+	}
+
+	void DisableHighlights(GameObject gameObject)
+	{
+		if ( gameObject.IsValid() )
 		{
-			foreach ( var child in lastGrabbedObject.Children )
+			foreach ( var child in gameObject.Children )
 			{
 				if ( !child.Components.Get<ModelRenderer>().IsValid() )
 					continue;
@@ -29,21 +34,23 @@
 				}
 			}
 
-			if ( lastGrabbedObject.Components.TryGet<HighlightOutline>( out var glow ) )
+			if ( gameObject.Components.TryGet<HighlightOutline>( out var glow ) )
 			{
 				glow.Enabled = false;
 			}
-
-			lastGrabbedObject = null;
 		}
 	}
 
 	protected virtual void UpdateEffects()
 	{
-		if ( Owner == null || !GrabbedObject.IsValid() || !Owner.GameObject.IsDescendant( GameObject ) )
+		if ( Owner == null || !Beaming || !Owner.GameObject.IsDescendant( GameObject ) )
 		{
 			KillEffects();
 			return;
+		}
+		if (grabbed && !GrabbedObject.IsValid())
+		{
+			DisableHighlights(lastGrabbedObject);
 		}
 
 		var startPos = Owner.EyeTransform.Position;
@@ -105,12 +112,13 @@
 		}
 		else
 		{
-			lastBeamPos = Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
+			lastBeamPos = tr.EndPosition; Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
 			Beam.SceneObject.SetControlPoint( 1, lastBeamPos );
 
 			EndNoHit ??= CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
 
 			EndNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
+			EndNoHit.WorldPosition = lastBeamPos;
 		}
 
 	}
@@ -128,5 +136,10 @@
 			return;
 
 		KillEffects();
+	}
+
+	void FreezeEffects()
+	{
+		 CreateParticleSystem( "particles/physgun_freeze.vpcf", new Transform( lastBeamPos ), 4 );
 	}
 }

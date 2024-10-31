@@ -12,6 +12,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Property] public float RotateSpeed { get; set; } = 0.125f;
 	[Property] public float RotateSnapAt { get; set; } = 45.0f;
 
+	[Sync] public bool Beaming { get; set; }
 	[Sync] public Vector3 HoldPos { get; set; }
 	[Sync] public Rotation HoldRot { get; set; }
 	[Sync] public GameObject GrabbedObject { get; set; }
@@ -86,13 +87,12 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		Owner.Controller.UseCameraControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
+		Beaming = Input.Down("attack1");
+
 		base.OnControl();
 
-		if ( !GrabbedObject.IsValid() && Input.Down( "attack1" ) && !grabbed)
-		{
-			TryStartGrab();
+		if ( !GrabbedObject.IsValid() && Beaming && !grabbed && TryStartGrab())
 			grabbed = true;
-		}
 
 		if ( Input.Released( "attack1" ) )
 		{
@@ -254,15 +254,16 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		}
 	}
 
-	private void TryStartGrab()
+	private bool TryStartGrab()
 	{
+		Log.Info("yo mamam");
 		var tr = Scene.Trace.Ray( Owner.AimRay, 1024f )
 			.UseHitboxes()
 			.WithAnyTags( "solid", "player", "debris", "nocollide" )
 			.IgnoreGameObjectHierarchy( GameObject.Root )
 			.Run();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) || tr.Tags.Contains( "grabbed" ) ) return;
+		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) || tr.Tags.Contains( "grabbed" ) ) return false;
 
 		var rootEnt = tr.GameObject;
 		GrabbedObject = rootEnt;
@@ -283,6 +284,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		
 		UnFreeze();
+
+		return true;
 	}
 
 	[Broadcast]
@@ -312,6 +315,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	public void Freeze()
 	{
 		HeldBody.BodyType = PhysicsBodyType.Static;
+		FreezeEffects();
 	}
 
 	[Broadcast]
