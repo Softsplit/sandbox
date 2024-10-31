@@ -98,6 +98,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		if ( !GrabbedObject.IsValid() && Beaming && !grabbed && TryStartGrab())
 			grabbed = true;
+		
+		if(Beaming && !GrabbedObject.IsValid() && !Grab().isValid)
+			grabbed = false;
 
 		if ( Input.Released( "attack1" ) )
 		{
@@ -256,13 +259,10 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	private bool TryStartGrab()
 	{
-		var tr = Scene.Trace.Ray( Owner.AimRay, 1024f )
-			.UseHitboxes()
-			.WithAnyTags( "solid", "player", "debris", "nocollide" )
-			.IgnoreGameObjectHierarchy( GameObject.Root )
-			.Run();
+		(var isValid, var tr) = Grab();
 
-		if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider || tr.StartedSolid || tr.Tags.Contains( "map" ) || tr.Tags.Contains( "grabbed" ) ) return false;
+		if(!isValid)
+			return false;
 
 		var rootEnt = tr.GameObject;
 		GrabbedObject = rootEnt;
@@ -284,6 +284,17 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		UnFreeze(GrabbedObject,GrabbedBone);
 
 		return true;
+	}
+
+	(bool isValid, SceneTraceResult result) Grab()
+	{
+		var tr = Scene.Trace.Ray( Owner.AimRay, 1024f )
+			.UseHitboxes()
+			.WithAnyTags( "solid", "player", "debris", "nocollide" )
+			.IgnoreGameObjectHierarchy( GameObject.Root )
+			.Run();
+
+		return ( tr.Hit && tr.GameObject.IsValid() && tr.Component is not MapCollider && !tr.StartedSolid && !tr.Tags.Contains( "map" ) && !tr.Tags.Contains( "grabbed" ), tr);
 	}
 
 	[Broadcast]
