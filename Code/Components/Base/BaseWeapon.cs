@@ -32,7 +32,7 @@ public partial class BaseWeapon : Component
 
 	public Transform Attachment( string name )
 	{
-		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? default;
+		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()

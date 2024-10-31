@@ -28,20 +28,25 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		{
 			if ( GrabbedObject != lastGrabbed && GrabbedObject != null )
 			{
-				if ( GrabbedBone > -1 )
-				{
-					ModelPhysics modelPhysics = GrabbedObject.Components.Get<ModelPhysics>();
-					_heldBody = modelPhysics.PhysicsGroup.GetBody( GrabbedBone );
-				}
-				else
-				{
-					Rigidbody rigidbody = GrabbedObject.Components.Get<Rigidbody>();
-					_heldBody = rigidbody.PhysicsBody;
-				}
+				_heldBody = GetBody(GrabbedObject, GrabbedBone);
 			}
 
 			lastGrabbed = GrabbedObject;
 			return _heldBody;
+		}
+	}
+
+	PhysicsBody GetBody(GameObject gameObject, int bone)
+	{
+		if ( bone > -1 )
+		{
+			ModelPhysics modelPhysics = gameObject.Components.Get<ModelPhysics>();
+			return modelPhysics.PhysicsGroup.GetBody( bone );
+		}
+		else
+		{
+			Rigidbody rigidbody = gameObject.Components.Get<Rigidbody>();
+			return rigidbody.PhysicsBody;
 		}
 	}
 
@@ -109,12 +114,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		if ( Input.Pressed( "attack2" ) )
 		{
-			Freeze();
-
-			if ( GrabbedObject.IsValid() )
-			{
-			}
-
+			Freeze(GrabbedObject,GrabbedBone);
 			GrabbedObject = null;
 			return;
 		}
@@ -282,8 +282,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		GrabbedPos = tr.Body.Transform.PointToLocal( tr.EndPosition );
 
-		
-		UnFreeze();
+		UnFreeze(GrabbedObject,GrabbedBone);
 
 		return true;
 	}
@@ -312,15 +311,15 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	}
 
 	[Broadcast]
-	public void Freeze()
+	public void Freeze(GameObject gameObject, int bone)
 	{
-		HeldBody.BodyType = PhysicsBodyType.Static;
+		GetBody(gameObject,bone).BodyType = PhysicsBodyType.Static;
 		FreezeEffects();
 	}
 
 	[Broadcast]
-	public void UnFreeze()
+	public void UnFreeze(GameObject gameObject, int bone)
 	{
-		HeldBody.BodyType = PhysicsBodyType.Dynamic;
+		GetBody(gameObject,bone).BodyType = PhysicsBodyType.Dynamic;
 	}
 }
