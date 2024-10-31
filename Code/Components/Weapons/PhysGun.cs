@@ -256,7 +256,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	private bool TryStartGrab()
 	{
-		Log.Info("yo mamam");
 		var tr = Scene.Trace.Ray( Owner.AimRay, 1024f )
 			.UseHitboxes()
 			.WithAnyTags( "solid", "player", "debris", "nocollide" )
