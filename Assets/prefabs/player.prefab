@@ -41,7 +41,7 @@
         "RotationAngleLimit": 45,
         "RotationSpeed": 1,
         "RunSpeed": 190,
-        "ShowColliderComponents": false,
+        "ShowColliderComponents": true,
         "ShowRigidbodyComponent": false,
         "SprintSpeed": 320,
         "ThirdPerson": false,
@@ -137,6 +137,7 @@
         "Radius": 11.313708,
         "Start": "0,0,60.68629",
         "Static": false,
+        "Surface": "surfaces/flesh.surface",
         "SurfaceVelocity": "0,0,0"
       },
       {
@@ -147,6 +148,7 @@
         "IsTrigger": false,
         "Scale": "16,16,36",
         "Static": false,
+        "Surface": "surfaces/flesh.surface",
         "SurfaceVelocity": "0,0,0"
       },
       {

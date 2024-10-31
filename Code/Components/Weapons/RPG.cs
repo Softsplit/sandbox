@@ -1,18 +1,12 @@
-﻿using System.Net.Mail;
-
-[Spawnable, Library( "weapon_mp5", Title = "MP5" )]
-partial class MP5 : BaseWeapon
+[Spawnable, Library( "weapon_rpg" )]
+partial class RPG : BaseWeapon
 {
-	protected ParticleSystem EjectBrass => Cloud.ParticleSystem( "facepunch.9mm_ejectbrass" );
-
 	public override void AttackPrimary()
 	{
 		TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 
 		BroadcastAttackPrimary();
-
-		ViewModel?.Renderer?.Set( "b_attack", true );
 
 		//
 		// Tell the clients to play the shoot effects
@@ -32,24 +26,10 @@ partial class MP5 : BaseWeapon
 		Sound.Play( "rust_smg.shoot", WorldPosition );
 	}
 
-	public override void OnControl()
+	public override void AttackSecondary()
 	{
-		base.OnControl();
-
-		var attackHold = !IsReloading && Input.Down( "attack1" ) ? 1.0f : 0.0f;
-
-		BroadcastOnControl( attackHold );
-
-		ViewModel?.Renderer?.Set( "attack_hold", attackHold );
+		// Grenade lob
 	}
-
-	[Broadcast]
-	private void BroadcastOnControl( float attackHold )
-	{
-		Owner?.Controller?.Renderer?.Set( "attack_hold", attackHold );
-	}
-
-	// TODO: Probably should unify these particle methods + make it work for world models
 
 	protected override void ShootEffects()
 	{
@@ -58,15 +38,17 @@ partial class MP5 : BaseWeapon
 		if ( ViewModel.Tags.Has( "viewer" ) )
 			return;
 
+		var particleSystem = ParticleSystem.Load( "particles/pistol_ejectbrass.vpcf" );
+
 		var go = new GameObject
 		{
-			Name = EjectBrass.Name,
+			Name = particleSystem.Name,
 			Parent = ViewModel.GameObject,
-			WorldTransform = Attachment( "eject" )
+			WorldTransform = ViewModel?.Renderer?.GetAttachment( "ejection_point" ) ?? default
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
-		legacyParticleSystem.Particles = EjectBrass;
+		legacyParticleSystem.Particles = particleSystem;
 		legacyParticleSystem.ControlPoints = new()
 		{
 			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }

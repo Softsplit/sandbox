@@ -1,4 +1,4 @@
-﻿[Spawnable, Library( "weapon_shotgun", Title = "Shotgun" )]
+﻿[Spawnable, Library( "weapon_shotgun" )]
 partial class Shotgun : BaseWeapon
 {
 	public override void AttackPrimary()

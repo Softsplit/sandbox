@@ -23,6 +23,12 @@ public class ViewModel : Component
 
 	private bool activated = false;
 
+	protected override void OnEnabled()
+	{
+		Renderer?.ClearParameters();
+		Renderer?.Set( "b_deploy", true );
+	}
+
 	protected override void OnPreRender()
 	{
 		if ( !Player.FindLocalPlayer().IsValid() )
