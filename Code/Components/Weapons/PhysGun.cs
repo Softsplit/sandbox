@@ -297,7 +297,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	(bool isValid, SceneTraceResult result) Grab()
 	{
-		var tr = Scene.Trace.Ray( Owner.AimRay, 1024f )
+		var tr = Scene.Trace.Ray( Owner.AimRay, MaxTargetDistance )
 			.UseHitboxes()
 			.WithAnyTags( "solid", "player", "debris", "nocollide" )
 			.IgnoreGameObjectHierarchy( GameObject.Root )
