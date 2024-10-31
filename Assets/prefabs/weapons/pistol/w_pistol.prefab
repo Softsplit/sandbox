@@ -1,0 +1,112 @@
+{
+  "RootObject": {
+    "__guid": "eccd8528-3b35-4c82-81c8-81e7d8ca28c4",
+    "Flags": 0,
+    "Name": "w_pistol",
+    "Tags": "item,weapon",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Pistol",
+        "__guid": "abb9f231-0776-4973-95c6-0a95fcf36de3",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Position": "2.7735,0,-4.794",
+            "Forward": "1,0,0"
+          },
+          "Position": "2.7735,0,-4.794",
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "HoldType": "Pistol",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 15,
+        "ReloadTime": 1.5,
+        "SecondaryRate": 1,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/pistol/v_pistol.prefab"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "9aa96ce8-1b9c-45a2-afb6-b0dc6c271685",
+        "Flags": 0,
+        "Name": "Model",
+        "Scale": "1.5,1.5,1.5",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "236b1467-27ee-4305-b074-657d3b39b1db",
+            "BodyGroups": 9493,
+            "CreateBoneObjects": true,
+            "Model": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "5d277124-bd4b-456c-8703-0e28a93bf4bd",
+            "Flags": 4,
+            "Name": "hold_R",
+            "Position": "-1.848641,0,3.195872",
+            "Enabled": true
+          }
+        ]
+      }
+    ],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [
+    "facepunch.w_usp#33631"
+  ],
+  "__version": 1
+}

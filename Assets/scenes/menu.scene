@@ -1,0 +1,73 @@
+{
+  "__guid": "355f6036-02ca-4930-b9e1-80283f434d3f",
+  "GameObjects": [
+    {
+      "__guid": "42da5338-2ac7-489b-8408-40ba9fc08680",
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "d8941553-177e-4738-bb9b-c19e20c07bdc",
+          "SceneTags": "",
+          "Title": "menu"
+        }
+      ]
+    },
+    {
+      "__guid": "7747ef44-adc0-4b45-8674-295d9376aaaf",
+      "Flags": 0,
+      "Name": "UI",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "625d9dd5-6d5d-4637-b98b-90e57995dd0a",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "FollowDesktopScaling",
+          "ZIndex": 100
+        },
+        {
+          "__type": "MainMenuPanel",
+          "__guid": "75e769af-c781-4d91-a846-a71069a34eb2",
+          "GameScene": "scenes/game.scene",
+          "InGame": false,
+          "MenuScene": "scenes/menu.scene"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "NetworkInterpolation": true,
+    "PhysicsSubSteps": 1,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "Metadata": {
+      "Title": "menu"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "ResourceVersion": 2,
+  "Title": "menu",
+  "Description": null,
+  "__references": [],
+  "__version": 2
+}

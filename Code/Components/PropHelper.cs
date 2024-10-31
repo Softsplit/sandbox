@@ -1,8 +1,6 @@
 /// <summary>
-/// A component to help deal with Props.
+/// A component to help deal with props.
 /// </summary>
-
-using Sandbox.Physics;
 public sealed class PropHelper : Component, Component.ICollisionListener
 {
 	public struct BodyInfo
@@ -18,15 +16,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public ModelPhysics ModelPhysics { get; set; }
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
-	public List<Sandbox.Physics.FixedJoint> Welds {get;set;} = new();
-	public List<PhysicsJoint> Joints {get;set;} = new();
 
 	private Vector3 lastPosition = Vector3.Zero;
 
 	protected override void OnStart()
 	{
-		Welds = new List<Sandbox.Physics.FixedJoint>();
-		Joints = new List<PhysicsJoint>();
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
@@ -57,68 +51,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var gib in gibs )
 		{
-			gib.Tags.Add( "solid" );
+			gib.Tags.Add( "debris" );
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
 
 		GameObject.DestroyImmediate();
-	}
-
-	public void AddForce( int bodyIndex, Vector3 force )
-	{
-		if ( IsProxy )
-			return;
-
-		var body = ModelPhysics?.PhysicsGroup?.GetBody( bodyIndex );
-		if ( body.IsValid() )
-		{
-			body.ApplyForce( force );
-		}
-		else if ( bodyIndex == 0 && Rigidbody.IsValid() )
-		{
-			Rigidbody.Velocity += force / Rigidbody.PhysicsBody.Mass;
-		}
-	}
-
-	public async void AddDamagingForce( Vector3 force, float damage )
-	{
-		if ( IsProxy )
-			return;
-
-		if ( ModelPhysics.IsValid() )
-		{
-			foreach ( var body in ModelPhysics.PhysicsGroup.Bodies )
-			{
-				AddForce( body.GroupIndex, force );
-			}
-		}
-		else
-		{
-			AddForce( 0, force );
-		}
-
-		await GameTask.DelaySeconds( 1f / Scene.FixedUpdateFrequency + 0.05f );
-
-		Damage( damage );
-	}
-
-	[Broadcast]
-	public void BroadcastAddForce( int bodyIndex, Vector3 force )
-	{
-		if ( IsProxy )
-			return;
-
-		AddForce( bodyIndex, force );
-	}
-
-	[Broadcast]
-	public void BroadcastAddDamagingForce( Vector3 force, float damage )
-	{
-		if ( IsProxy )
-			return;
-
-		AddDamagingForce( force, damage );
 	}
 
 	protected override void OnFixedUpdate()
@@ -146,12 +84,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		{
 			var rootBody = FindRootBody();
 
-			if ( NetworkedBodies is null )
-				return;
-
 			foreach ( var (groupId, info) in NetworkedBodies )
 			{
 				var group = ModelPhysics.PhysicsGroup.GetBody( groupId );
+				if ( !group.IsValid() ) continue;
+
 				group.Transform = info.Transform;
 				group.BodyType = info.Type;
 			}
@@ -193,51 +130,24 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
-		var speed = Velocity.Length;
-		var otherSpeed = collision.Other.Body.Velocity.Length;
+		float minDamageVelocity = 750f;
+		float relativeVelocity = collision.Contact.Speed.Length;
 
-		if ( otherSpeed > speed )
-			speed = otherSpeed;
-
-		if ( speed >= 500f )
+		if ( relativeVelocity > minDamageVelocity )
 		{
-			var dmg = speed * Rigidbody.Mass * 0.000015f;
+			float impactForce = collision.Other.Body.Mass * relativeVelocity;
+			float damage = (impactForce - minDamageVelocity) * 8f;
 
-			Damage( dmg );
+			Damage( damage );
 
-			if ( collision.Other.GameObject.Root.Components.TryGet<IDamageable>( out var damageable ) )
+			if ( collision.Other.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 			{
-				damageable.OnDamage( new DamageInfo( dmg, GameObject, null ) );
+				prop.Damage( damage );
+			}
+			else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
+			{
+				player.TakeDamage( damage );
 			}
 		}
-	}
-	[Broadcast]
-	public void Weld (GameObject to, Vector3 fromPoint, Vector3 toPoint)
-	{
-		PropHelper propHelper = to.Components.Get<PropHelper>();
-		Rigidbody connectedBody = to.Components.Get<Rigidbody>();
-		
-		if(!connectedBody.IsValid())
-			return;
-
-		var point1 = new PhysicsPoint(Rigidbody.PhysicsBody, fromPoint);
-		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, toPoint);
-		var fixedJoint = PhysicsJoint.CreateFixed(point1,point2);
-		Welds.Add(fixedJoint);
-		Joints.Add(fixedJoint);
-		propHelper?.Welds.Add(fixedJoint);
-		propHelper?.Joints.Add(fixedJoint);
-	}
-
-	[Broadcast]
-	public void UnWeld()
-	{
-		foreach(var weld in Welds)
-		{
-			weld?.Remove();
-		}
-
-		Welds.RemoveAll(item => !item.IsValid());
-		Joints.RemoveAll(item => !item.IsValid());
 	}
 }

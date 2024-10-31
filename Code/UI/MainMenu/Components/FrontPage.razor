@@ -1,0 +1,52 @@
+@using Sandbox.UI
+
+@inherits Panel
+
+<root style="flex-direction: column;">
+    <div class="game-title">
+        Sandbox Classic
+    </div>
+
+    <div class="controls">
+        @if (MainMenuPanel.Current?.InGame == true)
+        {
+            <a class="button" onclick=@LeaveGame>Leave Game</a>
+            <span style="height: 20px;"></span>
+        }
+        else
+        {
+            <a class="button" onclick="@CreateNewGame">Create Game</a>
+        }
+
+        <a class="button" onclick="@OpenServerList">Find a Game</a>
+        <a class="button" onclick="@Game.Overlay.ShowBinds">Settings</a>
+        <span style="height: 20px;"></span>
+        <a class="button" @onclick=@Game.Close>Quit</a>
+    </div>
+</root>
+
+@code
+{
+    void LeaveGame()
+    {
+        Networking.Disconnect();
+        Scene.Load(MainMenuPanel.Current.MenuScene);
+    }
+
+    void CreateNewGame()
+    {
+        Game.Overlay.ShowPackageSelector("type:map sort:trending", (package) =>
+        {
+            LaunchArguments.Map = package.FullIdent;
+            Scene.Load(MainMenuPanel.Current.GameScene);
+        });
+    }
+
+    void OpenServerList()
+    {
+        var options = new Sandbox.Modals.ServerListConfig();
+        options.GamePackageFilter = "softsplit.sandbox";
+
+        Game.Overlay.ShowServerList(options);
+    }
+}

@@ -1,0 +1,108 @@
+namespace Sandbox;
+
+/// <summary>
+/// Extensions for Surfaces
+/// </summary>
+public static partial class SandboxBaseExtensions
+{
+	/// <summary>
+	/// Create a particle effect and play an impact sound for this surface being hit by a bullet
+	/// </summary>
+	public static LegacyParticleSystem DoBulletImpact( this Surface self, SceneTraceResult tr )
+	{
+		//
+		// Drop a decal
+		//
+		var decalPath = Game.Random.FromList( self.ImpactEffects.BulletDecal );
+
+		var surf = self.GetBaseSurface();
+		while ( string.IsNullOrWhiteSpace( decalPath ) && surf != null )
+		{
+			decalPath = Game.Random.FromList( surf.ImpactEffects.BulletDecal );
+			surf = surf.GetBaseSurface();
+		}
+
+		if ( !string.IsNullOrWhiteSpace( decalPath ) )
+		{
+			// TODO: Fix decals for ragdolls
+
+			if ( ResourceLibrary.TryGet<DecalDefinition>( decalPath, out var decal ) )
+			{
+				var go = new GameObject
+				{
+					Name = decalPath,
+					Parent = tr.GameObject,
+					WorldPosition = tr.EndPosition,
+					WorldRotation = Rotation.LookAt( -tr.Normal )
+				};
+
+				var randomDecal = decal.Decals[Random.Shared.Next( decal.Decals.Count )];
+
+				var decalRenderer = go.AddComponent<DecalRenderer>();
+				decalRenderer.Material = randomDecal.Material;
+				decalRenderer.Size = new Vector3( randomDecal.Width.GetValue(), randomDecal.Height.GetValue(), randomDecal.Depth.GetValue() );
+
+				go.NetworkSpawn();
+				go.DestroyAsync( 10f );
+			}
+		}
+
+		//
+		// Make an impact sound
+		//
+		var sound = self.Sounds.Bullet;
+
+		surf = self.GetBaseSurface();
+		while ( string.IsNullOrWhiteSpace( sound ) && surf != null )
+		{
+			sound = surf.Sounds.Bullet;
+			surf = surf.GetBaseSurface();
+		}
+
+		if ( !string.IsNullOrWhiteSpace( sound ) )
+		{
+			Sound.Play( sound, tr.EndPosition );
+		}
+
+		//
+		// Get us a particle effect
+		//
+
+		string particleName = Game.Random.FromList( self.ImpactEffects.Bullet );
+		if ( string.IsNullOrWhiteSpace( particleName ) ) particleName = Game.Random.FromList( self.ImpactEffects.Regular );
+
+		surf = self.GetBaseSurface();
+		while ( string.IsNullOrWhiteSpace( particleName ) && surf != null )
+		{
+			particleName = Game.Random.FromList( surf.ImpactEffects.Bullet );
+			if ( string.IsNullOrWhiteSpace( particleName ) ) particleName = Game.Random.FromList( surf.ImpactEffects.Regular );
+
+			surf = surf.GetBaseSurface();
+		}
+
+		if ( !string.IsNullOrWhiteSpace( particleName ) )
+		{
+			var go = new GameObject
+			{
+				Name = particleName,
+				Parent = tr.GameObject,
+				WorldPosition = tr.EndPosition,
+				WorldRotation = Rotation.LookAt( tr.Normal )
+			};
+
+			var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
+			legacyParticleSystem.Particles = ParticleSystem.Load( particleName );
+			legacyParticleSystem.ControlPoints = new()
+			{
+				new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
+			};
+
+			go.NetworkSpawn();
+			go.DestroyAsync( 5f );
+
+			return legacyParticleSystem;
+		}
+
+		return default;
+	}
+}

@@ -1,0 +1,170 @@
+{
+  "RootObject": {
+    "__guid": "bb7e21a3-4f2e-4c7b-8773-a7d8934c6ddf",
+    "Flags": 0,
+    "Name": "w_flashlight",
+    "Tags": "item,weapon",
+    "Enabled": true,
+    "Components": [
+      {
+        "__type": "Flashlight",
+        "__guid": "a35a10db-1219-442b-a797-07d7aadd2056",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "Handedness": "Right",
+        "HoldType": "Pistol",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 5,
+        "ReloadTime": 3,
+        "SecondaryRate": 2,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/flashlight/v_flashlight.prefab"
+        }
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "3b94d97a-950c-47ae-b333-79b81a8b4ded",
+        "Flags": 0,
+        "Name": "Model",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "0013209e-10b3-4e51-9a25-00829a173a25",
+            "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": true,
+            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "b84402be-4737-4064-87b1-c62e29ee3e50",
+            "Flags": 4,
+            "Name": "ROOT_pistol",
+            "Position": "2.752901,-0.0000005930261,-3.479736",
+            "Rotation": "0.1620653,0.6882837,0.6882841,-0.1620654",
+            "Enabled": true,
+            "Children": [
+              {
+                "__guid": "c505af6b-bf10-4acd-b1fb-31dcdc1b1573",
+                "Flags": 4,
+                "Name": "joint2",
+                "Position": "6.821134,-0.00000333786,0.000001554037",
+                "Rotation": "-0.1620654,-0.6882836,-0.1620655,0.6882843",
+                "Enabled": true,
+                "Children": [
+                  {
+                    "__guid": "cc8f00df-3882-4934-ae7f-d964a92a670c",
+                    "Flags": 4,
+                    "Name": "slide",
+                    "Position": "0.00001195189,5.020038,1.959041",
+                    "Rotation": "-0.0000004078367,-0.7071063,-0.000000565918,0.7071071",
+                    "Tags": "light_spot,light",
+                    "Enabled": true,
+                    "Children": [
+                      {
+                        "__guid": "736fe0d7-8351-4236-a6e3-3f1effe2739a",
+                        "Flags": 4,
+                        "Name": "joint4",
+                        "Position": "8.605772,0.000007629395,-0.000006145619",
+                        "Rotation": "-0.0000004296818,0.7071064,0.0000003664614,0.7071072",
+                        "Enabled": true
+                      },
+                      {
+                        "__guid": "b31b1242-f20d-486d-b856-4fc80e29d9ab",
+                        "Flags": 0,
+                        "Name": "Light",
+                        "Position": "11.5,0.0000007704483,-0.000009289341",
+                        "Enabled": true,
+                        "Components": [
+                          {
+                            "__type": "Sandbox.SpotLight",
+                            "__guid": "1d63e8f6-9d57-45a1-a714-225d9b75d530",
+                            "Attenuation": 1,
+                            "ConeInner": 20,
+                            "ConeOuter": 40,
+                            "Cookie": "materials/effects/lightcookie.vtex",
+                            "FogMode": "Enabled",
+                            "FogStrength": 1,
+                            "LightColor": "1,1,1,1",
+                            "Radius": 512,
+                            "Shadows": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "__guid": "778cf941-6203-44ef-bb4f-6b60dbfc6457",
+            "Flags": 4,
+            "Name": "hold_R",
+            "Enabled": true
+          }
+        ]
+      }
+    ],
+    "__variables": [],
+    "__properties": {
+      "FixedUpdateFrequency": 50,
+      "MaxFixedUpdates": 5,
+      "NetworkFrequency": 30,
+      "NetworkInterpolation": true,
+      "PhysicsSubSteps": 1,
+      "ThreadedAnimation": true,
+      "TimeScale": 1,
+      "UseFixedUpdate": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": true,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": ""
+      }
+    }
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "ResourceVersion": 1,
+  "__references": [
+    "rust.rust_pistol#43964"
+  ],
+  "__version": 1
+}
