@@ -166,7 +166,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			return;
 
 		var point1 = new PhysicsPoint(Rigidbody.PhysicsBody);
-		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, connectedBody.WorldTransform.PointToLocal(Rigidbody.PhysicsBody.MassCenter));
+		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, connectedBody.WorldTransform.PointToLocal(Rigidbody.PhysicsBody.MassCenter), connectedBody.WorldTransform.RotationToLocal(Rigidbody.WorldRotation));
 		var fixedJoint = PhysicsJoint.CreateFixed(point1,point2);
 		
 		Welds.Add(fixedJoint);

@@ -281,6 +281,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		GrabbedPos = tr.Body.Transform.PointToLocal( tr.EndPosition );
 
+		
 		UnFreeze();
 	}
 

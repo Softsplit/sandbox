@@ -16,6 +16,9 @@ public class Weld : BaseTool
 
         if(!propHelper.IsValid())
             return;
+
+        if(!Trace.GameObject.Components.Get<Rigidbody>().IsValid())
+            return;
         
         propHelper.Weld(welded, propHelper.Transform.World.PointToLocal(Trace.EndPosition), point1);
 	}
@@ -24,6 +27,9 @@ public class Weld : BaseTool
 		PropHelper propHelper = Trace.GameObject.Components.Get<PropHelper>();
 
         if(!propHelper.IsValid())
+            return;
+
+        if(!Trace.GameObject.Components.Get<Rigidbody>().IsValid())
             return;
         
         propHelper.UnWeld();

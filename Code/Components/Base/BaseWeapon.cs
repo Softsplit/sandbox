@@ -15,6 +15,7 @@ public partial class BaseWeapon : Component
 	[Property] public float PrimaryRate { get; set; } = 5.0f;
 	[Property] public float SecondaryRate { get; set; } = 15.0f;
 	[Property] public float ReloadTime { get; set; } = 3.0f;
+	[Property] public bool Jump { get; set; } = false;
 
 	[Sync] public bool IsReloading { get; set; }
 	[Sync] public RealTimeSince TimeSinceReload { get; set; }
@@ -70,7 +71,7 @@ public partial class BaseWeapon : Component
 
 		if ( ViewModel.IsValid() ) ViewModel.DestroyGameObject();
 	}
-
+	bool lastGrounded;
 	protected override void OnUpdate()
 	{
 		GameObject.NetworkInterpolation = false;
@@ -89,6 +90,8 @@ public partial class BaseWeapon : Component
 			return;
 
 		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
+
+		ViewModel?.Renderer?.Set("b_jump", !Owner.Controller.IsOnGround && Jump);
 
 		OnControl();
 	}

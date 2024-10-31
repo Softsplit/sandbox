@@ -20,6 +20,7 @@
         },
         "Handedness": "Both",
         "HoldType": "Punch",
+        "Jump": true,
         "ParentBone": "hold_r",
         "PrimaryRate": 2,
         "ReloadTime": 3,
