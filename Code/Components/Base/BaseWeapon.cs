@@ -234,6 +234,7 @@ public partial class BaseWeapon : Component
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
+				.WithoutTags( "player_hull" )
 				.IgnoreGameObjectHierarchy( GameObject.Root )
 				.Size( radius );
 
