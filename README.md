@@ -7,6 +7,7 @@ Based on the original Sandbox by Facepunch
 ### Programming
 * Asphaltian - Base, Weapons, UI
 * TROLLFACEINREALLIFE - Weapons
+* badandbest - Bug fixes & Improvements
 
 ### Localization
 * DiskGG - 🇨🇿
