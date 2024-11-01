@@ -49,7 +49,6 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 	[Broadcast]
 	public void TakeDamage( float amount )
 	{
-		if ( IsProxy ) return;
 		if ( Health <= 0 ) return;
 
 		Health -= amount;

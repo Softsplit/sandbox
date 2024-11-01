@@ -32,11 +32,13 @@ public static partial class SandboxBaseExtensions
 					WorldRotation = Rotation.LookAt( -tr.Normal )
 				};
 
+				/*
 				if ( tr.Component is ModelPhysics )
 				{
 					var decalHelper = go.AddComponent<DecalHelper>();
 					decalHelper.Body = tr.Body;
 				}
+				*/
 
 				var randomDecal = decal.Decals[Random.Shared.Next( decal.Decals.Count )];
 

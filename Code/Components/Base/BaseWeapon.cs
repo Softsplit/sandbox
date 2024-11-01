@@ -29,12 +29,14 @@ public partial class BaseWeapon : Component
 	{
 		if ( IsProxy ) return;
 
-		ViewModelPrefab?.Clone( new CloneConfig()
+		var go = ViewModelPrefab?.Clone( new CloneConfig()
 		{
 			StartEnabled = false,
 			Parent = Scene.Camera.GameObject,
 			Transform = Scene.Camera.WorldTransform
 		} );
+
+		go.NetworkMode = NetworkMode.Never;
 	}
 
 	protected override void OnEnabled()

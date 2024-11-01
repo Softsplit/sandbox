@@ -2,11 +2,12 @@ using Sandbox.Diagnostics;
 
 public sealed class PlayerInventory : Component, IPlayerEvent
 {
-	[RequireComponent] public Player Player { get; set; }
+	[RequireComponent] public Player Owner { get; set; }
 
-	[Sync] public List<BaseWeapon> Weapons { get; set; } = new();
+	[Sync] public NetList<BaseWeapon> Weapons { get; set; } = new();
 	[Sync] public BaseWeapon ActiveWeapon { get; set; }
 
+	[Broadcast]
 	public void GiveDefaultWeapons()
 	{
 		Pickup( "prefabs/weapons/fists/w_fists.prefab" );
@@ -15,6 +16,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
 		Pickup( "prefabs/weapons/rpg/w_rpg.prefab" );
 		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab" );
+
+		SetActiveSlot( 0 );
 	}
 
 	protected override void OnUpdate()
@@ -48,18 +51,11 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		var weapon = prefab.Components.Get<BaseWeapon>( true );
 		Assert.NotNull( weapon );
 
-		BroadcastPickup( weapon );
-
-		IPlayerEvent.Post( e => e.OnWeaponAdded( Player, weapon ) );
-	}
-
-	[Broadcast]
-	private void BroadcastPickup( BaseWeapon weapon )
-	{
 		Weapons.Add( weapon );
+
+		IPlayerEvent.Post( e => e.OnWeaponAdded( Owner, weapon ) );
 	}
 
-	[Broadcast]
 	public void SetActiveSlot( int i )
 	{
 		var weapon = GetSlot( i );
@@ -116,18 +112,21 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	void IPlayerEvent.OnSpawned( Player player )
 	{
-		if ( player != Player )
+		if ( player != Owner )
 			return;
 
 		GiveDefaultWeapons();
-		SetActiveSlot( 0 );
 	}
 
 	void IPlayerEvent.OnDied( Player player )
 	{
-		if ( player != Player )
+		if ( player != Owner )
 			return;
 
-		Weapons.ForEach( x => x.DestroyGameObject() );
+		if ( Weapons.Count <= 0 )
+			return;
+
+		foreach ( var weapon in Weapons )
+			weapon.DestroyGameObject();
 	}
 }

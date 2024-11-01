@@ -26,7 +26,7 @@ partial class Flashlight : BaseWeapon
 		{
 			LightEnabled = !LightEnabled;
 
-			Sound.Play( LightEnabled ? "flashlight-on" : "flashlight-off", WorldPosition );
+			BroadcastOnControl();
 
 			if ( worldLight.IsValid() )
 			{
@@ -40,6 +40,12 @@ partial class Flashlight : BaseWeapon
 
 			timeSinceLightToggled = 0;
 		}
+	}
+
+	[Broadcast]
+	private void BroadcastOnControl()
+	{
+		Sound.Play( LightEnabled ? "flashlight-on" : "flashlight-off", WorldPosition );
 	}
 
 	public override bool CanReload()

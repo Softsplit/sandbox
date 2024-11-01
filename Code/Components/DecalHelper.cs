@@ -1,3 +1,5 @@
+// TODO: Make the body networked
+
 /// <summary>
 /// A component that makes sure a decal is attached to a physics body.
 /// Good enough until we get official support for decals on bones.
@@ -27,7 +29,7 @@ public sealed class DecalHelper : Component
 		{
 			return;
 		}
-		
+
 		Body.GetComponent().Transform.OnTransformChanged -= AttachToBody;
 	}
 
