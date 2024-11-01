@@ -130,24 +130,20 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
-		float minDamageVelocity = 750f;
-		float relativeVelocity = collision.Contact.Speed.Length;
+		var impactVelocity = collision.Contact.Speed;
 
-		if ( relativeVelocity > minDamageVelocity )
+		float magnitude = MathF.Max( 0f, impactVelocity.Length - 750f );
+		float damage = magnitude * magnitude * 8f;
+
+		Damage( damage );
+
+		if ( collision.Other.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 		{
-			float impactForce = collision.Other.Body.Mass * relativeVelocity;
-			float damage = (impactForce - minDamageVelocity) * 8f;
-
-			Damage( damage );
-
-			if ( collision.Other.GameObject.Components.TryGet<PropHelper>( out var prop ) )
-			{
-				prop.Damage( damage );
-			}
-			else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
-			{
-				player.TakeDamage( damage );
-			}
+			prop.Damage( damage );
+		}
+		else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
+		{
+			player.TakeDamage( damage );
 		}
 	}
 }

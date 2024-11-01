@@ -312,11 +312,11 @@ public partial class BaseWeapon : Component
 			{
 				if ( tr.Body.GetComponent() is Rigidbody rigidbody )
 				{
-					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, (pos + dir * 5000) * force / tr.Body.Mass );
+					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, forward * 5000 * force );
 				}
 				else if ( tr.Body.GetComponent() is ModelPhysics modelPhysics )
 				{
-					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, (pos + dir * 5000) * force );
+					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, forward * 5000 * force );
 				}
 			}
 		}

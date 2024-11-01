@@ -97,11 +97,11 @@ partial class Flashlight : BaseWeapon
 			{
 				if ( tr.Body.GetComponent() is Rigidbody rigidbody )
 				{
-					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, ray.Position + forward * 80 * 100 / tr.Body.Mass );
+					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, forward * 80 * 100 / tr.Body.Mass );
 				}
 				else if ( tr.Body.GetComponent() is ModelPhysics modelPhysics )
 				{
-					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, ray.Position + forward * 80 * 100 );
+					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, forward * 80 * 100 );
 				}
 			}
 		}
