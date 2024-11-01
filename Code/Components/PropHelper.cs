@@ -22,8 +22,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	protected override void OnStart()
 	{
-		ModelPhysics = Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
-		Rigidbody = GetComponent<Rigidbody>();
+		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
+		Rigidbody ??= GetComponent<Rigidbody>();
 
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
