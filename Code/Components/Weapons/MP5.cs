@@ -62,13 +62,9 @@ partial class MP5 : BaseWeapon
 			Parent = ViewModel.GameObject,
 			WorldTransform = ViewModel?.Renderer?.GetAttachment( "eject" ) ?? default
 		};
+		
 
-		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
-		legacyParticleSystem.Particles = EjectBrass;
-		legacyParticleSystem.ControlPoints = new()
-		{
-			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
-		};
+		Particles.Create( EjectBrass.ResourcePath, go.WorldPosition, decay: 0.1f );
 
 		go.DestroyAsync();
 	}

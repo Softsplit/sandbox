@@ -156,12 +156,7 @@ public partial class BaseWeapon : Component
 			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default
 		};
 
-		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
-		legacyParticleSystem.Particles = particleSystem;
-		legacyParticleSystem.ControlPoints = new()
-		{
-			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
-		};
+		Particles.Create( particleSystem.ResourcePath, go );
 
 		go.DestroyAsync();
 
