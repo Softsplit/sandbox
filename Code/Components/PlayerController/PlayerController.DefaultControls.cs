@@ -51,7 +51,7 @@ public sealed partial class PlayerController : Component
 			}
 		}
 
-		UpdateBodyVisibility();
+		UpdateVisibility();
 
 		if ( UseAnimatorControls && Renderer.IsValid() )
 		{

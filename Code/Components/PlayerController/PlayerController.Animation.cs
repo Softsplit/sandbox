@@ -165,7 +165,7 @@ public sealed partial class PlayerController : Component
 		}
 	}
 
-	void UpdateBodyVisibility()
+	void UpdateVisibility()
 	{
 		if ( !UseCameraControls ) return;
 		if ( Scene.Camera is not CameraComponent cam ) return;
@@ -185,12 +185,13 @@ public sealed partial class PlayerController : Component
 			viewer = false;
 		}
 
-		var go = Renderer?.GameObject ?? GameObject;
-
-		if ( go.IsValid() )
+		if ( ThirdPersonBody.IsValid() )
 		{
-			go.Tags.Set( "viewer", _cameraDistance < 20 || (!ThirdPerson && HideBodyInFirstPerson) );
+			ThirdPersonBody.Tags.Set( "viewer", viewer );
 		}
-
+		else
+		{
+			GameObject.Tags.Set( "viewer", viewer );
+		}
 	}
 }
