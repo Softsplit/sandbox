@@ -1,22 +1,22 @@
 ﻿public partial class PhysGun
 {
-	LegacyParticleSystem Beam;
-	LegacyParticleSystem EndNoHit;
+	LegacyParticleSystem beam;
+	LegacyParticleSystem endNoHit;
 
-	Vector3 lastBeamPos;
 	GameObject lastGrabbedObject;
 
 	[Broadcast]
 	protected virtual void KillEffects()
 	{
-		// BeamLight?.Delete();
-		Beam?.GameObject.Destroy();
-		Beam = null;
-		// BeamLight = null;
-		EndNoHit?.GameObject?.Destroy();
-		EndNoHit = null;
+		// beamLight?.Destroy();
+		beam?.GameObject.Destroy();
+		beam = null;
+		// beamLight = null;
+		endNoHit?.GameObject?.Destroy();
+		endNoHit = null;
 
 		DisableHighlights( lastGrabbedObject );
+
 		lastGrabbedObject = null;
 	}
 
@@ -42,6 +42,8 @@
 		}
 	}
 
+	Vector3 lastBeamPos;
+
 	protected virtual void UpdateEffects()
 	{
 		if ( Owner == null || !Beaming || !Owner.GameObject.IsDescendant( GameObject ) )
@@ -49,6 +51,7 @@
 			KillEffects();
 			return;
 		}
+
 		if ( grabbed && !GrabbedObject.IsValid() )
 		{
 			DisableHighlights( lastGrabbedObject );
@@ -61,13 +64,12 @@
 			.UseHitboxes()
 			.IgnoreGameObject( Owner.GameObject )
 			.WithAllTags( "solid" )
-			.WithoutTags( "player" ) 
+			.WithoutTags( "player" )
 			.Run();
 
-		Beam ??= CreateBeam( tr.EndPosition );
-
-		Beam.WorldPosition = Muzzle.Position;
-		Beam.WorldRotation = Muzzle.Rotation;
+		beam ??= CreateBeam( tr.EndPosition );
+		beam.WorldPosition = Muzzle.Position;
+		beam.WorldRotation = Muzzle.Rotation;
 
 		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains( "world" ) )
 		{
@@ -78,18 +80,18 @@
 				var physBody = physGroup.GetBody( GrabbedBone );
 				if ( physBody != null )
 				{
-					Beam.SceneObject.SetControlPoint( 1, physBody.Transform.PointToWorld( GrabbedPos ) );
+					beam.SceneObject.SetControlPoint( 1, physBody.Transform.PointToWorld( GrabbedPos ) );
 				}
 			}
 			else
 			{
-				Beam.SceneObject.SetControlPoint( 1, HeldBody.Transform.PointToWorld( GrabbedPos ) );
+				beam.SceneObject.SetControlPoint( 1, HeldBody.Transform.PointToWorld( GrabbedPos ) );
 			}
 
 			lastBeamPos = HeldBody.Position + HeldBody.Rotation * GrabbedPos;
 
-			EndNoHit?.GameObject.Destroy();
-			EndNoHit = null;
+			endNoHit?.GameObject.Destroy();
+			endNoHit = null;
 
 			if ( GrabbedObject.Components.Get<ModelRenderer>().IsValid() )
 			{
@@ -115,20 +117,18 @@
 		else
 		{
 			lastBeamPos = tr.EndPosition; Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
-			Beam.SceneObject.SetControlPoint( 1, lastBeamPos );
 
-			EndNoHit ??= CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
+			beam.SceneObject.SetControlPoint( 1, lastBeamPos );
 
-			EndNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
-			EndNoHit.WorldPosition = lastBeamPos;
+			endNoHit ??= CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
+			endNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
+			endNoHit.WorldPosition = lastBeamPos;
 		}
-
 	}
 
 	LegacyParticleSystem CreateBeam( Vector3 endPos )
 	{
 		LegacyParticleSystem beam = CreateParticleSystem( "particles/physgun_beam.vpcf", new Transform( endPos ), 0 );
-
 		return beam;
 	}
 

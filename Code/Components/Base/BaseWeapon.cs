@@ -23,27 +23,25 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
+	public Player Owner => GameObject?.Root?.GetComponent<Player>();
+	public Transform Muzzle => Attachment( "muzzle" );
+
+	public Transform Attachment( string name )
+	{
+		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
+	}
 
 	SkinnedModelRenderer _worldModel = null;
 	public SkinnedModelRenderer WorldModel
 	{
 		get
 		{
-			if(!_worldModel.IsValid())
+			if ( !_worldModel.IsValid() )
 			{
 				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
 			}
 			return _worldModel;
 		}
-	}
-
-	public Player Owner => GameObject?.Root?.GetComponent<Player>();
-
-	public Transform Muzzle => Attachment( "muzzle" );
-
-	public Transform Attachment( string name )
-	{
-		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()

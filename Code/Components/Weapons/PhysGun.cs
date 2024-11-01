@@ -1,5 +1,3 @@
-using Sandbox.Physics;
-
 public partial class PhysGun : BaseWeapon, IPlayerEvent
 {
 	[Property] public float MinTargetDistance { get; set; } = 0.0f;
@@ -20,8 +18,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Sync] public int GrabbedBone { get; set; } = -1;
 
 	GameObject lastGrabbed = null;
-	PhysicsBody _heldBody;
 
+	PhysicsBody _heldBody;
 	PhysicsBody HeldBody
 	{
 		get
@@ -49,11 +47,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			return rigidbody.PhysicsBody;
 		}
 	}
-
-	float HoldDistance;
-
-	Vector3 HeldPos;
-	Rotation HeldRot;
 
 	protected override void OnEnabled()
 	{
@@ -85,7 +78,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		Rotation.SmoothDamp( HeldBody.Rotation, HoldRot, ref angularVelocity, 0.075f, Time.Delta );
 		HeldBody.AngularVelocity = angularVelocity;
 	}
+
 	bool grabbed;
+
 	public override void OnControl()
 	{
 		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
@@ -105,9 +100,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( Input.Released( "attack1" ) )
 		{
 			TryEndGrab();
+
 			grabbed = false;
 		}
-
 
 		if ( Input.Pressed( "reload" ) && Input.Down( "run" ) )
 			TryUnfreezeAll();
@@ -118,6 +113,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( Input.Pressed( "attack2" ) )
 		{
 			Freeze( GrabbedObject, GrabbedBone );
+
 			GrabbedObject = null;
 			return;
 		}
@@ -127,8 +123,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( Input.Down( "use" ) )
 			DoRotate( eyeRot, Input.MouseDelta * RotateSpeed );
 
-		HoldPos = Owner.AimRay.Position - HeldPos * HeldBody.Rotation + Owner.AimRay.Forward * HoldDistance;
-		HoldRot = Owner.Controller.EyeAngles * HeldRot;
+		HoldPos = Owner.AimRay.Position - heldPos * HeldBody.Rotation + Owner.AimRay.Forward * holdDistance;
+		HoldRot = Owner.Controller.EyeAngles * heldRot;
 
 		if ( Input.Down( "run" ) && Input.Down( "use" ) )
 		{
@@ -145,7 +141,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void TryUnfreezeAll()
 	{
-
 		var rootEnt = GrabbedObject;
 
 		if ( !GrabbedObject.IsValid() )
@@ -156,20 +151,17 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			.Run();
 
 			if ( !tr.Hit || !tr.GameObject.IsValid() || tr.Component is MapCollider ) return;
-			rootEnt = tr.GameObject.Root;
 
+			rootEnt = tr.GameObject.Root;
 		}
 
-		if ( !rootEnt.IsValid() ) return;
+		if ( !rootEnt.IsValid() )
+			return;
 
 		if ( rootEnt.IsProxy )
 			return;
 
 		var weldContexts = GetAllConnectedProps( rootEnt );
-		bool unfrozen = false;
-
-
-
 
 		for ( int i = 0; i < weldContexts.Count; i++ )
 		{
@@ -178,7 +170,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 			if ( modelPhysics.IsValid() ) body = modelPhysics.PhysicsGroup.GetBody( 0 );
 			else body = weldContexts[i].Components.Get<Rigidbody>().PhysicsBody;
-
 
 			if ( !body.IsValid() ) continue;
 
@@ -189,28 +180,14 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 					if ( b.BodyType == PhysicsBodyType.Static )
 					{
 						b.BodyType = PhysicsBodyType.Dynamic;
-						unfrozen = true;
 					}
 				}
 			}
-			else
+			else if ( body.BodyType == PhysicsBodyType.Static )
 			{
-				if ( body.BodyType == PhysicsBodyType.Static )
-				{
-					body.BodyType = PhysicsBodyType.Dynamic;
-					unfrozen = true;
-				}
+				body.BodyType = PhysicsBodyType.Dynamic;
 			}
 		}
-
-
-		if ( unfrozen )
-		{
-			// var freezeEffect = Particles.Create( "particles/physgun_freeze.vpcf" );
-			// freezeEffect.SetPosition( 0, tr.EndPosition );
-		}
-
-
 	}
 
 	public static List<GameObject> GetAllConnectedProps( GameObject gameObject )
@@ -268,6 +245,10 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		}
 	}
 
+	Vector3 heldPos;
+	Rotation heldRot;
+	float holdDistance;
+
 	private bool TryStartGrab()
 	{
 		(var isValid, var tr) = Grab();
@@ -284,11 +265,11 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		bool isRagdoll = GrabbedObject.Components.Get<ModelPhysics>().IsValid();
 		GrabbedBone = isRagdoll ? tr.Body.GroupIndex : -1;
 
-		HoldDistance = Vector3.DistanceBetween( Owner.AimRay.Position, tr.EndPosition );
-		HoldDistance = HoldDistance.Clamp( MinTargetDistance, MaxTargetDistance );
+		holdDistance = Vector3.DistanceBetween( Owner.AimRay.Position, tr.EndPosition );
+		holdDistance = holdDistance.Clamp( MinTargetDistance, MaxTargetDistance );
 
-		HeldRot = Owner.Controller.EyeAngles.ToRotation().Inverse * HeldBody.Rotation;
-		HeldPos = HeldBody.Transform.PointToLocal( tr.EndPosition );
+		heldRot = Owner.Controller.EyeAngles.ToRotation().Inverse * HeldBody.Rotation;
+		heldPos = HeldBody.Transform.PointToLocal( tr.EndPosition );
 
 		HoldPos = HeldBody.Position;
 		HoldRot = HeldBody.Rotation;
@@ -314,7 +295,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			tr.GameObject.IsValid() &&
 			tr.Component is not MapCollider &&
 			!tr.StartedSolid &&
-			!tr.Tags.Contains( "map" ) &&
 			!tr.Tags.Contains( "grabbed" );
 
 		return (valid, tr);
@@ -329,8 +309,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	private void MoveTargetDistance( float distance )
 	{
-		HoldDistance += distance;
-		HoldDistance = HoldDistance.Clamp( MinTargetDistance, MaxTargetDistance );
+		holdDistance += distance;
+		holdDistance = holdDistance.Clamp( MinTargetDistance, MaxTargetDistance );
 	}
 
 	public void DoRotate( Rotation eye, Vector3 input )
@@ -340,12 +320,15 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		localRot *= Rotation.FromAxis( Vector3.Right, input.y * RotateSpeed );
 		localRot = eye.Inverse * localRot;
 
-		HeldRot = localRot * HeldRot;
+		heldRot = localRot * heldRot;
 	}
 
 	[Broadcast]
 	public void Freeze( GameObject gameObject, int bone )
 	{
+		if ( !gameObject.IsValid() )
+			return;
+
 		GetBody( gameObject, bone ).BodyType = PhysicsBodyType.Static;
 		FreezeEffects();
 	}
@@ -353,6 +336,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
+		if ( !gameObject.IsValid() )
+			return;
+
 		GetBody( gameObject, bone ).BodyType = PhysicsBodyType.Dynamic;
 	}
 }
