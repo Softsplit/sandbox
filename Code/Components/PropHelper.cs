@@ -1,5 +1,3 @@
-using Sandbox.Physics;
-
 /// <summary>
 /// A component to help deal with props.
 /// </summary>
@@ -19,8 +17,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
-	public List<Sandbox.Physics.FixedJoint> Welds { get; set; } = new();
-	public List<PhysicsJoint> Joints { get; set; } = new();
+	public List<FixedJoint> Welds { get; set; } = new();
+	public List<Joint> Joints { get; set; } = new();
 
 	private Vector3 lastPosition = Vector3.Zero;
 
@@ -160,14 +158,13 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	public void Weld (GameObject to, Vector3 fromPoint, Vector3 toPoint)
 	{
 		PropHelper propHelper = to.Components.Get<PropHelper>();
-		Rigidbody connectedBody = to.Components.Get<Rigidbody>();
-		
-		if(!connectedBody.IsValid())
-			return;
-
-		var point1 = new PhysicsPoint(Rigidbody.PhysicsBody);
-		var point2 = new PhysicsPoint(connectedBody.PhysicsBody, connectedBody.WorldTransform.PointToLocal(Rigidbody.PhysicsBody.MassCenter), connectedBody.WorldTransform.RotationToLocal(Rigidbody.WorldRotation));
-		var fixedJoint = PhysicsJoint.CreateFixed(point1,point2);
+			
+		var fixedJoint = Components.Create<FixedJoint>();
+		fixedJoint.Body = to;
+		fixedJoint.LinearDamping = 0;
+		fixedJoint.LinearFrequency = 0;
+		fixedJoint.AngularDamping = 0;
+		fixedJoint.AngularFrequency = 0;
 		
 		Welds.Add(fixedJoint);
 		Joints.Add(fixedJoint);
@@ -180,7 +177,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	{
 		foreach(var weld in Welds)
 		{
-			weld?.Remove();
+			weld?.Destroy();
 		}
 
 		Welds.RemoveAll(item => !item.IsValid());

@@ -221,23 +221,26 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( !propHelper.IsValid() )
 			return null;
 
-		var result = new List<PhysicsJoint>();
+		var result = new List<Joint>();
 		var visited = new HashSet<PropHelper>();
 
 		CollectWelds( propHelper, result, visited );
 
 		List<GameObject> returned = new List<GameObject>{ gameObject };
 
-		foreach ( PhysicsJoint joint in result )
+		foreach ( Joint joint in result )
 		{
-			returned.Add( joint.Body1.GetGameObject() );
-			returned.Add( joint.Body2.GetGameObject() );
+			GameObject object1 = joint.Body1.GetGameObject();
+			GameObject object2 = joint.Body2.GetGameObject();
+			
+			if(!returned.Contains(object1)) returned.Add( object1 );
+			if(!returned.Contains(object2)) returned.Add( object2 );
 		}
 
 		return returned;
 	}
 
-	private static void CollectWelds( PropHelper propHelper, List<PhysicsJoint> result, HashSet<PropHelper> visited )
+	private static void CollectWelds( PropHelper propHelper, List<Joint> result, HashSet<PropHelper> visited )
 	{
 		if ( visited.Contains( propHelper ) )
 			return;
