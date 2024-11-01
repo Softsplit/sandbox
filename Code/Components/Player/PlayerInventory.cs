@@ -15,6 +15,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
 		Pickup( "prefabs/weapons/rpg/w_rpg.prefab" );
 		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab" );
+		Pickup( "prefabs/weapons/physgun/w_physgun.prefab" );
 	}
 
 	protected override void OnUpdate()
@@ -22,10 +23,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		if ( IsProxy )
 			return;
 
-		/*
-		if ( ActiveWeapon is PhysGun physgun && physgun.BeamActive )
+		if ( ActiveWeapon is PhysGun physgun && physgun.Beaming )
 			return;
-		*/
 
 		if ( Input.Pressed( "slot1" ) ) SetActiveSlot( 0 );
 		if ( Input.Pressed( "slot2" ) ) SetActiveSlot( 1 );

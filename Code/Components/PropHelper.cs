@@ -18,6 +18,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
+	public List<FixedJoint> Welds { get; set; } = new();
+	public List<Joint> Joints { get; set; } = new();
+
 	private Vector3 lastPosition = Vector3.Zero;
 
 	protected override void OnStart()
