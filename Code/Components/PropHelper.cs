@@ -161,9 +161,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			
 		var fixedJoint = Components.Create<FixedJoint>();
 		fixedJoint.Body = to;
-		fixedJoint.LinearDamping = 0;
 		fixedJoint.LinearFrequency = 0;
-		fixedJoint.AngularDamping = 0;
 		fixedJoint.AngularFrequency = 0;
 		
 		Welds.Add(fixedJoint);

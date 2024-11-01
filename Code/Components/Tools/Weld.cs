@@ -21,6 +21,8 @@ public class Weld : BaseTool
             return;
         
         propHelper.Weld(welded, propHelper.Transform.World.PointToLocal(Trace.EndPosition), point1);
+
+        welded = null;
 	}
 	public override void Secondary( SceneTraceResult Trace )
 	{
