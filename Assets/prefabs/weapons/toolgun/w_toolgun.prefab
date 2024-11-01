@@ -17,8 +17,41 @@
           "BloomLayer": false,
           "AfterUILayer": false
         },
+        "Handedness": "Right",
+        "HoldType": "Pistol",
+        "Jump": false,
+        "ParentBone": "hold_r",
+        "PrimaryRate": 5,
+        "ReloadTime": 3,
+        "SecondaryRate": 5,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"
+        }
+      },
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "fce01b2d-5294-44a9-82ca-72e283239d28",
+        "BodyGroups": 18446744073709551615,
+        "CreateBoneObjects": false,
+        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+        "Morphs": {},
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
         "RenderType": "On",
-        "Tint": "1,1,1,1"
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
       }
     ],
     "Children": [],

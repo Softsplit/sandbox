@@ -24,7 +24,14 @@ public partial class BaseWeapon : Component
 
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
+  
+	public Transform Muzzle => Attachment( "muzzle" );
 
+	public Transform Attachment( string name )
+	{
+		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
+	}
+  
 	protected override void OnAwake()
 	{
 		var obj = Owner?.Controller?.Renderer?.GetBoneObject( ParentBone );

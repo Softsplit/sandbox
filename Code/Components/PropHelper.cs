@@ -18,6 +18,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
+	public List<FixedJoint> Welds { get; set; } = new();
+	public List<Joint> Joints { get; set; } = new();
+  
 	private Vector3 lastPosition = Vector3.Zero;
 
 	protected override void OnStart()
@@ -146,9 +149,30 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		{
 			prop.Damage( damage );
 		}
-		else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
+	}
+
+	[Broadcast]
+	public void Weld (GameObject to, Vector3 fromPoint, Vector3 toPoint)
+	{
+		PropHelper propHelper = to.Components.Get<PropHelper>();
+			
+		var fixedJoint = Components.Create<FixedJoint>();
+		fixedJoint.Body = to;
+		fixedJoint.LinearFrequency = 0;
+		fixedJoint.AngularFrequency = 0;
+		
+		Welds.Add(fixedJoint);
+		Joints.Add(fixedJoint);
+		propHelper?.Welds.Add(fixedJoint);
+		propHelper?.Joints.Add(fixedJoint);
+	}
+
+	[Broadcast]
+	public void UnWeld()
+	{
+		foreach(var weld in Welds)
 		{
-			player.TakeDamage( damage );
+			weld?.Destroy();
 		}
 	}
 }
