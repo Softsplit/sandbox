@@ -1,3 +1,5 @@
+using Sandbox.ModelEditor.Nodes;
+
 /// <summary>
 /// A component to help deal with props.
 /// </summary>
@@ -51,6 +53,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
+
+
 		var gibs = Prop?.CreateGibs();
 
 		foreach ( var gib in gibs )
@@ -60,8 +64,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
-
-		GameObject.DestroyImmediate();
+		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
+		{
+			GameManager.Explosion( null, data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
+		}
+		GameObject.Destroy();
 	}
 
 	protected override void OnFixedUpdate()
