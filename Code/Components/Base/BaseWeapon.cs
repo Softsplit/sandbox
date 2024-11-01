@@ -27,6 +27,13 @@ public partial class BaseWeapon : Component
 
 	protected override void OnAwake()
 	{
+		var obj = Owner?.Controller?.Renderer?.GetBoneObject( ParentBone );
+		if ( obj is not null )
+		{
+			GameObject.Parent = obj;
+			GameObject.LocalTransform = BoneOffset.WithScale( 1 );
+		}
+
 		if ( IsProxy ) return;
 
 		var go = ViewModelPrefab?.Clone( new CloneConfig()
@@ -44,9 +51,6 @@ public partial class BaseWeapon : Component
 		TimeSinceDeployed = 0;
 
 		if ( IsProxy ) return;
-
-		GameObject.Tags.Set( "viewer", !Owner.Controller.ThirdPerson );
-		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
 
 		ViewModel.GameObject.Enabled = true;
 	}
@@ -72,18 +76,10 @@ public partial class BaseWeapon : Component
 		Owner?.Controller?.Renderer?.Set( "holdtype", (int)HoldType );
 		Owner?.Controller?.Renderer?.Set( "holdtype_handedness", (int)Handedness );
 
-		var obj = Owner?.Controller?.Renderer?.GetBoneObject( ParentBone );
-		if ( obj is not null )
-		{
-			GameObject.Parent = obj;
-			GameObject.LocalTransform = BoneOffset.WithScale( 1 );
-		}
-
 		if ( IsProxy )
 			return;
 
-		GameObject.Tags.Set( "viewer", !Owner.Controller.ThirdPerson );
-		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
+		Scene.Camera.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
 
 		OnControl();
 	}

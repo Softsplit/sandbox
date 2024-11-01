@@ -46,8 +46,6 @@ public static partial class SandboxBaseExtensions
 				decalRenderer.Material = randomDecal.Material;
 				decalRenderer.Size = new Vector3( randomDecal.Width.GetValue(), randomDecal.Height.GetValue(), randomDecal.Depth.GetValue() );
 
-				// TODO: Why are impact effects networked? Shouldn't they be client-sided?
-				
 				go.NetworkSpawn();
 				go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 				go.DestroyAsync( 10f );
