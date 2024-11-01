@@ -32,13 +32,13 @@ public static partial class SandboxBaseExtensions
 					WorldRotation = Rotation.LookAt( -tr.Normal )
 				};
 
-				/*
-				if ( tr.Component is ModelPhysics )
+				if ( tr.Bone > -1 )
 				{
-					var decalHelper = go.AddComponent<DecalHelper>();
-					decalHelper.Body = tr.Body;
+					var renderer = tr.GameObject.GetComponent<SkinnedModelRenderer>();
+					var bone = renderer.GetBoneObject( tr.Bone );
+
+					go.SetParent( bone );
 				}
-				*/
 
 				var randomDecal = decal.Decals[Random.Shared.Next( decal.Decals.Count )];
 
@@ -46,7 +46,10 @@ public static partial class SandboxBaseExtensions
 				decalRenderer.Material = randomDecal.Material;
 				decalRenderer.Size = new Vector3( randomDecal.Width.GetValue(), randomDecal.Height.GetValue(), randomDecal.Depth.GetValue() );
 
+				// TODO: Why are impact effects networked? Shouldn't they be client-sided?
+				
 				go.NetworkSpawn();
+				go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 				go.DestroyAsync( 10f );
 			}
 		}

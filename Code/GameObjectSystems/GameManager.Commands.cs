@@ -48,6 +48,11 @@ public sealed partial class GameManager
 		prop.Model = model;
 
 		var propHelper = go.AddComponent<PropHelper>();
+		
+		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
+		{
+			renderer.CreateBoneObjects = true;
+		}
 
 		var rb = propHelper.Rigidbody;
 		if ( rb.IsValid() )
