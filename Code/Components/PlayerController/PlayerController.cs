@@ -1,14 +1,13 @@
 ﻿using Sandbox.Movement;
-
 namespace Sandbox;
 
 [Icon( "directions_walk" )]
 [EditorHandle( Icon = "directions_walk" )]
-[Title( "Body Controller" )]
+[Title( "Player Controller" )]
 [Category( "Physics" )]
-[Alias( "PhysicsCharacter", "Sandbox.PhysicsCharacter" )]
-[Tint( EditorTint.Green )]
-public sealed partial class BodyController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
+[Alias( "PhysicsCharacter", "Sandbox.PhysicsCharacter", "Sandbox.BodyController" )]
+[HelpUrl( "https://docs.facepunch.com/s/sbox-dev/doc/player-controller-G9xW4n1yAS" )]
+public sealed partial class PlayerController : Component, IScenePhysicsEvents, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// This is used to keep a distance away from surfaces. For exmaple, when grounding, we'll
@@ -22,6 +21,7 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 	public BoxCollider FeetCollider { get; private set; }
 
 	bool _showRigidBodyComponent;
+
 
 	[Property, Group( "Body" )] public float BodyRadius { get; set; } = 16.0f;
 	[Property, Group( "Body" )] public float BodyHeight { get; set; } = 72.0f;
@@ -65,7 +65,8 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 		}
 	}
 
-	[Sync] public Vector3 WishVelocity { get; set; }
+	[Sync]
+	public Vector3 WishVelocity { get; set; }
 
 	public bool IsOnGround => GroundObject.IsValid();
 
@@ -114,6 +115,7 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 		base.OnDisabled();
 
 		DisableAnimationEvents();
+		StopPressing();
 	}
 
 	protected override void OnValidate()
@@ -187,4 +189,5 @@ public sealed partial class BodyController : Component, IScenePhysicsEvents, Com
 
 		Body.Velocity = currentVel;
 	}
+
 }

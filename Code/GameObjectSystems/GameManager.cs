@@ -21,10 +21,10 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 
 		// Spawn this object and make the client the owner
 		var playerGo = GameObject.Clone( "/prefabs/player.prefab", new CloneConfig { Name = $"Player - {channel.DisplayName}", StartEnabled = true, Transform = startLocation } );
-		var player = playerGo.GetComponent<Player>( true );
+		var player = playerGo.Components.Get<Player>( true );
 		playerGo.NetworkSpawn( channel );
 
-		IPlayerEvent.Post( x => x.OnSpawned( player ) );
+		IPlayerEvent.PostToGameObject( player.GameObject, x => x.OnSpawned() );
 	}
 
 	/// <summary>

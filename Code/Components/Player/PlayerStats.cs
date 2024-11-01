@@ -20,14 +20,13 @@ public sealed class PlayerStats : Component, Component.INetworkListener, IPlayer
 			Sandbox.Services.Achievements.Unlock( "marathon" );
 	}
 
-	void IPlayerEvent.OnSpawned( Player player )
+	void IPlayerEvent.OnSpawned()
 	{
-		if ( player.Network.Owner.SteamId == 76561197960279927 )
-			Sandbox.Services.Achievements.Unlock( "play_with_garry" );
-
-		if ( player != Player )
-			return;
-
 		Sandbox.Services.Stats.Increment( "respawn", 1 );
+	}
+
+	void INetworkListener.OnActive( Connection channel )
+	{
+		if ( channel.SteamId == 76561197960279927 ) Sandbox.Services.Achievements.Unlock( "play_with_garry" );
 	}
 }

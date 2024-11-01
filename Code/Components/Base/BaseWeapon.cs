@@ -45,6 +45,9 @@ public partial class BaseWeapon : Component
 
 		if ( IsProxy ) return;
 
+		GameObject.Tags.Set( "viewer", !Owner.Controller.ThirdPerson );
+		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
+
 		ViewModel.GameObject.Enabled = true;
 	}
 
@@ -79,6 +82,7 @@ public partial class BaseWeapon : Component
 		if ( IsProxy )
 			return;
 
+		GameObject.Tags.Set( "viewer", !Owner.Controller.ThirdPerson );
 		ViewModel.GameObject.Tags.Set( "viewer", Owner.Controller.ThirdPerson );
 
 		OnControl();

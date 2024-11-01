@@ -1,25 +1,21 @@
-using static Sandbox.Component;
-
 /// <summary>
 /// Holds player information like health
 /// </summary>
-public sealed class Player : Component, IDamageable, BodyController.IEvents
+public sealed class Player : Component, Component.IDamageable, PlayerController.IEvents
 {
 	public static Player FindLocalPlayer()
 	{
 		return Game.ActiveScene.GetAllComponents<Player>().Where( x => !x.IsProxy ).FirstOrDefault();
 	}
 
-	[RequireComponent] public BodyController Controller { get; set; }
+	[RequireComponent] public PlayerController Controller { get; set; }
 	[RequireComponent] public PlayerInventory Inventory { get; set; }
 
 	[Property] public GameObject Body { get; set; }
 	[Property, Range( 0, 100 ), Sync] public float Health { get; set; } = 100;
 
 	public bool IsDead => Health <= 0;
-
 	public Transform EyeTransform => Controller.EyeTransform;
-
 	public Ray AimRay => new( EyeTransform.Position, EyeTransform.Rotation.Forward );
 
 	/// <summary>
@@ -49,11 +45,12 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 	[Broadcast]
 	public void TakeDamage( float amount )
 	{
+		if ( IsProxy ) return;
 		if ( Health <= 0 ) return;
 
 		Health -= amount;
 
-		IPlayerEvent.Post( x => x.OnTakeDamage( this, amount ) );
+		IPlayerEvent.PostToGameObject( GameObject, x => x.OnTakeDamage( amount ) );
 
 		if ( Health <= 0 )
 		{
@@ -67,9 +64,27 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 		CreateRagdoll();
 		CreateRagdollAndGhost();
 
-		IPlayerEvent.Post( x => x.OnDied( this ) );
+		IPlayerEvent.PostToGameObject( GameObject, x => x.OnDied() );
 
 		GameObject.Destroy();
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( !IsProxy )
+			OnControl();
+	}
+
+	void OnControl()
+	{
+		if ( Input.Pressed( "die" ) )
+		{
+			IPlayerEvent.PostToGameObject( GameObject, x => x.OnSuicide() );
+			Health = 0;
+			Death();
+		}
 	}
 
 	void IDamageable.OnDamage( in DamageInfo damage )
@@ -77,24 +92,24 @@ public sealed class Player : Component, IDamageable, BodyController.IEvents
 		TakeDamage( damage.Damage );
 	}
 
-	void BodyController.IEvents.OnEyeAngles( ref Angles ang )
+	void PlayerController.IEvents.OnEyeAngles( ref Angles ang )
 	{
 		var player = Components.Get<Player>();
 		var angles = ang;
-		Scene.RunEvent<IPlayerEvent>( x => x.OnCameraMove( player, ref angles ) );
+		ILocalPlayerEvent.Post( x => x.OnCameraMove( ref angles ) );
 		ang = angles;
 	}
 
-	void BodyController.IEvents.PostCameraSetup( CameraComponent camera )
+	void PlayerController.IEvents.PostCameraSetup( CameraComponent camera )
 	{
 		var player = Components.Get<Player>();
-		IPlayerEvent.Post( x => x.OnCameraSetup( player, camera ) );
-		IPlayerEvent.Post( x => x.OnCameraPostSetup( player, camera ) );
+		ILocalPlayerEvent.Post( x => x.OnCameraSetup( camera ) );
+		ILocalPlayerEvent.Post( x => x.OnCameraPostSetup( camera ) );
 	}
 
-	void BodyController.IEvents.OnLanded( float distance, Vector3 impactVelocity )
+	void PlayerController.IEvents.OnLanded( float distance, Vector3 impactVelocity )
 	{
 		var player = Components.Get<Player>();
-		IPlayerEvent.Post( x => x.OnLand( player, distance, impactVelocity ) );
+		IPlayerEvent.PostToGameObject( GameObject, x => x.OnLand( distance, impactVelocity ) );
 	}
 }

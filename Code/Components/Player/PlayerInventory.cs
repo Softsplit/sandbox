@@ -7,7 +7,6 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	[Sync] public NetList<BaseWeapon> Weapons { get; set; } = new();
 	[Sync] public BaseWeapon ActiveWeapon { get; set; }
 
-	[Broadcast]
 	public void GiveDefaultWeapons()
 	{
 		Pickup( "prefabs/weapons/fists/w_fists.prefab" );
@@ -16,8 +15,6 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
 		Pickup( "prefabs/weapons/rpg/w_rpg.prefab" );
 		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab" );
-
-		SetActiveSlot( 0 );
 	}
 
 	protected override void OnUpdate()
@@ -53,7 +50,8 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 		Weapons.Add( weapon );
 
-		IPlayerEvent.Post( e => e.OnWeaponAdded( Owner, weapon ) );
+		IPlayerEvent.PostToGameObject( Owner.GameObject, e => e.OnWeaponAdded( weapon ) );
+		ILocalPlayerEvent.Post( e => e.OnWeaponAdded( weapon ) );
 	}
 
 	public void SetActiveSlot( int i )
@@ -110,23 +108,23 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		SetActiveSlot( nextSlot );
 	}
 
-	void IPlayerEvent.OnSpawned( Player player )
+	[Broadcast]
+	void IPlayerEvent.OnSpawned()
 	{
-		if ( player != Owner )
-			return;
+		if ( IsProxy ) return;
 
 		GiveDefaultWeapons();
+		SetActiveSlot( 0 );
 	}
 
-	void IPlayerEvent.OnDied( Player player )
+	[Broadcast]
+	void IPlayerEvent.OnDied()
 	{
-		if ( player != Owner )
-			return;
+		if ( IsProxy ) return;
 
 		if ( Weapons.Count <= 0 )
 			return;
 
-		foreach ( var weapon in Weapons )
-			weapon.DestroyGameObject();
+		foreach ( var weapon in Weapons ) weapon.DestroyGameObject();
 	}
 }

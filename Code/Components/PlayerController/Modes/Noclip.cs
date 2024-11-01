@@ -5,7 +5,7 @@ public partial class MoveModeNoclip : MoveMode
 {
 	[Property] public int Priority { get; set; } = 1;
 
-	public override int Score( BodyController controller )
+	public override int Score( PlayerController controller )
 	{
 		if ( Controller.IsNoclipping ) return Priority;
 		return -100;

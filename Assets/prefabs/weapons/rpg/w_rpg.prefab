@@ -12,8 +12,10 @@
           "UniformScale": 1,
           "IsValid": true,
           "ForwardRay": {
+            "Position": "-3.25,-1.4,0.65",
             "Forward": "1,0,0"
           },
+          "Position": "-3.25,-1.4,0.65",
           "Scale": "1,1,1",
           "Rotation": "0,0,0,1"
         },
