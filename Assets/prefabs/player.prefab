@@ -63,10 +63,6 @@
         "ShowColliderComponents": false,
         "ShowRigidbodyComponent": false,
         "ThirdPerson": false,
-        "ThirdPersonBody": {
-          "_type": "gameobject",
-          "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8"
-        },
         "ToggleCameraModeButton": "view",
         "UseAnimatorControls": true,
         "UseButton": "use",
@@ -85,7 +81,7 @@
           "Yaw": true,
           "Roll": true
         },
-        "MassCenterOverride": "0,0,36.00001",
+        "MassCenterOverride": "0,0,36",
         "MassOverride": 500,
         "MotionEnabled": true,
         "OverrideMassCenter": true,
