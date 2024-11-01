@@ -115,7 +115,6 @@
       "__guid": "c2e2b2e8-62e8-4ef3-8336-002a3a68f88e",
       "Flags": 0,
       "Name": "Map Loader",
-      "Tags": "map",
       "Enabled": true,
       "Components": [
         {
