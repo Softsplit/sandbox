@@ -118,7 +118,7 @@
       "Enabled": true,
       "Components": [
         {
-          "__type": "Sandbox.MapInstance",
+          "__type": "CustomMapInstance",
           "__guid": "053b9354-3f9b-4cbf-837b-932a5a04f3ae",
           "__version": 1,
           "EnableCollision": true,

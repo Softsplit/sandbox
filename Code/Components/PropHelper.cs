@@ -12,7 +12,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Property, Sync] public float Health { get; set; } = 1f;
 	[Property, Sync] public Vector3 Velocity { get; set; }
 
-	[Sync] public Prop Prop { get; set; }
+	[RequireComponent, Sync] public Prop Prop { get; set; }
+
 	[Sync] public ModelPhysics ModelPhysics { get; set; }
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
