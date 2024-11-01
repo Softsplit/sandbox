@@ -42,7 +42,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 	private void Pickup( string prefabName )
 	{
-		var prefab = GameObject.Clone( prefabName, new CloneConfig { Parent = GameObject, StartEnabled = false } );
+		var prefab = GameObject.Clone( prefabName, global::Transform.Zero, Owner.Body, false );
 		prefab.NetworkSpawn( false, Network.Owner );
 
 		var weapon = prefab.Components.Get<BaseWeapon>( true );
