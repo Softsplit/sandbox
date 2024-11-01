@@ -56,22 +56,19 @@ partial class Fists : BaseWeapon
 			if ( tr.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 			{
 				prop.Damage( 25 );
+
+				if ( prop.Rigidbody.IsValid() )
+				{
+					BroadcastApplyImpulseAt( prop.Rigidbody, tr.EndPosition, forward * 80 * 100 / tr.Body.Mass );
+				}
+				else if ( prop.ModelPhysics.IsValid() )
+				{
+					BroadcastApplyImpulseAt( prop.ModelPhysics, tr.EndPosition, forward * 80 * 100 );
+				}
 			}
 			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( 25 );
-			}
-
-			if ( tr.Body.IsValid() )
-			{
-				if ( tr.Body.GetComponent() is Rigidbody rigidbody )
-				{
-					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, forward * 80 * 100 / tr.Body.Mass );
-				}
-				else if ( tr.Body.GetComponent() is ModelPhysics modelPhysics )
-				{
-					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, forward * 80 * 100 );
-				}
 			}
 		}
 

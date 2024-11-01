@@ -22,6 +22,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	protected override void OnStart()
 	{
+		ModelPhysics = Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
+		Rigidbody = GetComponent<Rigidbody>();
+
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
@@ -52,6 +55,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var gib in gibs )
 		{
+			gib.AddComponent<PropHelper>();
 			gib.Tags.Add( "debris" );
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );

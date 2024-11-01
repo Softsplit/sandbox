@@ -48,10 +48,8 @@ public sealed partial class GameManager
 		prop.Model = model;
 
 		var propHelper = go.AddComponent<PropHelper>();
-		propHelper.ModelPhysics = go.Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
-		propHelper.Rigidbody = go.GetComponent<Rigidbody>();
 
-		var rb = go.GetComponent<Rigidbody>();
+		var rb = propHelper.Rigidbody;
 		if ( rb.IsValid() )
 		{
 			// If there's no physics model, create a simple OBB

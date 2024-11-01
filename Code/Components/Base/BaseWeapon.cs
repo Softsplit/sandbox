@@ -307,23 +307,19 @@ public partial class BaseWeapon : Component
 			if ( tr.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 			{
 				prop.Damage( damage );
+
+				if ( prop.Rigidbody.IsValid() )
+				{
+					BroadcastApplyImpulseAt( prop.Rigidbody, tr.EndPosition, forward * 5000 * force );
+				}
+				else if ( prop.ModelPhysics.IsValid() )
+				{
+					BroadcastApplyImpulseAt( prop.ModelPhysics, tr.EndPosition, forward * 5000 * force );
+				}
 			}
 			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( damage );
-			}
-
-			// TODO: Make other non-host clients able to apply impulse too
-			if ( tr.Body.IsValid() )
-			{
-				if ( tr.Body.GetComponent() is Rigidbody rigidbody )
-				{
-					BroadcastApplyImpulseAt( rigidbody, tr.EndPosition, forward * 5000 * force );
-				}
-				else if ( tr.Body.GetComponent() is ModelPhysics modelPhysics )
-				{
-					BroadcastApplyImpulseAt( modelPhysics, tr.EndPosition, forward * 5000 * force );
-				}
 			}
 		}
 	}
