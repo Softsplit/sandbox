@@ -4,7 +4,7 @@ partial class Flashlight : BaseWeapon
 	private SpotLight worldLight;
 	private SpotLight viewLight;
 
-	[Sync] private bool LightEnabled { get; set; } = true;
+	[Sync, Change( nameof( ToggleLight ) )] private bool LightEnabled { get; set; } = true;
 
 	TimeSince timeSinceLightToggled;
 
@@ -12,8 +12,8 @@ partial class Flashlight : BaseWeapon
 	{
 		base.OnStart();
 
-		worldLight = GetComponentInChildren<SpotLight>();
-		viewLight = ViewModel?.GetComponentInChildren<SpotLight>();
+		worldLight = GetComponentInChildren<SpotLight>( true );
+		viewLight = ViewModel?.GetComponentInChildren<SpotLight>( true );
 	}
 
 	public override void OnControl()
@@ -26,12 +26,6 @@ partial class Flashlight : BaseWeapon
 		{
 			LightEnabled = !LightEnabled;
 
-			BroadcastOnControl();
-
-			if ( worldLight.IsValid() )
-			{
-				worldLight.Enabled = LightEnabled;
-			}
 
 			if ( viewLight.IsValid() )
 			{
@@ -42,10 +36,14 @@ partial class Flashlight : BaseWeapon
 		}
 	}
 
-	[Broadcast]
-	private void BroadcastOnControl()
+	private void ToggleLight()
 	{
 		Sound.Play( LightEnabled ? "flashlight-on" : "flashlight-off", WorldPosition );
+
+		if ( worldLight.IsValid() )
+		{
+			worldLight.Enabled = LightEnabled;
+		}
 	}
 
 	public override bool CanReload()
@@ -135,45 +133,5 @@ partial class Flashlight : BaseWeapon
 	private void OnMeleeHit()
 	{
 		ViewModel?.Renderer?.Set( "attack_hit", true );
-	}
-
-	private void Activate()
-	{
-		if ( worldLight.IsValid() )
-		{
-			worldLight.Enabled = LightEnabled;
-		}
-
-		if ( viewLight.IsValid() )
-		{
-			viewLight.Enabled = LightEnabled;
-		}
-	}
-
-	private void Deactivate()
-	{
-		if ( worldLight.IsValid() )
-		{
-			worldLight.Enabled = false;
-		}
-
-		if ( viewLight.IsValid() )
-		{
-			viewLight.Enabled = false;
-		}
-	}
-
-	protected override void OnEnabled()
-	{
-		Activate();
-
-		base.OnEnabled();
-	}
-
-	protected override void OnDisabled()
-	{
-		Deactivate();
-
-		base.OnDisabled();
 	}
 }
