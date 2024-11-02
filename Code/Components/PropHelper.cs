@@ -62,7 +62,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
-		var isDead = dead;
+		if ( dead )
+			return;
+
 		dead = true;
 
 		if ( !Prop.IsValid() )
@@ -80,7 +82,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
-		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) && !isDead)
+		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ))
 		{
 			Explosion( data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
