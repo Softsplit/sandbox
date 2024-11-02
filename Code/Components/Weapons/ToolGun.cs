@@ -69,8 +69,6 @@ public class ToolGun : BaseWeapon
 
 	public void UpdateTool()
 	{
-		ViewModel?.Renderer?.Set( "b_deploy", true );
-
 		lastTool = CurrentTool;
 
 		ActiveTool?.Destroy();
