@@ -1,6 +1,4 @@
-using Sandbox;
 using Sandbox.ModelEditor.Nodes;
-using static Sandbox.VertexLayout;
 
 /// <summary>
 /// A component to help deal with props.
@@ -57,6 +55,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	}
 
 	bool dead;
+
 	public void Kill()
 	{
 		if ( IsProxy )
@@ -69,7 +68,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		if ( !Prop.IsValid() )
 			return;
-      
+
 		var gibs = Prop?.CreateGibs();
 
 		foreach ( var gib in gibs )
@@ -82,13 +81,14 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
-		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ))
+
+		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
 			Explosion( data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
 		else
 		{
-			GameObject.Destroy();
+			GameObject.DestroyImmediate();
 		}
 	}
 
@@ -180,12 +180,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	
 	public async void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
 		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 
-		BroadcastSound("rust_pumpshotgun.shootdouble", position);
+		BroadcastExplosion( "rust_pumpshotgun.shootdouble", position );
 
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
 
@@ -194,15 +193,14 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var obj in overlaps )
 		{
-
-			if(!obj.Tags.Intersect(BaseWeapon.BulletTraceTags).Any() && obj.Tags.Intersect( BaseWeapon.BulletExcludeTags ).Any() )
+			if ( !obj.Tags.Intersect( BaseWeapon.BulletTraceTags ).Any() && obj.Tags.Intersect( BaseWeapon.BulletExcludeTags ).Any() )
 			{
 				continue;
 			}
 
 			// If the object isn't in line of sight, fuck it off
 			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition )
-				.WithoutTags( BaseWeapon.BulletExcludeTags.Append("solid").ToArray() )
+				.WithoutTags( BaseWeapon.BulletExcludeTags.Append( "solid" ).ToArray() )
 				.Run();
 
 			if ( tr.Hit && tr.GameObject.IsValid() )
@@ -211,34 +209,28 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 					continue;
 			}
 
-			var distance = tr.Hit ? tr.Distance : obj.WorldPosition.Distance(position);
-			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );	
+			var distance = tr.Hit ? tr.Distance : obj.WorldPosition.Distance( position );
+			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
 
 			var dmg = damage * distanceMul;
-			
+
 			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().Where( x => x != this ) )
 			{
 				propHelper.Damage( dmg );
 			}
 
-			
-
-			obj.Root.GetComponent<Player>()?.TakeDamage( dmg );
-
 			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
 
+			obj.Root.GetComponent<Player>()?.TakeDamage( dmg );
 			obj.Root.GetComponent<Rigidbody>()?.ApplyImpulse( force );
-
 			obj.Root.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
-
-			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
 
-		GameObject?.Destroy();
+		GameObject?.DestroyImmediate();
 	}
 
 	[Broadcast]
-	public void BroadcastSound(string path, Vector3 position)
+	public void BroadcastExplosion( string path, Vector3 position )
 	{
 		Sound.Play( path, position );
 	}
