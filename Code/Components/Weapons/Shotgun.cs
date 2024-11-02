@@ -57,47 +57,12 @@ partial class Shotgun : BaseWeapon
 	{
 		base.ShootEffects();
 
-		var particleSystem = ParticleSystem.Load( "particles/pistol_ejectbrass.vpcf" );
-
-		var go = new GameObject
-		{
-			Name = particleSystem.Name,
-			Parent = ViewModel.GameObject,
-			WorldTransform = ViewModel?.Renderer?.GetAttachment( "ejection_point" ) ?? default
-		};
-
-		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
-		legacyParticleSystem.Particles = particleSystem;
-		legacyParticleSystem.ControlPoints = new()
-		{
-			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
-		};
-
-		go.DestroyAsync();
+		CreateParticleSystem( "particles/pistol_ejectbrass.vpcf", Attachment( "ejection_point" ) );
 	}
 
 	protected virtual void DoubleShootEffects()
 	{
-		if ( ViewModel.Tags.Has( "viewer" ) )
-			return;
-
-		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );
-
-		var go = new GameObject
-		{
-			Name = particleSystem.Name,
-			Parent = ViewModel.GameObject,
-			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default
-		};
-
-		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
-		legacyParticleSystem.Particles = particleSystem;
-		legacyParticleSystem.ControlPoints = new()
-		{
-			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
-		};
-
-		go.DestroyAsync();
+		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
 
 		ViewModel?.Renderer?.Set( "fire_double", true );
 	}

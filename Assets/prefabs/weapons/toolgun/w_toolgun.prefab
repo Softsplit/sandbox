@@ -7,21 +7,63 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
-        "__guid": "a954b011-87e4-41b3-9b25-152530c2006d",
-        "BodyGroups": 18446744073709551615,
-        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": false,
-          "AfterUILayer": false
+        "__type": "BaseWeapon",
+        "__guid": "b68c0661-a1f4-4018-96b3-14ce107f6c42",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
         },
-        "RenderType": "On",
-        "Tint": "1,1,1,1"
+        "Handedness": "Right",
+        "HoldType": "Pistol",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 5,
+        "ReloadTime": 3,
+        "SecondaryRate": 15,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"
+        }
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "e6777e1f-02ba-4acc-8717-56db806dda1f",
+        "Flags": 0,
+        "Name": "Model",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "a954b011-87e4-41b3-9b25-152530c2006d",
+            "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
+            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ]
+      }
+    ],
     "__variables": [],
     "__properties": {
       "FixedUpdateFrequency": 50,

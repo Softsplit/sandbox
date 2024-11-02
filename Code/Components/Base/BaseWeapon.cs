@@ -24,24 +24,12 @@ public partial class BaseWeapon : Component
 
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
-	public Transform Muzzle => Attachment( "muzzle" );
 
 	public Transform Attachment( string name )
 	{
-		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
-	}
-
-	SkinnedModelRenderer _worldModel = null;
-	public SkinnedModelRenderer WorldModel
-	{
-		get
-		{
-			if ( !_worldModel.IsValid() )
-			{
-				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
-			}
-			return _worldModel;
-		}
+		return Owner.Controller.ThirdPerson || IsProxy
+			? GameObject.Children.FirstOrDefault( x => x.Name == name.ToTitleCase() ).WorldTransform
+			: ViewModel?.Renderer?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
@@ -163,10 +151,7 @@ public partial class BaseWeapon : Component
 
 	protected virtual void ShootEffects()
 	{
-		if ( ViewModel.Tags.Has( "viewer" ) )
-			return;
-
-		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Muzzle, 1, ViewModel.GameObject );
+		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
 
 		ViewModel?.Renderer?.Set( "fire", true );
 	}

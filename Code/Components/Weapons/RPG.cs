@@ -35,25 +35,6 @@ partial class RPG : BaseWeapon
 	{
 		base.ShootEffects();
 
-		if ( ViewModel.Tags.Has( "viewer" ) )
-			return;
-
-		var particleSystem = ParticleSystem.Load( "particles/pistol_ejectbrass.vpcf" );
-
-		var go = new GameObject
-		{
-			Name = particleSystem.Name,
-			Parent = ViewModel.GameObject,
-			WorldTransform = ViewModel?.Renderer?.GetAttachment( "ejection_point" ) ?? default
-		};
-
-		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
-		legacyParticleSystem.Particles = particleSystem;
-		legacyParticleSystem.ControlPoints = new()
-		{
-			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
-		};
-
-		go.DestroyAsync();
+		CreateParticleSystem( "particles/pistol_ejectbrass.vpcf", Attachment( "ejection_point" ) );
 	}
 }
