@@ -231,6 +231,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
+
+		GameObject?.Destroy();
 	}
 
 	[Broadcast]
