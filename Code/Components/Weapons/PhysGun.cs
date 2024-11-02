@@ -39,12 +39,12 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( bone > -1 )
 		{
 			ModelPhysics modelPhysics = gameObject.Components.Get<ModelPhysics>();
-			return modelPhysics.PhysicsGroup.GetBody( bone );
+			return modelPhysics.IsValid() ? modelPhysics.PhysicsGroup.GetBody( bone ) : null;
 		}
 		else
 		{
 			Rigidbody rigidbody = gameObject.Components.Get<Rigidbody>();
-			return rigidbody.PhysicsBody;
+			return rigidbody.IsValid() ? rigidbody.PhysicsBody : null;
 		}
 	}
 

@@ -71,7 +71,7 @@
 		beam.WorldPosition = Muzzle.Position;
 		beam.WorldRotation = Muzzle.Rotation;
 
-		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains( "world" ) )
+		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains( "world" ) && HeldBody.IsValid())
 		{
 			var physGroup = HeldBody.PhysicsGroup;
 
