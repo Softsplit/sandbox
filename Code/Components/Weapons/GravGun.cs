@@ -18,6 +18,8 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	private TimeSince timeSinceDrop;
 
+	private TimeSince timeSinceImpulse;
+
 	private const string grabbedTag = "grabbed";
 
 	[Sync] public Vector3 HoldPos { get; set; }
@@ -66,12 +68,22 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	protected override void OnUpdate()
 	{
+
+		Move();
+
 		base.OnUpdate();
 
+	}
+
+	void Move()
+	{
 		if ( !GrabbedObject.IsValid() )
 			return;
 
 		if ( !Networking.IsHost )
+			return;
+
+		if ( timeSinceImpulse < Time.Delta * 5)
 			return;
 
 		if ( !HeldBody.IsValid() )
@@ -98,19 +110,23 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		{
 			if ( Input.Pressed( "attack1" ) )
 			{
-				if ( HeldBody.PhysicsGroup.IsValid() && HeldBody.PhysicsGroup.BodyCount > 1 )
+				GameObject grabbedObject = GrabbedObject;
+				int grabbedBone = GrabbedBone;
+				PhysicsBody heldBody = HeldBody;
+				GrabEnd();
+				if ( heldBody.PhysicsGroup.IsValid() && heldBody.PhysicsGroup.BodyCount > 1 )
 				{
-					// Don't throw ragdolls as hard
-					HeldBody.PhysicsGroup.ApplyImpulse( eyeDir * (ThrowForce * 0.5f), true );
-					HeldBody.PhysicsGroup.ApplyAngularImpulse( Vector3.Random * ThrowForce, true );
+					for ( int i = 0; i < heldBody.PhysicsGroup.Bodies.Count(); i++ )
+					{
+						ApplyImpulse( grabbedObject, i, eyeDir * (heldBody.Mass * ThrowForce * 0.5f));
+						ApplyAngularImpulse( grabbedObject, i, heldBody.Mass * Vector3.Random * ThrowForce);
+					}
 				}
 				else
 				{
-					HeldBody.ApplyImpulse( eyeDir * (HeldBody.Mass * ThrowForce) );
-					HeldBody.ApplyAngularImpulse( Vector3.Random * (HeldBody.Mass * ThrowForce) );
+					ApplyImpulse(grabbedObject, grabbedBone, eyeDir * (heldBody.Mass * ThrowForce) );
+					ApplyAngularImpulse( grabbedObject, grabbedBone, Vector3.Random * (heldBody.Mass * ThrowForce) );
 				}
-
-				GrabEnd();
 			}
 			else if ( Input.Pressed( "attack2" ) )
 			{
@@ -197,6 +213,8 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( !Networking.IsHost )
 			return;
 
+		timeSinceImpulse = 0;
+
 		PhysicsBody body;
 		if(bodyIndex > -1)
 		{
@@ -216,6 +234,8 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( !Networking.IsHost )
 			return;
 
+		timeSinceImpulse = 0;
+
 		PhysicsBody body;
 		if ( bodyIndex > -1 )
 		{
@@ -227,6 +247,27 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		}
 
 		body.ApplyImpulse( velocity );
+	}
+
+	[Broadcast]
+	private void ApplyAngularImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
+	{
+		if ( !Networking.IsHost )
+			return;
+
+		timeSinceImpulse = 0;
+
+		PhysicsBody body;
+		if ( bodyIndex > -1 )
+		{
+			body = gameObject.Components.Get<ModelPhysics>().PhysicsGroup.Bodies.ElementAt( bodyIndex );
+		}
+		else
+		{
+			body = gameObject.Components.Get<Rigidbody>().PhysicsBody;
+		}
+
+		body.ApplyAngularImpulse( velocity );
 	}
 
 	Vector3 heldPos;
@@ -264,7 +305,6 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		HoldRot = rot * heldRot;
 	}
 
-	[Broadcast]
 	private void GrabEnd()
 	{
 		timeSinceDrop = 0;
