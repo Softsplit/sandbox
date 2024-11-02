@@ -67,7 +67,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( !GrabbedObject.IsValid() )
 			return;
 
-		if ( GrabbedObject.IsProxy )
+		if ( !Networking.IsHost )
 			return;
 
 		if ( !HeldBody.IsValid() )
