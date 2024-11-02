@@ -135,10 +135,14 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 			.IgnoreGameObjectHierarchy( Owner.GameObject )
 			.Radius( 2.0f )
 			.Run();
+
+		if ( !tr.Hit || !tr.GameObject.IsValid() || !tr.Body.IsValid() || !tr.GameObject.IsValid() || tr.Component is MapCollider )
+			return;
 		
 		var rigidBody = tr.GameObject.Components.Get<Rigidbody>();
 		var modelPhysics = tr.GameObject.Components.Get<ModelPhysics>();
-		if ( !tr.Hit && !tr.Body.IsValid() && !tr.GameObject.IsValid() && tr.Component is not MapCollider && !rigidBody.IsValid() && !modelPhysics.IsValid() )
+		
+		if (!rigidBody.IsValid() && !modelPhysics.IsValid())
 			return;
 
 		if ( tr.GameObject.Tags.Has( grabbedTag ) )
@@ -176,7 +180,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				{
 					for(int i = 0; i < tr.Body.PhysicsGroup.Bodies.Count(); i++ )
 					{
-						ApplyImpulse(tr.GameObject, tr.Bone, eyeDir * -PullForce );
+						ApplyImpulse(tr.GameObject, i, eyeDir * -PullForce );
 					}
 				}
 				else
