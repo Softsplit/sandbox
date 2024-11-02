@@ -44,7 +44,7 @@ public partial class BaseWeapon : Component
 
 	public Transform Attachment( string name )
 	{
-		return LocalRenderer.GetAttachment( name ) ?? WorldTransform;
+		return LocalRenderer?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
