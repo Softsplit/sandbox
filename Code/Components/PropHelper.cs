@@ -214,16 +214,23 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			var dmg = damage * distanceMul;
 
-			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().Where( x => x != this ) )
+			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().ToArray() )
 			{
+				if ( !propHelper.IsValid() ) continue;
+
 				propHelper.Damage( dmg );
 			}
 
 			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
 
-			obj.Root.GetComponent<Player>()?.TakeDamage( dmg );
-			obj.Root.GetComponent<Rigidbody>()?.ApplyImpulse( force );
-			obj.Root.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
+			if ( obj.GetComponent<Player>().IsValid() )
+				obj.GetComponent<Player>()?.TakeDamage( dmg );
+
+			if ( obj.GetComponent<Rigidbody>().IsValid() )
+				obj.GetComponent<Rigidbody>()?.ApplyImpulse( force );
+
+			if ( obj.GetComponent<ModelPhysics>().IsValid() )
+				obj.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
 		}
 
 		GameObject?.DestroyImmediate();
