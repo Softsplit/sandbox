@@ -160,4 +160,34 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			player.TakeDamage( damage );
 		}
 	}
+
+	[Broadcast]
+	public void Weld( GameObject to )
+	{
+		PropHelper propHelper = to.Components.Get<PropHelper>();
+
+		var fixedJoint = Components.Create<FixedJoint>();
+		fixedJoint.Body = to;
+		fixedJoint.LinearDamping = 0;
+		fixedJoint.LinearFrequency = 0;
+		fixedJoint.AngularDamping = 0;
+		fixedJoint.AngularFrequency = 0;
+
+		Welds.Add( fixedJoint );
+		Joints.Add( fixedJoint );
+		propHelper?.Welds.Add( fixedJoint );
+		propHelper?.Joints.Add( fixedJoint );
+	}
+
+	[Broadcast]
+	public void UnWeld()
+	{
+		foreach ( var weld in Welds )
+		{
+			weld?.Destroy();
+		}
+
+		Welds.RemoveAll( item => !item.IsValid() );
+		Joints.RemoveAll( item => !item.IsValid() );
+	}
 }

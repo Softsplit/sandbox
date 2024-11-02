@@ -19,6 +19,29 @@
         },
         "RenderType": "On",
         "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "ToolGun",
+        "__guid": "6043b4fe-b270-43db-9fc8-b75325a8a829",
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "Handedness": "Right",
+        "HoldType": "Pistol",
+        "ParentBone": "hold_r",
+        "PrimaryRate": 5,
+        "ReloadTime": 3,
+        "SecondaryRate": 5,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"
+        }
       }
     ],
     "Children": [],
