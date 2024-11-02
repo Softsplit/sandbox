@@ -83,7 +83,7 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 
 
 			
-			obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
+			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 
 
 		}
