@@ -85,7 +85,10 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	{
 		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
 
-		Owner.Controller.UseCameraControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
+		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
+
+		if ( !Owner.Controller.UseInputControls )
+			Owner.Controller.WishVelocity = 0;
 
 		Beaming = Input.Down( "attack1" );
 
