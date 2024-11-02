@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 public partial class GravGun : BaseWeapon, IPlayerEvent
 {
 	[Property] public float MaxPullDistance => 2000.0f;
@@ -15,12 +13,6 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Property] public float AttachDistance => 150.0f;
 	[Property] public float DropCooldown => 0.5f;
 	[Property] public float BreakLinearForce => 2000.0f;
-
-	private TimeSince timeSinceDrop;
-
-	private TimeSince timeSinceImpulse;
-
-	private const string grabbedTag = "grabbed";
 
 	[Sync] public Vector3 HoldPos { get; set; }
 	[Sync] public Rotation HoldRot { get; set; }
@@ -68,12 +60,11 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	protected override void OnUpdate()
 	{
-
 		Move();
-
 		base.OnUpdate();
-
 	}
+
+	TimeSince timeSinceImpulse;
 
 	void Move()
 	{
@@ -83,7 +74,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( !Networking.IsHost )
 			return;
 
-		if ( timeSinceImpulse < Time.Delta * 5)
+		if ( timeSinceImpulse < Time.Delta * 5 )
 			return;
 
 		if ( !HeldBody.IsValid() )
@@ -98,7 +89,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		HeldBody.AngularVelocity = angularVelocity;
 	}
 
-	bool grabbed;
+	TimeSince timeSinceDrop;
 
 	public override void OnControl()
 	{
@@ -113,6 +104,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				GameObject grabbedObject = GrabbedObject;
 				int grabbedBone = GrabbedBone;
 				PhysicsBody heldBody = HeldBody;
+
 				GrabEnd();
 
 				if ( !grabbedObject.IsValid() || !heldBody.IsValid() )
@@ -122,13 +114,13 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				{
 					for ( int i = 0; i < heldBody.PhysicsGroup.Bodies.Count(); i++ )
 					{
-						ApplyImpulse( grabbedObject, i, eyeDir * (heldBody.Mass * ThrowForce * 0.5f));
-						ApplyAngularImpulse( grabbedObject, i, heldBody.Mass * Vector3.Random * ThrowForce);
+						ApplyImpulse( grabbedObject, i, eyeDir * (heldBody.Mass * ThrowForce * 0.5f) );
+						ApplyAngularImpulse( grabbedObject, i, heldBody.Mass * Vector3.Random * ThrowForce );
 					}
 				}
 				else
 				{
-					ApplyImpulse(grabbedObject, grabbedBone, eyeDir * (heldBody.Mass * ThrowForce) );
+					ApplyImpulse( grabbedObject, grabbedBone, eyeDir * (heldBody.Mass * ThrowForce) );
 					ApplyAngularImpulse( grabbedObject, grabbedBone, Vector3.Random * (heldBody.Mass * ThrowForce) );
 				}
 			}
@@ -147,8 +139,6 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( timeSinceDrop < DropCooldown )
 			return;
 
-
-
 		var tr = Scene.Trace.Ray( eyePos, eyePos + eyeDir * MaxPullDistance )
 			.UseHitboxes()
 			.WithAnyTags( "solid", "debris", "nocollide" )
@@ -158,14 +148,14 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 		if ( !tr.Hit || !tr.GameObject.IsValid() || !tr.Body.IsValid() || !tr.GameObject.IsValid() || tr.Component is MapCollider )
 			return;
-		
+
 		var rigidBody = tr.GameObject.Components.Get<Rigidbody>();
 		var modelPhysics = tr.GameObject.Components.Get<ModelPhysics>();
-		
-		if (!rigidBody.IsValid() && !modelPhysics.IsValid())
+
+		if ( !rigidBody.IsValid() && !modelPhysics.IsValid() )
 			return;
 
-		if ( tr.GameObject.Tags.Has( grabbedTag ) )
+		if ( tr.GameObject.Tags.Has( "grabbed" ) )
 			return;
 
 		var body = tr.Body;
@@ -176,46 +166,43 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( body.BodyType != PhysicsBodyType.Dynamic )
 			return;
 
-		
-
 		if ( Input.Pressed( "attack1" ) )
 		{
 			if ( tr.Distance < MaxPushDistance )
 			{
 				var pushScale = 1.0f - Math.Clamp( tr.Distance / MaxPushDistance, 0.0f, 1.0f );
-				ApplyImpulseAt(tr.GameObject, modelPhysics.IsValid() ? body.GroupIndex : -1, tr.EndPosition, eyeDir * (body.Mass * (PushForce * pushScale)) );
+				ApplyImpulseAt( tr.GameObject, modelPhysics.IsValid() ? body.GroupIndex : -1, tr.EndPosition, eyeDir * (body.Mass * (PushForce * pushScale)) );
 			}
 		}
 		else if ( Input.Down( "attack2" ) )
 		{
-
 			var attachPos = body.FindClosestPoint( eyePos );
 
 			if ( eyePos.Distance( attachPos ) <= AttachDistance )
 			{
-
 				var holdDistance = HoldDistance + attachPos.Distance( body.MassCenter );
+
 				GrabStart( tr.GameObject, body, eyePos + eyeDir * holdDistance, eyeRot );
 			}
 			else
 			{
-				if(tr.Body.PhysicsGroup.IsValid())
+				if ( tr.Body.PhysicsGroup.IsValid() )
 				{
-					for(int i = 0; i < tr.Body.PhysicsGroup.Bodies.Count(); i++ )
+					for ( int i = 0; i < tr.Body.PhysicsGroup.Bodies.Count(); i++ )
 					{
-						ApplyImpulse(tr.GameObject, i, eyeDir * -PullForce );
+						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce );
 					}
 				}
 				else
 				{
-					ApplyImpulse( tr.GameObject, -1, eyeDir * -PullForce);
+					ApplyImpulse( tr.GameObject, -1, eyeDir * -PullForce );
 				}
 			}
 		}
 	}
 
 	[Broadcast]
-	private void ApplyImpulseAt(GameObject gameObject, int bodyIndex, Vector3 position, Vector3 velocity)
+	private void ApplyImpulseAt( GameObject gameObject, int bodyIndex, Vector3 position, Vector3 velocity )
 	{
 		if ( !Networking.IsHost )
 			return;
@@ -223,7 +210,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		timeSinceImpulse = 0;
 
 		PhysicsBody body;
-		if(bodyIndex > -1)
+		if ( bodyIndex > -1 )
 		{
 			body = gameObject.Components.Get<ModelPhysics>().PhysicsGroup.Bodies.ElementAt( bodyIndex );
 		}
@@ -244,6 +231,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		timeSinceImpulse = 0;
 
 		PhysicsBody body;
+
 		if ( bodyIndex > -1 )
 		{
 			body = gameObject.Components.Get<ModelPhysics>()?.PhysicsGroup.Bodies.ElementAt( bodyIndex );
@@ -253,8 +241,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 			body = gameObject.Components.Get<Rigidbody>()?.PhysicsBody;
 		}
 
-		if(body.IsValid())
-			body.ApplyImpulse( velocity );
+		if ( body.IsValid() ) body.ApplyImpulse( velocity );
 	}
 
 	[Broadcast]
@@ -266,6 +253,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		timeSinceImpulse = 0;
 
 		PhysicsBody body;
+
 		if ( bodyIndex > -1 )
 		{
 			body = gameObject.Components.Get<ModelPhysics>()?.PhysicsGroup?.Bodies.ElementAt( bodyIndex );
@@ -275,8 +263,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 			body = gameObject.Components.Get<Rigidbody>()?.PhysicsBody;
 		}
 
-		if(body.IsValid())
-			body.ApplyAngularImpulse( velocity );
+		if ( body.IsValid() ) body.ApplyAngularImpulse( velocity );
 	}
 
 	Vector3 heldPos;
@@ -306,7 +293,6 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	private void GrabMove( Vector3 startPos, Vector3 dir, Rotation rot )
 	{
-
 		if ( !HeldBody.IsValid() )
 			return;
 
@@ -320,12 +306,11 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	private void GrabEnd()
 	{
 		timeSinceDrop = 0;
-
 		heldRot = Rotation.Identity;
 
 		if ( GrabbedObject.IsValid() )
 		{
-			GrabbedObject.Tags.Remove( grabbedTag );
+			GrabbedObject.Tags.Remove( "grabbed" );
 		}
 
 		GrabbedObject = null;

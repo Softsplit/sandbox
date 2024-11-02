@@ -11,12 +11,10 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	{
 		Pickup( "prefabs/weapons/physgun/w_physgun.prefab" );
 		Pickup( "prefabs/weapons/gravgun/w_gravgun.prefab" );
-		Pickup( "prefabs/weapons/fists/w_fists.prefab" );
-		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab" );
-		Pickup( "prefabs/weapons/mp5/w_mp5.prefab" );
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
-		Pickup( "prefabs/weapons/rpg/w_rpg.prefab" );
-		Pickup( "prefabs/weapons/shotgun/w_shotgun.prefab" );
+		Pickup( "prefabs/weapons/mp5/w_mp5.prefab" );
+		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab" );
+		Pickup( "prefabs/weapons/fists/w_fists.prefab" );
 	}
 
 	protected override void OnUpdate()
