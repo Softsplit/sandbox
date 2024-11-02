@@ -1,6 +1,4 @@
-﻿
-
-public sealed class Door : Component, Component.IPressable
+﻿public sealed class Door : Component, Component.IPressable
 {
 	/// <summary>
 	/// Animation curve to use, X is the time between 0-1 and Y is how much the door is open to its target angle from 0-1.
@@ -65,7 +63,9 @@ public sealed class Door : Component, Component.IPressable
 		Rotating,
 		AnimatingOnly
 	}
+
 	[Property] public DoorMoveType MoveDirType { get; set; } = DoorMoveType.Rotating;
+
 	public enum DoorState
 	{
 		Open,
@@ -77,6 +77,7 @@ public sealed class Door : Component, Component.IPressable
 	Transform StartTransform { get; set; }
 	public Vector3 PivotPosition { get; set; }
 	bool ReverseDirection { get; set; }
+
 	[HostSync] public TimeSince LastUse { get; set; }
 	[HostSync] public DoorState State { get; set; } = DoorState.Closed;
 
@@ -92,8 +93,10 @@ public sealed class Door : Component, Component.IPressable
 	protected override void OnStart()
 	{
 		StartTransform = Transform.Local;
+
 		if ( PivotPosition == Vector3.Zero )
 			PivotPosition = Pivot is not null ? Pivot.WorldPosition : StartTransform.Position;
+
 		DefaultState = State;
 	}
 
@@ -107,7 +110,6 @@ public sealed class Door : Component, Component.IPressable
 	{
 		return CanUse();
 	}
-
 
 	private void PlaySound( SoundEvent resource )
 	{
@@ -125,15 +127,18 @@ public sealed class Door : Component, Component.IPressable
 
 		handle.Occlusion = false;
 	}
-	
+
 	[Broadcast]
 	public void Press( GameObject presser )
 	{
-		if (presser.Network.Owner != Rpc.Caller)
+		if ( presser.Network.Owner != Rpc.Caller )
 			return;
-		
+
 		LastUse = 0.0f;
-		if ( Locked ) return;
+
+		if ( Locked )
+			return;
+
 		if ( State == DoorState.Closed )
 		{
 			if ( OpenAwayFromPlayer )
@@ -143,6 +148,7 @@ public sealed class Door : Component, Component.IPressable
 
 				ReverseDirection = Vector3.Dot( doorToPlayer, doorForward ) > 0;
 			}
+
 			Open();
 		}
 		else if ( State == DoorState.Open )
@@ -150,7 +156,7 @@ public sealed class Door : Component, Component.IPressable
 			Close();
 		}
 	}
-	
+
 	bool IPressable.Press( IPressable.Event e )
 	{
 		if ( State == DoorState.Opening || State == DoorState.Closing )
@@ -174,14 +180,15 @@ public sealed class Door : Component, Component.IPressable
 	public void Open()
 	{
 		State = DoorState.Opening;
+
 		if ( OpenSound is not null )
 			PlaySound( OpenSound );
-
 	}
 
 	public void Close()
 	{
 		State = DoorState.Closing;
+
 		if ( CloseSound is not null )
 			PlaySound( CloseSound );
 	}
@@ -192,7 +199,6 @@ public sealed class Door : Component, Component.IPressable
 			return;
 
 		var time = LastUse.Relative.Remap( 0.0f, OpenTime, 0.0f, 1.0f );
-
 		var curve = AnimationCurve.Evaluate( time );
 
 		if ( State == DoorState.Closing ) curve = 1.0f - curve;
@@ -206,6 +212,7 @@ public sealed class Door : Component, Component.IPressable
 
 			Transform.Local = StartTransform.RotateAround( PivotPosition, Rotation.FromAxis( axis, targetAngle * curve ) );
 		}
+
 		if ( MoveDirType == DoorMoveType.Moving )
 		{
 			var dir = Axis.Forward;
