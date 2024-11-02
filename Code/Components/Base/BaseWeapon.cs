@@ -44,7 +44,7 @@ public partial class BaseWeapon : Component
 
 	public Transform Attachment( string name )
 	{
-		return LocalRenderer.GetAttachment( name ) ?? WorldTransform;
+		return LocalRenderer?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
@@ -189,7 +189,8 @@ public partial class BaseWeapon : Component
 	{
 		if ( Connection.Local.Id == connection )
 			return;
-		MakeParticleSystem( path, new Transform (position, rotation), time, parent );
+
+		MakeParticleSystem( path, new Transform( position, rotation ), time, parent );
 	}
 
 	public static LegacyParticleSystem MakeParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
