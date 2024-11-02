@@ -76,7 +76,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
-			GameManager.Explosion( null, data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
+			Explosion( null, data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
 		GameObject.Destroy();
 	}
@@ -166,6 +166,48 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
 		{
 			player.TakeDamage( damage );
+		}
+	}
+
+	[Broadcast]
+	public void Explosion( Component owner, string particle, Vector3 position, float radius, float damage, float forceScale )
+	{
+		// Effects
+		Sound.Play( "rust_pumpshotgun.shootdouble", position );
+		Particles.MakeParticleSystem( particle, new Transform( position, Rotation.Identity ) );
+
+		// Damage, etc
+		var overlaps = Game.ActiveScene.FindInPhysics( new Sphere( position, radius ) );
+
+		foreach ( var obj in overlaps )
+		{
+
+
+			var distance = obj.WorldPosition.Distance( position );
+			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
+
+			var dmg = damage * distanceMul;
+
+			// If the object isn't in line of sight, fuck it off
+			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition )
+				.WithAnyTags( BaseWeapon.BulletTraceTags )
+				.WithoutTags( BaseWeapon.BulletExcludeTags )
+				.Run();
+			if ( tr.Hit && tr.GameObject.IsValid() )
+			{
+				if ( !obj.Root.IsDescendant( tr.GameObject ) )
+					continue;
+			}
+
+			foreach ( var damageable in obj.Components.GetAll<Component.IDamageable>() )
+			{
+				Damage( dmg );
+			}
+
+
+			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
+
+
 		}
 	}
 }

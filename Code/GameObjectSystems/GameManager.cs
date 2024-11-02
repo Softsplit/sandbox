@@ -48,44 +48,4 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 		//
 		return Transform.Zero;
 	}
-	
-	[Broadcast]
-	public static void Explosion( Component owner, string particle, Vector3 position, float radius, float damage, float forceScale )
-	{
-		// Effects
-		Sound.Play( "rust_pumpshotgun.shootdouble", position );
-		Particles.MakeParticleSystem( particle, position, Rotation.Identity );
-
-		// Damage, etc
-		var overlaps = Game.ActiveScene.FindInPhysics(new Sphere( position, radius ) );
-
-		foreach ( var obj in overlaps )
-		{
-
-			
-			var distance = obj.WorldPosition.Distance( position );
-			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
-			
-			var dmg = damage * distanceMul;
-
-			// If the object isn't in line of sight, fuck it off
-			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition ).Run();
-			if ( tr.Hit && tr.GameObject.IsValid() )
-			{
-				if ( !obj.Root.IsDescendant( tr.GameObject ) )
-					continue;
-			}
-
-			foreach ( var damageable in obj.Components.GetAll<Component.IDamageable>(  ) )
-			{
-				damageable.OnDamage( new DamageInfo(dmg, null, null) );
-			}
-
-
-			
-			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
-
-
-		}
-	}
 }

@@ -237,14 +237,17 @@ public partial class BaseWeapon : Component
 	/// Does a trace from start to end, does bullet impact effects. Coded as an IEnumerable so you can return multiple
 	/// hits, like if you're going through layers or ricocheting or something.
 	/// </summary>
+	public static readonly string[] BulletTraceTags = { "solid", "player", "npc", "glass" };
+	public static readonly string[] BulletExcludeTags = { "player_hull" };
+
 	public virtual IEnumerable<SceneTraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
 		// bool underWater = Trace.TestPoint( start, "water" );
 
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
-				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.WithoutTags( "player_hull" )
+				.WithAnyTags( BulletTraceTags )
+				.WithoutTags( BulletExcludeTags )
 				.IgnoreGameObjectHierarchy( GameObject.Root )
 				.Size( radius );
 
