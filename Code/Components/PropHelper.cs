@@ -169,12 +169,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	[Broadcast]
 	public void Explosion( Component owner, string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
 		// Effects
 		Sound.Play( "rust_pumpshotgun.shootdouble", position );
-		Particles.MakeParticleSystem( particle, new Transform( position, Rotation.Identity ) );
+		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ) );
 
 		// Damage, etc
 		var overlaps = Game.ActiveScene.FindInPhysics( new Sphere( position, radius ) );
@@ -193,6 +192,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				.WithAnyTags( BaseWeapon.BulletTraceTags )
 				.WithoutTags( BaseWeapon.BulletExcludeTags )
 				.Run();
+
 			if ( tr.Hit && tr.GameObject.IsValid() )
 			{
 				if ( !obj.Root.IsDescendant( tr.GameObject ) )
@@ -201,10 +201,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			Damage( dmg );
 
-
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
-
-
 		}
 	}
 }
