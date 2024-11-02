@@ -76,7 +76,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
-			Explosion( null, data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
+			Explosion( data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
 		GameObject.Destroy();
 	}
@@ -169,7 +169,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	public void Explosion( Component owner, string particle, Vector3 position, float radius, float damage, float forceScale )
+	public void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
 		// Effects
 		Sound.Play( "rust_pumpshotgun.shootdouble", position );
@@ -180,7 +180,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var obj in overlaps )
 		{
-
 
 			var distance = obj.WorldPosition.Distance( position );
 			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
@@ -199,7 +198,10 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 					continue;
 			}
 
-			Damage( dmg );
+			foreach ( var propHelper in obj.Components.GetAll<PropHelper>() )
+			{
+				propHelper.Damage( dmg );
+			}
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
