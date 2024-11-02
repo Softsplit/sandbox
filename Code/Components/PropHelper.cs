@@ -84,7 +84,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
-			Explosion( data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
+			Explosion( data.Effect, data.Sound, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
 		else
 		{
@@ -180,11 +180,14 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	public async void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
+	public async void Explosion( string particle, string sound, Vector3 position, float radius, float damage, float forceScale )
 	{
 		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 
-		BroadcastExplosion( "rust_pumpshotgun.shootdouble", position );
+		var soundEvent = ResourceLibrary.Get<SoundEvent>( sound );
+
+		if(sound != null)
+			BroadcastExplosion( soundEvent.IsValid() ? sound : "rust_pumpshotgun.shootdouble", position );
 
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
 
