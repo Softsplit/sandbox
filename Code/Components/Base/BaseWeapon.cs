@@ -22,14 +22,29 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
+	public SkinnedModelRenderer LocalRenderer => Owner.Controller.ThirdPerson || IsProxy
+			? WorldModel
+			: ViewModel?.Renderer;
+
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
 
+	SkinnedModelRenderer _worldModel = null;
+	public SkinnedModelRenderer WorldModel
+	{
+		get
+		{
+			if ( !_worldModel.IsValid() )
+			{
+				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
+			}
+			return _worldModel;
+		}
+	}
+
 	public Transform Attachment( string name )
 	{
-		return Owner.Controller.ThirdPerson || IsProxy
-			? GameObject.Children.FirstOrDefault( x => x.Name == name.ToTitleCase() ).WorldTransform
-			: ViewModel?.Renderer?.GetAttachment( name ) ?? WorldTransform;
+		return LocalRenderer.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
@@ -151,7 +166,7 @@ public partial class BaseWeapon : Component
 
 	protected virtual void ShootEffects()
 	{
-		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
+		AttachParticleSystem( "particles/pistol_muzzleflash.vpcf", "muzzle" );
 
 		ViewModel?.Renderer?.Set( "fire", true );
 	}
@@ -159,7 +174,14 @@ public partial class BaseWeapon : Component
 	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
 	{
 		SpawnParticleSystem( Connection.Local.Id, path, transform.Position, transform.Rotation, time, parent );
-		return MakeParticleSystem( path, transform.Position, transform.Rotation, time, parent );
+		return MakeParticleSystem( path, transform, time, parent );
+	}
+
+	[Broadcast]
+	public void AttachParticleSystem( string path, string attachment, float time = 1, GameObject parent = null )
+	{
+		Transform transform = LocalRenderer?.GetAttachment( attachment ) ?? WorldTransform;
+		MakeParticleSystem( path, transform, time, parent );
 	}
 
 	[Broadcast]
@@ -167,10 +189,10 @@ public partial class BaseWeapon : Component
 	{
 		if ( Connection.Local.Id == connection )
 			return;
-		MakeParticleSystem( path, position, rotation, time, parent );
+		MakeParticleSystem( path, new Transform (position, rotation), time, parent );
 	}
 
-	public static LegacyParticleSystem MakeParticleSystem( string path, Vector3 position, Rotation rotation, float time = 1, GameObject parent = null )
+	public static LegacyParticleSystem MakeParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
 	{
 		var particleSystem = ParticleSystem.Load( path );
 
@@ -178,7 +200,7 @@ public partial class BaseWeapon : Component
 		{
 			Name = particleSystem.Name,
 			Parent = parent,
-			WorldTransform = new Transform( position, rotation )
+			WorldTransform = transform
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
