@@ -199,10 +199,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 					continue;
 			}
 
-			foreach ( var damageable in obj.Components.GetAll<Component.IDamageable>() )
-			{
-				Damage( dmg );
-			}
+			Damage( dmg );
 
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
