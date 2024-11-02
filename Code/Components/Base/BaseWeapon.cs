@@ -182,7 +182,12 @@ public partial class BaseWeapon : Component
 			WorldTransform = transform
 		};
 
-		Particles.Create( particleSystem.ResourcePath, go );
+		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
+		legacyParticleSystem.Particles = particleSystem;
+		legacyParticleSystem.ControlPoints = new()
+		{
+			new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
+		};
 
 		if ( time > 0 )
 			go.DestroyAsync( time );
