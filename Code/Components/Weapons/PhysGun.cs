@@ -335,9 +335,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void Freeze( GameObject gameObject, int bone )
 	{
-		if ( !gameObject.IsValid() )
-			return;
-
 		GetBody( gameObject, bone ).BodyType = PhysicsBodyType.Static;
 		FreezeEffects();
 	}
@@ -345,9 +342,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
-		if ( !gameObject.IsValid() )
-			return;
-
 		GetBody( gameObject, bone ).BodyType = PhysicsBodyType.Dynamic;
 	}
 }
