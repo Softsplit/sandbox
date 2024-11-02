@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.ModelEditor.Nodes;
+using static Sandbox.VertexLayout;
 
 /// <summary>
 /// A component to help deal with props.
@@ -181,8 +182,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	public async void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
 		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
-		// Effects
-		Sound.Play( "rust_pumpshotgun.shootdouble", position );
+
+		BroadcastSound("rust_pumpshotgun.shootdouble", position);
+
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
 
 		// Damage, etc
@@ -229,5 +231,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
+	}
+
+	[Broadcast]
+	public void BroadcastSound(string path, Vector3 position)
+	{
+		Sound.Play( path, position );
 	}
 }
