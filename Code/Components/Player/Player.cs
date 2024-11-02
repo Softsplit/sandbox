@@ -23,6 +23,8 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 		// Give hull a special tag so we can ignore it in favor of hitboxes.
 		foreach ( var shape in Controller.Body.PhysicsBody.Shapes )
 		{
+			if ( !shape.IsValid() ) continue;
+
 			shape.Tags.Add( "player_hull" );
 		}
 	}
