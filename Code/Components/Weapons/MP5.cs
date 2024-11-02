@@ -52,6 +52,7 @@ partial class MP5 : BaseWeapon
 	protected override void ShootEffects()
 	{
 		base.ShootEffects();
+
 		AttachParticleSystem( EjectBrass.Name, "eject" );
 	}
 }

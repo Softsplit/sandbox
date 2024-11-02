@@ -123,9 +123,9 @@
 			lastBeamPos = tr.EndPosition; Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
 
 			beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
-      
+
 			endNoHit ??= Particles.MakeParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
-      
+
 			endNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
 			endNoHit.WorldPosition = lastBeamPos;
 		}
@@ -133,9 +133,8 @@
 
 	LegacyParticleSystem CreateBeam( Vector3 endPos )
 	{
-    
 		LegacyParticleSystem beam = Particles.MakeParticleSystem( "particles/physgun_beam.vpcf", new Transform( endPos ), 0 );
-    
+
 		return beam;
 	}
 
