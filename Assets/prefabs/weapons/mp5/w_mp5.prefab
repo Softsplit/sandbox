@@ -55,6 +55,21 @@
             "Tint": "1,1,1,1"
           }
         ]
+      },
+      {
+        "__guid": "f70b9bf0-77c6-4f7c-9ddf-b8c8a8284a38",
+        "Flags": 0,
+        "Name": "Muzzle",
+        "Position": "19.5,0,12.2",
+        "Enabled": true
+      },
+      {
+        "__guid": "0db70960-8296-4cbf-afce-387fdb9e49cb",
+        "Flags": 0,
+        "Name": "Eject",
+        "Position": "3,-0.95,13.15",
+        "Rotation": "-0.3826835,-0,0,0.9238795",
+        "Enabled": true
       }
     ],
     "__variables": [],

@@ -24,24 +24,12 @@ public partial class BaseWeapon : Component
 
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
-	public Transform Muzzle => Attachment( "muzzle" );
 
 	public Transform Attachment( string name )
 	{
-		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
-	}
-
-	SkinnedModelRenderer _worldModel = null;
-	public SkinnedModelRenderer WorldModel
-	{
-		get
-		{
-			if ( !_worldModel.IsValid() )
-			{
-				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
-			}
-			return _worldModel;
-		}
+		return Owner.Controller.ThirdPerson || IsProxy
+			? GameObject.Children.FirstOrDefault( x => x.Name == name.ToTitleCase() ).WorldTransform
+			: ViewModel?.Renderer?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
@@ -71,7 +59,7 @@ public partial class BaseWeapon : Component
 
 		if ( IsProxy ) return;
 
-		ViewModel.GameObject.Enabled = true;	
+		ViewModel.GameObject.Enabled = true;
 	}
 
 	protected override void OnDisabled()
@@ -163,15 +151,26 @@ public partial class BaseWeapon : Component
 
 	protected virtual void ShootEffects()
 	{
-		if ( ViewModel.Tags.Has( "viewer" ) )
-			return;
-
-		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Muzzle, 1, ViewModel.GameObject );
+		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
 
 		ViewModel?.Renderer?.Set( "fire", true );
 	}
 
 	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
+	{
+		SpawnParticleSystem( Connection.Local.Id, path, transform.Position, transform.Rotation, time, parent );
+		return MakeParticleSystem( path, transform.Position, transform.Rotation, time, parent );
+	}
+
+	[Broadcast]
+	public static void SpawnParticleSystem( Guid connection, string path, Vector3 position, Rotation rotation, float time = 1, GameObject parent = null )
+	{
+		if ( Connection.Local.Id == connection )
+			return;
+		MakeParticleSystem( path, position, rotation, time, parent );
+	}
+
+	public static LegacyParticleSystem MakeParticleSystem( string path, Vector3 position, Rotation rotation, float time = 1, GameObject parent = null )
 	{
 		var particleSystem = ParticleSystem.Load( path );
 
@@ -179,7 +178,7 @@ public partial class BaseWeapon : Component
 		{
 			Name = particleSystem.Name,
 			Parent = parent,
-			WorldTransform = transform
+			WorldTransform = new Transform( position, rotation )
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();

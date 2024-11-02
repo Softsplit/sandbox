@@ -38,10 +38,19 @@
         "Enabled": true,
         "Components": [
           {
-            "__type": "Sandbox.ModelRenderer",
+            "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "abfc91ee-c839-4cba-aea0-d832ed3796a0",
             "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
             "Model": "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -49,9 +58,17 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
-            "Tint": "1,1,1,1"
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
           }
         ]
+      },
+      {
+        "__guid": "aed18528-2cdb-46cd-8251-9496df76c586",
+        "Flags": 0,
+        "Name": "Muzzle",
+        "Position": "33.8,0,4.15",
+        "Enabled": true
       }
     ],
     "__variables": [],

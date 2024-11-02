@@ -71,8 +71,8 @@
 
 		if ( beam.IsValid() )
 		{
-			beam.WorldPosition = Muzzle.Position;
-			beam.WorldRotation = Muzzle.Rotation;
+			beam.WorldPosition = Attachment( "muzzle" ).Position;
+			beam.WorldRotation = Attachment( "muzzle" ).Rotation;
 		}
 
 		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains( "world" ) && HeldBody.IsValid() )

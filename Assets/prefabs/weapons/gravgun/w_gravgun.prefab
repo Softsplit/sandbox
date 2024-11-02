@@ -7,20 +7,6 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "Sandbox.ModelRenderer",
-        "__guid": "4601d044-1e9a-4769-b7bf-74b1dff621ab",
-        "BodyGroups": 18446744073709551615,
-        "Model": "weapons/rust_pistol/rust_pistol.vmdl",
-        "RenderOptions": {
-          "GameLayer": true,
-          "OverlayLayer": false,
-          "BloomLayer": false,
-          "AfterUILayer": false
-        },
-        "RenderType": "On",
-        "Tint": "1,1,1,1"
-      },
-      {
         "__type": "GravGun",
         "__guid": "4d491d3e-213c-420c-8830-4f1682d641f6",
         "AngularDampingRatio": 1,
@@ -57,7 +43,40 @@
         }
       }
     ],
-    "Children": [],
+    "Children": [
+      {
+        "__guid": "8b861444-9fd6-405b-8f16-04f00eeca70b",
+        "Flags": 0,
+        "Name": "Model",
+        "Enabled": true,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "4601d044-1e9a-4769-b7bf-74b1dff621ab",
+            "BodyGroups": 18446744073709551615,
+            "CreateBoneObjects": false,
+            "Model": "weapons/rust_pistol/rust_pistol.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ]
+      }
+    ],
     "__variables": [],
     "__properties": {
       "FixedUpdateFrequency": 50,

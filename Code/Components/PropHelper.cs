@@ -39,6 +39,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
+		if ( !Prop.IsValid() )
+			return;
+
 		if ( (Prop?.Health ?? 0f) <= 0f )
 			return;
 

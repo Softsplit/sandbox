@@ -16,7 +16,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	[Sync] public Vector3 HoldPos { get; set; }
 	[Sync] public Rotation HoldRot { get; set; }
-	[Sync] public GameObject GrabbedObject { get; set; }
+	[Sync, Property] public GameObject GrabbedObject { get; set; }
 	[Sync] public Vector3 GrabbedPos { get; set; }
 	[Sync] public int GrabbedBone { get; set; } = -1;
 
@@ -68,10 +68,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	void Move()
 	{
-		if ( !GrabbedObject.IsValid() )
-			return;
-
-		if ( !Networking.IsHost )
+		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
 			return;
 
 		if ( timeSinceImpulse < Time.Delta * 5 )
@@ -190,12 +187,12 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				{
 					for ( int i = 0; i < tr.Body.PhysicsGroup.Bodies.Count(); i++ )
 					{
-						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce );
+						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce * tr.Body.PhysicsGroup.Bodies.ElementAt( i ).Mass );
 					}
 				}
 				else
 				{
-					ApplyImpulse( tr.GameObject, -1, eyeDir * -PullForce );
+					ApplyImpulse( tr.GameObject, -1, eyeDir * -PullForce * tr.Body.Mass );
 				}
 			}
 		}
@@ -204,7 +201,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyImpulseAt( GameObject gameObject, int bodyIndex, Vector3 position, Vector3 velocity )
 	{
-		if ( !Networking.IsHost )
+		if ( !gameObject.IsValid() || gameObject.IsProxy )
 			return;
 
 		timeSinceImpulse = 0;
@@ -225,7 +222,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
-		if ( !Networking.IsHost )
+		if ( !gameObject.IsValid() || gameObject.IsProxy )
 			return;
 
 		timeSinceImpulse = 0;
@@ -247,7 +244,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyAngularImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
-		if ( !Networking.IsHost )
+		if ( !gameObject.IsValid() || gameObject.IsProxy )
 			return;
 
 		timeSinceImpulse = 0;
@@ -303,6 +300,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		HoldRot = rot * heldRot;
 	}
 
+	[Broadcast]
 	private void GrabEnd()
 	{
 		timeSinceDrop = 0;
