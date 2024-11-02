@@ -201,25 +201,27 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				.WithoutTags( BaseWeapon.BulletExcludeTags.Append("solid").ToArray() )
 				.Run();
 
-			var distance = tr.Distance;
-			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
-
-			var dmg = damage * distanceMul;
-
 			if ( tr.Hit && tr.GameObject.IsValid() )
 			{
 				if ( !obj.Root.IsDescendant( tr.GameObject ) )
 					continue;
 			}
 
+			var distance = tr.Hit ? tr.Distance : obj.WorldPosition.Distance(position);
+			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );	
+
+			var dmg = damage * distanceMul;
+			
 			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().Where( x => x != this ) )
 			{
 				propHelper.Damage( dmg );
 			}
 
+			
+
 			obj.Root.GetComponent<Player>()?.TakeDamage( dmg );
 
-			var force = tr.Direction.Normal * distanceMul * forceScale * 10000f;
+			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
 
 			obj.Root.GetComponent<Rigidbody>()?.ApplyImpulse( force );
 
@@ -227,7 +229,5 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
-
-		GameObject.Destroy();
 	}
 }
