@@ -70,6 +70,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			return;
 
 		var gibs = Prop?.CreateGibs();
+		if ( gibs == null || gibs.Count <= 0 )
+			return;
 
 		foreach ( var gib in gibs )
 		{
@@ -186,7 +188,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		var soundEvent = ResourceLibrary.Get<SoundEvent>( sound );
 
-		if(sound != null)
+		if ( sound != null )
 			BroadcastExplosion( soundEvent.IsValid() ? sound : "rust_pumpshotgun.shootdouble", position );
 
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
