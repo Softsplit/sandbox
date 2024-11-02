@@ -85,6 +85,7 @@
     void SetActiveTool(string className)
     {
         ConsoleSystem.Run("tool_current", className);
+		ConsoleSystem.Run("select_weapon", "Tool Gun");
     }
 
     public override void Tick()
