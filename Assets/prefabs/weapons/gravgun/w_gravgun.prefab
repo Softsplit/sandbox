@@ -19,6 +19,42 @@
         },
         "RenderType": "On",
         "Tint": "1,1,1,1"
+      },
+      {
+        "__type": "GravGun",
+        "__guid": "4d491d3e-213c-420c-8830-4f1682d641f6",
+        "AngularDampingRatio": 1,
+        "AngularFrequency": 10,
+        "AttachDistance": 150,
+        "BoneOffset": {
+          "UniformScale": 1,
+          "IsValid": true,
+          "ForwardRay": {
+            "Forward": "1,0,0"
+          },
+          "Scale": "1,1,1",
+          "Rotation": "0,0,0,1"
+        },
+        "BreakLinearForce": 2000,
+        "DropCooldown": 0.5,
+        "Handedness": "Right",
+        "HoldDistance": 50,
+        "HoldType": "Pistol",
+        "LinearDampingRatio": 1,
+        "LinearFrequency": 10,
+        "MaxPullDistance": 2000,
+        "MaxPushDistance": 500,
+        "ParentBone": "hold_r",
+        "PrimaryRate": 5,
+        "PullForce": 20,
+        "PushForce": 1000,
+        "ReloadTime": 3,
+        "SecondaryRate": 15,
+        "ThrowForce": 2000,
+        "ViewModelPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/gravgun/v_gravgun.prefab"
+        }
       }
     ],
     "Children": [],
