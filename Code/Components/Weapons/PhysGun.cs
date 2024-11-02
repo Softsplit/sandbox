@@ -348,8 +348,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
-		GetBody( gameObject, bone ).BodyType = PhysicsBodyType.Dynamic;
-
 		if ( !Networking.IsHost )
 			return;
 
