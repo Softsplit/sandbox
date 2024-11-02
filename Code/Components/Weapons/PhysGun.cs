@@ -340,7 +340,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		PhysicsBody body = GetBody( gameObject, bone );
 		if (body.IsValid())
-			GetBody( gameObject, bone ).BodyType = PhysicsBodyType.Static;
+			body.BodyType = PhysicsBodyType.Static;
 
 		FreezeEffects();
 	}
