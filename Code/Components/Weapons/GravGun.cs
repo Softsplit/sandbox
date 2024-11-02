@@ -227,7 +227,6 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		}
 
 		body.ApplyImpulse( velocity );
-		Log.Info( "hola" );
 	}
 
 	Vector3 heldPos;
@@ -250,8 +249,6 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 		HoldPos = HeldBody.Position;
 		HoldRot = HeldBody.Rotation;
-
-		Log.Info( GrabbedObject );
 	}
 
 	private void GrabMove( Vector3 startPos, Vector3 dir, Rotation rot )
