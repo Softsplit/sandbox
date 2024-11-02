@@ -54,10 +54,16 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
+		if ( !Prop.IsValid() )
+			return;
+
 		var gibs = Prop?.CreateGibs();
 
 		foreach ( var gib in gibs )
 		{
+			if ( !gib.IsValid() )
+				continue;
+
 			gib.AddComponent<PropHelper>();
 			gib.Tags.Add( "debris" );
 			gib.GameObject.NetworkSpawn();
