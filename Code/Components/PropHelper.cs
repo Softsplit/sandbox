@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.ModelEditor.Nodes;
 
 /// <summary>
@@ -172,6 +173,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	bool exploded;
 	public async void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
+		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 		// Effects
 		Sound.Play( "rust_pumpshotgun.shootdouble", position );
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ) );
@@ -183,10 +185,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		foreach ( var obj in overlaps )
 		{
 
-			var distance = obj.WorldPosition.Distance( position );
-			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
+			if(!obj.Tags.Intersect(BaseWeapon.BulletTraceTags).Any() && obj.Tags.Intersect( BaseWeapon.BulletExcludeTags ).Any() )
+			{
+				continue;
+			}
 
-			var dmg = damage * distanceMul;
+			
 
 			// If the object isn't in line of sight, fuck it off
 			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition )
@@ -194,7 +198,10 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				.WithoutTags( BaseWeapon.BulletExcludeTags )
 				.Run();
 
+			var distance = tr.Distance;
+			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
 
+			var dmg = damage * distanceMul;
 
 			if ( tr.Hit && tr.GameObject.IsValid() )
 			{
@@ -202,17 +209,16 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 					continue;
 			}
 
-			await GameTask.Delay( Game.Random.Next(50,250) );
-
 			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().Where( x => x != this ) )
 			{
 				propHelper.Damage( dmg );
 			}
 
-			foreach ( var player in obj.Components.GetAll<Player>() )
-			{
-				player.TakeDamage( dmg );
-			}
+			obj.Root.GetComponent<Player>()?.TakeDamage( dmg );
+
+
+
+			obj.Root.GetComponent<Rigidbody>()?.ApplyForceAt( tr.EndPosition, (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000000f );
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
