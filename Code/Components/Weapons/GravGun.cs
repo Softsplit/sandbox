@@ -16,7 +16,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	[Sync] public Vector3 HoldPos { get; set; }
 	[Sync] public Rotation HoldRot { get; set; }
-	[Sync] public GameObject GrabbedObject { get; set; }
+	[Sync, Property] public GameObject GrabbedObject { get; set; }
 	[Sync] public Vector3 GrabbedPos { get; set; }
 	[Sync] public int GrabbedBone { get; set; } = -1;
 
@@ -302,7 +302,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		HoldPos = startPos - heldPos * HeldBody.Rotation + dir * holdDistance;
 		HoldRot = rot * heldRot;
 	}
-
+	[Broadcast]
 	private void GrabEnd()
 	{
 		timeSinceDrop = 0;
