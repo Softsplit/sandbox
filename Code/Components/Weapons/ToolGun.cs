@@ -69,12 +69,15 @@ public class ToolGun : BaseWeapon
 
 	public void UpdateTool()
 	{
+		var comp = TypeLibrary.GetType( CurrentTool );
+		if ( comp == null )
+			return;
+
 		lastTool = CurrentTool;
 
-		ActiveTool?.Destroy();
-
-		var comp = TypeLibrary.GetType( CurrentTool );
 		Components.Create( comp, true );
+
+		ActiveTool?.Destroy();
 
 		ActiveTool = Components.Get<BaseTool>();
 	}
