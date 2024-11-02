@@ -74,7 +74,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
-		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
+		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) && !exploded)
 		{
 			Explosion( data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
@@ -169,11 +169,13 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	public void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
+	bool exploded;
+	public async void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
 		// Effects
 		Sound.Play( "rust_pumpshotgun.shootdouble", position );
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ) );
+		exploded = true;
 
 		// Damage, etc
 		var overlaps = Game.ActiveScene.FindInPhysics( new Sphere( position, radius ) );
@@ -192,15 +194,24 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				.WithoutTags( BaseWeapon.BulletExcludeTags )
 				.Run();
 
+
+
 			if ( tr.Hit && tr.GameObject.IsValid() )
 			{
 				if ( !obj.Root.IsDescendant( tr.GameObject ) )
 					continue;
 			}
 
-			foreach ( var propHelper in obj.Components.GetAll<PropHelper>() )
+			await GameTask.Delay( Game.Random.Next(50,250) );
+
+			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().Where( x => x != this ) )
 			{
 				propHelper.Damage( dmg );
+			}
+
+			foreach ( var player in obj.Components.GetAll<Player>() )
+			{
+				player.TakeDamage( dmg );
 			}
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
