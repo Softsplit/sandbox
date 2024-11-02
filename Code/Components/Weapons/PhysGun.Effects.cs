@@ -68,8 +68,12 @@
 			.Run();
 
 		beam ??= CreateBeam( tr.EndPosition );
-		beam.WorldPosition = Muzzle.Position;
-		beam.WorldRotation = Muzzle.Rotation;
+
+		if(beam.IsValid())
+		{
+			beam.WorldPosition = Muzzle.Position;
+			beam.WorldRotation = Muzzle.Rotation;
+		}
 
 		if ( GrabbedObject.IsValid() && !GrabbedObject.Tags.Contains( "world" ) && HeldBody.IsValid())
 		{
@@ -80,12 +84,12 @@
 				var physBody = physGroup.GetBody( GrabbedBone );
 				if ( physBody != null )
 				{
-					beam.SceneObject.SetControlPoint( 1, physBody.Transform.PointToWorld( GrabbedPos ) );
+					beam?.SceneObject.SetControlPoint( 1, physBody.Transform.PointToWorld( GrabbedPos ) );
 				}
 			}
 			else
 			{
-				beam.SceneObject.SetControlPoint( 1, HeldBody.Transform.PointToWorld( GrabbedPos ) );
+				beam?.SceneObject.SetControlPoint( 1, HeldBody.Transform.PointToWorld( GrabbedPos ) );
 			}
 
 			lastBeamPos = HeldBody.Position + HeldBody.Rotation * GrabbedPos;
@@ -118,7 +122,7 @@
 		{
 			lastBeamPos = tr.EndPosition; Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
 
-			beam.SceneObject.SetControlPoint( 1, lastBeamPos );
+			beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
 
 			endNoHit ??= CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
 			endNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );

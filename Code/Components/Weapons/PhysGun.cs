@@ -70,6 +70,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( GrabbedObject.IsProxy )
 			return;
 
+		if ( !HeldBody.IsValid() )
+			return;
+
 		var velocity = HeldBody.Velocity;
 		Vector3.SmoothDamp( HeldBody.Position, HoldPos, ref velocity, 0.075f, Time.Delta );
 		HeldBody.Velocity = velocity;
@@ -267,6 +270,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		bool isRagdoll = GrabbedObject.Components.Get<ModelPhysics>().IsValid();
 		GrabbedBone = isRagdoll ? tr.Body.GroupIndex : -1;
+
+		if ( !HeldBody.IsValid() )
+			return false;
 
 		holdDistance = Vector3.DistanceBetween( Owner.AimRay.Position, tr.EndPosition );
 		holdDistance = holdDistance.Clamp( MinTargetDistance, MaxTargetDistance );
