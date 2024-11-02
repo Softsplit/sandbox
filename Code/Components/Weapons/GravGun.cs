@@ -190,12 +190,12 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				{
 					for ( int i = 0; i < tr.Body.PhysicsGroup.Bodies.Count(); i++ )
 					{
-						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce );
+						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce * tr.Body.PhysicsGroup.Bodies.ElementAt(i).Mass );
 					}
 				}
 				else
 				{
-					ApplyImpulse( tr.GameObject, -1, eyeDir * -PullForce );
+					ApplyImpulse( tr.GameObject, -1, eyeDir * -PullForce * tr.Body.Mass );
 				}
 			}
 		}
