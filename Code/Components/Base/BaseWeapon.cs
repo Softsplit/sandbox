@@ -22,14 +22,29 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
+	public SkinnedModelRenderer LocalRenderer => Owner.Controller.ThirdPerson || IsProxy
+			? WorldModel
+			: ViewModel?.Renderer;
+
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
 
+	SkinnedModelRenderer _worldModel = null;
+	public SkinnedModelRenderer WorldModel
+	{
+		get
+		{
+			if ( !_worldModel.IsValid() )
+			{
+				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
+			}
+			return _worldModel;
+		}
+	}
+
 	public Transform Attachment( string name )
 	{
-		return Owner.Controller.ThirdPerson || IsProxy
-			? GameObject.Children.FirstOrDefault( x => x.Name == name.ToTitleCase() ).WorldTransform
-			: ViewModel?.Renderer?.GetAttachment( name ) ?? WorldTransform;
+		return LocalRenderer?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
@@ -151,9 +166,16 @@ public partial class BaseWeapon : Component
 
 	protected virtual void ShootEffects()
 	{
-		Particles.CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
+		AttachParticleSystem( "particles/pistol_muzzleflash.vpcf", "muzzle" );
 
 		ViewModel?.Renderer?.Set( "fire", true );
+	}
+
+	[Broadcast]
+	public void AttachParticleSystem( string path, string attachment, float time = 1, GameObject parent = null )
+	{
+		Transform transform = LocalRenderer?.GetAttachment( attachment ) ?? WorldTransform;
+		Particles.MakeParticleSystem( path, transform, time, parent );
 	}
 
 	public virtual bool CanReload()

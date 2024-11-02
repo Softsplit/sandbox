@@ -3,7 +3,7 @@
 	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
 	{
 		SpawnParticleSystem( Connection.Local.Id, path, transform.Position, transform.Rotation, time, parent );
-		return MakeParticleSystem( path, transform.Position, transform.Rotation, time, parent );
+		return MakeParticleSystem( path, transform, time, parent );
 	}
 
 	[Broadcast]
@@ -11,10 +11,10 @@
 	{
 		if ( Connection.Local.Id == connection )
 			return;
-		MakeParticleSystem( path, position, rotation, time, parent );
+		MakeParticleSystem( path, new Transform( position, rotation ), time, parent );
 	}
 
-	public static LegacyParticleSystem MakeParticleSystem( string path, Vector3 position, Rotation rotation, float time = 1, GameObject parent = null )
+	public static LegacyParticleSystem MakeParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
 	{
 		var particleSystem = ParticleSystem.Load( path );
 
@@ -22,7 +22,7 @@
 		{
 			Name = particleSystem.Name,
 			Parent = parent,
-			WorldTransform = new Transform( position, rotation )
+			WorldTransform = transform
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();

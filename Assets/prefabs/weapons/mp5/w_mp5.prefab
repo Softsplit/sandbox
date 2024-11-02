@@ -41,10 +41,19 @@
         "Enabled": true,
         "Components": [
           {
-            "__type": "Sandbox.ModelRenderer",
+            "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "a1404db8-3164-4612-9484-24acb367f7fb",
             "BodyGroups": 3,
+            "CreateBoneObjects": false,
             "Model": "models/weapons/sbox_smg_mp5/w_mp5.vmdl",
+            "Morphs": {},
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
             "RenderOptions": {
               "GameLayer": true,
               "OverlayLayer": false,
@@ -52,7 +61,8 @@
               "AfterUILayer": false
             },
             "RenderType": "On",
-            "Tint": "1,1,1,1"
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
           }
         ]
       },
