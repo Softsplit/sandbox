@@ -20,6 +20,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
+	public List<FixedJoint> Welds { get; set; } = new();
+	public List<Joint> Joints { get; set; } = new();
+
 	private Vector3 lastPosition = Vector3.Zero;
 
 	protected override void OnStart()
@@ -53,12 +56,16 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( IsProxy )
 			return;
 
-
-
+		if ( !Prop.IsValid() )
+			return;
+      
 		var gibs = Prop?.CreateGibs();
 
 		foreach ( var gib in gibs )
 		{
+			if ( !gib.IsValid() )
+				continue;
+
 			gib.AddComponent<PropHelper>();
 			gib.Tags.Add( "debris" );
 			gib.GameObject.NetworkSpawn();

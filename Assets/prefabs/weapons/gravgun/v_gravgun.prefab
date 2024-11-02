@@ -2,7 +2,7 @@
   "RootObject": {
     "__guid": "14b1b05e-52f7-4cca-88a6-23dfc1310933",
     "Flags": 0,
-    "Name": "v_physgun",
+    "Name": "v_gravgun",
     "Enabled": true,
     "Components": [
       {
@@ -31,7 +31,14 @@
       },
       {
         "__type": "ViewModel",
-        "__guid": "366ed270-3f31-4896-9475-d90d8978c632"
+        "__guid": "366ed270-3f31-4896-9475-d90d8978c632",
+        "BobCycleTime": 7,
+        "BobDirection": "0,1,0.5",
+        "EnableSwingAndBob": true,
+        "InertiaDamping": 20,
+        "MaxOffsetLength": 10,
+        "ReturnSpeed": 5,
+        "SwingInfluence": 0.05
       }
     ],
     "Children": [],

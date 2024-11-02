@@ -34,7 +34,7 @@ public static partial class SandboxBaseExtensions
 
 				if ( tr.Bone > -1 )
 				{
-					var renderer = tr.GameObject.GetComponent<SkinnedModelRenderer>();
+					var renderer = tr.GameObject.GetComponentInChildren<SkinnedModelRenderer>();
 					var bone = renderer.GetBoneObject( tr.Bone );
 
 					go.SetParent( bone );

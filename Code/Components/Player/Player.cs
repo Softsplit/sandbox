@@ -18,6 +18,17 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 	public Transform EyeTransform => Controller.EyeTransform;
 	public Ray AimRay => new( EyeTransform.Position, EyeTransform.Rotation.Forward );
 
+	protected override void OnStart()
+	{
+		// Give hull a special tag so we can ignore it in favor of hitboxes.
+		foreach ( var shape in Controller.Body.PhysicsBody.Shapes )
+		{
+			if ( !shape.IsValid() ) continue;
+
+			shape.Tags.Add( "player_hull" );
+		}
+	}
+
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled
 	/// </summary>

@@ -24,6 +24,25 @@ public partial class BaseWeapon : Component
 
 	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
+	public Transform Muzzle => Attachment( "muzzle" );
+
+	public Transform Attachment( string name )
+	{
+		return (Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer)?.GetAttachment( name ) ?? WorldTransform;
+	}
+
+	SkinnedModelRenderer _worldModel = null;
+	public SkinnedModelRenderer WorldModel
+	{
+		get
+		{
+			if ( !_worldModel.IsValid() )
+			{
+				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
+			}
+			return _worldModel;
+		}
+	}
 
 	protected override void OnAwake()
 	{
@@ -52,7 +71,7 @@ public partial class BaseWeapon : Component
 
 		if ( IsProxy ) return;
 
-		ViewModel.GameObject.Enabled = true;
+		ViewModel.GameObject.Enabled = true;	
 	}
 
 	protected override void OnDisabled()
@@ -147,20 +166,28 @@ public partial class BaseWeapon : Component
 		if ( ViewModel.Tags.Has( "viewer" ) )
 			return;
 
-		var particleSystem = ParticleSystem.Load( "particles/pistol_muzzleflash.vpcf" );
+		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Muzzle, 1, ViewModel.GameObject );
+
+		ViewModel?.Renderer?.Set( "fire", true );
+	}
+
+	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
+	{
+		var particleSystem = ParticleSystem.Load( path );
 
 		var go = new GameObject
 		{
 			Name = particleSystem.Name,
-			Parent = ViewModel.GameObject,
-			WorldTransform = ViewModel?.Renderer?.GetAttachment( "muzzle" ) ?? default
+			Parent = parent,
+			WorldTransform = transform
 		};
 
 		Particles.Create( particleSystem.ResourcePath, go );
 
-		go.DestroyAsync();
+		if ( time > 0 )
+			go.DestroyAsync( time );
 
-		ViewModel?.Renderer?.Set( "fire", true );
+		return legacyParticleSystem;
 	}
 
 	public virtual bool CanReload()
@@ -229,6 +256,7 @@ public partial class BaseWeapon : Component
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
+				.WithoutTags( "player_hull" )
 				.IgnoreGameObjectHierarchy( GameObject.Root )
 				.Size( radius );
 
