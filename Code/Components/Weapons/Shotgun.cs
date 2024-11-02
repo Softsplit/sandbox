@@ -57,12 +57,12 @@ partial class Shotgun : BaseWeapon
 	{
 		base.ShootEffects();
 
-		CreateParticleSystem( "particles/pistol_ejectbrass.vpcf", Attachment( "ejection_point" ) );
+		Particles.CreateParticleSystem( "particles/pistol_ejectbrass.vpcf", Attachment( "ejection_point" ) );
 	}
 
 	protected virtual void DoubleShootEffects()
 	{
-		CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
+		Particles.CreateParticleSystem( "particles/pistol_muzzleflash.vpcf", Attachment( "muzzle" ) );
 
 		ViewModel?.Renderer?.Set( "fire_double", true );
 	}

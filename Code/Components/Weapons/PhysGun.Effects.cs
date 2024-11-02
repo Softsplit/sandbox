@@ -124,7 +124,7 @@
 
 			beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
 
-			endNoHit ??= CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
+			endNoHit ??= Particles.CreateParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
 			endNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
 			endNoHit.WorldPosition = lastBeamPos;
 		}
@@ -132,7 +132,7 @@
 
 	LegacyParticleSystem CreateBeam( Vector3 endPos )
 	{
-		LegacyParticleSystem beam = CreateParticleSystem( "particles/physgun_beam.vpcf", new Transform( endPos ), 0 );
+		LegacyParticleSystem beam = Particles.CreateParticleSystem( "particles/physgun_beam.vpcf", new Transform( endPos ), 0 );
 		return beam;
 	}
 
@@ -143,6 +143,6 @@
 
 	void FreezeEffects()
 	{
-		CreateParticleSystem( "particles/physgun_freeze.vpcf", new Transform( lastBeamPos ), 4 );
+		Particles.CreateParticleSystem( "particles/physgun_freeze.vpcf", new Transform( lastBeamPos ), 4 );
 	}
 }

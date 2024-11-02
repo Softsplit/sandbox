@@ -54,7 +54,7 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 	{
 		// Effects
 		Sound.Play( "rust_pumpshotgun.shootdouble", position );
-		Particles.Create( particle, position );
+		Particles.MakeParticleSystem( particle, position, Rotation.Identity );
 
 		// Damage, etc
 		var overlaps = Game.ActiveScene.FindInPhysics(new Sphere( position, radius ) );
