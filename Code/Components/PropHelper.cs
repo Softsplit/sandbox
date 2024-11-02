@@ -55,10 +55,14 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			Kill();
 	}
 
+	bool dead;
 	public void Kill()
 	{
 		if ( IsProxy )
 			return;
+
+		var isDead = dead;
+		dead = true;
 
 		if ( !Prop.IsValid() )
 			return;
@@ -75,11 +79,14 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
-		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) && !exploded)
+		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) && !isDead)
 		{
 			Explosion( data.Effect, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
-		GameObject.Destroy();
+		else
+		{
+			GameObject.Destroy();
+		}
 	}
 
 	protected override void OnFixedUpdate()
@@ -170,14 +177,13 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	bool exploded;
+	
 	public async void Explosion( string particle, Vector3 position, float radius, float damage, float forceScale )
 	{
 		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 		// Effects
 		Sound.Play( "rust_pumpshotgun.shootdouble", position );
-		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ) );
-		exploded = true;
+		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
 
 		// Damage, etc
 		var overlaps = Game.ActiveScene.FindInPhysics( new Sphere( position, radius ) );
@@ -190,12 +196,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				continue;
 			}
 
-			
-
 			// If the object isn't in line of sight, fuck it off
 			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition )
-				.WithAnyTags( BaseWeapon.BulletTraceTags )
-				.WithoutTags( BaseWeapon.BulletExcludeTags )
+				.WithoutTags( BaseWeapon.BulletExcludeTags.Append("solid").ToArray() )
 				.Run();
 
 			var distance = tr.Distance;
@@ -216,11 +219,15 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			obj.Root.GetComponent<Player>()?.TakeDamage( dmg );
 
+			var force = tr.Direction.Normal * distanceMul * forceScale * 10000f;
 
+			obj.Root.GetComponent<Rigidbody>()?.ApplyImpulse( force );
 
-			obj.Root.GetComponent<Rigidbody>()?.ApplyForceAt( tr.EndPosition, (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000000f );
+			obj.Root.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
 
 			// obj.DebugOverlay.Text( obj.WorldPosition, $"{dmg:0.00}", duration: 5f, overlay: true );
 		}
+
+		GameObject.Destroy();
 	}
 }
