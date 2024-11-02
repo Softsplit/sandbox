@@ -36,13 +36,6 @@ partial class Fists : BaseWeapon
 		Attack( false );
 	}
 
-	public override void OnControl()
-	{
-		base.OnControl();
-
-		ViewModel?.Renderer?.Set( "b_jump", !Owner.Controller.IsOnGround );
-	}
-
 	private bool MeleeAttack()
 	{
 		var ray = Owner.AimRay;

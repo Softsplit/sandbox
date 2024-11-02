@@ -187,7 +187,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				{
 					for ( int i = 0; i < tr.Body.PhysicsGroup.Bodies.Count(); i++ )
 					{
-						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce * tr.Body.PhysicsGroup.Bodies.ElementAt(i).Mass );
+						ApplyImpulse( tr.GameObject, i, eyeDir * -PullForce * tr.Body.PhysicsGroup.Bodies.ElementAt( i ).Mass );
 					}
 				}
 				else
@@ -299,6 +299,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		HoldPos = startPos - heldPos * HeldBody.Rotation + dir * holdDistance;
 		HoldRot = rot * heldRot;
 	}
+
 	[Broadcast]
 	private void GrabEnd()
 	{

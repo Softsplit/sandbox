@@ -20,6 +20,10 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 
 	protected override void OnStart()
 	{
+		if ( !Controller.IsValid() ) return;
+		if ( !Controller.Body.IsValid() ) return;
+		if ( !Controller.Body.PhysicsBody.IsValid() ) return;
+
 		// Give hull a special tag so we can ignore it in favor of hitboxes.
 		foreach ( var shape in Controller.Body.PhysicsBody.Shapes )
 		{
@@ -78,24 +82,6 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 		IPlayerEvent.PostToGameObject( GameObject, x => x.OnDied() );
 
 		GameObject.Destroy();
-	}
-
-	protected override void OnUpdate()
-	{
-		base.OnUpdate();
-
-		if ( !IsProxy )
-			OnControl();
-	}
-
-	void OnControl()
-	{
-		if ( Input.Pressed( "die" ) )
-		{
-			IPlayerEvent.PostToGameObject( GameObject, x => x.OnSuicide() );
-			Health = 0;
-			Death();
-		}
 	}
 
 	void IDamageable.OnDamage( in DamageInfo damage )

@@ -71,7 +71,7 @@ public partial class BaseWeapon : Component
 
 		if ( IsProxy ) return;
 
-		ViewModel.GameObject.Enabled = true;	
+		ViewModel.GameObject.Enabled = true;
 	}
 
 	protected override void OnDisabled()
