@@ -40,7 +40,7 @@ partial class Fists : BaseWeapon
 	{
 		base.OnControl();
 
-		ViewModel?.Renderer?.Set( "b_jump", true );
+		ViewModel?.Renderer?.Set( "b_jump", !Owner.Controller.IsOnGround );
 	}
 
 	private bool MeleeAttack()
