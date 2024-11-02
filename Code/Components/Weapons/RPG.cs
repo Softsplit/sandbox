@@ -35,6 +35,6 @@ partial class RPG : BaseWeapon
 	{
 		base.ShootEffects();
 
-		CreateParticleSystem( "particles/pistol_ejectbrass.vpcf", Attachment( "ejection_point" ) );
+		Particles.CreateParticleSystem( "particles/pistol_ejectbrass.vpcf", Attachment( "ejection_point" ) );
 	}
 }
