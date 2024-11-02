@@ -114,6 +114,10 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 				int grabbedBone = GrabbedBone;
 				PhysicsBody heldBody = HeldBody;
 				GrabEnd();
+
+				if ( !grabbedObject.IsValid() || !heldBody.IsValid() )
+					return;
+
 				if ( heldBody.PhysicsGroup.IsValid() && heldBody.PhysicsGroup.BodyCount > 1 )
 				{
 					for ( int i = 0; i < heldBody.PhysicsGroup.Bodies.Count(); i++ )
@@ -165,6 +169,9 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 			return;
 
 		var body = tr.Body;
+
+		if ( !tr.Body.IsValid() )
+			return;
 
 		if ( body.BodyType != PhysicsBodyType.Dynamic )
 			return;
@@ -239,14 +246,15 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		PhysicsBody body;
 		if ( bodyIndex > -1 )
 		{
-			body = gameObject.Components.Get<ModelPhysics>().PhysicsGroup.Bodies.ElementAt( bodyIndex );
+			body = gameObject.Components.Get<ModelPhysics>()?.PhysicsGroup.Bodies.ElementAt( bodyIndex );
 		}
 		else
 		{
-			body = gameObject.Components.Get<Rigidbody>().PhysicsBody;
+			body = gameObject.Components.Get<Rigidbody>()?.PhysicsBody;
 		}
 
-		body.ApplyImpulse( velocity );
+		if(body.IsValid())
+			body.ApplyImpulse( velocity );
 	}
 
 	[Broadcast]
@@ -260,14 +268,15 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		PhysicsBody body;
 		if ( bodyIndex > -1 )
 		{
-			body = gameObject.Components.Get<ModelPhysics>().PhysicsGroup.Bodies.ElementAt( bodyIndex );
+			body = gameObject.Components.Get<ModelPhysics>()?.PhysicsGroup?.Bodies.ElementAt( bodyIndex );
 		}
 		else
 		{
-			body = gameObject.Components.Get<Rigidbody>().PhysicsBody;
+			body = gameObject.Components.Get<Rigidbody>()?.PhysicsBody;
 		}
 
-		body.ApplyAngularImpulse( velocity );
+		if(body.IsValid())
+			body.ApplyAngularImpulse( velocity );
 	}
 
 	Vector3 heldPos;
@@ -284,6 +293,9 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 		bool isRagdoll = GrabbedObject.Components.Get<ModelPhysics>().IsValid();
 		GrabbedBone = isRagdoll ? body.GroupIndex : -1;
+
+		if ( !HeldBody.IsValid() )
+			return;
 
 		heldRot = Owner.Controller.EyeAngles.ToRotation().Inverse * HeldBody.Rotation;
 		heldPos = HeldBody.LocalMassCenter;
