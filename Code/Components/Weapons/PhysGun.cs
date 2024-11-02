@@ -338,6 +338,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( !Networking.IsHost )
 			return;
 
+		if ( !gameObject.IsValid() )
+			return;
+
 		PhysicsBody body = GetBody( gameObject, bone );
 		if ( body.IsValid() )
 			body.BodyType = PhysicsBodyType.Static;
@@ -349,6 +352,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
 		if ( !Networking.IsHost )
+			return;
+
+		if ( !gameObject.IsValid() )
 			return;
 
 		PhysicsBody body = GetBody( gameObject, bone );
