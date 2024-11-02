@@ -71,7 +71,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( !GrabbedObject.IsValid() )
 			return;
 
-		if ( !Networking.IsHost )
+		if ( GrabbedObject.IsProxy )
 			return;
 
 		if ( timeSinceImpulse < Time.Delta * 5 )
@@ -204,7 +204,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyImpulseAt( GameObject gameObject, int bodyIndex, Vector3 position, Vector3 velocity )
 	{
-		if ( !Networking.IsHost )
+		if ( gameObject.IsProxy )
 			return;
 
 		timeSinceImpulse = 0;
@@ -225,7 +225,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
-		if ( !Networking.IsHost )
+		if ( gameObject.IsProxy )
 			return;
 
 		timeSinceImpulse = 0;
@@ -247,7 +247,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyAngularImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
-		if ( !Networking.IsHost )
+		if ( gameObject.IsProxy )
 			return;
 
 		timeSinceImpulse = 0;

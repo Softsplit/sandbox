@@ -67,7 +67,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( !GrabbedObject.IsValid() )
 			return;
 
-		if ( !Networking.IsHost )
+		if ( GrabbedObject.IsProxy )
 			return;
 
 		if ( !HeldBody.IsValid() )
@@ -335,7 +335,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void Freeze( GameObject gameObject, int bone )
 	{
-		if ( !Networking.IsHost )
+		if ( GrabbedObject.IsProxy )
 			return;
 
 		if ( !gameObject.IsValid() )
@@ -351,7 +351,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
-		if ( !Networking.IsHost )
+		if ( GrabbedObject.IsProxy )
 			return;
 
 		if ( !gameObject.IsValid() )
