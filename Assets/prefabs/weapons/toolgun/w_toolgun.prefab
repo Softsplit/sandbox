@@ -7,8 +7,8 @@
     "Enabled": true,
     "Components": [
       {
-        "__type": "BaseWeapon",
-        "__guid": "b68c0661-a1f4-4018-96b3-14ce107f6c42",
+        "__type": "ToolGun",
+        "__guid": "10fa468b-939d-429c-99de-bc779121024b",
         "BoneOffset": {
           "UniformScale": 1,
           "IsValid": true,
@@ -23,7 +23,7 @@
         "ParentBone": "hold_r",
         "PrimaryRate": 5,
         "ReloadTime": 3,
-        "SecondaryRate": 15,
+        "SecondaryRate": 5,
         "ViewModelPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"

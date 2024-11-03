@@ -38,9 +38,8 @@ public class ToolGun : BaseWeapon
 
 		BroadcastAttack();
 
-		ViewModel?.Renderer?.Set( "b_attack", true );
+		ToolEffects(trace.EndPosition);
 
-		//ToolEffects();
 		ActiveTool?.Primary( trace );
 	}
 
@@ -61,15 +60,21 @@ public class ToolGun : BaseWeapon
 
 		BroadcastAttack();
 
-		ViewModel?.Renderer?.Set( "b_attack", true );
-
-		//ToolEffects();
+		ToolEffects(trace.EndPosition);
 		ActiveTool?.Secondary( trace );
+	}
+
+	[Broadcast]
+	void ToolEffects(Vector3 position)
+	{
+		Particles.MakeParticleSystem( "particles/tool_hit.vpcf", new Transform( position ) );
+		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 	}
 
 	public void UpdateTool()
 	{
 		var comp = TypeLibrary.GetType( CurrentTool );
+
 		if ( comp == null )
 			return;
 
