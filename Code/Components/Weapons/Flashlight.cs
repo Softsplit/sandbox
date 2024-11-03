@@ -1,36 +1,27 @@
 ﻿[Spawnable, Library( "weapon_flashlight" )]
 partial class Flashlight : BaseWeapon
 {
-	private SpotLight worldLight;
-	private SpotLight viewLight;
+	protected SpotLight WorldLight => GetComponentInChildren<SpotLight>( true );
+	protected SpotLight ViewLight => ViewModel?.GetComponentInChildren<SpotLight>( true );
 
 	[Sync, Change( nameof( ToggleLight ) )] private bool LightEnabled { get; set; } = true;
 
 	TimeSince timeSinceLightToggled;
 
-	protected override void OnStart()
-	{
-		base.OnStart();
-
-		worldLight = GetComponentInChildren<SpotLight>( true );
-		viewLight = ViewModel?.GetComponentInChildren<SpotLight>( true );
-	}
-
 	public override void OnControl()
 	{
 		base.OnControl();
+
+		if ( ViewLight.IsValid() )
+		{
+			ViewLight.Enabled = LightEnabled;
+		}
 
 		bool toggle = Input.Pressed( "flashlight" ) || Input.Pressed( "attack1" );
 
 		if ( timeSinceLightToggled > 0.1f && toggle )
 		{
 			LightEnabled = !LightEnabled;
-
-
-			if ( viewLight.IsValid() )
-			{
-				viewLight.Enabled = LightEnabled;
-			}
 
 			timeSinceLightToggled = 0;
 		}
@@ -40,9 +31,9 @@ partial class Flashlight : BaseWeapon
 	{
 		Sound.Play( LightEnabled ? "flashlight-on" : "flashlight-off", WorldPosition );
 
-		if ( worldLight.IsValid() )
+		if ( WorldLight.IsValid() )
 		{
-			worldLight.Enabled = LightEnabled;
+			WorldLight.Enabled = LightEnabled;
 		}
 	}
 
