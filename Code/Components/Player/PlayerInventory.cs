@@ -11,6 +11,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 	{
 		Pickup( "prefabs/weapons/physgun/w_physgun.prefab" );
 		Pickup( "prefabs/weapons/gravgun/w_gravgun.prefab" );
+		Pickup( "prefabs/weapons/toolgun/w_toolgun.prefab" );
 		Pickup( "prefabs/weapons/pistol/w_pistol.prefab" );
 		Pickup( "prefabs/weapons/mp5/w_mp5.prefab" );
 		Pickup( "prefabs/weapons/flashlight/w_flashlight.prefab" );
@@ -125,5 +126,18 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 
 		foreach ( var weapon in Weapons )
 			weapon.GameObject.Destroy();
+	}
+
+	[ConCmd( "select_weapon" )]
+	public static void Select_Weapon( string name )
+	{
+		PlayerInventory pI = Player.FindLocalPlayer().Inventory;
+		for ( int i = 0; i < pI.Weapons.Count; i++ )
+		{
+			if ( DisplayInfo.For( pI.Weapons[i] ).Name != name )
+				continue;
+			pI.SetActiveSlot( i );
+			return;
+		}
 	}
 }
