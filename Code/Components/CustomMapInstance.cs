@@ -5,13 +5,18 @@ public sealed class CustomMapInstance : MapInstance
 		base.OnCreateObject( go, kv );
 
 		if ( kv.TypeName.StartsWith( "prop" ) ) go.AddComponent<PropHelper>();
-		if ( kv.TypeName == "ent_door" && Game.IsPlaying )
+		if ( kv.TypeName == "ent_door" )
 		{
 			if ( !Networking.IsHost )
 				return;
 
-			string resource = kv.GetValue<string>( "model" );
-			
+			Model resource = kv.GetResource<Model>( "model" );
+
+			var skMdl = go.Components.Create<SkinnedModelRenderer>();
+			skMdl.Model = resource;
+			var mdlCollider = go.Components.Create<ModelCollider>();
+			mdlCollider.Model = resource;
+
 			var door = go.Components.Create<Door>();
 
 			Angles movedir = kv.GetValue<Angles>( "movedir" );
@@ -21,21 +26,16 @@ public sealed class CustomMapInstance : MapInstance
 			bool startslocked = kv.GetValue<bool>( "startslocked" );
 			bool locked = kv.GetValue<bool>( "locked" );
 
-			door.ModelName = resource;
-			
 			Door.DoorMoveType movedir_type = kv.GetValue<Door.DoorMoveType>( "movedir_type" );
 			door.Axis = movedir;
 			door.Distance = distance;
 			door.MoveDirType = movedir_type;
 			door.Locked = locked || startslocked;
 			door.PivotPosition = go.Transform.World.PointToWorld( origin );
-
-			door.Collider = door.ModelCollider;
-			
+			door.Collider = mdlCollider;
 
 			go.SetParent( Scene );
 			go.NetworkSpawn( null );
-			go.Network.Refresh();
 		}
 	}
 }

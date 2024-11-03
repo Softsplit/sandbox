@@ -5,16 +5,6 @@
 	/// </summary>
 	[Property] public Curve AnimationCurve { get; set; } = new Curve( new Curve.Frame( 0f, 0f ), new Curve.Frame( 1f, 1.0f ) );
 
-	[HostSync, Property]
-	public string ModelName { get; set; }
-	
-	[RequireComponent]
-	public SkinnedModelRenderer ModelRenderer { get; set; }
-	
-	[RequireComponent]
-	public ModelCollider ModelCollider { get; set; }
-	
-	
 	/// <summary>
 	/// Sound to play when a door is opened.
 	/// </summary>
@@ -102,9 +92,6 @@
 
 	protected override void OnStart()
 	{
-		ModelRenderer.Model = Model.Load( ModelName );
-		ModelCollider.Model = Model.Load( ModelName );
-		
 		StartTransform = Transform.Local;
 
 		if ( PivotPosition == Vector3.Zero )

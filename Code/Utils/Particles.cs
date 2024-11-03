@@ -3,6 +3,7 @@
 	public static LegacyParticleSystem CreateParticleSystem( string path, Transform transform, float time = 1, GameObject parent = null )
 	{
 		SpawnParticleSystem( Connection.Local.Id, path, transform.Position, transform.Rotation, time, parent );
+
 		return MakeParticleSystem( path, transform, time, parent );
 	}
 
@@ -11,6 +12,7 @@
 	{
 		if ( Connection.Local.Id == connection )
 			return;
+
 		MakeParticleSystem( path, new Transform( position, rotation ), time, parent );
 	}
 

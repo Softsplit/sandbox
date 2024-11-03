@@ -149,6 +149,7 @@ public partial class BaseWeapon : Component
 	public void AttachParticleSystem( string path, string attachment, float time = 1, GameObject parent = null )
 	{
 		Transform transform = LocalWorldModel?.GetAttachment( attachment ) ?? WorldTransform;
+
 		Particles.MakeParticleSystem( path, transform, time, parent );
 	}
 
