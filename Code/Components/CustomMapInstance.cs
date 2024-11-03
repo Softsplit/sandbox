@@ -2,14 +2,25 @@ public sealed class CustomMapInstance : MapInstance
 {
 	protected override void OnCreateObject( GameObject go, MapLoader.ObjectEntry kv )
 	{
-		base.OnCreateObject( go, kv );
+		if ( !Networking.IsHost )
+		{
+			if ( kv.TypeName.StartsWith( "prop" ) )
+				go.DestroyImmediate();
 
-		if ( kv.TypeName.StartsWith( "prop" ) ) go.AddComponent<PropHelper>();
+			if ( kv.TypeName == "ent_door" )
+				go.DestroyImmediate();
+
+			return;
+		}
+
+		if ( kv.TypeName.StartsWith( "prop" ) )
+		{
+			go.AddComponent<PropHelper>();
+			go.NetworkSpawn( null );
+		}
+
 		if ( kv.TypeName == "ent_door" )
 		{
-			if ( !Networking.IsHost )
-				return;
-
 			Model resource = kv.GetResource<Model>( "model" );
 
 			var skMdl = go.Components.Create<SkinnedModelRenderer>();
@@ -34,7 +45,6 @@ public sealed class CustomMapInstance : MapInstance
 			door.PivotPosition = go.Transform.World.PointToWorld( origin );
 			door.Collider = mdlCollider;
 
-			go.SetParent( Scene );
 			go.NetworkSpawn( null );
 		}
 	}

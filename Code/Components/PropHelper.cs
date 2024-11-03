@@ -88,10 +88,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		{
 			Explosion( data.Effect, data.Sound, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
-		else
-		{
-			GameObject.DestroyImmediate();
-		}
+
+		GameObject.DestroyImmediate();
 	}
 
 	protected override void OnFixedUpdate()
@@ -237,8 +235,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			if ( obj.GetComponent<ModelPhysics>().IsValid() )
 				obj.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
 		}
-
-		GameObject?.DestroyImmediate();
 	}
 
 	[Broadcast]
