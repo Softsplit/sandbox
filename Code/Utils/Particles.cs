@@ -24,7 +24,8 @@
 		{
 			Name = particleSystem.Name,
 			Parent = parent,
-			WorldTransform = transform
+			WorldTransform = transform,
+			NetworkMode = NetworkMode.Never
 		};
 
 		var legacyParticleSystem = go.AddComponent<LegacyParticleSystem>();
