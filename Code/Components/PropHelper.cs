@@ -70,7 +70,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			return;
 
 		var gibs = Prop?.CreateGibs();
-		if ( gibs == null || gibs.Count <= 0 )
+		if ( gibs == null )
 			return;
 
 		foreach ( var gib in gibs )
