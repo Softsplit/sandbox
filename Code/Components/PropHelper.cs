@@ -1,3 +1,6 @@
+using Sandbox;
+using Sandbox.ModelEditor.Nodes;
+
 /// <summary>
 /// A component to help deal with props.
 /// </summary>
@@ -37,6 +40,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
+		if ( !Prop.IsValid() )
+			return;
+
 		if ( (Prop?.Health ?? 0f) <= 0f )
 			return;
 
@@ -49,15 +55,24 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			Kill();
 	}
 
+	bool dead;
+
 	public void Kill()
 	{
 		if ( IsProxy )
 			return;
 
+		if ( dead )
+			return;
+
+		dead = true;
+
 		if ( !Prop.IsValid() )
 			return;
 
 		var gibs = Prop?.CreateGibs();
+		if ( gibs == null )
+			return;
 
 		foreach ( var gib in gibs )
 		{
@@ -68,6 +83,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.Tags.Add( "debris" );
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
+		}
+
+		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
+		{
+			Explosion( data.Effect, data.Sound, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
 
 		GameObject.DestroyImmediate();
@@ -161,33 +181,66 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	[Broadcast]
-	public void Weld( GameObject to )
+	public async void Explosion( string particle, string sound, Vector3 position, float radius, float damage, float forceScale )
 	{
-		PropHelper propHelper = to.Components.Get<PropHelper>();
+		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 
-		var fixedJoint = Components.Create<FixedJoint>();
-		fixedJoint.Body = to;
-		fixedJoint.LinearDamping = 0;
-		fixedJoint.LinearFrequency = 0;
-		fixedJoint.AngularDamping = 0;
-		fixedJoint.AngularFrequency = 0;
+		var soundEvent = ResourceLibrary.Get<SoundEvent>( sound );
 
-		Welds.Add( fixedJoint );
-		Joints.Add( fixedJoint );
-		propHelper?.Welds.Add( fixedJoint );
-		propHelper?.Joints.Add( fixedJoint );
+		if ( sound != null )
+			BroadcastExplosion( soundEvent.IsValid() ? sound : "rust_pumpshotgun.shootdouble", position );
+
+		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
+
+		// Damage, etc
+		var overlaps = Game.ActiveScene.FindInPhysics( new Sphere( position, radius ) );
+
+		foreach ( var obj in overlaps )
+		{
+			if ( !obj.Tags.Intersect( BaseWeapon.BulletTraceTags ).Any() && obj.Tags.Intersect( BaseWeapon.BulletExcludeTags ).Any() )
+			{
+				continue;
+			}
+
+			// If the object isn't in line of sight, fuck it off
+			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition )
+				.WithoutTags( BaseWeapon.BulletExcludeTags.Append( "solid" ).ToArray() )
+				.Run();
+
+			if ( tr.Hit && tr.GameObject.IsValid() )
+			{
+				if ( !obj.Root.IsDescendant( tr.GameObject ) )
+					continue;
+			}
+
+			var distance = tr.Hit ? tr.Distance : obj.WorldPosition.Distance( position );
+			var distanceMul = 1.0f - Math.Clamp( distance / radius, 0.0f, 1.0f );
+
+			var dmg = damage * distanceMul;
+
+			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().ToArray() )
+			{
+				if ( !propHelper.IsValid() ) continue;
+
+				propHelper.Damage( dmg );
+			}
+
+			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
+
+			if ( obj.GetComponent<Player>().IsValid() )
+				obj.GetComponent<Player>()?.TakeDamage( dmg );
+
+			if ( obj.GetComponent<Rigidbody>().IsValid() )
+				obj.GetComponent<Rigidbody>()?.ApplyImpulse( force );
+
+			if ( obj.GetComponent<ModelPhysics>().IsValid() )
+				obj.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
+		}
 	}
 
 	[Broadcast]
-	public void UnWeld()
+	public void BroadcastExplosion( string path, Vector3 position )
 	{
-		foreach ( var weld in Welds )
-		{
-			weld?.Destroy();
-		}
-
-		Welds.RemoveAll( item => !item.IsValid() );
-		Joints.RemoveAll( item => !item.IsValid() );
+		Sound.Play( path, position );
 	}
 }
