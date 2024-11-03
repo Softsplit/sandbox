@@ -1,10 +1,12 @@
 public abstract class BaseTool : Component
 {
-	public virtual void Primary( SceneTraceResult Trace )
+	public virtual bool Primary( SceneTraceResult Trace )
 	{
+		return false;
 	}
 
-	public virtual void Secondary( SceneTraceResult Trace )
+	public virtual bool Secondary( SceneTraceResult Trace )
 	{
+		return false;
 	}
 }

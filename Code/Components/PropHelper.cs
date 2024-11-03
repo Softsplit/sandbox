@@ -243,6 +243,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Sound.Play( path, position );
 	}
 
+
 	[Broadcast]
 	public void Weld( GameObject to )
 	{

@@ -38,9 +38,10 @@ public class ToolGun : BaseWeapon
 
 		BroadcastAttack();
 
-		ToolEffects(trace.EndPosition);
+		if ( !(ActiveTool?.Primary( trace ) ?? false) )
+			return;
 
-		ActiveTool?.Primary( trace );
+		ToolEffects( trace.EndPosition );
 	}
 
 	[Broadcast]
@@ -60,8 +61,10 @@ public class ToolGun : BaseWeapon
 
 		BroadcastAttack();
 
-		ToolEffects(trace.EndPosition);
-		ActiveTool?.Secondary( trace );
+		if ( !(ActiveTool?.Secondary( trace ) ?? false) )
+			return;
+
+		ToolEffects( trace.EndPosition );
 	}
 
 	[Broadcast]

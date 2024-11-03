@@ -1,11 +1,13 @@
 public class Remover : BaseTool
 {
-	public override void Primary( SceneTraceResult Trace )
+	public override bool Primary( SceneTraceResult Trace )
 	{
 		if ( Trace.GameObject.Components.Get<PropHelper>() == null )
-			return;
+			return false;
 
 		Remove( Trace.GameObject );
+
+		return true;
 	}
 
 	[Broadcast]
