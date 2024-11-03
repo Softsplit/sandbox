@@ -123,6 +123,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		if ( Weapons.Count <= 0 )
 			return;
 
-		foreach ( var weapon in Weapons ) weapon.GameObject.DestroyImmediate();
+		foreach ( var weapon in Weapons )
+			weapon.GameObject.Destroy();
 	}
 }

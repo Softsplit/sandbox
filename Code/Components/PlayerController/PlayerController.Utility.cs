@@ -20,7 +20,7 @@ public sealed partial class PlayerController : Component
 			mainBody.UseAnimGraph = false;
 
 			// copy the clothes
-			foreach ( var clothing in originalBody.GameObject.Children.SelectMany( x => x.Components.GetAll<SkinnedModelRenderer>() ) )
+			foreach ( var clothing in originalBody.GameObject.Children.SelectMany( x => x.Components.GetAll<SkinnedModelRenderer>().Where( x => x.GameObject.Name != "Model" ) ) )
 			{
 				var newClothing = new GameObject( true, clothing.GameObject.Name );
 				newClothing.Parent = go;

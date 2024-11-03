@@ -25,7 +25,6 @@ public class ViewModel : Component
 
 	protected override void OnEnabled()
 	{
-		Renderer?.ClearParameters();
 		Renderer?.Set( "b_deploy", true );
 	}
 

@@ -22,29 +22,14 @@ public partial class BaseWeapon : Component
 	[Sync] public RealTimeSince TimeSincePrimaryAttack { get; set; }
 	[Sync] public RealTimeSince TimeSinceSecondaryAttack { get; set; }
 
-	public SkinnedModelRenderer LocalRenderer => Owner.Controller.ThirdPerson || IsProxy
-			? WorldModel
-			: ViewModel?.Renderer;
-
-	public ViewModel ViewModel => Scene?.Camera?.GetComponentsInChildren<ViewModel>( true ).FirstOrDefault( x => x.GameObject.Name == ViewModelPrefab.Name );
+	public ViewModel ViewModel => Scene?.Camera?.GetComponentInChildren<ViewModel>( true );
+	public SkinnedModelRenderer WorldModel => GameObject?.GetComponentInChildren<SkinnedModelRenderer>( true );
+	public SkinnedModelRenderer LocalWorldModel => Owner.Controller.ThirdPerson || IsProxy ? WorldModel : ViewModel?.Renderer;
 	public Player Owner => GameObject?.Root?.GetComponent<Player>();
-
-	SkinnedModelRenderer _worldModel = null;
-	public SkinnedModelRenderer WorldModel
-	{
-		get
-		{
-			if ( !_worldModel.IsValid() )
-			{
-				_worldModel = Components.GetInChildrenOrSelf<SkinnedModelRenderer>();
-			}
-			return _worldModel;
-		}
-	}
 
 	public Transform Attachment( string name )
 	{
-		return LocalRenderer?.GetAttachment( name ) ?? WorldTransform;
+		return LocalWorldModel?.GetAttachment( name ) ?? WorldTransform;
 	}
 
 	protected override void OnAwake()
@@ -55,17 +40,6 @@ public partial class BaseWeapon : Component
 			GameObject.Parent = obj;
 			GameObject.LocalTransform = BoneOffset.WithScale( 1 );
 		}
-
-		if ( IsProxy ) return;
-
-		var go = ViewModelPrefab?.Clone( new CloneConfig()
-		{
-			StartEnabled = false,
-			Parent = Scene.Camera.GameObject,
-			Transform = Scene.Camera.WorldTransform
-		} );
-
-		go.NetworkMode = NetworkMode.Never;
 	}
 
 	protected override void OnEnabled()
@@ -74,21 +48,21 @@ public partial class BaseWeapon : Component
 
 		if ( IsProxy ) return;
 
-		ViewModel.GameObject.Enabled = true;
+		var go = ViewModelPrefab?.Clone( new CloneConfig()
+		{
+			StartEnabled = true,
+			Parent = Scene.Camera.GameObject,
+			Transform = Scene.Camera.WorldTransform
+		} );
+
+		go.NetworkMode = NetworkMode.Never;
 	}
 
 	protected override void OnDisabled()
 	{
 		if ( IsProxy ) return;
 
-		ViewModel.GameObject.Enabled = false;
-	}
-
-	protected override void OnDestroy()
-	{
-		if ( IsProxy ) return;
-
-		if ( ViewModel.IsValid() ) ViewModel.DestroyGameObject();
+		ViewModel.GameObject.DestroyImmediate();
 	}
 
 	protected override void OnUpdate()
@@ -174,7 +148,7 @@ public partial class BaseWeapon : Component
 	[Broadcast]
 	public void AttachParticleSystem( string path, string attachment, float time = 1, GameObject parent = null )
 	{
-		Transform transform = LocalRenderer?.GetAttachment( attachment ) ?? WorldTransform;
+		Transform transform = LocalWorldModel?.GetAttachment( attachment ) ?? WorldTransform;
 		Particles.MakeParticleSystem( path, transform, time, parent );
 	}
 
