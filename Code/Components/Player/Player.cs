@@ -61,13 +61,13 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 	public void TakeDamage( float amount )
 	{
 		if ( IsProxy ) return;
-		if ( Health <= 0 ) return;
+		if ( IsDead ) return;
 
 		Health -= amount;
 
-		IPlayerEvent.PostToGameObject( GameObject, x => x.OnTakeDamage( amount ) );
+		// IPlayerEvent.PostToGameObject( GameObject, x => x.OnTakeDamage( amount ) );
 
-		if ( Health <= 0 )
+		if ( IsDead )
 		{
 			Health = 0;
 			Death();
