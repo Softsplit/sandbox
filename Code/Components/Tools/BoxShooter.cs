@@ -9,6 +9,9 @@ public class BoxShooter : BaseTool
 	{
 		ShootBox();
 
+		Parent.ViewModel.Renderer.Set( "b_attack", true );
+		BroadcastAttack();
+
 		return false;
 	}
 
@@ -19,6 +22,8 @@ public class BoxShooter : BaseTool
 			timeSinceShoot = 0;
 
 			ShootBox();
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
 		}
 
 		return false;
@@ -29,10 +34,19 @@ public class BoxShooter : BaseTool
 		if ( trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) && !string.IsNullOrEmpty( propHelper.Prop.Model.Name ) )
 		{
 			modelToShoot = propHelper.Prop.Model.Name;
+
 			Log.Trace( $"Shooting model: {modelToShoot}" );
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
 		}
 
 		return false;
+	}
+
+	[Broadcast]
+	private void BroadcastAttack()
+	{
+		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 
 	void ShootBox()

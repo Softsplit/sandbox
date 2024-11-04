@@ -29,17 +29,17 @@ public class ToolGun : BaseWeapon
 		return base.CanPrimaryAttack() && Input.Pressed( "attack1" );
 	}
 
+	public override bool CanReload()
+	{
+		return base.CanReload() && Input.Pressed( "reload" );
+	}
+
 	public override void AttackPrimary()
 	{
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
-
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
 		if ( !trace.Hit )
 			return;
-
-		BroadcastAttack();
 
 		if ( !(CurrentTool?.Primary( trace ) ?? false) )
 			return;
@@ -47,23 +47,12 @@ public class ToolGun : BaseWeapon
 		ToolEffects( trace.EndPosition );
 	}
 
-	[Broadcast]
-	private void BroadcastAttack()
-	{
-		Owner?.Controller?.Renderer?.Set( "b_attack", true );
-	}
-
 	public override void AttackSecondary()
 	{
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
-
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
 		if ( !trace.Hit )
 			return;
-
-		BroadcastAttack();
 
 		if ( !(CurrentTool?.Secondary( trace ) ?? false) )
 			return;
@@ -73,15 +62,10 @@ public class ToolGun : BaseWeapon
 
 	public override void Reload()
 	{
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
-
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
 		if ( !trace.Hit )
 			return;
-
-		BroadcastAttack();
 
 		if ( !(CurrentTool?.Reload( trace ) ?? false) )
 			return;
@@ -110,6 +94,7 @@ public class ToolGun : BaseWeapon
 		CurrentTool?.Destroy();
 
 		CurrentTool = Components.Get<BaseTool>();
+		CurrentTool.Parent = this;
 		CurrentTool.Owner = Owner;
 	}
 

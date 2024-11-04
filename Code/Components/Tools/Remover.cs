@@ -7,6 +7,7 @@ public class Remover : BaseTool
 			return false;
 
 		Remove( trace.GameObject );
+		Parent.ViewModel.Renderer.Set( "b_attack", true );
 
 		return true;
 	}
@@ -17,5 +18,6 @@ public class Remover : BaseTool
 		g.Destroy();
 
 		Particles.MakeParticleSystem( "particles/physgun_freeze.vpcf", g.WorldTransform );
+		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 }
