@@ -87,16 +87,12 @@ public class ViewModel : Component
 				}
 			}
 
-			var verticalDelta = playerVelocity.z * Time.Delta;
-			var viewDown = Rotation.FromPitch( newPitch ).Up * -1.0f;
-			verticalDelta *= 1.0f - MathF.Abs( viewDown.Cross( Vector3.Down ).y );
-			pitchDelta -= verticalDelta * 1.0f;
-
 			var speed = playerVelocity.WithZ( 0 ).Length;
 			speed = speed > 10.0 ? speed : 0.0f;
 			bobSpeed = bobSpeed.LerpTo( speed, Time.Delta * InertiaDamping );
 
-			var offset = CalcSwingOffset( pitchDelta, yawDelta );
+			var view = Input.AnalogLook;
+			var offset = CalcSwingOffset( view.pitch, view.yaw );
 			offset += CalcBobbingOffset( bobSpeed );
 
 			WorldPosition += WorldRotation * offset;
