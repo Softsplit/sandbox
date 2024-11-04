@@ -3,13 +3,18 @@ public class Remover : BaseTool
 {
 	public override bool Primary( SceneTraceResult trace )
 	{
-		if ( trace.GameObject.Components.Get<PropHelper>() == null )
-			return false;
+		if ( Input.Pressed( "attack1" ) )
+		{
+			if ( trace.GameObject.Components.Get<PropHelper>() == null )
+				return false;
 
-		Remove( trace.GameObject );
-		Parent.ViewModel.Renderer.Set( "b_attack", true );
+			Remove( trace.GameObject );
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 
 	[Broadcast]
@@ -18,7 +23,6 @@ public class Remover : BaseTool
 		g.Destroy();
 
 		Particles.MakeParticleSystem( "particles/physgun_freeze.vpcf", g.WorldTransform );
-		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 }

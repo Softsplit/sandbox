@@ -7,10 +7,13 @@ public class BoxShooter : BaseTool
 
 	public override bool Primary( SceneTraceResult trace )
 	{
-		ShootBox();
+		if ( Input.Pressed( "attack1" ) )
+		{
+			ShootBox();
 
-		Parent.ViewModel.Renderer.Set( "b_attack", true );
-		BroadcastAttack();
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
+		}
 
 		return false;
 	}
@@ -31,7 +34,7 @@ public class BoxShooter : BaseTool
 
 	public override bool Reload( SceneTraceResult trace )
 	{
-		if ( trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) && !string.IsNullOrEmpty( propHelper.Prop.Model.Name ) )
+		if ( Input.Pressed( "reload" ) && trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) && !string.IsNullOrEmpty( propHelper.Prop.Model.Name ) )
 		{
 			modelToShoot = propHelper.Prop.Model.Name;
 

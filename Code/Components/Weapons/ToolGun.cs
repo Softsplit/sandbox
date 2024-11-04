@@ -24,16 +24,6 @@ public class ToolGun : BaseWeapon
 		}
 	}
 
-	public override bool CanPrimaryAttack()
-	{
-		return base.CanPrimaryAttack() && Input.Pressed( "attack1" );
-	}
-
-	public override bool CanReload()
-	{
-		return base.CanReload() && Input.Pressed( "reload" );
-	}
-
 	public override void AttackPrimary()
 	{
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
