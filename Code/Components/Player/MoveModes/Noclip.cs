@@ -6,6 +6,11 @@ public class MoveModeNoclip : MoveMode
 	[Property]
 	public int Priority { get; set; } = 100;
 
+	protected override void OnFixedUpdate()
+	{
+		if ( Input.Pressed( "noclip" ) ) Tags.Toggle( "noclip" );
+	}
+
 	public override int Score( PlayerController controller )
 	{
 		if ( Tags.Has( "noclip" ) ) return Priority;
