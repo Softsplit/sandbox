@@ -47,6 +47,7 @@ public class BoxShooter : BaseTool
 	private void BroadcastAttack()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
+		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 	}
 
 	void ShootBox()

@@ -18,6 +18,7 @@ public class Remover : BaseTool
 		g.Destroy();
 
 		Particles.MakeParticleSystem( "particles/physgun_freeze.vpcf", g.WorldTransform );
+		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 }
