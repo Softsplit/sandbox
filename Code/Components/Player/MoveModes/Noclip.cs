@@ -20,6 +20,9 @@ public class MoveModeNoclip : MoveMode
 
 	public override Vector3 UpdateMove( Rotation eyes, Vector3 input )
 	{
+		// don't normalize, because analog input might want to go slow
+		input = input.ClampLength( 1 );
+
 		var wishVelocity = eyes * input * Controller.RunSpeed;
 		if ( Input.Down( "run" ) ) wishVelocity *= 5.0f;
 		if ( Input.Down( "duck" ) ) wishVelocity *= 0.2f;
@@ -28,7 +31,7 @@ public class MoveModeNoclip : MoveMode
 		{
 			wishVelocity += Vector3.Up * Controller.JumpSpeed;
 		}
-		
+
 		return wishVelocity;
 	}
 }
