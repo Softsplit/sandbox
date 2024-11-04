@@ -29,11 +29,6 @@ public class ToolGun : BaseWeapon
 		return base.CanPrimaryAttack() && Input.Pressed( "attack1" );
 	}
 
-	public override bool CanReload()
-	{
-		return false;
-	}
-
 	public override void AttackPrimary()
 	{
 		TimeSincePrimaryAttack = 0;

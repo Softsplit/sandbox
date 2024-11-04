@@ -26,7 +26,13 @@ public class BoxShooter : BaseTool
 
 	public override bool Reload( SceneTraceResult trace )
 	{
-		return base.Reload( trace );
+		if ( trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) && !string.IsNullOrEmpty( propHelper.Prop.Model.Name ) )
+		{
+			modelToShoot = propHelper.Prop.Model.Name;
+			Log.Trace( $"Shooting model: {modelToShoot}" );
+		}
+
+		return false;
 	}
 
 	void ShootBox()
