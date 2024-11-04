@@ -59,11 +59,13 @@ public class BoxShooter : BaseTool
 		var go = new GameObject()
 		{
 			WorldPosition = Owner.EyeTransform.Position + Owner.EyeTransform.Forward * 50,
-			WorldRotation = Owner.EyeTransform.Rotation
+			WorldRotation = Owner.EyeTransform.Rotation,
+			Tags = { "solid" }
 		};
 
 		var prop = go.AddComponent<Prop>();
 		prop.Model = Model.Load( modelToShoot );
+
 		prop.AddComponent<PropHelper>();
 
 		if ( prop.Components.TryGet<Rigidbody>( out var rigidbody ) )
