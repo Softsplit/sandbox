@@ -91,7 +91,7 @@ public class ViewModel : Component
 			speed = speed > 10.0 ? speed : 0.0f;
 			bobSpeed = bobSpeed.LerpTo( speed, Time.Delta * InertiaDamping );
 
-			var view = Input.AnalogLook;
+			var view = Input.AnalogLook *= -1;
 			var offset = CalcSwingOffset( view.pitch, view.yaw );
 			offset += CalcBobbingOffset( bobSpeed );
 
