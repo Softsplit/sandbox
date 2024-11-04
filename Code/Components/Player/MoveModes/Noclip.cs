@@ -34,4 +34,14 @@ public class MoveModeNoclip : MoveMode
 
 		return wishVelocity;
 	}
+
+	public override void OnModeBegin()
+	{
+		Controller.Renderer.Set( "b_noclip", true );
+	}
+
+	public override void OnModeEnd( MoveMode next )
+	{
+		Controller.Renderer.Set( "b_noclip", false );
+	}
 }
