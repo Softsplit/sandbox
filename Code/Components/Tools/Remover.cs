@@ -1,11 +1,12 @@
+[Library( "tool_remover", Description = "Remove entities", Group = "construction" )]
 public class Remover : BaseTool
 {
-	public override bool Primary( SceneTraceResult Trace )
+	public override bool Primary( SceneTraceResult trace )
 	{
-		if ( Trace.GameObject.Components.Get<PropHelper>() == null )
+		if ( trace.GameObject.Components.Get<PropHelper>() == null )
 			return false;
 
-		Remove( Trace.GameObject );
+		Remove( trace.GameObject );
 
 		return true;
 	}
@@ -14,5 +15,7 @@ public class Remover : BaseTool
 	void Remove( GameObject g )
 	{
 		g.Destroy();
+
+		Particles.MakeParticleSystem( "particles/physgun_freeze.vpcf", g.WorldTransform );
 	}
 }

@@ -273,5 +273,4 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Welds.RemoveAll( item => !item.IsValid() );
 		Joints.RemoveAll( item => !item.IsValid() );
 	}
-
 }

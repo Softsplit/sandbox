@@ -127,17 +127,4 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		foreach ( var weapon in Weapons )
 			weapon.GameObject.Destroy();
 	}
-
-	[ConCmd( "select_weapon" )]
-	public static void Select_Weapon( string name )
-	{
-		PlayerInventory pI = Player.FindLocalPlayer().Inventory;
-		for ( int i = 0; i < pI.Weapons.Count; i++ )
-		{
-			if ( DisplayInfo.For( pI.Weapons[i] ).Name != name )
-				continue;
-			pI.SetActiveSlot( i );
-			return;
-		}
-	}
 }
