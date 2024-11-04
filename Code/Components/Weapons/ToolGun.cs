@@ -1,74 +1,70 @@
-[Spawnable, Library( "tool_gun" )]
+[Library( "weapon_tool", Title = "Toolgun" )]
 public class ToolGun : BaseWeapon
 {
-	[ConVar( "tool_current" )] public static string CurrentTool { get; set; } = "Weld";
-	public BaseTool ActiveTool { get; set; }
+	[ConVar( "tool_current" )] public static string UserToolCurrent { get; set; } = "tool_boxgun";
 
-	string lastTool;
+	public BaseTool CurrentTool { get; set; }
+
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
+
 		UpdateTool();
 	}
+
+	string lastTool;
 
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
 
-		if(lastTool != CurrentTool)
+		if ( lastTool != UserToolCurrent )
 		{
 			UpdateTool();
 		}
 	}
 
-	public override bool CanPrimaryAttack()
-	{
-		return base.CanPrimaryAttack() && Input.Pressed( "attack1" );
-	}
-
 	public override void AttackPrimary()
 	{
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
-
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
 		if ( !trace.Hit )
 			return;
 
-		BroadcastAttack();
-
-		if ( !(ActiveTool?.Primary( trace ) ?? false) )
+		if ( !(CurrentTool?.Primary( trace ) ?? false) )
 			return;
 
 		ToolEffects( trace.EndPosition );
 	}
 
-	[Broadcast]
-	private void BroadcastAttack()
-	{
-		Owner?.Controller?.Renderer?.Set( "b_attack", true );
-	}
 	public override void AttackSecondary()
 	{
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
-
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
 		if ( !trace.Hit )
 			return;
 
-		BroadcastAttack();
+		if ( !(CurrentTool?.Secondary( trace ) ?? false) )
+			return;
 
-		if ( !(ActiveTool?.Secondary( trace ) ?? false) )
+		ToolEffects( trace.EndPosition );
+	}
+
+	public override void Reload()
+	{
+		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
+
+		if ( !trace.Hit )
+			return;
+
+		if ( !(CurrentTool?.Reload( trace ) ?? false) )
 			return;
 
 		ToolEffects( trace.EndPosition );
 	}
 
 	[Broadcast]
-	void ToolEffects(Vector3 position)
+	void ToolEffects( Vector3 position )
 	{
 		Particles.MakeParticleSystem( "particles/tool_hit.vpcf", new Transform( position ) );
 		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
@@ -76,18 +72,20 @@ public class ToolGun : BaseWeapon
 
 	public void UpdateTool()
 	{
-		var comp = TypeLibrary.GetType( CurrentTool );
+		var comp = TypeLibrary.GetType( UserToolCurrent );
 
 		if ( comp == null )
 			return;
 
-		lastTool = CurrentTool;
+		lastTool = UserToolCurrent;
 
 		Components.Create( comp, true );
 
-		ActiveTool?.Destroy();
+		CurrentTool?.Destroy();
 
-		ActiveTool = Components.Get<BaseTool>();
+		CurrentTool = Components.Get<BaseTool>();
+		CurrentTool.Owner = Owner;
+		CurrentTool.Parent = this;
 	}
 
 	public SceneTraceResult TraceTool( Vector3 start, Vector3 end, float radius = 2.0f )

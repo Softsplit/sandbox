@@ -1,11 +1,19 @@
 public abstract class BaseTool : Component
 {
-	public virtual bool Primary( SceneTraceResult Trace )
+	public ToolGun Parent { get; set; }
+	public Player Owner { get; set; }
+
+	public virtual bool Primary( SceneTraceResult trace )
 	{
 		return false;
 	}
 
-	public virtual bool Secondary( SceneTraceResult Trace )
+	public virtual bool Secondary( SceneTraceResult trace )
+	{
+		return false;
+	}
+
+	public virtual bool Reload( SceneTraceResult trace )
 	{
 		return false;
 	}

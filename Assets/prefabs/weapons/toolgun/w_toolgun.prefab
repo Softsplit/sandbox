@@ -21,9 +21,9 @@
         "Handedness": "Right",
         "HoldType": "Pistol",
         "ParentBone": "hold_r",
-        "PrimaryRate": 5,
-        "ReloadTime": 3,
-        "SecondaryRate": 5,
+        "PrimaryRate": 0,
+        "ReloadTime": 0,
+        "SecondaryRate": 0,
         "ViewModelPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/weapons/toolgun/v_toolgun.prefab"
