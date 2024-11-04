@@ -99,7 +99,7 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 
 	void PlayerController.IEvents.PostCameraSetup( CameraComponent camera )
 	{
-		var player = Components.Get<Player>();
+		camera.FieldOfView = Screen.CreateVerticalFieldOfView( Preferences.FieldOfView );
 		ILocalPlayerEvent.Post( x => x.OnCameraSetup( camera ) );
 		ILocalPlayerEvent.Post( x => x.OnCameraPostSetup( camera ) );
 	}
