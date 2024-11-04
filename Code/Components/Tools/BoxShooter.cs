@@ -37,9 +37,11 @@ public class BoxShooter : BaseTool
 
 			Log.Trace( $"Shooting model: {modelToShoot}" );
 			Parent.ViewModel.Renderer.Set( "b_attack", true );
+
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	[Broadcast]
