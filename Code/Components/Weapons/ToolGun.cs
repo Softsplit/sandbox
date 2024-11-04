@@ -5,9 +5,9 @@ public class ToolGun : BaseWeapon
 
 	[Sync] public BaseTool CurrentTool { get; set; }
 
-	protected override void OnEnabled()
+	protected override void OnAwake()
 	{
-		base.OnEnabled();
+		base.OnAwake();
 
 		UpdateTool();
 	}
@@ -84,8 +84,8 @@ public class ToolGun : BaseWeapon
 		CurrentTool?.Destroy();
 
 		CurrentTool = Components.Get<BaseTool>();
-		CurrentTool.Parent = this;
 		CurrentTool.Owner = Owner;
+		if ( this.IsValid() ) CurrentTool.Parent = this;
 	}
 
 	public SceneTraceResult TraceTool( Vector3 start, Vector3 end, float radius = 2.0f )
