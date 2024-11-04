@@ -1,3 +1,5 @@
+using Sandbox.Movement;
+
 [Icon( "pan_tool" )]
 public class ViewModel : Component
 {
@@ -79,7 +81,7 @@ public class ViewModel : Component
 			if ( player.IsValid() )
 			{
 				var controller = player.Controller;
-				if ( controller.IsValid() /*&& controller.IsNoclipping*/ )
+				if ( controller.IsValid() && controller.Mode is MoveModeNoclip )
 				{
 					playerVelocity = Vector3.Zero;
 				}

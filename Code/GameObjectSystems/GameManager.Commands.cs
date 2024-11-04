@@ -18,6 +18,13 @@ public sealed partial class GameManager
 		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
 
+	[ConCmd( "noclip" )]
+	public static void Noclip()
+	{
+		var player = Player.FindLocalPlayer();
+		player.Tags.Toggle( "noclip" );
+	}
+
 	[Broadcast]
 	static async void SpawnModel( string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject )
 	{

@@ -141,7 +141,7 @@
       {
         "__type": "Sandbox.Movement.MoveModeNoclip",
         "__guid": "97446291-7996-45a6-ab7f-6c0aa014e3e5",
-        "Priority": 1
+        "Priority": 100
       }
     ],
     "Children": [
