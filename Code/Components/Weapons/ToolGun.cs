@@ -3,11 +3,11 @@ public class ToolGun : BaseWeapon
 {
 	[ConVar( "tool_current" )] public static string UserToolCurrent { get; set; } = "tool_boxgun";
 
-	[Sync] public BaseTool CurrentTool { get; set; }
+	public BaseTool CurrentTool { get; set; }
 
-	protected override void OnAwake()
+	protected override void OnEnabled()
 	{
-		base.OnAwake();
+		base.OnEnabled();
 
 		UpdateTool();
 	}
@@ -85,7 +85,7 @@ public class ToolGun : BaseWeapon
 
 		CurrentTool = Components.Get<BaseTool>();
 		CurrentTool.Owner = Owner;
-		if ( this.IsValid() ) CurrentTool.Parent = this;
+		CurrentTool.Parent = this;
 	}
 
 	public SceneTraceResult TraceTool( Vector3 start, Vector3 end, float radius = 2.0f )

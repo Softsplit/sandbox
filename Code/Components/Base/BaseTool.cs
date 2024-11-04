@@ -1,7 +1,7 @@
 public abstract class BaseTool : Component
 {
-	[Sync] public ToolGun Parent { get; set; }
-	[Sync] public Player Owner { get; set; }
+	public ToolGun Parent { get; set; }
+	public Player Owner { get; set; }
 
 	public virtual bool Primary( SceneTraceResult trace )
 	{
