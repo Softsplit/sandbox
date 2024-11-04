@@ -37,16 +37,16 @@ public class BoxShooter : BaseTool
 
 			Log.Trace( $"Shooting model: {modelToShoot}" );
 			Parent.ViewModel.Renderer.Set( "b_attack", true );
-			BroadcastAttack();
 		}
 
-		return false;
+		return true;
 	}
 
 	[Broadcast]
 	private void BroadcastAttack()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
+		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 	}
 
 	void ShootBox()
