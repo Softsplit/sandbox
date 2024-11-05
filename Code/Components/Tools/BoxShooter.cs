@@ -43,9 +43,13 @@ public class BoxShooter : BaseTool
 			modelToShoot = propHelper.Prop.Model.Name;
 
 			Log.Trace( $"Shooting model: {modelToShoot}" );
-			Parent.ViewModel.Renderer.Set( "b_attack", true );
 
-			return true;
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
+
+			Particles.CreateParticleSystem( "particles/tool_hit.vpcf", new Transform( trace.EndPosition ) );
+
+			return false;
 		}
 
 		return false;
