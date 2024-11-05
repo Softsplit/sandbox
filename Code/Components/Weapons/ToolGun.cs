@@ -28,9 +28,6 @@ public class ToolGun : BaseWeapon
 	{
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
-		if ( !trace.Hit )
-			return;
-
 		if ( !(CurrentTool?.Primary( trace ) ?? false) )
 			return;
 
@@ -41,9 +38,6 @@ public class ToolGun : BaseWeapon
 	{
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 
-		if ( !trace.Hit )
-			return;
-
 		if ( !(CurrentTool?.Secondary( trace ) ?? false) )
 			return;
 
@@ -53,9 +47,6 @@ public class ToolGun : BaseWeapon
 	public override void Reload()
 	{
 		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
-
-		if ( !trace.Hit )
-			return;
 
 		if ( !(CurrentTool?.Reload( trace ) ?? false) )
 			return;
