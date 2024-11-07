@@ -25,6 +25,7 @@ public class BoxShooter : BaseTool
 			timeSinceShoot = 0;
 
 			ShootBox();
+
 			Parent.ViewModel.Renderer.Set( "b_attack", true );
 			BroadcastAttack();
 		}
@@ -34,14 +35,21 @@ public class BoxShooter : BaseTool
 
 	public override bool Reload( SceneTraceResult trace )
 	{
+		if ( !trace.Hit )
+			return false;
+
 		if ( Input.Pressed( "reload" ) && trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) && !string.IsNullOrEmpty( propHelper.Prop.Model.Name ) )
 		{
 			modelToShoot = propHelper.Prop.Model.Name;
 
 			Log.Trace( $"Shooting model: {modelToShoot}" );
-			Parent.ViewModel.Renderer.Set( "b_attack", true );
 
-			return true;
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
+
+			Particles.CreateParticleSystem( "particles/tool_hit.vpcf", new Transform( trace.EndPosition ) );
+
+			return false;
 		}
 
 		return false;

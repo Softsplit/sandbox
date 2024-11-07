@@ -112,6 +112,7 @@ public sealed partial class PlayerController : Component
 		renderer.SetLookDirection( "aim_head", EyeAngles.Forward, 1 );
 		renderer.SetLookDirection( "aim_body", EyeAngles.Forward, 1 );
 
+		renderer.Set( "b_noclip", IsNoclipping );
 		renderer.Set( "b_swim", IsSwimming );
 		renderer.Set( "b_grounded", IsOnGround || IsClimbing );
 		renderer.Set( "b_climbing", IsClimbing );
