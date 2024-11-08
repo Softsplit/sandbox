@@ -35,7 +35,7 @@ public class Weld : BaseTool
 		if ( !trace.Hit )
 			return false;
 
-		if ( Input.Pressed( "attack1" ) )
+		if ( Input.Pressed( "attack2" ) )
 		{
 			PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
 
