@@ -24,8 +24,10 @@
         if (Input.EscapePressed)
         {
             Input.EscapePressed = false;
-            IsHidden = !IsHidden;
 
+            if (!InGame) return;
+
+            IsHidden = !IsHidden;
             StateHasChanged();
         }
     }
