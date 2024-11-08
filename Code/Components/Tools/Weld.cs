@@ -8,37 +8,47 @@ public class Weld : BaseTool
 		if ( !trace.Hit )
 			return false;
 
-		if ( welded == null )
+		if ( Input.Pressed( "attack1" ) )
 		{
-			welded = trace.GameObject;
+			if ( welded == null )
+			{
+				welded = trace.GameObject;
+				return true;
+			}
+
+			PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
+
+			if ( !propHelper.IsValid() )
+				return false;
+
+			propHelper.Weld( welded );
+
+			welded = null;
+
 			return true;
 		}
 
-		PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
-
-		if ( !propHelper.IsValid() )
-			return false;
-
-		propHelper.Weld( welded );
-
-		welded = null;
-
-		return true;
+		return false;
 	}
 	public override bool Secondary( SceneTraceResult trace )
 	{
 		if ( !trace.Hit )
 			return false;
 
-		PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
+		if ( Input.Pressed( "attack1" ) )
+		{
+			PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
 
-		if ( !propHelper.IsValid() )
-			return false;
+			if ( !propHelper.IsValid() )
+				return false;
 
-		propHelper.UnWeld();
+			propHelper.UnWeld();
 
-		welded = null;
+			welded = null;
 
-		return true;
+			return true;
+		}
+
+		return false;
 	}
 }
