@@ -20,6 +20,9 @@
 	{
 		var particleSystem = ParticleSystem.Load( path );
 
+		if ( !particleSystem.IsValid() )
+			return null;
+
 		var go = new GameObject
 		{
 			Name = particleSystem.Name,
