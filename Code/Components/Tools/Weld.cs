@@ -1,14 +1,14 @@
-using System.Diagnostics;
-
+[Library( "tool_weld", Description = "Weld stuff together", Group = "construction" )]
 public class Weld : BaseTool
 {
 	GameObject welded;
+
 	public override bool Primary( SceneTraceResult trace )
 	{
 		if ( !trace.Hit )
 			return false;
 
-		if ( Input.Pressed( "attack1" ) )
+		if ( Input.Pressed( "attack1" ) && trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) )
 		{
 			if ( welded == null )
 			{
@@ -16,39 +16,28 @@ public class Weld : BaseTool
 				return true;
 			}
 
-			if(trace.GameObject == welded)
-				return false;
-
-			PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
-
-			if ( !propHelper.IsValid() )
+			if ( trace.GameObject == welded )
 				return false;
 
 			propHelper.Weld( welded );
 
 			welded = null;
-
 			return true;
 		}
 
 		return false;
 	}
+
 	public override bool Secondary( SceneTraceResult trace )
 	{
 		if ( !trace.Hit )
 			return false;
 
-		if ( Input.Pressed( "attack2" ) )
+		if ( Input.Pressed( "attack2" ) && trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) )
 		{
-			PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
-
-			if ( !propHelper.IsValid() )
-				return false;
-
 			propHelper.UnWeld();
 
 			welded = null;
-
 			return true;
 		}
 
