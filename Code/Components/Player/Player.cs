@@ -65,7 +65,7 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 
 		Health -= amount;
 
-		// IPlayerEvent.PostToGameObject( GameObject, x => x.OnTakeDamage( amount ) );
+		IPlayerEvent.PostToGameObject( GameObject, x => x.OnTakeDamage( amount ) );
 
 		if ( IsDead )
 		{
