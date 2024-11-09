@@ -186,7 +186,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		var minImpactSpeed = 500;
 		if ( minImpactSpeed <= 0.0f ) minImpactSpeed = 500;
 
-		var impactDmg = Rigidbody.IsValid() ? Rigidbody.Mass / 10 : ModelPhysics.PhysicsGroup.Mass / 10;
+		float impactDmg = Rigidbody.IsValid() ? Rigidbody.Mass / 10 : ModelPhysics.IsValid() ? ModelPhysics.PhysicsGroup.Mass / 10 : 10;
 		if ( impactDmg <= 0.0f ) impactDmg = 10;
 
 		float speed = collision.Contact.Speed.Length;
