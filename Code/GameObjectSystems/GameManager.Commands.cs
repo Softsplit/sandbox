@@ -91,4 +91,45 @@ public sealed partial class GameManager
 
 		return model;
 	}
+
+	public static GameObject SpawnGetModel( string ModelPath, Vector3 position, Rotation rotation )
+	{
+		var go = new GameObject
+		{
+			WorldPosition = position,
+			WorldRotation = rotation
+		};
+
+		var prop = go.AddComponent<Prop>();
+		prop.Model = Model.Load( ModelPath );
+
+		var propHelper = go.AddComponent<PropHelper>();
+		propHelper.Invincible = true;
+
+		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
+		{
+			renderer.CreateBoneObjects = true;
+		}
+
+		var rb = propHelper.Rigidbody;
+		if ( rb.IsValid() )
+		{
+			foreach ( var shape in rb.PhysicsBody.Shapes )
+			{
+				if ( !shape.IsMeshShape )
+					continue;
+
+				var newCollider = go.AddComponent<BoxCollider>();
+				newCollider.Scale = prop.Model.PhysicsBounds.Size;
+			}
+		}
+
+		go.Tags.Add( "solid", "wheel" );
+		go.NetworkSpawn();
+		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
+		go.Network.SetOwnerTransfer( OwnerTransfer.Takeover );
+		go.Network.AssignOwnership( Connection.Host );
+
+		return go;
+	}
 }
