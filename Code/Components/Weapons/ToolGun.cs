@@ -8,9 +8,6 @@ public class ToolGun : BaseWeapon
 	protected override void OnEnabled()
 	{
 		base.OnEnabled();
-
-		
-
 		UpdateTool();
 	}
 
@@ -28,7 +25,7 @@ public class ToolGun : BaseWeapon
 
 		if ( IsProxy )
 		{
-			foreach(var tool in Components.GetAll<BaseTool>())
+			foreach ( var tool in Components.GetAll<BaseTool>() )
 			{
 				tool?.Destroy();
 			}

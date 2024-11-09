@@ -1,12 +1,14 @@
-﻿public class PreviewModel 
+﻿public class PreviewModel
 {
-	GameObject previewObject;
 	public string ModelPath { get; set; }
 	public Vector3 PositionOffset { get; set; }
 	public Rotation RotationOffset { get; set; }
 	public float NormalOffset { get; set; }
 	public bool FaceNormal { get; set; }
-	public void Update(SceneTraceResult trace)
+
+	GameObject previewObject;
+
+	public void Update( SceneTraceResult trace )
 	{
 		if ( !trace.Hit || trace.Tags.Contains( "wheel" ) )
 		{
