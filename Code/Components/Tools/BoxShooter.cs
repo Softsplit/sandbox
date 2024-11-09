@@ -10,8 +10,6 @@ public class BoxShooter : BaseTool
 		if ( Input.Pressed( "attack1" ) )
 		{
 			ShootBox();
-
-			Parent.ViewModel.Renderer.Set( "b_attack", true );
 			BroadcastAttack();
 		}
 
@@ -25,8 +23,6 @@ public class BoxShooter : BaseTool
 			timeSinceShoot = 0;
 
 			ShootBox();
-
-			Parent.ViewModel.Renderer.Set( "b_attack", true );
 			BroadcastAttack();
 		}
 
@@ -44,12 +40,7 @@ public class BoxShooter : BaseTool
 
 			Log.Trace( $"Shooting model: {modelToShoot}" );
 
-			Parent.ViewModel.Renderer.Set( "b_attack", true );
-			BroadcastAttack();
-
-			Particles.CreateParticleSystem( "particles/tool_hit.vpcf", new Transform( trace.EndPosition ) );
-
-			return false;
+			return true;
 		}
 
 		return false;

@@ -57,6 +57,7 @@ public class ToolGun : BaseWeapon
 	[Broadcast]
 	void ToolEffects( Vector3 position )
 	{
+		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 		Particles.MakeParticleSystem( "particles/tool_hit.vpcf", new Transform( position ) );
 		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 	}
