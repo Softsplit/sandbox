@@ -86,6 +86,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	public override void OnControl()
 	{
+		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
 		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
 		if ( !Owner.Controller.UseInputControls )

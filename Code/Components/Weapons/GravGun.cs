@@ -90,6 +90,8 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	public override void OnControl()
 	{
+		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
+
 		var eyePos = Owner.Controller.EyePosition;
 		var eyeRot = Owner.Controller.EyeAngles;
 		var eyeDir = Owner.Controller.EyeAngles.Forward;
