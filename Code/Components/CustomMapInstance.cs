@@ -7,8 +7,10 @@ public sealed class CustomMapInstance : MapInstance
 			if ( kv.TypeName.StartsWith( "prop" ) )
 				go.DestroyImmediate();
 
+			/*
 			if ( kv.TypeName == "ent_door" )
 				go.DestroyImmediate();
+			*/
 
 			return;
 		}
@@ -19,6 +21,9 @@ public sealed class CustomMapInstance : MapInstance
 			go.NetworkSpawn( null );
 		}
 
+		// Comment these out since MapInstance preloads models funkily
+
+		/*
 		if ( kv.TypeName == "ent_door" )
 		{
 			Model resource = kv.GetResource<Model>( "model" );
@@ -47,5 +52,6 @@ public sealed class CustomMapInstance : MapInstance
 
 			go.NetworkSpawn( null );
 		}
+		*/
 	}
 }
