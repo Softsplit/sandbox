@@ -290,10 +290,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		var hingeJoint = go.Components.Create<HingeJoint>();
 		hingeJoint.Body = GameObject;
 
-		hingeJoint.Motor = HingeJoint.MotorMode.TargetVelocity;
-		hingeJoint.TargetVelocity = 10000000f;
-		hingeJoint.MaxTorque = 10000000f;
-
 		Joints.Add( hingeJoint );
 
 		propHelper?.Joints.Add( hingeJoint );
