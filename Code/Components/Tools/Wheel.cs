@@ -1,33 +1,34 @@
 ﻿[Library( "tool_wheel", Description = "A wheel that you can turn on and off (but actually can't yet)", Group = "construction" )]
 public class Wheel : BaseTool
 {
-	GameObject previewObject;
+	PreviewModel PreviewModel;
 	RealTimeSince timeSinceDisabled;
+
+	protected override void OnAwake()
+	{
+		if ( IsProxy )
+			return;
+
+		PreviewModel = new PreviewModel
+		{
+			ModelPath = "models/citizen_props/wheel01.vmdl",
+			NormalOffset = 8f,
+			RotationOffset = Rotation.From( new Angles( 0, 90, 0 ) ),
+			FaceNormal = true
+		};
+	}
 
 	protected override void OnUpdate()
 	{
+		if ( IsProxy )
+			return;
+
 		if ( timeSinceDisabled < Time.Delta * 5f || !Parent.IsValid() )
 			return;
 
 		var trace = Parent.BasicTraceTool();
 
-		if ( !trace.Hit || trace.Tags.Contains( "wheel" ) )
-		{
-			previewObject?.DestroyImmediate();
-			previewObject = null;
-			return;
-		}
-
-		if ( !previewObject.IsValid() )
-		{
-			previewObject = new GameObject();
-
-			var renderer = previewObject.Components.Create<ModelRenderer>();
-			renderer.Tint = Color.White.WithAlpha( 0.5f );
-			renderer.Model = Model.Load( "models/citizen_props/wheel01.vmdl" );
-		}
-
-		PositionWheel( previewObject, trace );
+		PreviewModel.Update( trace );
 	}
 
 	public override bool Primary( SceneTraceResult trace )
@@ -62,14 +63,14 @@ public class Wheel : BaseTool
 
 	protected override void OnDestroy()
 	{
-		previewObject?.DestroyImmediate();
+		PreviewModel?.Destroy();
 		base.OnDestroy();
 	}
 
 	public override void Disabled()
 	{
 		timeSinceDisabled = 0;
-		previewObject?.DestroyImmediate();
+		PreviewModel?.Destroy();
 	}
 
 	GameObject SpawnWheel( SceneTraceResult trace )

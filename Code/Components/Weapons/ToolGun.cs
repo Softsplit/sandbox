@@ -9,6 +9,8 @@ public class ToolGun : BaseWeapon
 	{
 		base.OnEnabled();
 
+		
+
 		UpdateTool();
 	}
 
@@ -23,6 +25,14 @@ public class ToolGun : BaseWeapon
 	protected override void OnFixedUpdate()
 	{
 		base.OnFixedUpdate();
+
+		if ( IsProxy )
+		{
+			foreach(var tool in Components.GetAll<BaseTool>())
+			{
+				tool?.Destroy();
+			}
+		}
 
 		if ( lastTool != UserToolCurrent )
 		{
