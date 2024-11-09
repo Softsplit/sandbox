@@ -60,27 +60,27 @@
         }
     }
 
-	void RebuildToolList()
-	{
-		toollist.DeleteChildren( true );
+    void RebuildToolList()
+    {
+        toollist.DeleteChildren(true);
 
-		foreach ( var entry in TypeLibrary.GetTypes<BaseTool>() )
-		{
-			if ( entry.Name == "BaseTool" )
-				continue;
+        foreach (var entry in TypeLibrary.GetTypes<BaseTool>())
+        {
+            if (entry.Name == "BaseTool")
+                continue;
 
-			var button = toollist.Add.Button( entry.Title );
-			button.SetClass( "active", entry.ClassName == ConsoleSystem.GetValue( "tool_current" ) );
+            var button = toollist.Add.Button(entry.Title);
+            button.SetClass("active", entry.ClassName == ConsoleSystem.GetValue("tool_current"));
 
-			button.AddEventListener( "onclick", () =>
-			{
-				SetActiveTool( entry.ClassName );
+            button.AddEventListener("onclick", () =>
+            {
+                SetActiveTool(entry.ClassName);
 
-				foreach ( var child in toollist.Children )
-					child.SetClass( "active", child == button );
-			} );
-		}
-	}
+                foreach (var child in toollist.Children)
+                    child.SetClass("active", child == button);
+            });
+        }
+    }
 
     void SetActiveTool(string className)
     {
@@ -88,15 +88,20 @@
         ConsoleSystem.Run("tool_current", className);
 
         // set the active weapon to the toolgun
-        if (Player.FindLocalPlayer() is not Player player) return;
-        if (player.Inventory is not PlayerInventory inventory) return;
+        var player = Player.FindLocalPlayer();
+        if (!player.IsValid())
+            return;
+
+        var inventory = player.Inventory;
+        if (!inventory.IsValid())
+            return;
 
         // why isn't inventory just an ienumurable wtf
         for (int i = 0; i < inventory.Weapons.Count; i++)
         {
             var weapon = player.Inventory.GetSlot(i);
             if (!weapon.IsValid()) continue;
-            if (DisplayInfo.ForType( weapon.GetType() ).ClassName != "weapon_tool") continue;
+            if (DisplayInfo.ForType(weapon.GetType()).ClassName != "weapon_tool") continue;
 
             inventory.SetActiveSlot(i);
         }
