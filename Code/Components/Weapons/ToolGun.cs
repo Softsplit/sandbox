@@ -12,6 +12,12 @@ public class ToolGun : BaseWeapon
 		UpdateTool();
 	}
 
+	protected override void OnDisabled()
+	{
+		base.OnDisabled();
+		CurrentTool?.Disabled();
+	}
+
 	string lastTool;
 
 	protected override void OnFixedUpdate()
@@ -26,7 +32,7 @@ public class ToolGun : BaseWeapon
 
 	public override void AttackPrimary()
 	{
-		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
+		var trace = BasicTraceTool();
 
 		if ( !(CurrentTool?.Primary( trace ) ?? false) )
 			return;
@@ -36,7 +42,7 @@ public class ToolGun : BaseWeapon
 
 	public override void AttackSecondary()
 	{
-		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
+		var trace = BasicTraceTool();
 
 		if ( !(CurrentTool?.Secondary( trace ) ?? false) )
 			return;
@@ -46,7 +52,7 @@ public class ToolGun : BaseWeapon
 
 	public override void Reload()
 	{
-		var trace = TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
+		var trace = BasicTraceTool();
 
 		if ( !(CurrentTool?.Reload( trace ) ?? false) )
 			return;
@@ -83,12 +89,17 @@ public class ToolGun : BaseWeapon
 	{
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
-				.WithAnyTags( "solid", "player", "npc", "glass" )
+				.WithAnyTags( "solid", "npc", "glass" )
 				.IgnoreGameObjectHierarchy( Owner.GameObject )
 				.Size( radius );
 
 		var tr = trace.Run();
 
 		return tr;
+	}
+
+	public SceneTraceResult BasicTraceTool()
+	{
+		return TraceTool( Owner.AimRay.Position, Owner.AimRay.Position + Owner.AimRay.Forward * 5000 );
 	}
 }

@@ -17,4 +17,9 @@ public abstract class BaseTool : Component
 	{
 		return false;
 	}
+
+	public virtual void Disabled()
+	{
+
+	}
 }

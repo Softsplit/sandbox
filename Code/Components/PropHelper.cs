@@ -13,6 +13,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	[Property, Sync] public float Health { get; set; } = 1f;
 	[Property, Sync] public Vector3 Velocity { get; set; }
+	[Property, Sync] public bool Invincible { get; set; }
 
 	[RequireComponent, Sync] public Prop Prop { get; set; }
 
@@ -50,7 +51,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		Health -= amount;
 
-		if ( Health <= 0f )
+		if ( Health <= 0f && !Invincible)
 			Kill();
 	}
 
@@ -272,5 +273,29 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		Welds.RemoveAll( item => !item.IsValid() );
 		Joints.RemoveAll( item => !item.IsValid() );
+	}
+
+	[Broadcast]
+	public void Hinge( GameObject to, Vector3 position, Vector3 normal )
+	{
+		PropHelper propHelper = to.Components.Get<PropHelper>();
+
+		var go = new GameObject
+		{
+			WorldPosition = position,
+			WorldRotation = Rotation.LookAt(Rotation.LookAt( normal ).Up)
+		};
+		go.SetParent( to );
+
+		var hingeJoint = go.Components.Create<HingeJoint>();
+		hingeJoint.Body = GameObject;
+
+		hingeJoint.Motor = HingeJoint.MotorMode.TargetVelocity;
+		hingeJoint.TargetVelocity = 10000000f;
+		hingeJoint.MaxTorque = 10000000f;
+
+		Joints.Add( hingeJoint );
+
+		propHelper?.Joints.Add( hingeJoint );
 	}
 }
