@@ -255,13 +255,25 @@ public partial class BaseWeapon : Component
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
 				.WithoutTags( "player_hull", "debris" )
-				.IgnoreGameObjectHierarchy( GameObject.Root )
-				.Size( radius );
+				.IgnoreGameObjectHierarchy( GameObject.Root );
 
 		var tr = trace.Run();
 
 		if ( tr.Hit )
+		{
 			yield return tr;
+		}
+		else
+		{
+			trace = trace.Size( radius );
+
+			tr = trace.Run();
+
+			if ( tr.Hit )
+			{
+				yield return tr;
+			}
+		}
 	}
 
 	/// <summary>
