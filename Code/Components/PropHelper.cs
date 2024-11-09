@@ -13,6 +13,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	[Property, Sync] public float Health { get; set; } = 1f;
 	[Property, Sync] public Vector3 Velocity { get; set; }
+	[Property, Sync] public bool Invincible { get; set; } = false;
 
 	[RequireComponent, Sync] public Prop Prop { get; set; }
 
@@ -50,7 +51,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		Health -= amount;
 
-		if ( Health <= 0f )
+		if ( Health <= 0f && !Invincible )
 			Kill();
 	}
 

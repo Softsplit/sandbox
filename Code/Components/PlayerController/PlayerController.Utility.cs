@@ -8,7 +8,6 @@ public sealed partial class PlayerController : Component
 	public GameObject CreateRagdoll( string name = "Ragdoll" )
 	{
 		var go = new GameObject( true, name );
-		go.Tags.Add( "solid", "debris", "ragdoll" );
 		go.Transform.World = Transform.World;
 
 		var originalBody = Renderer.Components.Get<SkinnedModelRenderer>();

@@ -8,8 +8,8 @@ public class Remover : BaseTool
 
 		if ( Input.Pressed( "attack1" ) )
 		{
-			if ( trace.GameObject.Components.Get<PropHelper>() == null )
-				return false;
+			if ( trace.Component is MapCollider )
+				return true;
 
 			Remove( trace.GameObject );
 

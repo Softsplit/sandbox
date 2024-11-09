@@ -11,7 +11,7 @@ public class Wheel : BaseTool
 
 		var trace = Parent.BasicTraceTool();
 
-		if ( !trace.Hit )
+		if ( !trace.Hit || trace.Tags.Contains( "wheel" ) )
 		{
 			previewObject?.DestroyImmediate();
 			previewObject = null;
@@ -35,16 +35,16 @@ public class Wheel : BaseTool
 		if ( !trace.Hit )
 			return false;
 
-		if ( trace.Component is MapCollider )
-			return false;
-
-		if ( Input.Pressed( "attack1" ) && !trace.Tags.Contains( "wheel" ) )
+		if ( Input.Pressed( "attack1" ) )
 		{
+			if ( trace.Tags.Contains( "wheel" ) )
+				return true;
+
 			var wheel = SpawnWheel( trace );
 
 			PropHelper propHelper = wheel.Components.Get<PropHelper>();
 			if ( !propHelper.IsValid() )
-				return false;
+				return true;
 
 			propHelper.Hinge( trace.GameObject, trace.EndPosition, trace.Normal );
 
@@ -82,6 +82,7 @@ public class Wheel : BaseTool
 		prop.Model = Model.Load( "models/citizen_props/wheel01.vmdl" );
 
 		var propHelper = go.AddComponent<PropHelper>();
+		propHelper.Invincible = true;
 
 		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
 		{

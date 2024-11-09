@@ -17,13 +17,6 @@
         "Health": 100
       },
       {
-        "__type": "PlayerFallDamage",
-        "__guid": "e2cad285-157a-42b4-b039-8b6918efbc0b",
-        "DamageMultiplier": 1,
-        "DeathFallDistance": 800,
-        "MinimumFallDistance": 200
-      },
-      {
         "__type": "PlayerInventory",
         "__guid": "7a0edd28-8894-48d5-8ba4-ba5aadaef5be"
       },
@@ -155,6 +148,7 @@
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "088ccdf7-7a51-47f6-be5c-88081217e16e",
             "BodyGroups": 341,
+            "CreateAttachments": false,
             "CreateBoneObjects": true,
             "Model": "models/citizen/citizen.vmdl",
             "Morphs": {},

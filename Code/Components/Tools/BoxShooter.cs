@@ -37,8 +37,6 @@ public class BoxShooter : BaseTool
 			modelToShoot = propHelper.Prop.Model.Name;
 
 			Log.Trace( $"Shooting model: {modelToShoot}" );
-
-			return true;
 		}
 
 		return false;
