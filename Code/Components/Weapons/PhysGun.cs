@@ -86,14 +86,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	public override void OnControl()
 	{
-		if ( !Owner.IsValid() )
-			return;
-
-		if ( !Owner.Controller.IsValid() )
-			return;
-
-		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
-
 		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
 		if ( !Owner.Controller.UseInputControls )
@@ -135,6 +127,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		}
 
 		MoveTargetDistance( Input.MouseWheel.y * TargetDistanceSpeed );
+
+		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
 
 		if ( Input.Down( "use" ) )
 			DoRotate( eyeRot, Input.MouseDelta * RotateSpeed );
