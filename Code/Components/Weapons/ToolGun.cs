@@ -23,14 +23,6 @@ public class ToolGun : BaseWeapon
 	{
 		base.OnFixedUpdate();
 
-		if ( IsProxy )
-		{
-			foreach ( var tool in Components.GetAll<BaseTool>() )
-			{
-				tool?.Destroy();
-			}
-		}
-
 		if ( lastTool != UserToolCurrent )
 		{
 			UpdateTool();
