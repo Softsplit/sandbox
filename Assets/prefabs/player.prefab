@@ -17,6 +17,10 @@
         "Health": 100
       },
       {
+        "__type": "PlayerUse",
+        "__guid": "d04b77c5-4b3f-486a-9d74-74e37e35843a"
+      },
+      {
         "__type": "PlayerInventory",
         "__guid": "7a0edd28-8894-48d5-8ba4-ba5aadaef5be"
       },
@@ -60,7 +64,7 @@
         "RotationAngleLimit": 45,
         "RotationSpeed": 1,
         "RunSpeed": 320,
-        "ShowColliderComponents": true,
+        "ShowColliderComponents": false,
         "ShowRigidbodyComponent": false,
         "ThirdPerson": false,
         "ToggleCameraModeButton": "view",
@@ -81,7 +85,7 @@
           "Yaw": true,
           "Roll": true
         },
-        "MassCenterOverride": "0,0,36.00001",
+        "MassCenterOverride": "0,0,36",
         "MassOverride": 500,
         "MotionEnabled": true,
         "OverrideMassCenter": true,
