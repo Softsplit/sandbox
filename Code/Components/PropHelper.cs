@@ -286,6 +286,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Weld( GameObject to )
 	{
+		if ( IsProxy )
+			return;
+
 		PropHelper propHelper = to.Components.Get<PropHelper>();
 
 		var fixedJoint = Components.Create<FixedJoint>();
@@ -302,8 +305,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	}
 
 	[Broadcast]
-	public void UnWeld()
+	public void Unweld()
 	{
+		if ( IsProxy )
+			return;
+
 		foreach ( var weld in Welds )
 		{
 			weld?.Destroy();
@@ -316,6 +322,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Hinge( GameObject to, Vector3 position, Vector3 normal )
 	{
+		if ( IsProxy )
+			return;
+
 		if ( !to.IsValid() ) return;
 
 		PropHelper propHelper = to.Components.Get<PropHelper>();

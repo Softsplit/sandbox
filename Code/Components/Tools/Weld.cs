@@ -35,7 +35,7 @@ public class Weld : BaseTool
 
 		if ( Input.Pressed( "attack2" ) && trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) )
 		{
-			propHelper.UnWeld();
+			propHelper.Unweld();
 
 			welded = null;
 			return true;
