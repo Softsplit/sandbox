@@ -13,6 +13,10 @@ public class Weld : BaseTool
 			if ( welded == null )
 			{
 				welded = trace.GameObject;
+
+				Parent.ViewModel.Renderer.Set( "b_attack", true );
+				BroadcastAttack();
+
 				return true;
 			}
 
@@ -20,6 +24,9 @@ public class Weld : BaseTool
 				return false;
 
 			propHelper.Weld( welded );
+
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
 
 			welded = null;
 			return true;
@@ -37,10 +44,19 @@ public class Weld : BaseTool
 		{
 			propHelper.UnWeld();
 
+			Parent.ViewModel.Renderer.Set( "b_attack", true );
+			BroadcastAttack();
+
 			welded = null;
 			return true;
 		}
 
 		return false;
+	}
+
+	[Broadcast]
+	private void BroadcastAttack()
+	{
+		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 }
