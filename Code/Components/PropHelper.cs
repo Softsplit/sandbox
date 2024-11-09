@@ -316,6 +316,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Hinge( GameObject to, Vector3 position, Vector3 normal )
 	{
+		if ( !to.IsValid() ) return;
+
 		PropHelper propHelper = to.Components.Get<PropHelper>();
 
 		var go = new GameObject

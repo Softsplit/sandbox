@@ -6,7 +6,7 @@ public class Wheel : BaseTool
 
 	protected override void OnUpdate()
 	{
-		if ( timeSinceDisabled < Time.Delta * 5f )
+		if ( timeSinceDisabled < Time.Delta * 5f || !Parent.IsValid() )
 			return;
 
 		var trace = Parent.BasicTraceTool();
@@ -32,7 +32,7 @@ public class Wheel : BaseTool
 
 	public override bool Primary( SceneTraceResult trace )
 	{
-		if ( !trace.Hit )
+		if ( !trace.Hit || !trace.GameObject.IsValid() )
 			return false;
 
 		if ( Input.Pressed( "attack1" ) )
