@@ -40,7 +40,7 @@ public static partial class SandboxBaseExtensions
 					go.SetParent( bone );
 				}
 
-				var randomDecal = decal.Decals[Random.Shared.Next( decal.Decals.Count )];
+				var randomDecal = Game.Random.FromList( decal.Decals );
 
 				var decalRenderer = go.AddComponent<DecalRenderer>();
 				decalRenderer.Material = randomDecal.Material;

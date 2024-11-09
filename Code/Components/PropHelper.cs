@@ -13,7 +13,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	[Property, Sync] public float Health { get; set; } = 1f;
 	[Property, Sync] public Vector3 Velocity { get; set; }
-	[Property, Sync] public bool Invincible { get; set; }
 
 	[RequireComponent, Sync] public Prop Prop { get; set; }
 
@@ -51,7 +50,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		Health -= amount;
 
-		if ( Health <= 0f && !Invincible )
+		if ( Health <= 0f )
 			Kill();
 	}
 
@@ -159,25 +158,62 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		return body;
 	}
 
+	private ModelPropData GetModelPropData()
+	{
+		if ( Prop.Model.IsValid() && !Prop.Model.IsError && Prop.Model.TryGetData( out ModelPropData propData ) )
+		{
+			return propData;
+		}
+
+		ModelPropData defaultData = new()
+		{
+			Health = -1,
+		};
+
+		return defaultData;
+	}
+
 	void ICollisionListener.OnCollisionStart( Collision collision )
 	{
 		if ( IsProxy )
 			return;
 
-		var impactVelocity = collision.Contact.Speed;
+		var propData = GetModelPropData();
+		if ( propData == null ) return;
 
-		float magnitude = impactVelocity.Length >= 1000f ? impactVelocity.Length : 0f;
-		float damage = magnitude * magnitude * 8f;
+		var minImpactSpeed = 500;
+		if ( minImpactSpeed <= 0.0f ) minImpactSpeed = 500;
 
-		Damage( damage );
+		var impactDmg = Rigidbody.IsValid() ? Rigidbody.Mass / 10 : ModelPhysics.PhysicsGroup.Mass / 10;
+		if ( impactDmg <= 0.0f ) impactDmg = 10;
 
-		if ( collision.Other.GameObject.Components.TryGet<PropHelper>( out var prop ) )
+		float speed = collision.Contact.Speed.Length;
+
+		if ( speed > minImpactSpeed )
 		{
-			prop.Damage( damage );
-		}
-		else if ( collision.Other.GameObject.Components.TryGet<Player>( out var player ) )
-		{
-			player.TakeDamage( damage );
+			// I take damage from high speed impacts
+			if ( Health > 0 )
+			{
+				var damage = speed / minImpactSpeed * impactDmg;
+				Damage( damage );
+			}
+
+			var other = collision.Other;
+
+			// Whatever I hit takes more damage
+			if ( other.GameObject.IsValid() && other.GameObject != GameObject )
+			{
+				var damage = speed / minImpactSpeed * impactDmg * 1.2f;
+
+				if ( other.GameObject.Components.TryGet<PropHelper>( out var propHelper ) )
+				{
+					propHelper.Damage( damage );
+				}
+				else if ( other.GameObject.Components.TryGet<Player>( out var player ) )
+				{
+					player.TakeDamage( damage );
+				}
+			}
 		}
 	}
 
@@ -197,14 +233,14 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var obj in overlaps )
 		{
-			if ( !obj.Tags.Intersect( BaseWeapon.BulletTraceTags ).Any() && obj.Tags.Intersect( BaseWeapon.BulletExcludeTags ).Any() )
+			if ( !obj.Tags.Intersect( new TagSet() { "solid", "player", "npc", "glass" } ).Any() && obj.Tags.Intersect( new TagSet() { "player_hull" } ).Any() )
 			{
 				continue;
 			}
 
 			// If the object isn't in line of sight, fuck it off
 			var tr = Game.ActiveScene.Trace.Ray( position, obj.WorldPosition )
-				.WithoutTags( BaseWeapon.BulletExcludeTags.Append( "solid" ).ToArray() )
+				.WithoutTags( new TagSet() { "solid", "player", "npc", "glass" }.Append( "solid" ).ToArray() )
 				.Run();
 
 			if ( tr.Hit && tr.GameObject.IsValid() )

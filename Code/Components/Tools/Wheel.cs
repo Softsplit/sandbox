@@ -35,7 +35,7 @@ public class Wheel : BaseTool
 		if ( !trace.Hit )
 			return false;
 
-		if ( !trace.GameObject.Components.Get<PropHelper>().IsValid() )
+		if ( trace.Component is MapCollider )
 			return false;
 
 		if ( Input.Pressed( "attack1" ) && !trace.Tags.Contains( "wheel" ) )
@@ -82,7 +82,6 @@ public class Wheel : BaseTool
 		prop.Model = Model.Load( "models/citizen_props/wheel01.vmdl" );
 
 		var propHelper = go.AddComponent<PropHelper>();
-		propHelper.Invincible = true;
 
 		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
 		{
