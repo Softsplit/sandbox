@@ -174,11 +174,11 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		for ( int i = 0; i < weldContexts.Count; i++ )
 		{
-			ModelPhysics modelPhysics = weldContexts[i].Components.Get<ModelPhysics>();
+			ModelPhysics modelPhysics = weldContexts[i]?.Components?.Get<ModelPhysics>();
 			PhysicsBody body;
 
 			if ( modelPhysics.IsValid() ) body = modelPhysics.PhysicsGroup.GetBody( 0 );
-			else body = weldContexts[i].Components.Get<Rigidbody>().PhysicsBody;
+			else body = weldContexts[i]?.Components?.Get<Rigidbody>().PhysicsBody;
 
 			if ( !body.IsValid() ) continue;
 
@@ -235,17 +235,17 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		foreach ( var joint in propHelper.Joints )
 		{
-			GameObject jointObject = joint.Body1.GetGameObject();
+			GameObject jointObject = joint.Body1?.GetGameObject();
 
 			if ( jointObject == propHelper.GameObject )
 			{
-				jointObject = joint.Body2.GetGameObject();
+				jointObject = joint.Body2?.GetGameObject();
 			}
 
 			if ( !jointObject.IsValid() )
 				return;
 
-			PropHelper propHelper1 = jointObject.Components.Get<PropHelper>();
+			PropHelper propHelper1 = jointObject.Components.GetInParentOrSelf<PropHelper>();
 
 			if ( !propHelper1.IsValid() )
 				return;
