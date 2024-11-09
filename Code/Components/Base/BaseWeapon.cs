@@ -46,6 +46,8 @@ public partial class BaseWeapon : Component
 	{
 		TimeSinceDeployed = 0;
 
+		BroadcastEnabled();
+
 		if ( IsProxy ) return;
 
 		var go = ViewModelPrefab?.Clone( new CloneConfig()
@@ -56,6 +58,12 @@ public partial class BaseWeapon : Component
 		} );
 
 		go.NetworkMode = NetworkMode.Never;
+	}
+
+	[Broadcast]
+	private void BroadcastEnabled()
+	{
+		Owner?.Controller?.Renderer?.Set( "b_deploy", true );
 	}
 
 	protected override void OnDisabled()
