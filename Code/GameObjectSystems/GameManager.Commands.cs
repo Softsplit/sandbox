@@ -21,7 +21,7 @@ public sealed partial class GameManager
 	[Broadcast]
 	static async void SpawnModel( string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject )
 	{
-		if ( !Networking.IsHost )
+		if ( !Networking.IsHost || !Networking.IsActive )
 			return;
 
 		//
@@ -41,14 +41,15 @@ public sealed partial class GameManager
 		var go = new GameObject
 		{
 			WorldPosition = endPos + Vector3.Down * model.PhysicsBounds.Mins.z,
-			WorldRotation = modelRotation
+			WorldRotation = modelRotation,
+			Tags = { "solid" }
 		};
 
 		var prop = go.AddComponent<Prop>();
 		prop.Model = model;
 
 		var propHelper = go.AddComponent<PropHelper>();
-		
+
 		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
 		{
 			renderer.CreateBoneObjects = true;
@@ -68,7 +69,6 @@ public sealed partial class GameManager
 			}
 		}
 
-		go.Tags.Add( "solid" );
 		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 	}
