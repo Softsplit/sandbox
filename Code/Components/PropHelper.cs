@@ -79,6 +79,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			if ( !gib.IsValid() )
 				continue;
 
+			gib.Tint = Prop.Tint;
 			gib.AddComponent<PropHelper>();
 			gib.Tags.Add( "debris" );
 			gib.GameObject.NetworkSpawn();
