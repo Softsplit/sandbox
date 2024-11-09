@@ -98,6 +98,9 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		Beaming = Input.Down( "attack1" );
 
+		if ( Input.Pressed( "attack1" ) )
+			BroadcastAttack();
+
 		base.OnControl();
 
 		if ( !GrabbedObject.IsValid() && Beaming && !grabbed && TryStartGrab() )
@@ -121,6 +124,7 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		if ( Input.Pressed( "attack2" ) )
 		{
+			BroadcastAttack();
 			Freeze( GrabbedObject, GrabbedBone );
 
 			GrabbedObject = null;
@@ -310,6 +314,12 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 			!tr.Tags.Contains( "grabbed" );
 
 		return (valid, tr);
+	}
+
+	[Broadcast]
+	private void BroadcastAttack()
+	{
+		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 
 	[Broadcast]

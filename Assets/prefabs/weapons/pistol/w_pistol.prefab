@@ -20,7 +20,7 @@
           "Scale": "1,1,1",
           "Rotation": "0,0,0,1"
         },
-        "Handedness": "Right",
+        "Handedness": "Both",
         "HoldType": "Pistol",
         "ParentBone": "hold_r",
         "PrimaryRate": 15,
@@ -44,6 +44,7 @@
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "236b1467-27ee-4305-b074-657d3b39b1db",
             "BodyGroups": 9493,
+            "CreateAttachments": false,
             "CreateBoneObjects": false,
             "Model": "models/weapons/sbox_pistol_usp/w_usp.vmdl",
             "Morphs": {},

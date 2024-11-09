@@ -20,7 +20,7 @@
           "Scale": "1,1,1",
           "Rotation": "0,0,0,1"
         },
-        "Handedness": "Right",
+        "Handedness": "Both",
         "HoldType": "Pistol",
         "LinearDampingRatio": 1,
         "LinearFrequency": 20,
@@ -50,6 +50,7 @@
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "4601d044-1e9a-4769-b7bf-74b1dff621ab",
             "BodyGroups": 18446744073709551615,
+            "CreateAttachments": false,
             "CreateBoneObjects": false,
             "Model": "weapons/rust_pistol/rust_pistol.vmdl",
             "Morphs": {},
