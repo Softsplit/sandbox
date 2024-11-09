@@ -51,7 +51,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		Health -= amount;
 
-		if ( Health <= 0f && !Invincible)
+		if ( Health <= 0f && !Invincible )
 			Kill();
 	}
 
@@ -283,8 +283,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		var go = new GameObject
 		{
 			WorldPosition = position,
-			WorldRotation = Rotation.LookAt(Rotation.LookAt( normal ).Up)
+			WorldRotation = Rotation.LookAt( Rotation.LookAt( normal ).Up )
 		};
+
 		go.SetParent( to );
 
 		var hingeJoint = go.Components.Create<HingeJoint>();

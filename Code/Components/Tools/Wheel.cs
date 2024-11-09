@@ -1,13 +1,12 @@
-﻿using Sandbox;
-using System.Diagnostics;
-[Library( "tool_wheel", Title = "Wheel", Description = "A wheel that you can turn on and off (but actually can't yet)", Group = "construction" )]
+﻿[Library( "tool_wheel", Description = "A wheel that you can turn on and off (but actually can't yet)", Group = "construction" )]
 public class Wheel : BaseTool
 {
 	GameObject previewObject;
 	RealTimeSince timeSinceDisabled;
+
 	protected override void OnUpdate()
 	{
-		if ( timeSinceDisabled < Time.Delta*5f )
+		if ( timeSinceDisabled < Time.Delta * 5f )
 			return;
 
 		var trace = Parent.BasicTraceTool();
@@ -22,6 +21,7 @@ public class Wheel : BaseTool
 		if ( !previewObject.IsValid() )
 		{
 			previewObject = new GameObject();
+
 			var renderer = previewObject.Components.Create<ModelRenderer>();
 			renderer.Tint = Color.White.WithAlpha( 0.5f );
 			renderer.Model = Model.Load( "models/citizen_props/wheel01.vmdl" );
@@ -35,12 +35,14 @@ public class Wheel : BaseTool
 		if ( !trace.Hit )
 			return false;
 
-		if ( Input.Pressed( "attack1" ) && !trace.Tags.Contains("wheel"))
+		if ( !trace.GameObject.Components.Get<PropHelper>().IsValid() )
+			return false;
+
+		if ( Input.Pressed( "attack1" ) && !trace.Tags.Contains( "wheel" ) )
 		{
 			var wheel = SpawnWheel( trace );
 
 			PropHelper propHelper = wheel.Components.Get<PropHelper>();
-
 			if ( !propHelper.IsValid() )
 				return false;
 
@@ -52,7 +54,7 @@ public class Wheel : BaseTool
 		return false;
 	}
 
-	void PositionWheel(GameObject wheel, SceneTraceResult trace )
+	void PositionWheel( GameObject wheel, SceneTraceResult trace )
 	{
 		wheel.WorldPosition = trace.HitPosition + trace.Normal * 8f;
 		wheel.WorldRotation = Rotation.LookAt( trace.Normal ) * Rotation.From( new Angles( 0, 90, 0 ) );
