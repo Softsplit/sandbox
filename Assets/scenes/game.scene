@@ -60,6 +60,34 @@
           "Radius": 32
         },
         {
+          "__type": "Sandbox.Bloom",
+          "__guid": "7728317b-860c-4174-a208-48f287619a41",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ]
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 0.25,
+          "Threshold": 0.5,
+          "ThresholdWidth": 0
+        },
+        {
           "__type": "Sandbox.Highlight",
           "__guid": "c8938e43-95e4-458d-92c3-409d680715c1"
         }
