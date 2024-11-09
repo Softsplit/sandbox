@@ -86,7 +86,10 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	public override void OnControl()
 	{
-		if ( !Owner.IsValid() || !Owner.Controller.IsValid() )
+		if ( !Owner.IsValid() )
+			return;
+
+		if ( !Owner.Controller.IsValid() )
 			return;
 
 		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
