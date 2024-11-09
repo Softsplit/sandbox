@@ -16,6 +16,9 @@ public class Weld : BaseTool
 				return true;
 			}
 
+			if(trace.GameObject == welded)
+				return false;
+
 			PropHelper propHelper = trace.GameObject.Components.Get<PropHelper>();
 
 			if ( !propHelper.IsValid() )
