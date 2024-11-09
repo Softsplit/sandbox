@@ -15,11 +15,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Property, Sync] public Vector3 Velocity { get; set; }
 	[Property, Sync] public bool Invincible { get; set; } = false;
 
-	[RequireComponent, Sync] public Prop Prop { get; set; }
+	[RequireComponent] public Prop Prop { get; set; }
 
-	[Sync] public ModelPhysics ModelPhysics { get; set; }
-	[Sync] public Rigidbody Rigidbody { get; set; }
-	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
+	public ModelPhysics ModelPhysics { get; set; }
+	public Rigidbody Rigidbody { get; set; }
+	public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
 	public List<FixedJoint> Welds { get; set; } = new();
 	public List<Joint> Joints { get; set; } = new();
