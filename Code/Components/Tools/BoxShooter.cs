@@ -10,7 +10,6 @@ public class BoxShooter : BaseTool
 		if ( Input.Pressed( "attack1" ) )
 		{
 			ShootBox();
-			BroadcastAttack();
 		}
 
 		return false;
@@ -23,7 +22,6 @@ public class BoxShooter : BaseTool
 			timeSinceShoot = 0;
 
 			ShootBox();
-			BroadcastAttack();
 		}
 
 		return false;
@@ -44,13 +42,6 @@ public class BoxShooter : BaseTool
 		}
 
 		return false;
-	}
-
-	[Broadcast]
-	private void BroadcastAttack()
-	{
-		Owner?.Controller?.Renderer?.Set( "b_attack", true );
-		Sound.Play( "sounds/balloon_pop_cute.sound", WorldPosition );
 	}
 
 	void ShootBox()
