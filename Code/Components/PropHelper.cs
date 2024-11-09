@@ -165,7 +165,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		var impactVelocity = collision.Contact.Speed;
 
-		float magnitude = MathF.Max( 0f, impactVelocity.Length - 750f );
+		float magnitude = impactVelocity.Length >= 1000f ? impactVelocity.Length : 0f;
 		float damage = magnitude * magnitude * 8f;
 
 		Damage( damage );
