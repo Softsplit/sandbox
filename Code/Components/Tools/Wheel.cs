@@ -45,6 +45,8 @@ public class Wheel : BaseTool
 				return false;
 
 			propHelper.Hinge( trace.GameObject, trace.EndPosition, trace.Normal );
+
+			return true;
 		}
 
 		return false;
