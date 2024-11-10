@@ -67,9 +67,6 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		if ( !GrabbedObject.IsValid() )
 			return;
 
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
-			return;
-
 		if ( !HeldBody.IsValid() )
 			return;
 
@@ -167,9 +164,6 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		}
 
 		if ( !rootEnt.IsValid() )
-			return;
-
-		if ( rootEnt.IsProxy )
 			return;
 
 		var weldContexts = GetAllConnectedProps( rootEnt );
@@ -346,9 +340,6 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 	[Broadcast]
 	public void Freeze( GameObject gameObject, int bone )
 	{
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
-			return;
-
 		if ( !gameObject.IsValid() )
 			return;
 
@@ -362,9 +353,6 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 	[Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
-			return;
-
 		if ( !gameObject.IsValid() )
 			return;
 

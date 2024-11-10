@@ -116,16 +116,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void BroadcastAddForce( int bodyIndex, Vector3 force )
 	{
-		if ( IsProxy ) return;
-
 		AddForce( bodyIndex, force );
 	}
 
 	[Broadcast]
 	public void BroadcastAddDamagingForce( Vector3 force, float damage )
 	{
-		if ( IsProxy ) return;
-
 		AddDamagingForce( force, damage );
 	}
 
