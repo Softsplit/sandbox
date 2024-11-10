@@ -86,6 +86,8 @@ public partial class PhysGun : BaseWeapon
 
 	public override void OnControl()
 	{
+		base.OnControl();
+
 		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
 		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
@@ -96,8 +98,6 @@ public partial class PhysGun : BaseWeapon
 
 		if ( Input.Pressed( "attack1" ) )
 			BroadcastAttack();
-
-		base.OnControl();
 
 		if ( !GrabbedObject.IsValid() && Beaming && !grabbed && TryStartGrab() )
 			grabbed = true;
