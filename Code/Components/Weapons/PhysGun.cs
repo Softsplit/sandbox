@@ -64,6 +64,12 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 	{
 		base.OnUpdate();
 
+		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
+		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
+
+		if ( !Owner.Controller.UseInputControls )
+			Owner.Controller.WishVelocity = 0;
+
 		if ( !GrabbedObject.IsValid() )
 			return;
 
@@ -84,12 +90,6 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 	public override void OnControl()
 	{
 		base.OnControl();
-
-		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
-		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
-
-		if ( !Owner.Controller.UseInputControls )
-			Owner.Controller.WishVelocity = 0;
 
 		Beaming = Input.Down( "attack1" );
 
@@ -126,10 +126,8 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 
 		MoveTargetDistance( Input.MouseWheel.y * TargetDistanceSpeed );
 
-		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
-
 		if ( Input.Down( "use" ) )
-			DoRotate( eyeRot, Input.MouseDelta * RotateSpeed );
+			DoRotate( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ), Input.MouseDelta * RotateSpeed );
 
 		HoldPos = Owner.AimRay.Position - heldPos * HeldBody.Rotation + Owner.AimRay.Forward * holdDistance;
 		HoldRot = Owner.Controller.EyeAngles * heldRot;
