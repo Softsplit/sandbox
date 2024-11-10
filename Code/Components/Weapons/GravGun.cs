@@ -255,11 +255,15 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 		timeSinceImpulse = 0;
 
-		PhysicsBody body;
+		PhysicsBody body = null;
 
 		if ( bodyIndex > -1 )
 		{
-			body = gameObject.Components.Get<ModelPhysics>()?.PhysicsGroup?.Bodies.ElementAt( bodyIndex );
+			var modelPhysics = gameObject.Components.Get<ModelPhysics>();
+			if ( modelPhysics.IsValid() && modelPhysics.PhysicsGroup.IsValid() && bodyIndex < modelPhysics.PhysicsGroup.Bodies.Count() )
+			{
+				body = modelPhysics.PhysicsGroup.Bodies.ElementAt( bodyIndex );
+			}
 		}
 		else
 		{
