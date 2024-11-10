@@ -141,10 +141,6 @@
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
-
-		if ( IsProxy )
-			return;
-
 		KillEffects();
 	}
 
