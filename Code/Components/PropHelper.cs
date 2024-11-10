@@ -41,9 +41,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
-		if ( Networking.IsClient )
-			return;
-
 		Health -= amount;
 
 		if ( Health <= 0f && !Invincible )
@@ -215,8 +212,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	void ICollisionListener.OnCollisionStart( Collision collision )
 	{
-		if ( IsProxy )
-			return;
+		if ( IsProxy ) return;
 
 		var propData = GetModelPropData();
 		if ( propData == null ) return;
