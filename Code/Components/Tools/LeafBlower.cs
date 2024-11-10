@@ -7,10 +7,6 @@ public partial class LeafBlowerTool : BaseTool
 
 	public override bool Primary( SceneTraceResult trace )
 	{
-		bool push = Input.Down( "attack1" );
-		if ( !push && !Input.Down( "attack2" ) )
-			return false;
-
 		if ( !trace.Hit )
 			return false;
 
@@ -24,17 +20,45 @@ public partial class LeafBlowerTool : BaseTool
 		if ( !body.IsValid() )
 			return false;
 
-		var direction = trace.EndPosition - trace.StartPosition;
-		var distance = direction.Length;
-		var ratio = (1.0f - (distance / MaxDistance)).Clamp( 0, 1 ) * (push ? 1.0f : -1.0f);
-		var force = direction * (Force * ratio);
+		var ratio = (1.0f - (trace.Direction / MaxDistance)).Clamp( 0, 1 ) * 1.0f;
+		var force = trace.Direction * (Force * ratio);
 
 		if ( Massless )
 		{
 			force *= body.Mass;
 		}
 
-		body.ApplyForceAt( trace.EndPosition, force );
+		if ( trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) )
+			propHelper.BroadcastAddForce( body.GroupIndex, force );
+
+		return false;
+	}
+
+	public override bool Secondary( SceneTraceResult trace )
+	{
+		if ( !trace.Hit )
+			return false;
+
+		if ( !trace.GameObject.IsValid() )
+			return false;
+
+		if ( trace.Component is MapCollider )
+			return false;
+
+		var body = trace.Body;
+		if ( !body.IsValid() )
+			return false;
+
+		var ratio = (1.0f - (trace.Direction / MaxDistance)).Clamp( 0, 1 ) * -1.0f;
+		var force = trace.Direction * (Force * ratio);
+
+		if ( Massless )
+		{
+			force *= body.Mass;
+		}
+
+		if ( trace.GameObject.Components.TryGet<PropHelper>( out var propHelper ) )
+			propHelper.BroadcastAddForce( body.GroupIndex, force );
 
 		return false;
 	}

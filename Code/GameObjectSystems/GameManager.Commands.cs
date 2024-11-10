@@ -21,7 +21,7 @@ public sealed partial class GameManager
 	[Broadcast]
 	static async void SpawnModel( string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject )
 	{
-		if ( !Networking.IsHost || !Application.IsHeadless )
+		if ( Networking.IsClient )
 			return;
 
 		//

@@ -12,14 +12,15 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	}
 
 	[Property, Sync] public float Health { get; set; } = 1f;
-	[Property, Sync] public Vector3 Velocity { get; set; }
+	[Property, Sync] public Vector3 Velocity { get; set; } = 0f;
 	[Property, Sync] public bool Invincible { get; set; } = false;
 
 	[RequireComponent] public Prop Prop { get; set; }
 
+	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
+
 	public ModelPhysics ModelPhysics { get; set; }
 	public Rigidbody Rigidbody { get; set; }
-	public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
 	public List<FixedJoint> Welds { get; set; } = new();
 	public List<Joint> Joints { get; set; } = new();
@@ -40,9 +41,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
-		if ( IsProxy )
-			return;
-
 		if ( !Prop.IsValid() )
 			return;
 
@@ -94,11 +92,64 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		GameObject.DestroyImmediate();
 	}
 
+	public void AddForce( int bodyIndex, Vector3 force )
+	{
+		if ( IsProxy ) return;
+
+		var body = ModelPhysics?.PhysicsGroup?.GetBody( bodyIndex );
+		if ( body.IsValid() )
+		{
+			body.ApplyForce( force );
+		}
+		else if ( bodyIndex == 0 && Rigidbody.IsValid() )
+		{
+			Rigidbody.Velocity += force / Rigidbody.PhysicsBody.Mass;
+		}
+	}
+
+	public async void AddDamagingForce( Vector3 force, float damage )
+	{
+		if ( IsProxy ) return;
+
+		if ( ModelPhysics.IsValid() )
+		{
+			foreach ( var body in ModelPhysics.PhysicsGroup.Bodies )
+			{
+				AddForce( body.GroupIndex, force );
+			}
+		}
+		else
+		{
+			AddForce( 0, force );
+		}
+
+		await GameTask.DelaySeconds( 1f / Scene.FixedUpdateFrequency + 0.05f );
+
+		Damage( damage );
+	}
+
+	[Broadcast]
+	public void BroadcastAddForce( int bodyIndex, Vector3 force )
+	{
+		if ( IsProxy ) return;
+
+		AddForce( bodyIndex, force );
+	}
+
+	[Broadcast]
+	public void BroadcastAddDamagingForce( Vector3 force, float damage )
+	{
+		if ( IsProxy ) return;
+
+		AddDamagingForce( force, damage );
+	}
+
 	protected override void OnFixedUpdate()
 	{
 		if ( Prop.IsValid() )
 		{
 			Velocity = (Prop.WorldPosition - lastPosition) / Time.Delta;
+
 			lastPosition = Prop.WorldPosition;
 		}
 

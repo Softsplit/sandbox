@@ -54,7 +54,7 @@ public class BoxShooter : BaseTool
 		var prop = go.AddComponent<Prop>();
 		prop.Model = Model.Load( modelToShoot );
 
-		prop.AddComponent<PropHelper>();
+		go.AddComponent<PropHelper>();
 
 		if ( prop.Components.TryGet<Rigidbody>( out var rigidbody ) )
 		{

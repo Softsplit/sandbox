@@ -81,16 +81,7 @@ partial class Flashlight : BaseWeapon
 
 			if ( tr.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 			{
-				prop.Damage( 25 );
-
-				if ( prop.Rigidbody.IsValid() )
-				{
-					BroadcastApplyImpulseAt( prop.Rigidbody, tr.EndPosition, forward * 80 * 100 / tr.Body.Mass );
-				}
-				else if ( prop.ModelPhysics.IsValid() )
-				{
-					BroadcastApplyImpulseAt( prop.ModelPhysics, tr.EndPosition, forward * 80 * 100 );
-				}
+				prop.BroadcastAddDamagingForce( forward * 80 * 100, 25 );
 			}
 			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
 			{
@@ -99,21 +90,6 @@ partial class Flashlight : BaseWeapon
 		}
 
 		return hit;
-	}
-
-	[Broadcast]
-	private void BroadcastApplyImpulseAt( Component body, Vector3 position, Vector3 force )
-	{
-		if ( !Networking.IsHost || !Application.IsHeadless ) return;
-
-		if ( body is Rigidbody rigidbody )
-		{
-			rigidbody.ApplyImpulseAt( position, force );
-		}
-		else if ( body is ModelPhysics modelPhysics )
-		{
-			modelPhysics.PhysicsGroup.ApplyImpulse( force / modelPhysics.PhysicsGroup.Mass, true );
-		}
 	}
 
 	private void OnMeleeMiss()
