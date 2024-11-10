@@ -227,7 +227,7 @@
 
 		State = State == DoorState.Opening ? DoorState.Open : DoorState.Closed;
 
-		if ( Networking.IsHost )
+		if ( Networking.IsHost || Application.IsHeadless )
 		{
 			if ( State == DoorState.Open && OpenFinishedSound is not null )
 				PlaySound( OpenFinishedSound );

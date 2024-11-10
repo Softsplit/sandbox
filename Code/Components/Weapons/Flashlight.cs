@@ -104,7 +104,7 @@ partial class Flashlight : BaseWeapon
 	[Broadcast]
 	private void BroadcastApplyImpulseAt( Component body, Vector3 position, Vector3 force )
 	{
-		if ( !Networking.IsHost ) return;
+		if ( !Networking.IsHost || !Application.IsHeadless ) return;
 
 		if ( body is Rigidbody rigidbody )
 		{
