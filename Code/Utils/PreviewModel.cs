@@ -25,7 +25,7 @@
 			renderer.Tint = Color.White.WithAlpha( 0.5f );
 			renderer.Model = Model.Load( ModelPath );
 
-			previewObject.NetworkSpawn( null );
+			previewObject.NetworkSpawn();
 		}
 
 		previewObject.WorldPosition = trace.HitPosition + PositionOffset + trace.Normal * NormalOffset;

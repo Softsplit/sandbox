@@ -32,8 +32,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		Rigidbody ??= GetComponent<Rigidbody>();
 
-		Health = Prop.Health;
-		Invincible = Prop?.Health <= 0f;
+		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
@@ -63,12 +62,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			if ( !gib.IsValid() )
 				continue;
 
-			gib.Tags.Add( "debris" );
 			gib.Tint = Prop.Tint;
+			gib.Tags.Add( "debris" );
 
 			gib.AddComponent<PropHelper>();
 
-			gib.GameObject.NetworkSpawn( null );
+			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
 

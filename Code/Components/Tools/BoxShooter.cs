@@ -65,8 +65,7 @@ public class BoxShooter : BaseTool
 			modelPhysics.PhysicsGroup.Velocity = Owner.EyeTransform.Forward * 1000;
 		}
 
-		go.Tags.Add( "solid" );
-		go.NetworkSpawn( null );
+		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 
 		Sandbox.Services.Stats.Increment( "box.shoot", 1 );

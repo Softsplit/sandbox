@@ -75,7 +75,10 @@ public class Wheel : BaseTool
 
 	GameObject SpawnWheel( SceneTraceResult trace )
 	{
-		var go = new GameObject();
+		var go = new GameObject()
+		{
+			Tags = { "solid", "wheel" }
+		};
 
 		PositionWheel( go, trace );
 
@@ -103,8 +106,7 @@ public class Wheel : BaseTool
 			}
 		}
 
-		go.Tags.Add( "solid", "wheel" );
-		go.NetworkSpawn( null );
+		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 
 		return go;

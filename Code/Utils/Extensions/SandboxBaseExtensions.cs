@@ -103,6 +103,7 @@ public static partial class SandboxBaseExtensions
 			};
 
 			go.NetworkSpawn( null );
+			go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 			go.DestroyAsync( 5f );
 
 			return legacyParticleSystem;
