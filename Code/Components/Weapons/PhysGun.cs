@@ -1,4 +1,4 @@
-public partial class PhysGun : BaseWeapon, IPlayerEvent
+public partial class PhysGun : BaseWeapon
 {
 	[Property] public float MinTargetDistance { get; set; } = 0.0f;
 	[Property] public float MaxTargetDistance { get; set; } = 10000.0f;

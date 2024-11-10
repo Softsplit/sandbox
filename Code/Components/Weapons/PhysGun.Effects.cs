@@ -46,7 +46,7 @@
 
 	protected virtual void UpdateEffects()
 	{
-		if ( Owner == null || !Beaming || !Owner.GameObject.IsDescendant( GameObject ) )
+		if ( !Owner.IsValid() || !Beaming || !Owner.GameObject.IsDescendant( GameObject ) )
 		{
 			KillEffects();
 			return;
@@ -138,8 +138,13 @@
 		return beam;
 	}
 
-	void IPlayerEvent.OnDied()
+	protected override void OnDestroy()
 	{
+		base.OnDestroy();
+
+		if ( IsProxy )
+			return;
+
 		KillEffects();
 	}
 

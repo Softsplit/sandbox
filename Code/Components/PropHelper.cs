@@ -40,7 +40,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
-		if ( !Networking.IsHost || !Networking.IsActive )
+		if ( IsProxy )
 			return;
 
 		if ( !Prop.IsValid() )
