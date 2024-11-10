@@ -104,7 +104,7 @@ public class Wheel : BaseTool
 		}
 
 		go.Tags.Add( "solid", "wheel" );
-		go.NetworkSpawn();
+		go.NetworkSpawn( null );
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 
 		return go;

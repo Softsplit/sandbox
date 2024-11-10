@@ -32,7 +32,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		Rigidbody ??= GetComponent<Rigidbody>();
 
-		Health = Prop?.Health ?? 0f;
+		Health = Prop.Health;
+		Invincible = Prop?.Health <= 0f;
 		Velocity = 0f;
 
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
@@ -41,10 +42,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
-		if ( !Prop.IsValid() )
-			return;
-
-		if ( (Prop?.Health ?? 0f) <= 0f )
+		if ( Networking.IsClient )
 			return;
 
 		Health -= amount;
@@ -53,34 +51,24 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			Kill();
 	}
 
-	bool dead;
-
 	public void Kill()
 	{
-		if ( IsProxy )
-			return;
-
-		if ( dead )
-			return;
-
-		dead = true;
-
 		if ( !Prop.IsValid() )
 			return;
 
 		var gibs = Prop?.CreateGibs();
-		if ( gibs == null )
-			return;
 
 		foreach ( var gib in gibs )
 		{
 			if ( !gib.IsValid() )
 				continue;
 
-			gib.Tint = Prop.Tint;
-			gib.AddComponent<PropHelper>();
 			gib.Tags.Add( "debris" );
-			gib.GameObject.NetworkSpawn();
+			gib.Tint = Prop.Tint;
+
+			gib.AddComponent<PropHelper>();
+
+			gib.GameObject.NetworkSpawn( null );
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
 
@@ -343,7 +331,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		Sound.Play( path, position );
 	}
-
 
 	[Broadcast]
 	public void Weld( GameObject to )

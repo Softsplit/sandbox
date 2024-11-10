@@ -66,7 +66,7 @@ public class BoxShooter : BaseTool
 		}
 
 		go.Tags.Add( "solid" );
-		go.NetworkSpawn();
+		go.NetworkSpawn( null );
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 
 		Sandbox.Services.Stats.Increment( "box.shoot", 1 );

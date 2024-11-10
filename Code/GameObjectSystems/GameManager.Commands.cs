@@ -69,7 +69,7 @@ public sealed partial class GameManager
 			}
 		}
 
-		go.NetworkSpawn();
+		go.NetworkSpawn( null );
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 	}
 
