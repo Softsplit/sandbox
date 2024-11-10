@@ -33,6 +33,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Rigidbody ??= GetComponent<Rigidbody>();
 
 		Health = Prop?.Health ?? 0f;
+		Invincible = Health <= 0;
 		Velocity = 0f;
 
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
