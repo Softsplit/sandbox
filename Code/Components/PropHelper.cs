@@ -274,10 +274,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	{
 		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 
-		var soundEvent = ResourceLibrary.Get<SoundEvent>( sound );
-
-		if ( sound != null )
-			BroadcastExplosion( soundEvent.IsValid() ? sound : "rust_pumpshotgun.shootdouble", position );
+		BroadcastExplosion( sound, position );
 
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
 
@@ -307,29 +304,43 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			var dmg = damage * distanceMul;
 
+			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
+
 			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().ToArray() )
 			{
 				if ( !propHelper.IsValid() ) continue;
 
-				propHelper.Damage( dmg );
+				propHelper.BroadcastAddDamagingForce( force, dmg );
 			}
 
-			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
-
-			if ( obj.GetComponent<Player>().IsValid() )
-				obj.GetComponent<Player>()?.TakeDamage( dmg );
-
-			if ( obj.GetComponent<Rigidbody>().IsValid() )
-				obj.GetComponent<Rigidbody>()?.ApplyImpulse( force );
-
-			if ( obj.GetComponent<ModelPhysics>().IsValid() )
-				obj.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
+			if ( obj.Components.TryGet<Player>( out var player ) )
+			{
+				player.TakeDamage( dmg );
+			}
 		}
 	}
 
 	[Broadcast]
 	public void BroadcastExplosion( string path, Vector3 position )
 	{
+		if ( string.IsNullOrEmpty( path ) )
+		{
+			Sound.Play( "rust_pumpshotgun.shootdouble", position );
+			return;
+		}
+
+		if ( path.StartsWith( "sound/" ) || path.StartsWith( "sounds/" ) )
+		{
+			var soundEvent = ResourceLibrary.Get<SoundEvent>( path );
+			if ( !soundEvent.IsValid() )
+			{
+				Sound.Play( "rust_pumpshotgun.shootdouble", position );
+				return;
+			}
+
+			Sound.Play( soundEvent, position );
+		}
+
 		Sound.Play( path, position );
 	}
 
