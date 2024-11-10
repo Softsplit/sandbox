@@ -50,7 +50,7 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 	[Broadcast( NetPermission.OwnerOnly )]
 	void CreateRagdollAndGhost()
 	{
-		if ( !Networking.IsHost ) return;
+		if ( !Networking.IsHost || !Networking.IsActive ) return;
 
 		var go = new GameObject( false, "Observer" );
 		go.Components.Create<PlayerObserver>();
