@@ -2,7 +2,7 @@ public sealed class MapPlayerSpawner : Component
 {
 	protected override void OnAwake()
 	{
-		if ( Networking.IsClient )
+		if ( !Networking.IsHost )
 			return;
 
 		// NOTE: This is mostly a workaround because I can't be bothered
