@@ -53,7 +53,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		if ( !Prop.IsValid() )
 			return;
 
-		var gibs = Prop?.CreateGibs();
+		var gibs = Prop?.CreateGibs() ?? null;
+		if ( gibs == null )
+			return;
 
 		foreach ( var gib in gibs )
 		{
