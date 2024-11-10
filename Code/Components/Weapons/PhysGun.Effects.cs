@@ -141,6 +141,15 @@
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
+
+		if ( IsProxy )
+			return;
+
+		KillEffects();
+	}
+
+	void INetworkListener.OnDisconnected( Connection channel )
+	{
 		KillEffects();
 	}
 
