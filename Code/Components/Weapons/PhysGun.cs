@@ -64,11 +64,14 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 	{
 		base.OnUpdate();
 
-		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
-		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
+		if ( Owner.IsValid() && Owner.Controller.IsValid() )
+		{
+			Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
+			Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
-		if ( !Owner.Controller.UseInputControls )
-			Owner.Controller.WishVelocity = 0;
+			if ( !Owner.Controller.UseInputControls )
+				Owner.Controller.WishVelocity = 0;
+		}
 
 		if ( !GrabbedObject.IsValid() )
 			return;
