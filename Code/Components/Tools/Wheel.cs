@@ -38,7 +38,7 @@ public class Wheel : BaseTool
 
 		if ( Input.Pressed( "attack1" ) )
 		{
-			if ( trace.Tags.Contains( "wheel" ) )
+			if ( trace.Tags.Contains( "wheel" ) || trace.Tags.Contains( "player" ) )
 				return true;
 
 			var wheel = SpawnWheel( trace );
