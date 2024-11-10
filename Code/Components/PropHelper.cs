@@ -323,6 +323,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			}
 
 			Sound.Play( soundEvent, position );
+			return;
 		}
 
 		Sound.Play( path, position );
