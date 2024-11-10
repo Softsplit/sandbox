@@ -8,12 +8,17 @@
 	[Broadcast]
 	protected virtual void KillEffects()
 	{
-		// beamLight?.Destroy();
-		beam?.GameObject.Destroy();
-		beam = null;
-		// beamLight = null;
-		endNoHit?.GameObject?.Destroy();
-		endNoHit = null;
+		if ( beam.IsValid() )
+		{
+			beam?.GameObject.Destroy();
+			beam = null;
+		}
+
+		if ( endNoHit.IsValid() )
+		{
+			endNoHit?.GameObject?.Destroy();
+			endNoHit = null;
+		}
 
 		DisableHighlights( lastGrabbedObject );
 
@@ -31,13 +36,13 @@
 
 				if ( child.Components.TryGet<HighlightOutline>( out var childglow ) )
 				{
-					childglow.Enabled = false;
+					childglow.Destroy();
 				}
 			}
 
 			if ( gameObject.Components.TryGet<HighlightOutline>( out var glow ) )
 			{
-				glow.Enabled = false;
+				glow.Destroy();
 			}
 		}
 	}
