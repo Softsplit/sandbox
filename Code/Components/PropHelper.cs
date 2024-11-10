@@ -32,8 +32,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		Rigidbody ??= GetComponent<Rigidbody>();
 
-		Health = Prop?.Health ?? 0f;
 		Invincible = Health <= 0;
+		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
