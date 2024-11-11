@@ -8,6 +8,13 @@
 	[Broadcast]
 	protected virtual void KillEffects()
 	{
+		if ( !Owner.IsValid() )
+			goto IgnoreIsProxy;
+
+		if ( IsProxy )
+			return;
+
+		IgnoreIsProxy:
 		if ( beam.IsValid() )
 		{
 			beam?.GameObject.Destroy();
@@ -51,7 +58,7 @@
 
 	protected virtual void UpdateEffects()
 	{
-		if ( !Owner.IsValid() || !Beaming || !Owner.GameObject.IsDescendant( GameObject ) )
+		if ( !Owner.IsValid() || !Beaming )
 		{
 			KillEffects();
 			return;

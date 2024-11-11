@@ -41,11 +41,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
-		if ( !Prop.IsValid() )
-			return;
-
-		if ( Health <= 0f )
-			return;
+		if ( !Prop.IsValid() ) return;
+		if ( IsProxy ) return;
+		if ( Health <= 0f ) return;
 
 		Health -= amount;
 
@@ -55,12 +53,11 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	public void Kill()
 	{
-		if ( !Prop.IsValid() )
-			return;
+		if ( IsProxy ) return;
 
-		var gibs = Prop?.CreateGibs() ?? null;
-		if ( gibs == null )
-			return;
+		var gibs = Prop?.CreateGibs();
+		if ( gibs.Count <= 0 )
+			goto IgnoreGibs;
 
 		foreach ( var gib in gibs )
 		{
@@ -76,6 +73,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
 
+		IgnoreGibs:
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
 			Explosion( data.Effect, data.Sound, WorldPosition, data.Radius, data.Damage, data.Force );
