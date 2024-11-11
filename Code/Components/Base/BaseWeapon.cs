@@ -106,7 +106,7 @@ public partial class BaseWeapon : Component
 			//
 			// Reload could have changed our owner
 			//
-			if ( Owner == null )
+			if ( !Owner.IsValid() )
 				return;
 
 			if ( CanPrimaryAttack() )
@@ -118,7 +118,7 @@ public partial class BaseWeapon : Component
 			//
 			// AttackPrimary could have changed our owner
 			//
-			if ( Owner == null )
+			if ( !Owner.IsValid() )
 				return;
 
 			if ( CanSecondaryAttack() )

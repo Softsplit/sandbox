@@ -15,7 +15,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Property, Sync] public Vector3 Velocity { get; set; } = 0f;
 	[Property, Sync] public bool Invincible { get; set; } = false;
 
-	[RequireComponent] public Prop Prop { get; set; }
+	[RequireComponent, Sync] public Prop Prop { get; set; }
 
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
@@ -32,7 +32,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		Rigidbody ??= GetComponent<Rigidbody>();
 
-		Invincible = Health <= 0;
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
@@ -42,6 +41,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
+		if ( !Prop.IsValid() )
+			return;
+
+		if ( Health <= 0f )
+			return;
+
 		Health -= amount;
 
 		if ( Health <= 0f && !Invincible )

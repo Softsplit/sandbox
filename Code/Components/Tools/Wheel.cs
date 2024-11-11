@@ -86,7 +86,7 @@ public class Wheel : BaseTool
 		prop.Model = Model.Load( "models/citizen_props/wheel01.vmdl" );
 
 		var propHelper = go.AddComponent<PropHelper>();
-		propHelper.Health = 0f;
+		propHelper.Invincible = true;
 
 		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
 		{

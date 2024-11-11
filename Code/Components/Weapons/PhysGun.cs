@@ -92,8 +92,6 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 
 	public override void OnControl()
 	{
-		base.OnControl();
-
 		Beaming = Input.Down( "attack1" );
 
 		if ( Input.Pressed( "attack1" ) )
@@ -171,11 +169,10 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 
 		for ( int i = 0; i < weldContexts.Count; i++ )
 		{
-			ModelPhysics modelPhysics = weldContexts[i]?.Components?.Get<ModelPhysics>();
-			PhysicsBody body;
+			ModelPhysics modelPhysics = weldContexts[i]?.GetComponent<ModelPhysics>();
+			Rigidbody rigidbody = weldContexts[i]?.GetComponent<Rigidbody>();
 
-			if ( modelPhysics.IsValid() ) body = modelPhysics.PhysicsGroup.GetBody( 0 );
-			else body = weldContexts[i]?.Components?.Get<Rigidbody>().PhysicsBody;
+			var body = modelPhysics.IsValid() ? modelPhysics?.PhysicsGroup?.GetBody( 0 ) : (rigidbody.IsValid() ? weldContexts[i]?.GetComponent<Rigidbody>()?.PhysicsBody : null);
 
 			if ( !body.IsValid() ) continue;
 
