@@ -132,12 +132,14 @@
 		}
 		else
 		{
-			lastBeamPos = tr.EndPosition; Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
+			lastBeamPos = tr.EndPosition;
 
-			beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
+			Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
+
+			if ( beam.IsValid() )
+				beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
 
 			endNoHit ??= Particles.MakeParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
-
 			endNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
 			endNoHit.WorldPosition = lastBeamPos;
 		}
