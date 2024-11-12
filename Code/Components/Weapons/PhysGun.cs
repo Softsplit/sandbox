@@ -1,4 +1,4 @@
-public partial class PhysGun : BaseWeapon, IPlayerEvent
+public partial class PhysGun : BaseWeapon, Component.INetworkListener
 {
 	[Property] public float MinTargetDistance { get; set; } = 0.0f;
 	[Property] public float MaxTargetDistance { get; set; } = 10000.0f;
@@ -64,10 +64,16 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	{
 		base.OnUpdate();
 
-		if ( !GrabbedObject.IsValid() )
-			return;
+		if ( Owner.IsValid() && Owner.Controller.IsValid() )
+		{
+			Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
+			Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
 
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
+			if ( !Owner.Controller.UseInputControls )
+				Owner.Controller.WishVelocity = 0;
+		}
+
+		if ( !GrabbedObject.IsValid() )
 			return;
 
 		if ( !HeldBody.IsValid() )
@@ -86,18 +92,10 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 	public override void OnControl()
 	{
-		Owner.Controller.EnablePressing = !GrabbedObject.IsValid();
-		Owner.Controller.UseInputControls = !Input.Down( "use" ) || !GrabbedObject.IsValid();
-
-		if ( !Owner.Controller.UseInputControls )
-			Owner.Controller.WishVelocity = 0;
-
 		Beaming = Input.Down( "attack1" );
 
 		if ( Input.Pressed( "attack1" ) )
 			BroadcastAttack();
-
-		base.OnControl();
 
 		if ( !GrabbedObject.IsValid() && Beaming && !grabbed && TryStartGrab() )
 			grabbed = true;
@@ -129,10 +127,8 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 
 		MoveTargetDistance( Input.MouseWheel.y * TargetDistanceSpeed );
 
-		var eyeRot = Rotation.From( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ) );
-
 		if ( Input.Down( "use" ) )
-			DoRotate( eyeRot, Input.MouseDelta * RotateSpeed );
+			DoRotate( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ), Input.MouseDelta * RotateSpeed );
 
 		HoldPos = Owner.AimRay.Position - heldPos * HeldBody.Rotation + Owner.AimRay.Forward * holdDistance;
 		HoldRot = Owner.Controller.EyeAngles * heldRot;
@@ -169,18 +165,14 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 		if ( !rootEnt.IsValid() )
 			return;
 
-		if ( rootEnt.IsProxy )
-			return;
-
 		var weldContexts = GetAllConnectedProps( rootEnt );
 
 		for ( int i = 0; i < weldContexts.Count; i++ )
 		{
-			ModelPhysics modelPhysics = weldContexts[i]?.Components?.Get<ModelPhysics>();
-			PhysicsBody body;
+			ModelPhysics modelPhysics = weldContexts[i]?.GetComponent<ModelPhysics>();
+			Rigidbody rigidbody = weldContexts[i]?.GetComponent<Rigidbody>();
 
-			if ( modelPhysics.IsValid() ) body = modelPhysics.PhysicsGroup.GetBody( 0 );
-			else body = weldContexts[i]?.Components?.Get<Rigidbody>().PhysicsBody;
+			var body = modelPhysics.IsValid() ? modelPhysics?.PhysicsGroup?.GetBody( 0 ) : (rigidbody.IsValid() ? weldContexts[i]?.GetComponent<Rigidbody>()?.PhysicsBody : null);
 
 			if ( !body.IsValid() ) continue;
 
@@ -346,9 +338,6 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void Freeze( GameObject gameObject, int bone )
 	{
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
-			return;
-
 		if ( !gameObject.IsValid() )
 			return;
 
@@ -362,15 +351,11 @@ public partial class PhysGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
-			return;
-
 		if ( !gameObject.IsValid() )
 			return;
 
 		PhysicsBody body = GetBody( gameObject, bone );
 		if ( body.IsValid() )
 			body.BodyType = PhysicsBodyType.Dynamic;
-
 	}
 }

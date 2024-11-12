@@ -12,14 +12,15 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	}
 
 	[Property, Sync] public float Health { get; set; } = 1f;
-	[Property, Sync] public Vector3 Velocity { get; set; }
+	[Property, Sync] public Vector3 Velocity { get; set; } = 0f;
 	[Property, Sync] public bool Invincible { get; set; } = false;
 
-	[RequireComponent] public Prop Prop { get; set; }
+	[RequireComponent, Sync] public Prop Prop { get; set; }
+
+	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
 	public ModelPhysics ModelPhysics { get; set; }
 	public Rigidbody Rigidbody { get; set; }
-	public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
 
 	public List<FixedJoint> Welds { get; set; } = new();
 	public List<Joint> Joints { get; set; } = new();
@@ -40,14 +41,9 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Broadcast]
 	public void Damage( float amount )
 	{
-		if ( !Prop.IsValid() )
-			return;
-
-		if ( (Prop?.Health ?? 0f) <= 0f )
-			return;
-
-		if ( IsProxy )
-			return;
+		if ( !Prop.IsValid() ) return;
+		if ( IsProxy ) return;
+		if ( Health <= 0f ) return;
 
 		Health -= amount;
 
@@ -55,24 +51,13 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			Kill();
 	}
 
-	bool dead;
-
 	public void Kill()
 	{
-		if ( IsProxy )
-			return;
-
-		if ( dead )
-			return;
-
-		dead = true;
-
-		if ( !Prop.IsValid() )
-			return;
+		if ( IsProxy ) return;
 
 		var gibs = Prop?.CreateGibs();
-		if ( gibs == null )
-			return;
+		if ( gibs.Count <= 0 )
+			goto IgnoreGibs;
 
 		foreach ( var gib in gibs )
 		{
@@ -80,12 +65,15 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				continue;
 
 			gib.Tint = Prop.Tint;
-			gib.AddComponent<PropHelper>();
 			gib.Tags.Add( "debris" );
+
+			gib.AddComponent<PropHelper>();
+
 			gib.GameObject.NetworkSpawn();
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
 
+		IgnoreGibs:
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
 			Explosion( data.Effect, data.Sound, WorldPosition, data.Radius, data.Damage, data.Force );
@@ -94,11 +82,60 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		GameObject.DestroyImmediate();
 	}
 
+	public void AddForce( int bodyIndex, Vector3 force )
+	{
+		if ( IsProxy ) return;
+
+		var body = ModelPhysics?.PhysicsGroup?.GetBody( bodyIndex );
+		if ( body.IsValid() )
+		{
+			body.ApplyForce( force );
+		}
+		else if ( bodyIndex == 0 && Rigidbody.IsValid() )
+		{
+			Rigidbody.Velocity += force / Rigidbody.PhysicsBody.Mass;
+		}
+	}
+
+	public async void AddDamagingForce( Vector3 force, float damage )
+	{
+		if ( IsProxy ) return;
+
+		if ( ModelPhysics.IsValid() )
+		{
+			foreach ( var body in ModelPhysics.PhysicsGroup.Bodies )
+			{
+				AddForce( body.GroupIndex, force );
+			}
+		}
+		else
+		{
+			AddForce( 0, force );
+		}
+
+		await GameTask.DelaySeconds( 1f / Scene.FixedUpdateFrequency + 0.05f );
+
+		Damage( damage );
+	}
+
+	[Broadcast]
+	public void BroadcastAddForce( int bodyIndex, Vector3 force )
+	{
+		AddForce( bodyIndex, force );
+	}
+
+	[Broadcast]
+	public void BroadcastAddDamagingForce( Vector3 force, float damage )
+	{
+		AddDamagingForce( force, damage );
+	}
+
 	protected override void OnFixedUpdate()
 	{
 		if ( Prop.IsValid() )
 		{
 			Velocity = (Prop.WorldPosition - lastPosition) / Time.Delta;
+
 			lastPosition = Prop.WorldPosition;
 		}
 
@@ -177,8 +214,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	void ICollisionListener.OnCollisionStart( Collision collision )
 	{
-		if ( IsProxy )
-			return;
+		if ( IsProxy ) return;
 
 		var propData = GetModelPropData();
 		if ( propData == null ) return;
@@ -223,10 +259,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	{
 		await GameTask.Delay( Game.Random.Next( 50, 250 ) );
 
-		var soundEvent = ResourceLibrary.Get<SoundEvent>( sound );
-
-		if ( sound != null )
-			BroadcastExplosion( soundEvent.IsValid() ? sound : "rust_pumpshotgun.shootdouble", position );
+		BroadcastExplosion( sound, position );
 
 		Particles.CreateParticleSystem( particle, new Transform( position, Rotation.Identity ), 10 );
 
@@ -256,32 +289,46 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 			var dmg = damage * distanceMul;
 
+			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
+
 			foreach ( var propHelper in obj.Components.GetAll<PropHelper>().ToArray() )
 			{
 				if ( !propHelper.IsValid() ) continue;
 
-				propHelper.Damage( dmg );
+				propHelper.BroadcastAddDamagingForce( force, dmg );
 			}
 
-			var force = (obj.WorldPosition - position).Normal * distanceMul * forceScale * 10000f;
-
-			if ( obj.GetComponent<Player>().IsValid() )
-				obj.GetComponent<Player>()?.TakeDamage( dmg );
-
-			if ( obj.GetComponent<Rigidbody>().IsValid() )
-				obj.GetComponent<Rigidbody>()?.ApplyImpulse( force );
-
-			if ( obj.GetComponent<ModelPhysics>().IsValid() )
-				obj.GetComponent<ModelPhysics>()?.PhysicsGroup.ApplyImpulse( force );
+			if ( obj.Components.TryGet<Player>( out var player ) )
+			{
+				player.TakeDamage( dmg );
+			}
 		}
 	}
 
 	[Broadcast]
 	public void BroadcastExplosion( string path, Vector3 position )
 	{
+		if ( string.IsNullOrEmpty( path ) )
+		{
+			Sound.Play( "rust_pumpshotgun.shootdouble", position );
+			return;
+		}
+
+		if ( path.StartsWith( "sound/" ) || path.StartsWith( "sounds/" ) )
+		{
+			var soundEvent = ResourceLibrary.Get<SoundEvent>( path );
+			if ( !soundEvent.IsValid() )
+			{
+				Sound.Play( "rust_pumpshotgun.shootdouble", position );
+				return;
+			}
+
+			Sound.Play( soundEvent, position );
+			return;
+		}
+
 		Sound.Play( path, position );
 	}
-
 
 	[Broadcast]
 	public void Weld( GameObject to )
@@ -305,7 +352,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	}
 
 	[Broadcast]
-	public void UnWeld()
+	public void Unweld()
 	{
 		if ( IsProxy )
 			return;

@@ -37,6 +37,8 @@ public partial class ModelSkinTool : BaseTool
 	[Broadcast]
 	private void BroadcastMaterialGroup( Prop prop, string materialGroup )
 	{
+		// TODO: Fix this for other clients
+
 		prop.MaterialGroup = materialGroup;
 	}
 }

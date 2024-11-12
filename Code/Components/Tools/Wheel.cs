@@ -38,10 +38,10 @@ public class Wheel : BaseTool
 
 		if ( Input.Pressed( "attack1" ) )
 		{
-			if ( trace.Tags.Contains( "wheel" ) )
+			if ( trace.Tags.Contains( "wheel" ) || trace.Tags.Contains( "player" ) )
 				return true;
 
-			var wheel = GameManager.SpawnGetModel( "models/citizen_props/wheel01.vmdl", trace.HitPosition + trace.Normal * 8f, Rotation.LookAt( trace.Normal ) * Rotation.From( new Angles( 0, 90, 0 ) ) );
+			var wheel = SpawnWheel( trace );
 
 			PropHelper propHelper = wheel.Components.Get<PropHelper>();
 			if ( !propHelper.IsValid() )
@@ -71,5 +71,44 @@ public class Wheel : BaseTool
 	{
 		timeSinceDisabled = 0;
 		PreviewModel?.Destroy();
+	}
+
+	GameObject SpawnWheel( SceneTraceResult trace )
+	{
+		var go = new GameObject()
+		{
+			Tags = { "solid", "wheel" }
+		};
+
+		PositionWheel( go, trace );
+
+		var prop = go.AddComponent<Prop>();
+		prop.Model = Model.Load( "models/citizen_props/wheel01.vmdl" );
+
+		var propHelper = go.AddComponent<PropHelper>();
+		propHelper.Invincible = true;
+
+		if ( prop.Components.TryGet<SkinnedModelRenderer>( out var renderer ) )
+		{
+			renderer.CreateBoneObjects = true;
+		}
+
+		var rb = propHelper.Rigidbody;
+		if ( rb.IsValid() )
+		{
+			foreach ( var shape in rb.PhysicsBody.Shapes )
+			{
+				if ( !shape.IsMeshShape )
+					continue;
+
+				var newCollider = go.AddComponent<BoxCollider>();
+				newCollider.Scale = prop.Model.PhysicsBounds.Size;
+			}
+		}
+
+		go.NetworkSpawn();
+		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
+
+		return go;
 	}
 }

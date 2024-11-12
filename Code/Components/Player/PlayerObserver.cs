@@ -39,10 +39,10 @@ public sealed class PlayerObserver : Component
 		}
 	}
 
-	[Broadcast( Permission = NetPermission.OwnerOnly )]
+	[Broadcast]
 	public void Respawn()
 	{
-		if ( !Networking.IsHost ) return;
+		if ( IsProxy ) return;
 
 		GameManager.Current.SpawnPlayerForConnection( Network.Owner );
 		GameObject.Destroy();

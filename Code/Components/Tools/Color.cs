@@ -40,6 +40,8 @@ public partial class ColorTool : BaseTool
 	[Broadcast]
 	private void BroadcastColor( PropHelper propHelper, Color color )
 	{
+		// TODO: Fix this for other clients
+
 		propHelper.Prop.Tint = color;
 	}
 }

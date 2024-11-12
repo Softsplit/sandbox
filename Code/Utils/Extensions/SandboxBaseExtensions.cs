@@ -46,7 +46,7 @@ public static partial class SandboxBaseExtensions
 				decalRenderer.Material = randomDecal.Material;
 				decalRenderer.Size = new Vector3( randomDecal.Width.GetValue(), randomDecal.Height.GetValue(), randomDecal.Depth.GetValue() );
 
-				go.NetworkSpawn();
+				go.NetworkSpawn( null );
 				go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 				go.DestroyAsync( 10f );
 			}
@@ -102,7 +102,8 @@ public static partial class SandboxBaseExtensions
 				new ParticleControlPoint { GameObjectValue = go, Value = ParticleControlPoint.ControlPointValueInput.GameObject }
 			};
 
-			go.NetworkSpawn();
+			go.NetworkSpawn( null );
+			go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 			go.DestroyAsync( 5f );
 
 			return legacyParticleSystem;

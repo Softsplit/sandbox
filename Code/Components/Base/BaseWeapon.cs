@@ -106,7 +106,7 @@ public partial class BaseWeapon : Component
 			//
 			// Reload could have changed our owner
 			//
-			if ( Owner == null )
+			if ( !Owner.IsValid() )
 				return;
 
 			if ( CanPrimaryAttack() )
@@ -118,7 +118,7 @@ public partial class BaseWeapon : Component
 			//
 			// AttackPrimary could have changed our owner
 			//
-			if ( Owner == null )
+			if ( !Owner.IsValid() )
 				return;
 
 			if ( CanSecondaryAttack() )
@@ -297,36 +297,12 @@ public partial class BaseWeapon : Component
 
 			if ( tr.GameObject.Components.TryGet<PropHelper>( out var prop ) )
 			{
-				prop.Damage( damage );
-
-				if ( prop.Rigidbody.IsValid() )
-				{
-					BroadcastApplyImpulseAt( prop.Rigidbody, tr.EndPosition, forward * 5000 * force );
-				}
-				else if ( prop.ModelPhysics.IsValid() )
-				{
-					BroadcastApplyImpulseAt( prop.ModelPhysics, tr.EndPosition, forward * 5000 * force );
-				}
+				prop.BroadcastAddDamagingForce( forward * 5000 * force, damage );
 			}
 			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( damage );
 			}
-		}
-	}
-
-	[Broadcast]
-	private void BroadcastApplyImpulseAt( Component body, Vector3 position, Vector3 force )
-	{
-		if ( !Networking.IsHost ) return;
-
-		if ( body is Rigidbody rigidbody )
-		{
-			rigidbody.ApplyImpulseAt( position, force );
-		}
-		else if ( body is ModelPhysics modelPhysics )
-		{
-			modelPhysics.PhysicsGroup.ApplyImpulse( force / modelPhysics.PhysicsGroup.Mass, true );
 		}
 	}
 

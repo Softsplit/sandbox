@@ -54,7 +54,7 @@ public class BoxShooter : BaseTool
 		var prop = go.AddComponent<Prop>();
 		prop.Model = Model.Load( modelToShoot );
 
-		prop.AddComponent<PropHelper>();
+		go.AddComponent<PropHelper>();
 
 		if ( prop.Components.TryGet<Rigidbody>( out var rigidbody ) )
 		{
@@ -65,7 +65,6 @@ public class BoxShooter : BaseTool
 			modelPhysics.PhysicsGroup.Velocity = Owner.EyeTransform.Forward * 1000;
 		}
 
-		go.Tags.Add( "solid" );
 		go.NetworkSpawn();
 		go.Network.SetOrphanedMode( NetworkOrphaned.Host );
 

@@ -68,7 +68,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 
 	void Move()
 	{
-		if ( !GrabbedObject.IsValid() || GrabbedObject.IsProxy )
+		if ( !GrabbedObject.IsValid() )
 			return;
 
 		if ( timeSinceImpulse < Time.Delta * 5 )
@@ -203,20 +203,24 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyImpulseAt( GameObject gameObject, int bodyIndex, Vector3 position, Vector3 velocity )
 	{
-		if ( !gameObject.IsValid() || gameObject.IsProxy )
+		if ( !gameObject.IsValid() )
 			return;
 
 		timeSinceImpulse = 0;
 
-		PhysicsBody body;
-		if ( bodyIndex > -1 )
+		PhysicsBody body = null;
+
+		if ( bodyIndex > -1 && gameObject.Components.TryGet<ModelPhysics>( out var modelPhysics ) )
 		{
-			body = gameObject.Components.Get<ModelPhysics>().PhysicsGroup.Bodies.ElementAt( bodyIndex );
+			body = modelPhysics.PhysicsGroup.Bodies.ElementAt( bodyIndex );
 		}
-		else
+		else if ( gameObject.Components.TryGet<Rigidbody>( out var rigidbody ) )
 		{
-			body = gameObject.Components.Get<Rigidbody>().PhysicsBody;
+			body = rigidbody.PhysicsBody;
 		}
+
+		if ( !body.IsValid() )
+			return;
 
 		body.ApplyImpulseAt( position, velocity );
 	}
@@ -224,7 +228,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
-		if ( !gameObject.IsValid() || gameObject.IsProxy )
+		if ( !gameObject.IsValid() )
 			return;
 
 		timeSinceImpulse = 0;
@@ -246,16 +250,20 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 	[Broadcast]
 	private void ApplyAngularImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
-		if ( !gameObject.IsValid() || gameObject.IsProxy )
+		if ( !gameObject.IsValid() )
 			return;
 
 		timeSinceImpulse = 0;
 
-		PhysicsBody body;
+		PhysicsBody body = null;
 
 		if ( bodyIndex > -1 )
 		{
-			body = gameObject.Components.Get<ModelPhysics>()?.PhysicsGroup?.Bodies.ElementAt( bodyIndex );
+			var modelPhysics = gameObject.Components.Get<ModelPhysics>();
+			if ( modelPhysics.IsValid() && modelPhysics.PhysicsGroup.IsValid() && bodyIndex < modelPhysics.PhysicsGroup.Bodies.Count() )
+			{
+				body = modelPhysics.PhysicsGroup.Bodies.ElementAt( bodyIndex );
+			}
 		}
 		else
 		{

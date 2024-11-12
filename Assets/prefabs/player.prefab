@@ -17,6 +17,16 @@
         "Health": 100
       },
       {
+        "__type": "PlayerDresser",
+        "__guid": "9b594a86-4420-4238-aab9-85320427c659",
+        "BodyRenderer": {
+          "_type": "component",
+          "component_id": "088ccdf7-7a51-47f6-be5c-88081217e16e",
+          "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
+          "component_type": "SkinnedModelRenderer"
+        }
+      },
+      {
         "__type": "PlayerUse",
         "__guid": "d04b77c5-4b3f-486a-9d74-74e37e35843a"
       },
@@ -172,16 +182,6 @@
             "RenderType": "On",
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
-          },
-          {
-            "__type": "PlayerDresser",
-            "__guid": "38d6748b-677d-452f-a522-a3ecf5d41d5a",
-            "BodyRenderer": {
-              "_type": "component",
-              "component_id": "088ccdf7-7a51-47f6-be5c-88081217e16e",
-              "go": "d0a8e1e1-bce2-477a-908c-3cfc0ac57de8",
-              "component_type": "SkinnedModelRenderer"
-            }
           },
           {
             "__type": "Sandbox.ModelHitboxes",

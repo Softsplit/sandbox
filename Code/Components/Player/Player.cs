@@ -39,18 +39,22 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 	[Broadcast]
 	void CreateRagdoll()
 	{
+		if ( IsProxy ) return;
+
 		var ragdoll = Controller.CreateRagdoll();
 		if ( !ragdoll.IsValid() ) return;
 
 		var corpse = ragdoll.AddComponent<PlayerCorpse>();
 		corpse.Connection = Network.Owner;
 		corpse.Created = DateTime.Now;
+
+		ragdoll.NetworkSpawn( Rpc.Caller );
 	}
 
-	[Broadcast( NetPermission.OwnerOnly )]
+	[Broadcast]
 	void CreateRagdollAndGhost()
 	{
-		if ( !Networking.IsHost ) return;
+		if ( IsProxy ) return;
 
 		var go = new GameObject( false, "Observer" );
 		go.Components.Create<PlayerObserver>();

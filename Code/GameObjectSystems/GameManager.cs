@@ -16,8 +16,11 @@ public sealed partial class GameManager : GameObjectSystem<GameManager>, IPlayer
 
 	public void SpawnPlayerForConnection( Connection channel )
 	{
-		if ( Game.ActiveScene.GetAllComponents<Player>().Where( x => x.Network.Owner == channel ).Count() > 0 )
+		if ( Game.ActiveScene.GetAllComponents<Player>().Any( x => x.Network.Owner == channel ) )
+		{
+			Log.Info( "GameManager: Tried to spawn multiple instances of the same player! Ignoring." );
 			return;
+		}
 
 		var startLocation = FindSpawnLocation().WithScale( 1 );
 

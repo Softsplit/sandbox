@@ -89,7 +89,7 @@ public class ToolGun : BaseWeapon
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "npc", "glass" )
-				.WithoutTags( "debris" )
+				.WithoutTags( "debris", "player" )
 				.IgnoreGameObjectHierarchy( Owner.GameObject )
 				.Size( radius );
 
