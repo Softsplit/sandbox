@@ -125,6 +125,6 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 			return;
 
 		foreach ( var weapon in Weapons )
-			weapon.GameObject.Destroy();
+			weapon.DestroyGameObject();
 	}
 }

@@ -109,35 +109,35 @@
 			endNoHit?.GameObject.Destroy();
 			endNoHit = null;
 
-			if ( GrabbedObject.Components.Get<ModelRenderer>().IsValid() )
+			if ( GrabbedObject.GetComponent<ModelRenderer>().IsValid() )
 			{
 				lastGrabbedObject = GrabbedObject;
 
-				var glow = GrabbedObject.Components.GetOrCreate<HighlightOutline>();
-				glow.Enabled = true;
+				var glow = GrabbedObject.GetOrAddComponent<HighlightOutline>();
 				glow.Width = 0.25f;
 				glow.Color = new Color( 4f, 50.0f, 70.0f, 1.0f );
 				glow.ObscuredColor = new Color( 4f, 50.0f, 70.0f, 0.0005f );
 
 				foreach ( var child in lastGrabbedObject.Children )
 				{
-					if ( !child.Components.Get<ModelRenderer>().IsValid() )
+					if ( !child.GetComponent<ModelRenderer>().IsValid() )
 						continue;
 
-					glow = child.Components.GetOrCreate<HighlightOutline>();
-					glow.Enabled = true;
+					glow = child.GetOrAddComponent<HighlightOutline>();
 					glow.Color = new Color( 0.1f, 1.0f, 1.0f, 1.0f );
 				}
 			}
 		}
 		else
 		{
-			lastBeamPos = tr.EndPosition; Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
+			lastBeamPos = tr.EndPosition;
 
-			beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
+			Vector3.Lerp( lastBeamPos, tr.EndPosition, Time.Delta * 10 );
+
+			if ( beam.IsValid() )
+				beam?.SceneObject.SetControlPoint( 1, lastBeamPos );
 
 			endNoHit ??= Particles.MakeParticleSystem( "particles/physgun_end_nohit.vpcf", new Transform( lastBeamPos ), 0 );
-
 			endNoHit.SceneObject.SetControlPoint( 0, lastBeamPos );
 			endNoHit.WorldPosition = lastBeamPos;
 		}

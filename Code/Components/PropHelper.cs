@@ -29,6 +29,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	protected override void OnStart()
 	{
+		Prop.OnPropBreak += OnBreak;
+
 		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		Rigidbody ??= GetComponent<Rigidbody>();
 
@@ -48,18 +50,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Health -= amount;
 
 		if ( Health <= 0f && !Invincible )
-			Kill();
+			Prop.Kill();
 	}
 
-	public void Kill()
+	public void OnBreak()
 	{
-		if ( IsProxy ) return;
-
-		var gibs = Prop?.CreateGibs();
-		if ( gibs.Count <= 0 )
-			goto IgnoreGibs;
-
-		foreach ( var gib in gibs )
+		foreach ( var gib in Prop.CreateGibs() )
 		{
 			if ( !gib.IsValid() )
 				continue;
@@ -73,13 +69,12 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
 		}
 
-		IgnoreGibs:
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
 		{
 			Explosion( data.Effect, data.Sound, WorldPosition, data.Radius, data.Damage, data.Force );
 		}
 
-		GameObject.DestroyImmediate();
+		Prop.Model = null; // Prevents prop from spawning more gibs.
 	}
 
 	public void AddForce( int bodyIndex, Vector3 force )

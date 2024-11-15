@@ -10,7 +10,7 @@
   "EditorReferences": null,
   "IsWhitelistDisabled": false,
   "Metadata": {
-    "MaxPlayers": 64,
+    "MaxPlayers": 32,
     "MinPlayers": 1,
     "CsProjName": "",
     "ControlModes": {},

@@ -128,7 +128,7 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		MoveTargetDistance( Input.MouseWheel.y * TargetDistanceSpeed );
 
 		if ( Input.Down( "use" ) )
-			DoRotate( new Angles( 0.0f, Owner.Controller.EyeAngles.yaw, 0.0f ), Input.MouseDelta * RotateSpeed );
+			DoRotate( new Angles( 0.0f, Owner.EyeTransform.Rotation.Angles().yaw, 0.0f ), Input.MouseDelta * RotateSpeed );
 
 		HoldPos = Owner.AimRay.Position - heldPos * HeldBody.Rotation + Owner.AimRay.Forward * holdDistance;
 		HoldRot = Owner.Controller.EyeAngles * heldRot;

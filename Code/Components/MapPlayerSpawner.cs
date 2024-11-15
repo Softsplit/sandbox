@@ -1,13 +1,15 @@
+using Sandbox.Network;
+
 public sealed class MapPlayerSpawner : Component
 {
 	protected override void OnAwake()
 	{
-		if ( !Networking.IsHost )
+		if ( !Game.IsEditor )
 			return;
 
 		// NOTE: This is mostly a workaround because I can't be bothered
 		// to check if it's the game scene or not.
-		Networking.CreateLobby();
+		Networking.CreateLobby( new LobbyConfig() { Name = "Sandbox Classic Server (Editor)" } );
 	}
 
 	protected override void OnEnabled()

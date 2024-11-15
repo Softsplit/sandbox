@@ -41,11 +41,7 @@
 
     void CreateNewGame()
     {
-        Game.Overlay.ShowPackageSelector("type:map sort:trending", (package) =>
-        {
-            LaunchArguments.Map = package.FullIdent;
-            Scene.Load(MainMenuPanel.Current.GameScene);
-        });
+        FindRootPanel().AddChild<CreateGameModal>();
     }
 
     void OpenServerList()

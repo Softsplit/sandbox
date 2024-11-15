@@ -18,7 +18,7 @@ public sealed class CustomMapInstance : MapInstance
 		if ( kv.TypeName.StartsWith( "prop" ) )
 		{
 			go.AddComponent<PropHelper>();
-			go.NetworkSpawn( null );
+			go.NetworkSpawn( Connection.Host );
 		}
 
 		// Comment these out since MapInstance preloads models funkily
