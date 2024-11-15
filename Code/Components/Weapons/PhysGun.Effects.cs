@@ -109,23 +109,21 @@
 			endNoHit?.GameObject.Destroy();
 			endNoHit = null;
 
-			if ( GrabbedObject.Components.Get<ModelRenderer>().IsValid() )
+			if ( GrabbedObject.GetComponent<ModelRenderer>().IsValid() )
 			{
 				lastGrabbedObject = GrabbedObject;
 
-				var glow = GrabbedObject.Components.GetOrCreate<HighlightOutline>();
-				glow.Enabled = true;
+				var glow = GrabbedObject.GetOrAddComponent<HighlightOutline>();
 				glow.Width = 0.25f;
 				glow.Color = new Color( 4f, 50.0f, 70.0f, 1.0f );
 				glow.ObscuredColor = new Color( 4f, 50.0f, 70.0f, 0.0005f );
 
 				foreach ( var child in lastGrabbedObject.Children )
 				{
-					if ( !child.Components.Get<ModelRenderer>().IsValid() )
+					if ( !child.GetComponent<ModelRenderer>().IsValid() )
 						continue;
 
-					glow = child.Components.GetOrCreate<HighlightOutline>();
-					glow.Enabled = true;
+					glow = child.GetOrAddComponent<HighlightOutline>();
 					glow.Color = new Color( 0.1f, 1.0f, 1.0f, 1.0f );
 				}
 			}
