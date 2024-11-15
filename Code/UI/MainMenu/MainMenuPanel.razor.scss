@@ -1,15 +1,17 @@
 MainMenuPanel {
+    position: absolute;
     pointer-events: all;
     width: 100%;
     height: 100%;
+    transition: all 0.1s ease;
 
     &.hidden {
-        transition: all 0.1s ease;
         opacity: 0;
     }
 }
 
 .gamemainmenu {
+    position: absolute;
     background-image: url( "menu/boxes.webm" );
     background-position: center;
     background-size: cover;
@@ -18,12 +20,11 @@ MainMenuPanel {
     font-size: 25px;
     width: 100%;
     height: 100%;
-    position: absolute;
     color: white;
-    transition: all 0.3s ease-out;
+    transition: all 0.2s ease-out;
 
     &.hidden {
-        transform: scale( 1.1 );
+        transform: scale(1.2);
         backdrop-filter: blur( 0px );
         background-color: rgba( black, 0 );
     }
