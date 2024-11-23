@@ -29,8 +29,6 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	protected override void OnStart()
 	{
-		Prop.OnPropBreak += OnBreak;
-
 		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
 		Rigidbody ??= GetComponent<Rigidbody>();
 
@@ -38,6 +36,8 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Velocity = 0f;
 
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
+
+		Prop.OnPropBreak += OnBreak;
 	}
 
 	[Broadcast]
@@ -242,7 +242,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				{
 					propHelper.Damage( damage );
 				}
-				else if ( other.GameObject.Components.TryGet<Player>( out var player ) )
+				else if ( other.GameObject.Root.Components.TryGet<Player>( out var player ) )
 				{
 					player.TakeDamage( damage );
 				}
@@ -263,7 +263,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 		foreach ( var obj in overlaps )
 		{
-			if ( !obj.Tags.Intersect( new TagSet() { "solid", "player", "npc", "glass" } ).Any() && obj.Tags.Intersect( new TagSet() { "player_hull" } ).Any() )
+			if ( !obj.Tags.Intersect( new TagSet() { "solid", "player", "npc", "glass" } ).Any() && obj.Tags.Intersect( new TagSet() { "playercontroller" } ).Any() )
 			{
 				continue;
 			}
@@ -293,7 +293,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 				propHelper.BroadcastAddDamagingForce( force, dmg );
 			}
 
-			if ( obj.Components.TryGet<Player>( out var player ) )
+			if ( obj.Root.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( dmg );
 			}

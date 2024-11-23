@@ -227,7 +227,7 @@ public partial class BaseWeapon : Component
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.WithoutTags( "player_hull", "debris" )
+				.WithoutTags( "playercontroller", "debris" )
 				.IgnoreGameObjectHierarchy( GameObject.Root )
 				.Size( radius );
 
@@ -254,7 +254,7 @@ public partial class BaseWeapon : Component
 		var trace = Scene.Trace.Ray( start, end )
 				.UseHitboxes()
 				.WithAnyTags( "solid", "player", "npc", "glass" )
-				.WithoutTags( "player_hull", "debris" )
+				.WithoutTags( "playercontroller", "debris" )
 				.IgnoreGameObjectHierarchy( GameObject.Root );
 
 		var tr = trace.Run();
@@ -299,7 +299,7 @@ public partial class BaseWeapon : Component
 			{
 				prop.BroadcastAddDamagingForce( forward * 5000 * force, damage );
 			}
-			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
+			else if ( tr.GameObject.Root.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( damage );
 			}

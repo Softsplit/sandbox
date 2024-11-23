@@ -1,7 +1,7 @@
 /// <summary>
 /// Holds player information like health
 /// </summary>
-public sealed class Player : Component, Component.IDamageable, PlayerController.IEvents
+public sealed partial class Player : Component, Component.IDamageable, PlayerController.IEvents
 {
 	public static Player FindLocalPlayer()
 	{
@@ -17,21 +17,6 @@ public sealed class Player : Component, Component.IDamageable, PlayerController.
 	public bool IsDead => Health <= 0;
 	public Transform EyeTransform => Controller.EyeTransform;
 	public Ray AimRay => new( EyeTransform.Position, EyeTransform.Rotation.Forward );
-
-	protected override void OnStart()
-	{
-		if ( !Controller.IsValid() ) return;
-		if ( !Controller.Body.IsValid() ) return;
-		if ( !Controller.Body.PhysicsBody.IsValid() ) return;
-
-		// Give hull a special tag so we can ignore it in favor of hitboxes.
-		foreach ( var shape in Controller.Body.PhysicsBody.Shapes )
-		{
-			if ( !shape.IsValid() ) continue;
-
-			shape.Tags.Add( "player_hull" );
-		}
-	}
 
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled

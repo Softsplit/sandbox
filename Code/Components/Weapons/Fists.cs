@@ -57,7 +57,7 @@ partial class Fists : BaseWeapon
 			{
 				prop.BroadcastAddDamagingForce( forward * 80 * 100, 25 );
 			}
-			else if ( tr.GameObject.Components.TryGet<Player>( out var player ) )
+			else if ( tr.GameObject.Root.Components.TryGet<Player>( out var player ) )
 			{
 				player.TakeDamage( 25 );
 			}

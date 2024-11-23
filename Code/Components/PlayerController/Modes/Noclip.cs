@@ -14,6 +14,7 @@ public partial class MoveModeNoclip : MoveMode
 	public override void UpdateRigidBody( Rigidbody body )
 	{
 		body.Enabled = !Controller.IsNoclipping;
+		Controller.ColliderObject.Enabled = !Controller.IsNoclipping;
 	}
 
 	public override void AddVelocity()
