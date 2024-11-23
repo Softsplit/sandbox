@@ -15,12 +15,10 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	[Property, Sync] public Vector3 Velocity { get; set; } = 0f;
 	[Property, Sync] public bool Invincible { get; set; } = false;
 
-	[RequireComponent, Sync] public Prop Prop { get; set; }
-
+	[Sync] public Prop Prop { get; set; }
+	[Sync] public ModelPhysics ModelPhysics { get; set; }
+	[Sync] public Rigidbody Rigidbody { get; set; }
 	[Sync] public NetDictionary<int, BodyInfo> NetworkedBodies { get; set; } = new();
-
-	public ModelPhysics ModelPhysics { get; set; }
-	public Rigidbody Rigidbody { get; set; }
 
 	public List<FixedJoint> Welds { get; set; } = new();
 	public List<Joint> Joints { get; set; } = new();
@@ -29,15 +27,16 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	protected override void OnStart()
 	{
-		ModelPhysics ??= Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
+		Prop ??= GetComponent<Prop>();
+		Prop.OnPropBreak += OnBreak;
+
+		ModelPhysics ??= GetComponent<ModelPhysics>();
 		Rigidbody ??= GetComponent<Rigidbody>();
 
 		Health = Prop?.Health ?? 0f;
 		Velocity = 0f;
 
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
-
-		Prop.OnPropBreak += OnBreak;
 	}
 
 	[Broadcast]
@@ -141,7 +140,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 	{
 		if ( !ModelPhysics.IsValid() )
 		{
-			ModelPhysics = Components.Get<ModelPhysics>( FindMode.EverythingInSelf );
+			ModelPhysics = GetComponent<ModelPhysics>();
 			Rigidbody = GetComponent<Rigidbody>();
 
 			return;
