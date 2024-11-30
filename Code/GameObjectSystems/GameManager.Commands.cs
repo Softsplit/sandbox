@@ -18,7 +18,7 @@ public sealed partial class GameManager
 		Sandbox.Services.Stats.Increment( "spawn.model", 1, modelname );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	static async void SpawnModel( string modelname, Vector3 endPos, Rotation modelRotation, GameObject playerObject )
 	{
 		if ( Networking.IsClient )

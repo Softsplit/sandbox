@@ -56,7 +56,7 @@ partial class Flashlight : BaseWeapon
 		BroadcastAttackSecondary();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttackSecondary()
 	{
 		Sound.Play( "rust_flashlight.attack", WorldPosition );

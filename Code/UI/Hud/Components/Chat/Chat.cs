@@ -1,6 +1,6 @@
 public partial class Chat
 {
-	[Broadcast]
+	[Rpc.Broadcast]
 	public static void AddChatEntry( string name, string message, ulong playerId = 0, bool isInfo = false )
 	{
 		Current?.AddEntry( name, message, (long)playerId, isInfo );

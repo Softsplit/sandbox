@@ -112,7 +112,7 @@ public static partial class SandboxBaseExtensions
 		return default;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private static void BroadcastDoBulletImpact( string eventName, Vector3 position )
 	{
 		Sound.Play( eventName, position );

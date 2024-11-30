@@ -59,7 +59,7 @@ public sealed partial class PlayerController : Component
 		OnJumped();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void OnJumped()
 	{
 		if ( UseAnimatorControls && Renderer.IsValid() )

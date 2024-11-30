@@ -19,7 +19,7 @@ partial class Shotgun : BaseWeapon
 		ShootBullets( 10, 0.1f, 10.0f, 9.0f, 3.0f );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttackPrimary()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
@@ -44,7 +44,7 @@ partial class Shotgun : BaseWeapon
 		ShootBullets( 20, 0.4f, 20.0f, 8.0f, 3.0f );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttackSecondary()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );

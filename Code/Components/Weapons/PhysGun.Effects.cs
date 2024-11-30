@@ -5,7 +5,7 @@
 
 	GameObject lastGrabbedObject;
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	protected virtual void KillEffects()
 	{
 		if ( !Owner.IsValid() )

@@ -107,7 +107,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		SetActiveSlot( nextSlot );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	void IPlayerEvent.OnSpawned()
 	{
 		if ( IsProxy ) return;
@@ -116,7 +116,7 @@ public sealed class PlayerInventory : Component, IPlayerEvent
 		SetActiveSlot( 0 );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	void IPlayerEvent.OnDied()
 	{
 		if ( IsProxy ) return;

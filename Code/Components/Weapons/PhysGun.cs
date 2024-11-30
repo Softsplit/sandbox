@@ -145,7 +145,7 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		}
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void TryUnfreezeAll()
 	{
 		var rootEnt = GrabbedObject;
@@ -306,13 +306,13 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		return (valid, tr);
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttack()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void TryEndGrab()
 	{
 		GrabbedObject = null;
@@ -335,7 +335,7 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		heldRot = localRot * heldRot;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Freeze( GameObject gameObject, int bone )
 	{
 		if ( !gameObject.IsValid() )
@@ -348,7 +348,7 @@ public partial class PhysGun : BaseWeapon, Component.INetworkListener
 		FreezeEffects();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void UnFreeze( GameObject gameObject, int bone )
 	{
 		if ( !gameObject.IsValid() )

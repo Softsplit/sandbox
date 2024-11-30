@@ -20,7 +20,7 @@ partial class Fists : BaseWeapon
 		BroadcastAttack();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttack()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );

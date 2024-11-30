@@ -19,7 +19,7 @@ partial class RPG : BaseWeapon
 		ShootBullet( 0.1f, 1.5f, 5.0f, 3.0f );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttackPrimary()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );

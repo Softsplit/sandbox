@@ -39,7 +39,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		lastPosition = Prop?.WorldPosition ?? WorldPosition;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Damage( float amount )
 	{
 		if ( !Prop.IsValid() ) return;
@@ -112,13 +112,13 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Damage( damage );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void BroadcastAddForce( int bodyIndex, Vector3 force )
 	{
 		AddForce( bodyIndex, force );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void BroadcastAddDamagingForce( Vector3 force, float damage )
 	{
 		AddDamagingForce( force, damage );
@@ -299,7 +299,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void BroadcastExplosion( string path, Vector3 position )
 	{
 		if ( string.IsNullOrEmpty( path ) )
@@ -324,7 +324,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Sound.Play( path, position );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Weld( GameObject to )
 	{
 		if ( IsProxy )
@@ -345,7 +345,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		propHelper?.Joints.Add( fixedJoint );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Unweld()
 	{
 		if ( IsProxy )
@@ -360,7 +360,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		Joints.RemoveAll( item => !item.IsValid() );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Hinge( GameObject to, Vector3 position, Vector3 normal )
 	{
 		if ( IsProxy )

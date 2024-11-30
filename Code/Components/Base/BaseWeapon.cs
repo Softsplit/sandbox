@@ -60,7 +60,7 @@ public partial class BaseWeapon : Component
 		go.NetworkMode = NetworkMode.Never;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastEnabled()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_deploy", true );
@@ -153,7 +153,7 @@ public partial class BaseWeapon : Component
 		ViewModel?.Renderer?.Set( "fire", true );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void AttachParticleSystem( string path, string attachment, float time = 1, GameObject parent = null )
 	{
 		Transform transform = LocalWorldModel?.GetAttachment( attachment ) ?? WorldTransform;
@@ -180,7 +180,7 @@ public partial class BaseWeapon : Component
 		StartReloadEffects();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastReload()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_reload", true );

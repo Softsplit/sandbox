@@ -37,7 +37,7 @@ public partial class ColorTool : BaseTool
 		return false;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastColor( PropHelper propHelper, Color color )
 	{
 		// TODO: Fix this for other clients

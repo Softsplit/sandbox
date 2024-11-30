@@ -34,7 +34,7 @@ public partial class ModelSkinTool : BaseTool
 		return false;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastMaterialGroup( Prop prop, string materialGroup )
 	{
 		// TODO: Fix this for other clients

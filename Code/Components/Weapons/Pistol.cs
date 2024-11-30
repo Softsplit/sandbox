@@ -21,7 +21,7 @@ partial class Pistol : BaseWeapon, Component.ICollisionListener
 		ShootBullet( 0.05f, 1.5f, 9.0f, 3.0f );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttackPrimary()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );

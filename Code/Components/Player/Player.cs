@@ -21,7 +21,7 @@ public sealed partial class Player : Component, Component.IDamageable, PlayerCon
 	/// <summary>
 	/// Creates a ragdoll but it isn't enabled
 	/// </summary>
-	[Broadcast]
+	[Rpc.Broadcast]
 	void CreateRagdoll()
 	{
 		if ( IsProxy ) return;
@@ -36,7 +36,7 @@ public sealed partial class Player : Component, Component.IDamageable, PlayerCon
 		ragdoll.NetworkSpawn( Rpc.Caller );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	void CreateRagdollAndGhost()
 	{
 		if ( IsProxy ) return;
@@ -46,7 +46,7 @@ public sealed partial class Player : Component, Component.IDamageable, PlayerCon
 		go.NetworkSpawn( Rpc.Caller );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void TakeDamage( float amount )
 	{
 		if ( IsProxy ) return;

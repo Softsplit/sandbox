@@ -59,7 +59,7 @@ public class ToolGun : BaseWeapon
 		ToolEffects( trace.EndPosition );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	void ToolEffects( Vector3 position )
 	{
 		Particles.MakeParticleSystem( "particles/tool_hit.vpcf", new Transform( position ) );

@@ -200,7 +200,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		}
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void ApplyImpulseAt( GameObject gameObject, int bodyIndex, Vector3 position, Vector3 velocity )
 	{
 		if ( !gameObject.IsValid() )
@@ -225,7 +225,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		body.ApplyImpulseAt( position, velocity );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void ApplyImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
 		if ( !gameObject.IsValid() )
@@ -250,7 +250,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		if ( body.IsValid() ) body.ApplyImpulse( velocity );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void ApplyAngularImpulse( GameObject gameObject, int bodyIndex, Vector3 velocity )
 	{
 		if ( !gameObject.IsValid() )
@@ -313,7 +313,7 @@ public partial class GravGun : BaseWeapon, IPlayerEvent
 		HoldRot = rot * heldRot;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void GrabEnd()
 	{
 		timeSinceDrop = 0;

@@ -40,7 +40,7 @@ public sealed class PlayerObserver : Component
 		}
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Respawn()
 	{
 		if ( IsProxy ) return;

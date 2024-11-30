@@ -116,7 +116,7 @@
 		PlaySoundRpc( resource.ResourceId );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void PlaySoundRpc( int resourceId )
 	{
 		var resource = ResourceLibrary.Get<SoundEvent>( resourceId );
@@ -128,7 +128,7 @@
 		handle.Occlusion = false;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public void Press( GameObject presser )
 	{
 		if ( presser.Network.Owner != Rpc.Caller )

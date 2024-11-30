@@ -7,7 +7,7 @@ public sealed class PlayerUse : Component, PlayerController.IEvents
 		BroadcastFailPressing();
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastFailPressing()
 	{
 		Sound.Play( "player_use_fail", WorldPosition );

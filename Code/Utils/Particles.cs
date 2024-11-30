@@ -7,7 +7,7 @@
 		return MakeParticleSystem( path, transform, time, parent );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	public static void SpawnParticleSystem( Guid connection, string path, Vector3 position, Rotation rotation, float time = 1, GameObject parent = null )
 	{
 		if ( Connection.Local.Id == connection )

@@ -23,7 +23,7 @@ partial class MP5 : BaseWeapon
 		ShootBullet( 0.1f, 1.5f, 5.0f, 3.0f );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastAttackPrimary()
 	{
 		Owner?.Controller?.Renderer?.Set( "b_attack", true );
@@ -41,7 +41,7 @@ partial class MP5 : BaseWeapon
 		ViewModel?.Renderer?.Set( "attack_hold", attackHold );
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	private void BroadcastOnControl( float attackHold )
 	{
 		Owner?.Controller?.Renderer?.Set( "attack_hold", attackHold );

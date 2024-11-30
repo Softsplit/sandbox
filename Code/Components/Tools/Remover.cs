@@ -19,7 +19,7 @@ public class Remover : BaseTool
 		return false;
 	}
 
-	[Broadcast]
+	[Rpc.Broadcast]
 	void Remove( GameObject g )
 	{
 		// TODO: Fix this for other clients
