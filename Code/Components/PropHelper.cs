@@ -54,18 +54,23 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 
 	public void OnBreak()
 	{
-		foreach ( var gib in Prop.CreateGibs() )
+		var gibs = Prop.CreateGibs();
+
+		if ( gibs.Count > 0 )
 		{
-			if ( !gib.IsValid() )
-				continue;
+			foreach ( var gib in gibs )
+			{
+				if ( !gib.IsValid() )
+					continue;
 
-			gib.Tint = Prop.Tint;
-			gib.Tags.Add( "debris" );
+				gib.Tint = Prop.Tint;
+				gib.Tags.Add( "debris" );
 
-			gib.AddComponent<PropHelper>();
+				gib.AddComponent<PropHelper>();
 
-			gib.GameObject.NetworkSpawn();
-			gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
+				gib.GameObject.NetworkSpawn();
+				gib.Network.SetOrphanedMode( NetworkOrphaned.Host );
+			}
 		}
 
 		if ( Prop.Model.TryGetData<ModelExplosionBehavior>( out var data ) )
