@@ -8,27 +8,23 @@
 	[Rpc.Broadcast]
 	protected virtual void KillEffects()
 	{
-		if ( !Owner.IsValid() )
-			goto IgnoreIsProxy;
-
-		if ( IsProxy )
+		// If Owner is not valid and not a proxy, proceed.
+		if (!Owner.IsValid() || !IsValid || IsProxy)
 			return;
 
-		IgnoreIsProxy:
-		if ( beam.IsValid() )
+		if (beam.IsValid())
 		{
 			beam?.GameObject.Destroy();
 			beam = null;
 		}
 
-		if ( endNoHit.IsValid() )
+		if (endNoHit.IsValid())
 		{
 			endNoHit?.GameObject?.Destroy();
 			endNoHit = null;
 		}
 
-		DisableHighlights( lastGrabbedObject );
-
+		DisableHighlights(lastGrabbedObject);
 		lastGrabbedObject = null;
 	}
 
