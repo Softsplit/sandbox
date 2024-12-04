@@ -304,7 +304,7 @@ public sealed class PropHelper : Component, Component.ICollisionListener
 		}
 	}
 
-	[Rpc.Broadcast]
+	[Rpc.Broadcast(NetFlags.Unreliable)]
 	public void BroadcastExplosion( string path, Vector3 position )
 	{
 		if ( string.IsNullOrEmpty( path ) )
